@@ -1,0 +1,28 @@
+Course vs Classroom
+Course vs Slot
+Classroom vs Slot
+
+
+Course ID
+Class Size x 10
+Segment
+Instructor
+Eligible Programs
+Course Type
+Is Minor
+
+Classroom Number
+Classroom Size x 10
+
+Slot Name
+Slot Time
+
+Course ID, Class Size x 10
+Course ID, Segment 
+Course ID, Instructor -- not needed?
+Course ID, Eligible Programs 
+Course ID, Course Type
+Course ID, IsMinor 
+Course ID, Classroom Number 
+Course ID, Slot Name 
+
