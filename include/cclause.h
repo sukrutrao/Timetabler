@@ -1,9 +1,9 @@
 class CClause {
 private:
-	std::vector<Var> vars;
+	std::vector<Lit> lits;
 public:
-	CClause(std::vector<Var>);
-	CClause(Var);
+	CClause(std::vector<Lit>);
+	CClause(Lit);
 	CClause();
     std::vector<CClause> operator~();
     std::vector<CClause> operator&(const CClause&);
@@ -12,15 +12,15 @@ public:
     Clauses operator|(const Clauses&);
     std::vector<CClause> operator->(const CClause&);
     Clauses operator->(const Clauses&);
-    void addVars(Var);
-    void addVars(Var,Var);
-    void addVars(Var,Var,Var);
-    std::vector<Var> getVars();
+    void addLits(Lit);
+    void addLits(Lit,Lit);
+    void addLits(Lit,Lit,Lit);
+    std::vector<Lit> getLits();
 };
 
 class ConstraintType {
 public:
-    static std::vector<CClause> forAll(Variable,Variable,std::vector<CClause>);
+    static std::vector<CClause> forAll(Litiable,Litiable,std::vector<CClause>);
     static
 };
 

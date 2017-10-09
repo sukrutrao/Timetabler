@@ -14,12 +14,16 @@ Clauses::Clauses() {
 }
 
 Clauses Clauses::operator~() {
-	Clauses result;
-	for(int i = 0; i < clauses.size(); i++) {
-		std::vector<CClause> negationClause = ~(clauses[i]);
-		result.addClauses(negationClause);
+	if(clauses.size() == 0) {
+		return (*this);
+	}
+	Clauses negationClause(~(clauses[0]));
+	for(int i = 1; i < clauses.size(); i++) {
+		std::vector<CClause> negationClauseVector = ~(clauses[i]);
+		Clauses negationThisClause(negationClauseVector);
+		negationClause = (negationClause | negationThisClause);
 	} 
-	// INCOMPLETE
+	return negationClause;
 }
 
 Clauses Clauses::operator&(const Clauses &other) {
