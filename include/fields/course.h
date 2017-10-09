@@ -6,12 +6,14 @@ class Course {
 private:
     std::string name;
     unsigned classSize;
-    std::unique_ptr<Instructor> instructor;
-    std::vector<std::pair<std::unique_ptr<Program>, std::unique_ptr<CourseType>>> programs;
-    std::unique_ptr<Segment> segment;
-    std::unique_ptr<IsMinor> isMinor;
+    Instructor *instructor;
+    std::vector<Program*> programs;
+    Segment *segment;
+    IsMinor isMinor;
 public:
-    Course(std::string, std::unique_ptr<Instructor>, std::unique_ptr<Segment>, std::unique_ptr<IsMinor>);
-    void setPrograms(std::vector<std::pair<std::unique_ptr<Program>, std::unique_ptr<CourseType>>>);
-    void addProgram(std::unique_ptr<Program>, std::unique_ptr<CourseType>);
+    Course(std::string, unsigned, Instructor*, Segment*, IsMinor);
+    Course(std::string, unsigned, Instructor*, Segment*, IsMinor, std::vector<Program*>);
+    void setPrograms(std::vector<Program*>);
+    void addProgram(Program*);
+    bool operator==(const Course &other);
 };

@@ -1,36 +1,11 @@
 class Variable {
 private:
-    std::unique_ptr<Course> course;
+    Course *course;
+    Field *field;
+    FieldType fieldType;
 public:
-    Variable(std::unique_ptr<Course>);
+    Variable(Course*, Field*);
+    bool hasSameCourse(const Variable &other);
+    bool hasSameType(const Variable &other);
+    FieldType getType();
 };
-
-class ClassroomFitVar : public Variable {
-private:
-    std::unique_ptr<Classroom> classroom;
-public:
-    ClassroomFitVar(std::unique_ptr<Course>, std::unique_ptr<Classroom>);
-};
-
-class SegmentVar : public Variable {
-private:
-    std::unique_ptr<Segment> segment;
-public:
-    SegmentVar(std::unique_ptr<Course>, std::unique_ptr<Segment>);
-};
-
-class InstructorVar : public Variable {
-private:
-    
-}
-
-class ClassroomVar : public Variable {
-private:
-    std::unique_ptr<Classroom> classroom;
-public:
-    ClassroomVar(std::unique_ptr<Course>, std::unique_ptr<Classroom>);
-};
-
-
-
-class 
