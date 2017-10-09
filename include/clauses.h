@@ -8,7 +8,9 @@ public:
 	Clauses();
 	Clauses operator~();
 	Clauses operator&(const Clauses&);
+	Clauses operator&(const CClause&);
 	Clauses operator|(const Clauses&);
+	Clauses operator|(const CClause&);
 	Clauses operator->(const Clauses&);
 	void addClauses(CClause);
 	void addClauses(std::vector<CClause>);

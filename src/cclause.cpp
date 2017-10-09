@@ -31,12 +31,23 @@ std::vector<CClause> CClause::operator&(const CClause &other) {
 	return result;
 }
 
+Clauses CClause::operator&(const Clause &other) {
+	Clause result(other.getClauses());
+	result.addClauses(*this);
+	return result;
+}
+
 CClause CClause::operator|(const CClause &other) {
 	std::vector<Var> thisVars = this->vars;
 	std::vector<Var> otherVars = other.getVars();
 	thisVars.insert(std::end(thisVars), std::begin(otherVars), std::end(otherVars));
 	CClause result(thisVars);
 	return result;
+}
+
+Clauses CClause::operator|(const Clauses &other) {
+	Clauses thisLHS(*this);
+	return (thisLHS | other);
 }
 
 std::vector<CClause> CClause::operator->(const CClause &other) {
@@ -47,6 +58,11 @@ std::vector<CClause> CClause::operator->(const CClause &other) {
 		result.push_back((lhs[i])|other);
 	}
 	return result;
+}
+
+Clauses CClause::operator->(const Clauses &other) {
+	Clauses thisLHS(~(*this));
+	return (thisLHS | other);
 }
 
 void CClause::addVars(Var var1) {

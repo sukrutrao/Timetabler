@@ -7,8 +7,11 @@ public:
 	CClause();
     std::vector<CClause> operator~();
     std::vector<CClause> operator&(const CClause&);
+    Clauses operator&(const Clauses&);
     CClause operator|(const CClause&);
+    Clauses operator|(const Clauses&);
     std::vector<CClause> operator->(const CClause&);
+    Clauses operator->(const Clauses&);
     void addVars(Var);
     void addVars(Var,Var);
     void addVars(Var,Var,Var);

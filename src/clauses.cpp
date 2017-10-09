@@ -30,6 +30,10 @@ Clauses Clauses::operator&(const Clauses &other) {
 	return result;
 }
 
+Clauses Clauses::operator&(const CClause &other) {
+	return (other & (*this));
+}
+
 Clauses Clauses::operator|(const Clauses &other) {
 	std::vector<CClause> resultClauses;
 	resultClauses.clear();
@@ -40,6 +44,10 @@ Clauses Clauses::operator|(const Clauses &other) {
 	}
 	Clauses result(resultClauses);
 	return result;
+}
+
+Clauses Clauses::operator|(const CClause &other) {
+	return (other | (*this));
 }
 
 Clauses Clauses::operator->(const Clauses &other) {
