@@ -1,9 +1,10 @@
 
 enum class FieldType {
-	classroom,
-	instructor,
-	isMinor,
-	program,
-	segment,
-	slot
+	classroom = 0,
+	instructor = 1,
+	isMinor = 2,
+	program = 3,
+	segment = 4,
+	slot = 5
 }
+

@@ -1,5 +1,7 @@
 #include "fields/segment.h"
+
 #include <cassert>
+#include "global.h"
 
 Segment::Segment(int startSegment, int endSegment) {
 	assert((startSegment <= endSegment) && "Start Segment after End Segment!");

@@ -1,5 +1,8 @@
 #include "fields/instructor.h"
 
+#include <string>
+#include "global.h"
+
 Instructor::Instructor(std::string name) {
 	this->name = name;
 }

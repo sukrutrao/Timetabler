@@ -1,3 +1,8 @@
+#ifndef CLAUSES_H
+#define CLAUSES_H
+
+#include <vector>
+#include "cclause.h"
 
 class Clauses {
 private:
@@ -16,3 +21,5 @@ public:
 	void addClauses(std::vector<CClause>);
 	std::vector<CClause> getClauses();
 };
+
+#endif

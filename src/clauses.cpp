@@ -1,5 +1,9 @@
 #include "clauses.h"
 
+#include <vector>
+#include "core/SolverTypes.h"
+#include "cclause.h"
+
 Clauses::Clauses(std::vector<CClause> clauses) {
 	this->clauses = clauses;
 }

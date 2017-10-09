@@ -1,7 +1,14 @@
 #include "fields/course.h"
 
+#include <string>
+#include <vector>
+#include "fields/instructor.h"
+#include "fields/program.h"
+#include "fields/segment.h"
+#include "fields/is_minor.h"
+
 Course::Course(std::string name, unsigned classSize, Instructor* instructor, Segment* segment, 
-			IsMinor isMinor) {
+			IsMinor *isMinor) {
 	this->name = name;
 	this->classSize = classSize;
 	this->instructor = instructor;
@@ -10,7 +17,7 @@ Course::Course(std::string name, unsigned classSize, Instructor* instructor, Seg
 }
 
 Course::Course(std::string name, unsigned classSize, Instructor* instructor, Segment* segment, 
-			IsMinor isMinor, std::vector<Program*> programs) {
+			IsMinor *isMinor, std::vector<Program*> programs) {
 	this->name = name;
 	this->classSize = classSize;
 	this->instructor = instructor;

@@ -1,5 +1,8 @@
 #include "fields/classroom.h"
 
+#include <string>
+#include "global.h"
+
 Classroom::Classroom(std::string number, unsigned size) {
 	this->number = number;
 	this->size = size;

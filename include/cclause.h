@@ -1,3 +1,10 @@
+#ifndef CCLAUSE_H
+#define CCLAUSE_H
+
+#include <vector>
+#include "core/SolverTypes.h"
+#include "clauses.h"
+
 class CClause {
 private:
 	std::vector<Lit> lits;
@@ -18,13 +25,12 @@ public:
     std::vector<Lit> getLits();
 };
 
-class ConstraintType {
-public:
-    static std::vector<CClause> forAll(Litiable,Litiable,std::vector<CClause>);
-    static
-};
+#endif
 
-class FunctionType {
-public:
-	static 
-};
+
+/*
+Link between Variable and CClause - and between Variable and Var
+CClause stores Lit, not Var
+
+
+*/

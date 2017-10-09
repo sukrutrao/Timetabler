@@ -1,5 +1,9 @@
 #include "cclause.h"
 
+#include <vector>
+#include "core/SolverTypes.h"
+#include "clauses.h"
+
 CClause::CClause(std::vector<Lit> lits) {
 	this->lits = lits;
 }

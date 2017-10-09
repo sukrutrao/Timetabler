@@ -1,5 +1,8 @@
 #include "fields/program.h"
 
+#include <string>
+#include "global.h"
+
 Program::Program(std::string name, CourseType courseType) {
 	this->name = name;
 	this->courseType = courseType;

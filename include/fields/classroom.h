@@ -1,3 +1,10 @@
+#ifndef CLASSROOM_H
+#define CLASSROOM_H
+
+#include <string>
+#include "fields/field.h"
+#include "global.h"
+
 class Classroom : public Field {
 private:
     std::string number;
@@ -8,3 +15,5 @@ public:
 	bool sizeLessThan(const Classroom &other);
 	FieldType getType();
 };
+
+#endif
