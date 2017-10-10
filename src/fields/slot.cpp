@@ -1,5 +1,9 @@
 #include "fields/slot.h"
 
+#include <string>
+#include <vector>
+#include "global.h"
+
 Time::Time(unsigned hours, unsigned minutes) {
     this->hours = hours;
     this->minutes = minutes;
@@ -35,10 +39,28 @@ bool Time::operator>(const Time &other) {
     return !(*this <= other);
 }
 
-Slot::Slot(std::string name, Time &startTime, Time &endTime) {
-    this->name = name;
+SlotElement::SlotElement(Time &startTime, Time &endTime, Day day) {
     this->startTime = startTime;
     this->endTime = endTime;
+    this->day = day;
+}
+
+bool SlotElement::isIntersecting(const SlotElement &other) {
+    if(this->day != other.day) {
+        return false;
+    }
+    if(this->startTime < other.startTime) {
+        return !(this->endTime < other.startTime);    
+    }
+    else if(this->startTime > other.startTime) {
+        return !(this->startTime > other.endTime);
+    }
+}
+
+
+Slot::Slot(std::string name, std::vector<SlotElement> slotElements) {
+    this->name = name;
+    this->slotElements = slotElements;
 }
 
 bool Slot::operator==(const Slot &other) {
@@ -46,13 +68,18 @@ bool Slot::operator==(const Slot &other) {
 }
 
 bool Slot::isIntersecting(const Slot &other) {
-    if(this->startTime < other.startTime) {
-        return !(this->endTime < other.startTime);    
+    for(int i = 0; i < slotElements.size(); i++) {
+        for(int j = 0; j < other.slotElements.size(); j++) {
+            if(slotElements[i].isIntersecting(other.slotElements[j])) {
+                return true;
+            }
+        }
     }
-    else if(this->startTime > other.startTime) {
-        return !(this->startTime > other.endTime);
-    }
-    return true;
+    return false;
+}
+
+void Slot::addSlotElements(SlotElement slotElement) {
+    slotElements.push_back(slotElement);
 }
 
 FieldType Slot::getType() {

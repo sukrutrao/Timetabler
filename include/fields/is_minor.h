@@ -1,13 +1,21 @@
+#ifndef IS_MINOR_H
+#define IS_MINOR_H
+
+#include "fields/field.h"
+#include "global.h"
+
 enum class MinorType {
-	isMinor,
-	isNotMinor
+    isMinor,
+    isNotMinor
 }
 
 
 class IsMinor : public Field {
 private:
-	MinorType minorType;
+    MinorType minorType;
 public:
     IsMinor(MinorType); 
     FieldType getType();
 };
+
+#endif

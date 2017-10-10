@@ -1,3 +1,20 @@
+#ifndef SLOT_H
+#define SLOT_H
+
+#include <string>
+#include "fields/field.h"
+#include "global.h"
+
+enum class Day {
+    Monday,
+    Tuesday,
+    Wednesday,
+    Thursday,
+    Friday,
+    Saturday,
+    Sunday
+};
+
 class Time {
 private:
     unsigned hours;
@@ -12,12 +29,25 @@ public:
     bool operator>(const Time&);
 };
 
-class Slot {
+class SlotElement {
+private:
+    Time startTime, endTime;
+    Day day;
+public:
+    SlotElement(Time&, Time&, Day);
+    bool isIntersecting(const SlotElement &other);
+};
+
+class Slot : public Field {
 private:
     std::string name;
-    Time startTime, endTime;
+    std::vector<SlotElement> slotElements;
 public:
-    Slot(std::string, Time&, Time&);
+    Slot(std::string, std::vector<SlotElement>);
     bool operator==(const Slot &other);
     bool isIntersecting(const Slot &other);
+    void addSlotElements(SlotElement);
+    FieldType getType();
 };
+
+#endif
