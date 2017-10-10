@@ -5,14 +5,14 @@
 #include "global.h"
 
 enum class MinorType {
-	isMinor,
-	isNotMinor
+    isMinor,
+    isNotMinor
 }
 
 
 class IsMinor : public Field {
 private:
-	MinorType minorType;
+    MinorType minorType;
 public:
     IsMinor(MinorType); 
     FieldType getType();

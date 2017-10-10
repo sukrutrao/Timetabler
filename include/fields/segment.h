@@ -9,11 +9,11 @@ private:
     int startSegment;
     int endSegment;
 public:
-	Segment(int, int);
-	bool operator==(const Segment &other);
-	int length();
-	bool isIntersecting(const Segment &other);
-	FieldType getType();
+    Segment(int, int);
+    bool operator==(const Segment &other);
+    int length();
+    bool isIntersecting(const Segment &other);
+    FieldType getType();
 };
 
 #endif
