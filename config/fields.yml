@@ -1,0 +1,24 @@
+instructors:
+  - Dr. Saurabh Joshi
+  - Dr. Ramakrishna Upadrasta
+
+segment:
+  start: 1
+  end: 6
+
+slot:
+  - name: "A"
+    is_minor: false
+    time_periods:
+      - day: "Monday"
+        start: "16:00"
+        end: "17:30"
+      - day: "Wednesday"
+        start: "14:30"
+        end: "16:00"
+  - name: "B"
+    is_minor: true
+    time_periods:
+      - day: "Tuesday"
+        start: "10:00"
+        end: "11:00"
