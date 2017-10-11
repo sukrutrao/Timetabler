@@ -10,13 +10,11 @@
 #include "fields/program.h"
 #include "fields/segment.h"
 #include "fields/slot.h"
+#include "data.h"
 #include <string>
 
 class Parser {
-    std::vector<Course> courses;
-    std::vector<Instructor> instructors;
-    std::vector<Classroom> classrooms;
-    std::vector<Program> programs;
+	Data data;
 public:
     void parseFields(std::string &file);
     void parseInput(std::string &file);

@@ -14,7 +14,8 @@ class IsMinor : public Field {
 private:
     MinorType minorType;
 public:
-    IsMinor(MinorType); 
+    IsMinor(MinorType);
+    IsMinor(bool);
     FieldType getType();
 };
 

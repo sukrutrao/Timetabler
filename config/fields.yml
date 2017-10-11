@@ -2,6 +2,12 @@ instructors:
   - Dr. Saurabh Joshi
   - Dr. Ramakrishna Upadrasta
 
+classrooms:
+  - number: "414"
+    size: 50
+  - number: "317"
+    size: 30
+
 segment:
   start: 1
   end: 6

@@ -1,4 +1,4 @@
-#include "parse.h"
+#include "parser.h"
 
 void Parser::parseFields(std::string &file) {
     YAML::Node config = YAML::LoadFile(file);
@@ -25,6 +25,10 @@ void Parser::parseFields(std::string &file) {
     }
 
     YAML::Node slotsConfig = config["slots"];
+    for (YAML::Node& slotNode : slotsConfig) {
+        // Slot slot();
+    }
+
     // TODO
 
 }

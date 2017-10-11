@@ -21,6 +21,7 @@ private:
     unsigned minutes;
 public:
     Time(unsigned, unsigned);
+    Time(std::string &);
     Time& operator=(const Time&);
     bool operator==(const Time&);
     bool operator<(const Time&);
@@ -41,9 +42,10 @@ public:
 class Slot : public Field {
 private:
     std::string name;
+    IsMinor isMinor
     std::vector<SlotElement> slotElements;
 public:
-    Slot(std::string, std::vector<SlotElement>);
+    Slot(std::string, IsMinor, std::vector<SlotElement>);
     bool operator==(const Slot &other);
     bool isIntersecting(const Slot &other);
     void addSlotElements(SlotElement);
