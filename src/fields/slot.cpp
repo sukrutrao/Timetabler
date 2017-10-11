@@ -9,6 +9,11 @@ Time::Time(unsigned hours, unsigned minutes) {
     this->minutes = minutes;
 }
 
+Time::Time(std::string &time) {
+    this->hours = std::stoul(time.substr(0, 2));
+    this->minutes = std::stoul(time.substr(3, 5));
+}
+
 Time& Time::operator=(const Time &other) {
     this->hours = other.hours;
     this->minutes = other.minutes;
@@ -58,8 +63,9 @@ bool SlotElement::isIntersecting(const SlotElement &other) {
 }
 
 
-Slot::Slot(std::string name, std::vector<SlotElement> slotElements) {
+Slot::Slot(std::string name, IsMinor isMinor, std::vector<SlotElement> slotElements) {
     this->name = name;
+    this->isMinor = isMinor;
     this->slotElements = slotElements;
 }
 
