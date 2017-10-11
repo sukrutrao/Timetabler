@@ -7,6 +7,7 @@
 class Encoder {
 private:
     std::vector<std::vector<std::vector<Var>>> vars;
+    TimeTabler *timeTabler;
     const int courseCount;
     const int fieldCount;
 public:

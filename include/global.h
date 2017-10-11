@@ -1,7 +1,7 @@
 #ifndef GLOBAL_H
 #define GLOBAL_H
 
-enum class FieldType {
+enum FieldType {
     classroom = 0,
     instructor = 1,
     isMinor = 2,

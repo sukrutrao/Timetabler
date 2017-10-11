@@ -12,6 +12,8 @@ private:
 public:
     Clauses(std::vector<CClause>);
     Clauses(CClause);
+    Clauses(Lit);
+    Clauses(Var);
     Clauses();
     Clauses operator~();
     Clauses operator&(const Clauses&);

@@ -1,6 +1,7 @@
 #include "encoder.h"
 
 #include <vector>
+#include <cassert>
 #include "global.h"
 
 Encoder::Encoder(std::vector<std::vector<std::vector<Var>>> vars, const int inputCourseCount, 
@@ -33,6 +34,22 @@ Clauses Encoder::notIntersectingTime(int course1, int course2) {
     Clauses notSegmentIntersecting = Clauses(notIntersectingTimeField(course1, course2, FieldType::segment));
     Clauses notSlotIntersecting = Clauses(notIntersectingTimeField(course1, course2, FieldType::slot));
     return (notSegmentIntersecting | notSlotIntersecting);
+}
+
+Clauses Encoder::notIntersectingTimeField(int course1, int course2, FieldType fieldType) {
+    assert(fieldType == FieldType::segment || fieldType == FieldType::slot);
+
+    for(int i = 0; i < vars[course1][fieldType].size(); i++) {
+        Clauses hasFieldValue1(vars[course1][fieldType][i]);
+        Clauses hasFieldValue2(vars[course2][fieldType][i]);
+        Clauses notIntersecting1;
+        Clauses notIntersecting2;
+        for(int j = 0; j < vars[course1][fieldType].size(); i++) {
+            if(fieldType == FieldType::segment && timeTabler->data.segment[i].isIntersecting(timeTabler->data.segment[j])) {
+                notIntersecting1
+            }
+        }
+    }
 }
 
 Clauses Encoder::hasExactlyOneFieldValueTrue(int course, FieldType fieldType) {

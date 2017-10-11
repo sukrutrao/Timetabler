@@ -13,6 +13,18 @@ Clauses::Clauses(CClause clause) {
     clauses.push_back(clause);
 }
 
+Clauses::Clauses(Lit lit) {
+    clauses.clear();
+    CClause clause(lit);
+    clauses.push_back(clause);
+}
+
+Clauses::Clauses(Var var) {
+    clauses.clear();
+    CClause clause(var);
+    clauses.push_back(clause);
+}
+
 Clauses::Clauses() {
     clauses.clear();
 }

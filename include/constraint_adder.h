@@ -6,7 +6,7 @@
 class ConstraintAdder {
 private:
     Encoder encoder;
-    Solver solver;
+    TimeTabler *timeTabler;
     Clauses instructorSingleCourseAtATime();
     Clauses classroomSingleCourseAtATime();
     Clauses programSingleCoreCourseAtATime();
@@ -18,10 +18,8 @@ private:
     Clauses softElectiveInAfternoonTime();
     Clauses addCustomConstraint(ClauseType, unsigned);
 public:
-    ConstraintAdder(Encoder, Solver);
-    void addConstraints();
-    bool solve();
-    std::vector<Var> getResults();
+    ConstraintAdder(Encoder, TimeTabler*);
+    Clauses addConstraints();
 };
 
 #endif
