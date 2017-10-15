@@ -6,6 +6,8 @@
 #include "global.h"
 #include "clauses.h"
 
+// TODO - we should define high level variables for each course
+
 ConstraintAdder::ConstraintAdder(Encoder encoder, TimeTabler *timeTabler) {
     this->encoder = encoder;
     this->timeTabler = timeTabler;
@@ -34,8 +36,17 @@ Clauses ConstraintAdder::classroomSingleCourseAtATime() {
 }
 
 Clauses ConstraintAdder::programSingleCoreCourseAtATime() {
-    return fieldSingleValueAtATime(FieldType::program); // TODO - check, program is actually a list
-    // even == has not been defined yet
+    Clauses result;
+    result.clear();
+    std::vector<Course> courses = timeTabler->data.courses;
+    for(int i = 0; i < courses.size(); i++) {
+        for(int j = i+1; j < courses.size(); j++) {
+            Clauses antecedent = encoder->hasCommonProgram(i, j);
+            Clauses consequent = encoder->notIntersectingTime(i, j);
+            result.addClauses(antecedent->consequent);
+        }
+    }
+    return result;
 }
 
 Clauses ConstraintAdder::minorInMinorTime() {
@@ -75,6 +86,7 @@ Clauses ConstraintAdder::exactlyOneClassroomPerCourse() {
 
 Clauses ConstraintAdder::addConstraints() {
     Clauses result;
+    // TODO - need to define high level variables here
     result.addClauses(instructorSingleCourseAtATime());
     result.addClauses(classroomSingleCourseAtATime());
     result.addClauses(programSingleCoreCourseAtATime());

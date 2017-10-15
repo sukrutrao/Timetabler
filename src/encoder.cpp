@@ -17,7 +17,20 @@ Clauses Encoder::hasSameFieldTypeAndValue(int course1, int course2, FieldType fi
         CClause field1, field2;
         field1.createLitAndAdd(vars[course1][fieldType][i]);
         field2.createLitAndAdd(vars[course1][fieldType][i]);
-        result = result | (field1 & field2);
+        result.addClauses(field1 & field2);
+    }
+    return result;
+}
+
+Clauses Encoder::hasCommonProgram(int course1, int course2) {
+    Clauses result;
+    for(int i = 0; i < vars[course1][FieldType::program].size(); i++) {
+        if(timeTabler->data.programs[i].isCoreProgram()) {
+            CClause field1, field2;
+            field1.createLitAndAdd(vars[course1][FieldType::program][i]);
+            field2.createLitAndAdd(vars[course1][FieldType::program][i]);
+            result.addClauses(field1 & field2);
+        }
     }
     return result;
 }

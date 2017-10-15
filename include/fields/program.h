@@ -19,6 +19,7 @@ public:
     bool operator==(const Program &other);
     FieldType getType();
     std::string getName();
+    bool isCoreProgram();
 };
 
 #endif

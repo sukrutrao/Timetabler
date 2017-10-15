@@ -9,7 +9,7 @@ Program::Program(std::string name, CourseType courseType) {
 }
 
 bool Program::operator==(const Program &other) {
-    return (this->name == other.name);
+    return ((this->name == other.name) && (this->courseType == other.courseType));
 }
 
 FieldType Program::getType() {
@@ -18,4 +18,8 @@ FieldType Program::getType() {
 
 std::string Program::getName() {
 	return name;
+}
+
+bool Program::isCoreProgram() {
+	return courseType == CourseType::core;
 }

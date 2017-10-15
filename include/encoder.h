@@ -22,6 +22,7 @@ public:
     Clauses hasExactlyOneFieldValueTrue(int, FieldType);
     Clauses hasAtLeastOneFieldValueTrue(int, FieldType);
     Clauses hasAtMostOneFieldValueTrue(int, FieldType);
+    Clauses hasCommonProgram(int, int);
 };
 
 #endif
