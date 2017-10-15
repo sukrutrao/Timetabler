@@ -15,3 +15,7 @@ bool Program::operator==(const Program &other) {
 FieldType Program::getType() {
     return FieldType::program;
 }
+
+std::string Program::getName() {
+	return name;
+}

@@ -30,3 +30,7 @@ bool Segment::isIntersecting(const Segment &other) {
 FieldType Segment::getType() {
     return FieldType::segment;
 }
+
+std::string Segment::toString() {
+    return std::string(startSegment)+std::string(endSegment);
+}

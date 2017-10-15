@@ -12,6 +12,7 @@ public:
     Instructor(std::string);
     bool operator==(const Instructor &other);
     FieldType getType();
+    std::string getName();
 };
 
 #endif

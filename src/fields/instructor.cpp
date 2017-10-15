@@ -14,3 +14,7 @@ bool Instructor::operator==(const Instructor &other) {
 FieldType Instructor::getType() {
     return FieldType::instructor;
 }
+
+std::string Instructor::getName() {
+	return name;
+}

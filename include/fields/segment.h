@@ -14,6 +14,7 @@ public:
     int length();
     bool isIntersecting(const Segment &other);
     FieldType getType();
+    std::string toString();
 };
 
 #endif
