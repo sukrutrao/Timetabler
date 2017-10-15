@@ -3,6 +3,7 @@
 
 #include <string>
 #include "fields/field.h"
+#include "fields/is_minor.h"
 #include "global.h"
 
 enum class Day {
@@ -49,6 +50,7 @@ public:
     bool operator==(const Slot &other);
     bool isIntersecting(const Slot &other);
     void addSlotElements(SlotElement);
+    bool isMinorSlot();
     FieldType getType();
 };
 
