@@ -68,9 +68,19 @@ Clauses Encoder::hasAtLeastOneFieldValueTrue(int course, FieldType fieldType) {
 }
 
 // TODO - incomplete - who is responsible for add Var s to the solver?
+// TODO - use a good encoding, using binomial for now
 Clauses Encoder::hasAtMostOneFieldValueTrue(int course, FieldType fieldType) {
-    int size = vars[course][fieldType].size();
-    std::vector<Var> encoderVars = //
+  /*  int size = vars[course][fieldType].size();
+    std::vector<Var> encoderVars = */
+    Clauses result;
+    for(int i = 0; i < vars[course][fieldType].size(); i++) {
+        for(int j = i+1; j < vars[course][fieldType].size(); j++) {
+            Clauses first(vars[course][fieldType][i]);
+            Clauses second(vars[course][fieldType][j]);
+            result.addClauses(first | second);
+        }
+    }
+    return result;
 }
 
 Clauses Encoder::hasFieldType(int course, FieldType fieldType) {

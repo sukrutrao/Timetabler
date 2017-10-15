@@ -72,3 +72,14 @@ Clauses ConstraintAdder::exactlyOneClassroomPerCourse() {
     }
     return result;
 }
+
+Clauses ConstraintAdder::addConstraints() {
+    Clauses result;
+    result.addClauses(instructorSingleCourseAtATime());
+    result.addClauses(classroomSingleCourseAtATime());
+    result.addClauses(programSingleCoreCourseAtATime());
+    result.addClauses(minorInMinorTime());
+    result.addClauses(exactlyOneTimePerCourse());
+    result.addClauses(exactlyOneClassroomPerCourse());
+    return result;
+}
