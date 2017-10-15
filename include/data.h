@@ -18,6 +18,7 @@ public:
     std::vector<Program> programs;
     std::vector<Segment> segments;
     std::vector<Slot> slots;
+    std::vector<IsMinor> isMinors;
 };
 
 #endif
