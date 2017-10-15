@@ -3,6 +3,8 @@
 #include <vector>
 #include <cassert>
 #include "global.h"
+#include "clauses.h"
+#include "cclause.h"
 
 Encoder::Encoder(std::vector<std::vector<std::vector<Var>>> vars, const int inputCourseCount, 
             const int inputFieldCount) : courseCount(inputCourseCount), fieldCount(inputFieldCount) {
@@ -20,16 +22,6 @@ Clauses Encoder::hasSameFieldTypeAndValue(int course1, int course2, FieldType fi
     return result;
 }
 
-// TODO - what is the utility of this?
-Clauses Encoder::hasFieldType(int course, FieldType fieldType) {
-    Clauses result;
-    for(int i = 0; i < vars[course][fieldType].size(); i++) {
-        CClause field(vars[course][fieldType][i]);
-        result = result | field;
-    }
-    return result;
-}
-
 Clauses Encoder::notIntersectingTime(int course1, int course2) {
     Clauses notSegmentIntersecting = Clauses(notIntersectingTimeField(course1, course2, FieldType::segment));
     Clauses notSlotIntersecting = Clauses(notIntersectingTimeField(course1, course2, FieldType::slot));
@@ -38,18 +30,26 @@ Clauses Encoder::notIntersectingTime(int course1, int course2) {
 
 Clauses Encoder::notIntersectingTimeField(int course1, int course2, FieldType fieldType) {
     assert(fieldType == FieldType::segment || fieldType == FieldType::slot);
-
+    Clauses result;
     for(int i = 0; i < vars[course1][fieldType].size(); i++) {
         Clauses hasFieldValue1(vars[course1][fieldType][i]);
         Clauses hasFieldValue2(vars[course2][fieldType][i]);
         Clauses notIntersecting1;
         Clauses notIntersecting2;
-        for(int j = 0; j < vars[course1][fieldType].size(); i++) {
-            if(fieldType == FieldType::segment && timeTabler->data.segment[i].isIntersecting(timeTabler->data.segment[j])) {
-                notIntersecting1
+        for(int j = 0; j < vars[course1][fieldType].size(); j++) {
+            if(i == j) {
+                continue;
+            }
+            if((fieldType == FieldType::segment && timeTabler->data.segment[i].isIntersecting(timeTabler->data.segment[j]))
+                || (fieldType == FieldType::slot && timeTabler->data.slot[i].isIntersecting(timeTabler->data.slot[j]))) {
+                notIntersecting1.addClauses(~Clauses(vars[course2][fieldType][j]));
+                notIntersecting2.addClauses(~Clauses(vars[course1][fieldType][j]));
             }
         }
+        result.addClauses(hasFieldValue1->notIntersecting1);
+        result.addClauses(hasFieldValue2->notIntersecting2);
     }
+    return result;
 }
 
 Clauses Encoder::hasExactlyOneFieldValueTrue(int course, FieldType fieldType) {
@@ -71,4 +71,29 @@ Clauses Encoder::hasAtLeastOneFieldValueTrue(int course, FieldType fieldType) {
 Clauses Encoder::hasAtMostOneFieldValueTrue(int course, FieldType fieldType) {
     int size = vars[course][fieldType].size();
     std::vector<Var> encoderVars = //
+}
+
+Clauses Encoder::hasFieldType(int course, FieldType fieldType) {
+    CClause resultClause;
+    for(int i = 0; i < vars[course][fieldType].size(); i++) {
+        resultClause.createLitAndAdd(vars[course][fieldType][i]);
+    }
+    Clauses result(resultClause);
+    return result;
+}
+
+Clauses Encoder::isMinorCourse(int course) {
+    Clauses result(vars[course][FieldType::isMinor][MinorType::isMinor]);
+    return result;
+}
+
+Clauses Encoder::slotInMinorTime(int course) {
+    CClause resultClause;
+    for(int i = 0; i < vars[course][FieldType::slot].size(); i++) {
+        if(timeTabler->data.slot[i].isMinorSlot()) {
+            result.createLitAndAdd(vars[course][FieldType::slot][i]);
+        }
+    }
+    Clauses result(resultClause);
+    return result;
 }

@@ -11,7 +11,7 @@ private:
     Clauses classroomSingleCourseAtATime();
     Clauses programSingleCoreCourseAtATime();
     Clauses minorInMinorTime();
-    Clauses noCoreInMinorTime();
+//    Clauses noCoreInMinorTime();
     Clauses exactlyOneTimePerCourse();
     Clauses exactlyOneClassroomPerCourse();
     Clauses softCoreInMorningTime();

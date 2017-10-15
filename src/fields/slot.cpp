@@ -3,6 +3,7 @@
 #include <string>
 #include <vector>
 #include "global.h"
+#include "fields/is_minor.h"
 
 Time::Time(unsigned hours, unsigned minutes) {
     this->hours = hours;
@@ -90,4 +91,8 @@ void Slot::addSlotElements(SlotElement slotElement) {
 
 FieldType Slot::getType() {
     return FieldType::slot;
+}
+
+bool Slot::isMinorSlot() {
+    return isMinor == MinorType::isMinor;
 }

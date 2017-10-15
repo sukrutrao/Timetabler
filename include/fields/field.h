@@ -5,8 +5,7 @@
 
 class Field {
 public:
-    virtual FieldType getType() = 0;
-    
+    virtual FieldType getType() = 0;    
 };
 
 #endif
