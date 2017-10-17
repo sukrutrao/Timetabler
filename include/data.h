@@ -19,8 +19,8 @@ public:
     std::vector<Segment> segments;
     std::vector<Slot> slots;
     std::vector<IsMinor> isMinors;
-    std::vector<std::vetor<std::vector<Var>>> fieldValueVars;
-    std::vector<std::vector<Var>> highLevelVars;
+    std::vector<std::vetor<std::vector<Lit>>> fieldValueVars;
+    std::vector<std::vector<Lit>> highLevelVars;
 };
 
 #endif
