@@ -8,12 +8,13 @@
 
 class TimeTabler {
 private:
-    Solver solver;
+    Solver *solver;
     std::vector<Var> assumptions;
 public:
     Data data;
     TimeTabler();
-
+    void addClauses(std::vector<CClause>);
+    bool solve();
 };
 
 #endif
