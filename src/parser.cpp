@@ -119,3 +119,42 @@ void Parser::parseInput(std::string &file) {
         timeTabler->data.courses.push_back(course);
     }
 }
+
+void Praser::addVars() {
+    for (Course c : timeTabler->data.courses) {
+        std::vector<std::vector<Var>> courseVars;
+        courseVars.resize(6);
+        for (Classroom cr : timeTabler->data.classrooms) {
+            Var v;// TODO create vars using solver
+            courseVars[FieldType::classroom].push_back(v);
+        }
+        for (Instructor i : timeTabler->data.instructor) {
+            Var v;
+            courseVars[FieldType::instructor].push_back(v);
+        }
+        for (IsMinor i : timeTabler->data.isMinors) {
+            Var v;
+            courseVars[FieldType::isMinor].push_back(v);
+        }
+        for (Program p : timeTabler->data.programs) {
+            Var v;
+            courseVars[FieldType::program].push_back(v);
+        }
+        for (Segment s : timeTabler->data.segments) {
+            Var v;
+            courseVars[FieldType::segment].push_back(v);
+        }
+        for (Slot s : timeTabler->data.slots) {
+            Var v;
+            courseVars[FieldType::slot].push_back(v);
+        }
+        timeTabler->data.fieldValueVars.push_back(courseVars);
+
+        std::vector<Var> highLevelCourseVars;
+        for (unsigned i = 0; i < 6; ++i) {
+            Var v;
+            highLevelCourseVars.push_back(v);
+        }
+        timeTabler->data.highLevelVars.push_back(highLevelCourseVars)
+    }
+}
