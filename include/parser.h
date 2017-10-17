@@ -13,6 +13,7 @@ public:
 	Parser(TimeTabler *);
     void parseFields(std::string &file);
     void parseInput(std::string &file);
+    void addVars();
 };
 
 #endif

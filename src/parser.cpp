@@ -119,3 +119,42 @@ void Parser::parseInput(std::string &file) {
         timeTabler->data.courses.push_back(course);
     }
 }
+
+void Praser::addVars() {
+    for (Course c : timeTabler->data.courses) {
+        std::vector<std::vector<Lit>> courseVars;
+        courseVars.resize(6);
+        for (Classroom cr : timeTabler->data.classrooms) {
+            Lit v = timeTabler->solver.newLiteral();// TODO create vars using solver
+            courseVars[FieldType::classroom].push_back(v);
+        }
+        for (Instructor i : timeTabler->data.instructor) {
+            Lit v = timeTabler->solver.newLiteral()
+            courseVars[FieldType::instructor].push_back(v);
+        }
+        for (IsMinor i : timeTabler->data.isMinors) {
+            Lit v = timeTabler->solver.newLiteral()
+            courseVars[FieldType::isMinor].push_back(v);
+        }
+        for (Program p : timeTabler->data.programs) {
+            Lit v = timeTabler->solver.newLiteral()
+            courseVars[FieldType::program].push_back(v);
+        }
+        for (Segment s : timeTabler->data.segments) {
+            Lit v = timeTabler->solver.newLiteral()
+            courseVars[FieldType::segment].push_back(v);
+        }
+        for (Slot s : timeTabler->data.slots) {
+            Lit v = timeTabler->solver.newLiteral()
+            courseVars[FieldType::slot].push_back(v);
+        }
+        timeTabler->data.fieldValueVars.push_back(courseVars);
+
+        std::vector<Lit> highLevelCourseVars;
+        for (unsigned i = 0; i < 6; ++i) {
+            Lit v = timeTabler->solver.newLiteral()
+            highLevelCourseVars.push_back(v);
+        }
+        timeTabler->data.highLevelVars.push_back(highLevelCourseVars)
+    }
+}
