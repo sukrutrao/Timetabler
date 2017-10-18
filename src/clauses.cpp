@@ -4,6 +4,8 @@
 #include "core/SolverTypes.h"
 #include "cclause.h"
 
+using namespace Minisat;
+
 Clauses::Clauses(std::vector<CClause> clauses) {
     this->clauses = clauses;
 }
@@ -50,7 +52,7 @@ Clauses Clauses::operator&(const Clauses &other) {
     return result;
 }
 
-Clauses Clauses::operator&(const CClause &other) {
+Clauses Clauses::operator&(CClause &other) {
     return (other & (*this));
 }
 
@@ -70,7 +72,7 @@ Clauses Clauses::operator|(const CClause &other) {
     return (other | (*this));
 }
 
-Clauses Clauses::operator->(const Clauses &other) {
+Clauses Clauses::operator>>(const Clauses &other) {
     return ((~(*this)) | other);
 }
 
@@ -82,6 +84,15 @@ void Clauses::addClauses(std::vector<CClause> other) {
     clauses.insert(std::end(clauses), std::begin(other), std::end(other));
 }
 
+void Clauses::addClauses(Clauses other) {
+    std::vector<CClause> otherClauses = other.getClauses();
+    addClauses(otherClauses);
+}
+
 std::vector<CClause> Clauses::getClauses() {
     return clauses;
+}
+
+void Clauses::clear() {
+    clauses.clear();
 }

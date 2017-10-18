@@ -4,6 +4,8 @@
 #include "core/SolverTypes.h"
 #include "clauses.h"
 
+using namespace Minisat;
+
 CClause::CClause(std::vector<Lit> lits) {
     this->lits = lits;
 }
@@ -40,13 +42,13 @@ std::vector<CClause> CClause::operator&(const CClause &other) {
     return result;
 }
 
-Clauses CClause::operator&(const Clause &other) {
-    Clause result(other.getClauses());
+Clauses CClause::operator&(Clauses &other) {
+    Clauses result(other.getClauses());
     result.addClauses(*this);
     return result;
 }
 
-CClause CClause::operator|(const CClause &other) {
+CClause CClause::operator|(CClause &other) {
     std::vector<Lit> thisLits = this->lits;
     std::vector<Lit> otherLits = other.getLits();
     thisLits.insert(std::end(thisLits), std::begin(otherLits), std::end(otherLits));
@@ -59,17 +61,18 @@ Clauses CClause::operator|(const Clauses &other) {
     return (thisLHS | other);
 }
 
-std::vector<CClause> CClause::operator->(const CClause &other) {
+std::vector<CClause> CClause::operator>>(const CClause &other) {
     std::vector<CClause> lhs = ~(*this);
     std::vector<CClause> result;
     result.clear();
     for(int i = 0; i < lhs.size(); i++) {
-        result.push_back((lhs[i])|other);
+        CClause thisClause = lhs[i] | other;
+        result.push_back(thisClause);
     }
     return result;
 }
 
-Clauses CClause::operator->(const Clauses &other) {
+Clauses CClause::operator>>(const Clauses &other) {
     Clauses thisLHS(~(*this));
     return (thisLHS | other);
 }

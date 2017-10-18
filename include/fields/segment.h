@@ -1,6 +1,7 @@
 #ifndef SEGMENT_H
 #define SEGMENT_H
 
+#include <string>
 #include "fields/field.h"
 #include "global.h"
 

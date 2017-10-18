@@ -2,6 +2,9 @@
 #define CLAUSES_H
 
 #include <vector>
+#include "cclause.h"
+
+using namespace Minisat;
 
 class CClause;
 
@@ -18,13 +21,15 @@ public:
     Clauses();
     Clauses operator~();
     Clauses operator&(const Clauses&);
-    Clauses operator&(const CClause&);
+    Clauses operator&(CClause&);
     Clauses operator|(const Clauses&);
     Clauses operator|(const CClause&);
-    Clauses operator->(const Clauses&);
+    Clauses operator>>(const Clauses&);
     void addClauses(CClause);
     void addClauses(std::vector<CClause>);
+    void addClauses(Clauses);
     std::vector<CClause> getClauses();
+    void clear();
 };
 
 #endif

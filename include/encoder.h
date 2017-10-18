@@ -3,17 +3,19 @@
 
 #include <vector>
 #include "global.h"
+#include "clauses.h"
+#include "core/SolverTypes.h"
+#include "time_tabler.h"
+
+using namespace Minisat;
 
 class Encoder {
 private:
     std::vector<std::vector<std::vector<Var>>> vars;
-    std::vector<std::vector<std::vector<Field*>>> fields;
     TimeTabler *timeTabler;
-    const int courseCount;
-    const int fieldCount;
 public:
-    Encoder(std::vector<std::vector<std::vector<Var>>>, const int, const int);
-    Encoder(TimeTabler *);
+    Encoder(std::vector<std::vector<std::vector<Var>>>);
+    Encoder(TimeTabler*);
 //  Clauses createClauses(int, int, std::function<bool(int, int, FieldType)>);
     Clauses hasSameFieldTypeAndValue(int, int, FieldType);
     Clauses hasFieldType(int, FieldType); // is this needed?
@@ -24,6 +26,8 @@ public:
     Clauses hasAtLeastOneFieldValueTrue(int, FieldType);
     Clauses hasAtMostOneFieldValueTrue(int, FieldType);
     Clauses hasCommonProgram(int, int);
+    Clauses isMinorCourse(int);
+    Clauses slotInMinorTime(int);
 };
 
 #endif

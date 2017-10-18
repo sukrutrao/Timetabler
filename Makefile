@@ -16,7 +16,7 @@ LIB_PATH = -L $(OPEN_WBO_PATH)
 EXEC_FULL_PATH = $(BIN_DIR)/$(EXEC)
 
 OBJ_LIST = classroom.o course.o instructor.o is_minor.o program.o segment.o slot.o cclause.o \
-			clauses.o constraint_adder.o encoder.o parser.o solver.o time_tabler.o utils.o
+			clauses.o constraint_adder.o encoder.o parser.o time_tabler.o tsolver.o utils.o
 
 OBJS = $(addprefix $(BIN_DIR)/, $(OBJ_LIST))
 
@@ -27,16 +27,16 @@ all: $(EXEC_FULL_PATH)
 $(BIN_DIR)/%.o: $(SRC_DIR)/%.cpp
 	@mkdir -p $(BIN_DIR)
 	@echo "Compiling "$<"..."
-	@$(CC) $(FLAGS) $(INCLUDE_PATH) $(LIB_PATH) -c $< -o $@ $(LIB_FLAGS)
+	@$(CC) $(CC_FLAGS) $(INCLUDE_PATH) $(LIB_PATH) -c $< -o $@ $(LIB_FLAGS)
 
 $(BIN_DIR)/%.o: $(SRC_DIR)/fields/%.cpp
 	@mkdir -p $(BIN_DIR)
 	@echo "Compiling "$<"..."
-	@$(CC) $(FLAGS) $(INCLUDE_PATH) $(LIB_PATH) -c $< -o $@ $(LIB_FLAGS)
+	@$(CC) $(CC_FLAGS) $(INCLUDE_PATH) $(LIB_PATH) -c $< -o $@ $(LIB_FLAGS)
 
 $(EXEC_FULL_PATH): $(OBJS)
 	@echo "Building executable..."
-	@$(CC) $(FLAGS) $(INCLUDE_PATH) $(LIB_PATH) -o $@ $^ $(LIB_FLAGS)
+	@$(CC) $(CC_FLAGS) $(INCLUDE_PATH) $(LIB_PATH) -o $@ $^ $(LIB_FLAGS)
 
 clean:
 	@echo "Cleaning up..."

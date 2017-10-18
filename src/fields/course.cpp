@@ -30,8 +30,8 @@ void Course::setPrograms(std::vector<Program*> programs) {
     this->programs = programs;
 }
 
-void Course::addProgram(Program* program) {
-    this->program.push_back(program);
+void Course::addProgram(Program* programs) {
+    this->programs.push_back(programs);
 }
 
 bool Course::operator==(const Course &other) {

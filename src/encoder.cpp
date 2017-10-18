@@ -5,17 +5,18 @@
 #include "global.h"
 #include "clauses.h"
 #include "cclause.h"
+#include "core/SolverTypes.h"
+#include "time_tabler.h"
 
-Encoder::Encoder(std::vector<std::vector<std::vector<Var>>> vars, const int inputCourseCount, 
-            const int inputFieldCount) : courseCount(inputCourseCount), fieldCount(inputFieldCount) {
+using namespace Minisat;
+
+Encoder::Encoder(std::vector<std::vector<std::vector<Var>>> vars) {
     this->vars = vars;
 }
 
 Encoder::Encoder(TimeTabler *timeTabler) {
     this->timeTabler = timeTabler;
-    this->vars = timeTabler->data.vars;
-    this->courseCount = timeTabler->data.courses.size();
-    this->fieldCount = Global::FIELD_COUNT;
+    this->vars = timeTabler->data.fieldValueVars;
 }
 
 Clauses Encoder::hasSameFieldTypeAndValue(int course1, int course2, FieldType fieldType) {
@@ -60,14 +61,14 @@ Clauses Encoder::notIntersectingTimeField(int course1, int course2, FieldType fi
             if(i == j) {
                 continue;
             }
-            if((fieldType == FieldType::segment && timeTabler->data.segment[i].isIntersecting(timeTabler->data.segment[j]))
-                || (fieldType == FieldType::slot && timeTabler->data.slot[i].isIntersecting(timeTabler->data.slot[j]))) {
+            if((fieldType == FieldType::segment && timeTabler->data.segments[i].isIntersecting(timeTabler->data.segments[j]))
+                || (fieldType == FieldType::slot && timeTabler->data.slots[i].isIntersecting(timeTabler->data.slots[j]))) {
                 notIntersecting1.addClauses(~Clauses(vars[course2][fieldType][j]));
                 notIntersecting2.addClauses(~Clauses(vars[course1][fieldType][j]));
             }
         }
-        result.addClauses(hasFieldValue1->notIntersecting1);
-        result.addClauses(hasFieldValue2->notIntersecting2);
+        result.addClauses(hasFieldValue1>>notIntersecting1);
+        result.addClauses(hasFieldValue2>>notIntersecting2);
     }
     return result;
 }
@@ -113,15 +114,15 @@ Clauses Encoder::hasFieldType(int course, FieldType fieldType) {
 }
 
 Clauses Encoder::isMinorCourse(int course) {
-    Clauses result(vars[course][FieldType::isMinor][MinorType::isMinor]);
+    Clauses result(vars[course][FieldType::isMinor][MinorType::isMinorCourse]);
     return result;
 }
 
 Clauses Encoder::slotInMinorTime(int course) {
     CClause resultClause;
     for(int i = 0; i < vars[course][FieldType::slot].size(); i++) {
-        if(timeTabler->data.slot[i].isMinorSlot()) {
-            result.createLitAndAdd(vars[course][FieldType::slot][i]);
+        if(timeTabler->data.slots[i].isMinorSlot()) {
+            resultClause.createLitAndAdd(vars[course][FieldType::slot][i]);
         }
     }
     Clauses result(resultClause);

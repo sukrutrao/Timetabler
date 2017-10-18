@@ -31,7 +31,7 @@ void Parser::parseFields(std::string &file) {
     YAML::Node slotsConfig = config["slots"];
     for (YAML::Node& slotNode : slotsConfig) {
         std::vector<SlotElement> slotElements;
-        IsMinor isMinor = (slotNode["is_minor"].as<bool>()) ? IsMinor::isMinor : IsMinor::isNotMinor;
+        IsMinor isMinor = (slotNode["is_minor"].as<bool>()) ? IsMinor::isMinorCourse : IsMinor::isNotMinorCourse;
         for (YAML::Node& periodNode : slotElements["time_periods"]) {
             Time start(periodNode["start"].as<std::string>());
             Time end(periodNode["end"].as<std::string>())
@@ -41,8 +41,8 @@ void Parser::parseFields(std::string &file) {
         timeTabler->data.slots.push_back(Slot(slotNode["name"].as<std::string>(), isMinor, slotElements));
     }
 
-    timeTabler->data.isMinors.push_back(IsMinor(MinorType::isMinor));
-    timeTabler->data.isMinors.push_back(IsMinor(MinorType::isNotMinor));
+    timeTabler->data.isMinors.push_back(IsMinor(MinorType::isMinorCourse));
+    timeTabler->data.isMinors.push_back(IsMinor(MinorType::isNotMinorCourse));
 
     YAML::Node programsConfig = config["programs"];
     for (YAML::Node& programNode : programsConfig) {

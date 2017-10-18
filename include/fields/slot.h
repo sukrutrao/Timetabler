@@ -1,6 +1,7 @@
 #ifndef SLOT_H
 #define SLOT_H
 
+#include <vector>
 #include <string>
 #include "fields/field.h"
 #include "fields/is_minor.h"

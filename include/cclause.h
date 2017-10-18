@@ -3,7 +3,9 @@
 
 #include <vector>
 #include "core/SolverTypes.h"
-#include "clauses.h"
+class Clauses;
+
+using namespace Minisat;
 
 // TODO - handle empty inputs for operators
 
@@ -17,17 +19,18 @@ public:
     CClause();
     std::vector<CClause> operator~();
     std::vector<CClause> operator&(const CClause&);
-    Clauses operator&(const Clauses&);
-    CClause operator|(const CClause&);
+    Clauses operator&(Clauses&);
+    CClause operator|(CClause&);
     Clauses operator|(const Clauses&);
-    std::vector<CClause> operator->(const CClause&);
-    Clauses operator->(const Clauses&);
+    std::vector<CClause> operator>>(const CClause&);
+    Clauses operator>>(const Clauses&);
     void createLitAndAdd(Var);
     void createLitAndAdd(Var,Var);
     void createLitAndAdd(Var,Var,Var);
     void addLits(Lit);
     void addLits(Lit,Lit);
     void addLits(Lit,Lit,Lit);
+    void addLits(std::vector<Lit>);
     std::vector<Lit> getLits();
 };
 

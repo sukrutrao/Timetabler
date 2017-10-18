@@ -45,9 +45,8 @@ bool Time::operator>(const Time &other) {
     return !(*this <= other);
 }
 
-SlotElement::SlotElement(Time &startTime, Time &endTime, Day day) {
-    this->startTime = startTime;
-    this->endTime = endTime;
+SlotElement::SlotElement(Time &startTime, Time &endTime, Day day) 
+    : startTime(startTime), endTime(endTime) {
     this->day = day;
 }
 
@@ -64,9 +63,9 @@ bool SlotElement::isIntersecting(const SlotElement &other) {
 }
 
 
-Slot::Slot(std::string name, IsMinor isMinor, std::vector<SlotElement> slotElements) {
+Slot::Slot(std::string name, IsMinor isMinor, std::vector<SlotElement> slotElements)
+    : isMinor(isMinor) {
     this->name = name;
-    this->isMinor = isMinor;
     this->slotElements = slotElements;
 }
 
@@ -94,5 +93,5 @@ FieldType Slot::getType() {
 }
 
 bool Slot::isMinorSlot() {
-    return isMinor == MinorType::isMinor;
+    return isMinor.getMinorType() == MinorType::isMinor;
 }

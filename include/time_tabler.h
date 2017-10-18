@@ -3,12 +3,16 @@
 
 #include <vector>
 #include "core/SolverTypes.h"
+#include "mtl/Vec.h"
 #include "cclause.h"
 #include "data.h"
+#include "tsolver.h"
+
+using namespace Minisat;
 
 class TimeTabler {
 private:
-    Solver *solver;
+    TSolver *solver;
     std::vector<Var> assumptions;
     vec<lbool> model;
 public:

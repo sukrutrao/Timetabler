@@ -3,16 +3,19 @@
 #include <vector>
 #include "cclause.h"
 #include "mtl/Vec.h"
-#include "solver.h"
+#include "core/SolverTypes.h"
+#include "tsolver.h"
 #include "utils.h"
 
-void TimeTabler::TimeTabler() {
-    solver = new Solver();
+using namespace Minisat;
+
+TimeTabler::TimeTabler() {
+    solver = new TSolver(_VERBOSITY_MINIMAL_, _CARD_TOTALIZER_);
 }
 
 void TimeTabler::addClauses(std::vector<CClause> clauses) {
     for(int i = 0; i < clauses.size(); i++) {
-        vec<Lit> clause = Utils::convertVectorToVec<Lit>(clauses.getLits());
+        vec<Lit> clause = Utils::convertVectorToVec<Lit>(clauses[i].getLits());
         solver->addHardClause(clause);
     }
 }

@@ -4,9 +4,9 @@
 #include "fields/field.h"
 #include "global.h"
 
-enum class MinorType {
-    isMinor,
-    isNotMinor
+enum MinorType {
+    isMinorCourse,
+    isNotMinorCourse
 };
 
 
@@ -17,6 +17,7 @@ public:
     IsMinor(MinorType);
     IsMinor(bool);
     FieldType getType();
+    MinorType getMinorType();
 };
 
 #endif

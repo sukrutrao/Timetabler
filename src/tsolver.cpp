@@ -1,14 +1,17 @@
-#include "solver.h"
+#include "tsolver.h"
 
-#include "algorithms/OLL.h"
+#include "algorithms/Alg_OLL.h"
 #include "mtl/Vec.h"
 
-Solver::Solver(int verb = _VERBOSITY_MINIMAL_, int enc = _CARD_TOTALIZER_)
+using namespace Minisat;
+using namespace openwbo;
+
+TSolver::TSolver(int verb = _VERBOSITY_MINIMAL_, int enc = _CARD_TOTALIZER_)
     : OLL(verb, enc) {
 
 }
 
-vec<lbool> Solver::search() {
+vec<lbool> TSolver::search() {
     if (encoding != _CARD_TOTALIZER_) {
         printf("Error: Currently algorithm MSU3 with iterative encoding only "
                "supports the totalizer encoding.\n");
@@ -24,7 +27,7 @@ vec<lbool> Solver::search() {
     }
 }
 
-vec<lbool> Solver::weighted() {
+vec<lbool> TSolver::weighted() {
   // nbInitialVariables = nVars();
   lbool res = l_True;
   initRelaxation();

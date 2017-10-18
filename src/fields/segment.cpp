@@ -1,6 +1,7 @@
 #include "fields/segment.h"
 
 #include <cassert>
+#include <string>
 #include "global.h"
 
 Segment::Segment(int startSegment, int endSegment) {
@@ -32,5 +33,5 @@ FieldType Segment::getType() {
 }
 
 std::string Segment::toString() {
-    return std::string(startSegment)+std::string(endSegment);
+    return std::to_string(startSegment) + std::to_string(endSegment);
 }

@@ -6,9 +6,17 @@
 #include "global.h"
 #include "clauses.h"
 
+#include "encoder.h"
+#include "clauses.h"
+#include "time_tabler.h"
+#include "global.h"
+#include "core/SolverTypes.h"
+
+using namespace Minisat;
+
 // TODO - we should define high level variables for each course
 
-ConstraintAdder::ConstraintAdder(Encoder encoder, TimeTabler *timeTabler) {
+ConstraintAdder::ConstraintAdder(Encoder *encoder, TimeTabler *timeTabler) {
     this->encoder = encoder;
     this->timeTabler = timeTabler;
 }
@@ -21,7 +29,7 @@ Clauses ConstraintAdder::fieldSingleValueAtATime(FieldType fieldType) {
         for(int j = i+1; j < courses.size(); j++) {
             Clauses antecedent = encoder->hasSameFieldTypeAndValue(i, j, fieldType);
             Clauses consequent = encoder->notIntersectingTime(i, j);
-            result.addClauses(antecedent->consequent);
+            result.addClauses(antecedent>>consequent);
         }
     }
     return result;
@@ -43,7 +51,7 @@ Clauses ConstraintAdder::programSingleCoreCourseAtATime() {
         for(int j = i+1; j < courses.size(); j++) {
             Clauses antecedent = encoder->hasCommonProgram(i, j);
             Clauses consequent = encoder->notIntersectingTime(i, j);
-            result.addClauses(antecedent->consequent);
+            result.addClauses(antecedent>>consequent);
         }
     }
     return result;
@@ -56,8 +64,8 @@ Clauses ConstraintAdder::minorInMinorTime() {
     for(int i = 0; i < courses.size(); i++) {
         Clauses antecedent = encoder->isMinorCourse(i);
         Clauses consequent = encoder->slotInMinorTime(i);
-        result.addClauses(antecedent->consequent);
-        result.addClauses(consequent->antecedent);
+        result.addClauses(antecedent>>consequent);
+        result.addClauses(consequent>>antecedent);
     }
     return result;
 }

@@ -1,12 +1,19 @@
 #ifndef CONSTRAINT_ADDER_H
 #define CONSTRAINT_ADDER_H
 
-#include 
+#include "encoder.h"
+#include "clauses.h"
+#include "global.h"
+#include "core/SolverTypes.h"
+class TimeTabler;
+
+using namespace Minisat; 
 
 class ConstraintAdder {
 private:
-    Encoder encoder;
+    Encoder *encoder;
     TimeTabler *timeTabler;
+    Clauses fieldSingleValueAtATime(FieldType);
     Clauses instructorSingleCourseAtATime();
     Clauses classroomSingleCourseAtATime();
     Clauses programSingleCoreCourseAtATime();
@@ -18,7 +25,7 @@ private:
     Clauses softElectiveInAfternoonTime();
     Clauses addCustomConstraint(ClauseType, unsigned);
 public:
-    ConstraintAdder(Encoder, TimeTabler*);
+    ConstraintAdder(Encoder*, TimeTabler*);
     Clauses addConstraints();
 };
 

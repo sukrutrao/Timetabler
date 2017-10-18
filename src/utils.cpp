@@ -3,6 +3,8 @@
 #include <vector>
 #include "mtl/Vec.h"
 
+using namespace Minisat;
+
 namespace Utils {
 
 template <typename T>
