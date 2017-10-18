@@ -109,18 +109,14 @@ Clauses ConstraintAdder::addConstraints() {
     result.addClauses(minorInMinorTime());
     // result.addClauses(exactlyOneTimePerCourse());
     // result.addClauses(exactlyOneClassroomPerCourse());
+
     result.addClauses(exactlyOneFieldValuePerCourse(FieldType::slot));
     result.addClauses(exactlyOneFieldValuePerCourse(FieldType::classroom));
     result.addClauses(exactlyOneFieldValuePerCourse(FieldType::instructor));
     result.addClauses(exactlyOneFieldValuePerCourse(FieldType::isMinor));
     result.addClauses(exactlyOneFieldValuePerCourse(FieldType::segment));
 
-
-    vec<vec<Lit>> clauses; // These are hard clauses ?
-    for (CClause cclause : result.getClauses()) {
-        clauses.push(Utils::convertVectorToVec<Lit>(cclause.getLits()));
-    }
-
     // TODO Add clauses to timeTabler Solver
+
     return result;
 }

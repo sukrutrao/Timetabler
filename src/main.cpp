@@ -13,8 +13,7 @@ int main(int argc, char const *argv[]) {
 
     ConstraintEncoder encoder(timeTabler);
     ConstraintAdder constraintAdder(encoder, timeTabler);
-    ConstraintAdder.addConstraints();
-    
+    timeTabler.addClauses(constraintAdder.addConstraints());
     timeTabler->solve();
     return 0;
 }
