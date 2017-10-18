@@ -34,7 +34,7 @@ std::vector<CClause> CClause::operator~() {
     return result;
 }
 
-std::vector<CClause> CClause::operator&(const CClause &other) {
+std::vector<CClause> CClause::operator&(CClause &other) {
     std::vector<CClause> result;
     result.clear();
     result.push_back(*this);
@@ -61,7 +61,7 @@ Clauses CClause::operator|(Clauses &other) {
     return (thisLHS | other);
 }
 
-std::vector<CClause> CClause::operator>>(const CClause &other) {
+std::vector<CClause> CClause::operator>>(CClause &other) {
     std::vector<CClause> lhs = ~(*this);
     std::vector<CClause> result;
     result.clear();
@@ -72,7 +72,7 @@ std::vector<CClause> CClause::operator>>(const CClause &other) {
     return result;
 }
 
-Clauses CClause::operator>>(const Clauses &other) {
+Clauses CClause::operator>>(Clauses &other) {
     Clauses thisLHS(~(*this));
     return (thisLHS | other);
 }

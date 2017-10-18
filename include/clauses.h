@@ -20,12 +20,11 @@ public:
     Clauses(Var);
     Clauses();
     Clauses operator~();
-    Clauses operator&(const Clauses&);
+    Clauses operator&(Clauses&);
     Clauses operator&(CClause&);
     Clauses operator|(Clauses&);
-    Clauses operator|(const Clauses&);
-    Clauses operator|(const CClause&);
-    Clauses operator>>(const Clauses&);
+    Clauses operator|(CClause&);
+    Clauses operator>>(Clauses&);
     void addClauses(CClause);
     void addClauses(std::vector<CClause>);
     void addClauses(Clauses);

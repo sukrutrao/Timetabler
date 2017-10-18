@@ -7,12 +7,14 @@
 #include "cclause.h"
 #include "data.h"
 #include "tsolver.h"
+#include "MaxSATFormula.h"
 
 using namespace Minisat;
 
 class TimeTabler {
 private:
     TSolver *solver;
+    MaxSATFormula *formula;
     std::vector<Var> assumptions;
     vec<lbool> model;
 public:

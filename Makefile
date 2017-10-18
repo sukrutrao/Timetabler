@@ -1,5 +1,5 @@
 OPEN_WBO_PATH = ../newopenwbo/open-wbo
-CSV_PARSER_PATH = 1
+CSV_PARSER_PATH = ../CSVparser
 YAML_CPP_PATH = 2
 EXEC = TimeTabler
 
@@ -10,7 +10,7 @@ SRC_DIR = src
 CC = g++
 CC_FLAGS = --std=c++11
 LIB_FLAGS = -lopen-wbo
-INCLUDE_PATH = -I $(INCLUDE_DIR) -I $(OPEN_WBO_PATH) -I $(OPEN_WBO_PATH)/solvers/minisat2.2 
+INCLUDE_PATH = -I $(INCLUDE_DIR) -I $(OPEN_WBO_PATH) -I $(OPEN_WBO_PATH)/solvers/minisat2.2 -I $(CSV_PARSER_PATH)
 LIB_PATH = -L $(OPEN_WBO_PATH)
 
 EXEC_FULL_PATH = $(BIN_DIR)/$(EXEC)
@@ -25,7 +25,7 @@ OBJS = $(addprefix $(BIN_DIR)/, $(OBJ_LIST))
 all: $(EXEC_FULL_PATH)
 
 $(BIN_DIR)/%.o: $(SRC_DIR)/%.cpp
-	@mkdir -p $(BIN_DIR)
+	@mkdir -p $(BIN_DIR) 
 	@echo "Compiling "$<"..."
 	@$(CC) $(CC_FLAGS) $(INCLUDE_PATH) $(LIB_PATH) -c $< -o $@ $(LIB_FLAGS)
 
