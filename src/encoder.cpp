@@ -11,6 +11,13 @@ Encoder::Encoder(std::vector<std::vector<std::vector<Var>>> vars, const int inpu
     this->vars = vars;
 }
 
+Encoder::Encoder(TimeTabler *timeTabler) {
+    this->timeTabler = timeTabler;
+    this->vars = timeTabler->data.vars;
+    this->courseCount = timeTabler->data.courses.size();
+    this->fieldCount = Global::FIELD_COUNT;
+}
+
 Clauses Encoder::hasSameFieldTypeAndValue(int course1, int course2, FieldType fieldType) {
     Clauses result;
     for(int i = 0; i < vars[course1][fieldType].size(); i++) {

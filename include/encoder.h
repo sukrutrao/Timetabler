@@ -12,7 +12,8 @@ private:
     const int courseCount;
     const int fieldCount;
 public:
-    Encoder(std::vector<std::vector<std::vector<Var>>>,const int,const int);
+    Encoder(std::vector<std::vector<std::vector<Var>>>, const int, const int);
+    Encoder(TimeTabler *);
 //  Clauses createClauses(int, int, std::function<bool(int, int, FieldType)>);
     Clauses hasSameFieldTypeAndValue(int, int, FieldType);
     Clauses hasFieldType(int, FieldType); // is this needed?
