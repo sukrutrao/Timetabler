@@ -22,6 +22,7 @@ public:
     Clauses operator~();
     Clauses operator&(const Clauses&);
     Clauses operator&(CClause&);
+    Clauses operator|(Clauses&);
     Clauses operator|(const Clauses&);
     Clauses operator|(const CClause&);
     Clauses operator>>(const Clauses&);

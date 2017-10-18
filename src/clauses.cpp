@@ -69,7 +69,7 @@ Clauses Clauses::operator|(const Clauses &other) {
 }
 
 Clauses Clauses::operator|(const CClause &other) {
-    return (other | (*this));
+    return ((*this) | other);
 }
 
 Clauses Clauses::operator>>(const Clauses &other) {

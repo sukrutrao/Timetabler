@@ -10,6 +10,7 @@ int main(int argc, char const *argv[]) {
     parser.addVars();
 
     Encoder encoder(timeTabler);
+    // TODO Constraint Adder
     timeTabler->solve();
     return 0;
 }

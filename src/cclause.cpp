@@ -56,7 +56,7 @@ CClause CClause::operator|(CClause &other) {
     return result;
 }
 
-Clauses CClause::operator|(const Clauses &other) {
+Clauses CClause::operator|(Clauses &other) {
     Clauses thisLHS(*this);
     return (thisLHS | other);
 }

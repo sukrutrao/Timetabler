@@ -93,5 +93,5 @@ FieldType Slot::getType() {
 }
 
 bool Slot::isMinorSlot() {
-    return isMinor.getMinorType() == MinorType::isMinor;
+    return isMinor.getMinorType() == MinorType::isMinorCourse;
 }

@@ -21,7 +21,8 @@ public:
     std::vector<CClause> operator&(const CClause&);
     Clauses operator&(Clauses&);
     CClause operator|(CClause&);
-    Clauses operator|(const Clauses&);
+    CClause operator|(const Clauses&);
+    Clauses operator|(Clauses&);
     std::vector<CClause> operator>>(const CClause&);
     Clauses operator>>(const Clauses&);
     void createLitAndAdd(Var);
