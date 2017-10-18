@@ -2,6 +2,7 @@
 
 #include "algorithms/Alg_OLL.h"
 #include "mtl/Vec.h"
+#include "utils.h"
 
 using namespace Minisat;
 using namespace openwbo;
@@ -11,7 +12,7 @@ TSolver::TSolver(int verb = _VERBOSITY_MINIMAL_, int enc = _CARD_TOTALIZER_)
 
 }
 
-vec<lbool> TSolver::tSearch() {
+std::vector<lbool> TSolver::tSearch() {
     if (encoding != _CARD_TOTALIZER_) {
         printf("Error: Currently algorithm MSU3 with iterative encoding only "
                "supports the totalizer encoding.\n");
@@ -20,14 +21,15 @@ vec<lbool> TSolver::tSearch() {
     }
 
     if (maxsat_formula->getProblemType() == _WEIGHTED_) {
-        return tWeighted();
+        tWeighted();
+        return Utils::convertVecDataToVector<lbool>(model, model.size());
     } else {
         printf("Error: Use the solver in 'weighted' mode only!\n");
         exit(_ERROR_);
     }
 }
 
-vec<lbool> TSolver::weighted() {
+void TSolver::tWeighted() {
   // nbInitialVariables = nVars();
   lbool res = l_True;
   initRelaxation();
@@ -127,7 +129,7 @@ vec<lbool> TSolver::weighted() {
 
         } else {
           assert(lbCost == newCost);
-          return model;
+          return;
           exit(_OPTIMUM_);
         }
       }
@@ -173,7 +175,7 @@ vec<lbool> TSolver::weighted() {
         assert(nbSatisfiable > 0);
         if (verbosity > 0)
           printf("c LB = UB\n");
-        return model;
+        return;
         exit(_OPTIMUM_);
       }
 

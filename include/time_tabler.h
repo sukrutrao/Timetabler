@@ -16,13 +16,16 @@ private:
     TSolver *solver;
     MaxSATFormula *formula;
     std::vector<Var> assumptions;
-    vec<lbool> model;
+    std::vector<lbool> model;
 public:
     Data data;
     TimeTabler();
     void addClauses(std::vector<CClause>);
+    void addClauses(Clauses);
+    bool checkAllTrue(std::vector<Var>);
     bool solve();
-    
+    Var newVar();
+    Lit newLiteral(bool);
 };
 
 #endif

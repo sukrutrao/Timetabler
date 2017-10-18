@@ -9,14 +9,15 @@ SRC_DIR = src
 
 CC = g++
 CC_FLAGS = --std=c++11
-LIB_FLAGS = -lopen-wbo
+LIB_FLAGS = -lopen-wbo -lyaml-cpp
 INCLUDE_PATH = -I $(INCLUDE_DIR) -I $(OPEN_WBO_PATH) -I $(OPEN_WBO_PATH)/solvers/minisat2.2 -I $(CSV_PARSER_PATH)
 LIB_PATH = -L $(OPEN_WBO_PATH)
 
 EXEC_FULL_PATH = $(BIN_DIR)/$(EXEC)
 
 OBJ_LIST = classroom.o course.o instructor.o is_minor.o program.o segment.o slot.o cclause.o \
-			clauses.o constraint_adder.o encoder.o parser.o time_tabler.o tsolver.o utils.o main.o
+			clauses.o constraint_adder.o constraint_encoder.o parser.o time_tabler.o tsolver.o \
+			main.o CSVparser.o
 
 OBJS = $(addprefix $(BIN_DIR)/, $(OBJ_LIST))
 
@@ -30,6 +31,11 @@ $(BIN_DIR)/%.o: $(SRC_DIR)/%.cpp
 	@$(CC) $(CC_FLAGS) $(INCLUDE_PATH) $(LIB_PATH) -c $< -o $@ $(LIB_FLAGS)
 
 $(BIN_DIR)/%.o: $(SRC_DIR)/fields/%.cpp
+	@mkdir -p $(BIN_DIR)
+	@echo "Compiling "$<"..."
+	@$(CC) $(CC_FLAGS) $(INCLUDE_PATH) $(LIB_PATH) -c $< -o $@ $(LIB_FLAGS)
+
+$(BIN_DIR)/%.o: $(CSV_PARSER_PATH)/%.cpp
 	@mkdir -p $(BIN_DIR)
 	@echo "Compiling "$<"..."
 	@$(CC) $(CC_FLAGS) $(INCLUDE_PATH) $(LIB_PATH) -c $< -o $@ $(LIB_FLAGS)

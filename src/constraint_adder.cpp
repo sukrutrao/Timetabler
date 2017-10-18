@@ -73,7 +73,9 @@ Clauses ConstraintAdder::exactlyOneFieldValuePerCourse(FieldType fieldType) {
     for(int i = 0; i < courses.size(); i++) {
         Clauses exactlyOneFieldValue = encoder->hasExactlyOneFieldValueTrue(i, fieldType);
         Clauses cclause(timeTabler->data.highLevelVars[i][fieldType]);
-        result.addClauses((exactlyOneFieldValue | ~cclause) & (~exactlyOneFieldValue | cclause));
+        Clauses negateCClause = ~cclause;
+        Clauses rhs = ~exactlyOneFieldValue | cclause;
+        result.addClauses((exactlyOneFieldValue | negateCClause) & rhs);
     }
     return result;
 }

@@ -12,9 +12,8 @@ using namespace openwbo;
 class TSolver : public OLL {
 public:
 	TSolver(int, int);
-	bool tSearch();
-	bool checkAllTrue(std::vector<Lit>);
-	vec<lbool> tWeighted();
+	std::vector<lbool> tSearch();
+	void tWeighted();
 
 };
 

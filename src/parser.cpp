@@ -4,7 +4,7 @@ Parser::Parser(TimeTabler* timeTabler) {
     this->timeTabler = timeTabler;
 }
 
-void Parser::parseFields(std::string &file) {
+void Parser::parseFields(std::string file) {
     YAML::Node config = YAML::LoadFile(file);
 
     YAML::Node instructorsConfig = config["instructors"];
@@ -47,8 +47,8 @@ void Parser::parseFields(std::string &file) {
     YAML::Node programsConfig = config["programs"];
     for (YAML::Node programNode : programsConfig) {
         std::string name = programNode.as<std::string>();
-        programsConfig.push_back(Program(name, CourseType::core));
-        programsConfig.push_back(Program(name, CourseType::elective));
+        timeTabler->data.programs.push_back(Program(name, CourseType::core));
+        timeTabler->data.programs.push_back(Program(name, CourseType::elective));
     }
 
 }
@@ -65,7 +65,7 @@ Day Parser::getDayFromString(std::string day) {
     return Day::Monday;
 }
 
-void Parser::parseInput(std::string &file) {
+void Parser::parseInput(std::string file) {
     csv::Parser parser(file);
     for (unsigned i=0; i<parser.rowCount(); ++i) {
         std::string name = parser[i]["name"];
@@ -124,43 +124,36 @@ void Parser::addVars() {
         std::vector<std::vector<Var>> courseVars;
         courseVars.resize(Global::FIELD_COUNT);
         for (Classroom cr : timeTabler->data.classrooms) {
-            Var v = timeTabler->solver.nVars();// TODO create vars using solver
-            timeTabler->solver.newVar();
+            Var v = timeTabler->newVar(); // TODO create vars using solver
             courseVars[FieldType::classroom].push_back(v);
         }
-        for (Instructor i : timeTabler->data.instructor) {
-            Var v = timeTabler->solver.nVars();
-            timeTabler->solver.newVar();
+        for (Instructor i : timeTabler->data.instructors) {
+            Var v = timeTabler->newVar();
             courseVars[FieldType::instructor].push_back(v);
         }
         for (IsMinor i : timeTabler->data.isMinors) {
-            Var v = timeTabler->solver.nVars();
-            timeTabler->solver.newVar();
+            Var v = timeTabler->newVar();
             courseVars[FieldType::isMinor].push_back(v);
         }
         for (Program p : timeTabler->data.programs) {
-            Var v = timeTabler->solver.nVars();
-            timeTabler->solver.newVar();
+            Var v = timeTabler->newVar();
             courseVars[FieldType::program].push_back(v);
         }
         for (Segment s : timeTabler->data.segments) {
-            Var v = timeTabler->solver.nVars();
-            timeTabler->solver.newVar();
+            Var v = timeTabler->newVar();
             courseVars[FieldType::segment].push_back(v);
         }
         for (Slot s : timeTabler->data.slots) {
-            Var v = timeTabler->solver.nVars();
-            timeTabler->solver.newVar();
+            Var v = timeTabler->newVar();
             courseVars[FieldType::slot].push_back(v);
         }
         timeTabler->data.fieldValueVars.push_back(courseVars);
 
         std::vector<Var> highLevelCourseVars;
         for (unsigned i = 0; i < Global::FIELD_COUNT; ++i) {
-            Var v = timeTabler->solver.nVars();
-            timeTabler->solver.newVar();
+            Var v = timeTabler->newVar();
             highLevelCourseVars.push_back(v);
         }
-        timeTabler->data.highLevelVars.push_back(highLevelCourseVars)
+        timeTabler->data.highLevelVars.push_back(highLevelCourseVars);
     }
 }

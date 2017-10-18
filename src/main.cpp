@@ -12,8 +12,8 @@ int main(int argc, char const *argv[]) {
     parser.addVars();
 
     ConstraintEncoder encoder(timeTabler);
-    ConstraintAdder constraintAdder(encoder, timeTabler);
-    timeTabler.addClauses(constraintAdder.addConstraints());
+    ConstraintAdder constraintAdder(&encoder, timeTabler);
+    timeTabler->addClauses(constraintAdder.addConstraints());
     timeTabler->solve();
     return 0;
 }
