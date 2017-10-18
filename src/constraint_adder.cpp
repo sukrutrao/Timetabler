@@ -118,14 +118,6 @@ Clauses ConstraintAdder::addConstraints() {
     result.addClauses(exactlyOneFieldValue(FieldType::instructor));
     result.addClauses(exactlyOneFieldValue(FieldType::isMinor));
     result.addClauses(exactlyOneFieldValue(FieldType::segment));
-
-
-    vec<vec<Lit>> clauses; // These are hard clauses ?
-    for (CClause cclause : result.clauses) {
-        vec<Lit> clause = convertVectotToVec(cclause.lits);
-        clauses.push(clause);
-    }
-
-    // TODO Add clauses to timeTabler Solver
+    
     return result;
 }
