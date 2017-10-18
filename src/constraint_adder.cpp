@@ -101,5 +101,13 @@ Clauses ConstraintAdder::addConstraints() {
     result.addClauses(minorInMinorTime());
     result.addClauses(exactlyOneTimePerCourse());
     result.addClauses(exactlyOneClassroomPerCourse());
+
+    vec<vec<Lit>> clauses;
+    for (CClause cclause : result.clauses) {
+        vec<Lit> clause = convertVectotToVec(cclause.lits);
+        clauses.push(clause);
+    }
+
+    // TODO Add clauses to timeTabler Solver
     return result;
 }
