@@ -16,8 +16,7 @@ LIB_PATH = -L $(OPEN_WBO_PATH)
 EXEC_FULL_PATH = $(BIN_DIR)/$(EXEC)
 
 OBJ_LIST = classroom.o course.o instructor.o is_minor.o program.o segment.o slot.o cclause.o \
-			clauses.o constraint_adder.o encoder.o parser.o solver.o time_tabler.o utils.o \
-			variables.o 
+			clauses.o constraint_adder.o encoder.o parser.o solver.o time_tabler.o utils.o
 
 OBJS = $(addprefix $(BIN_DIR)/, $(OBJ_LIST))
 
