@@ -10,7 +10,7 @@ Time::Time(unsigned hours, unsigned minutes) {
     this->minutes = minutes;
 }
 
-Time::Time(std::string &time) {
+Time::Time(std::string time) {
     this->hours = std::stoul(time.substr(0, 2));
     this->minutes = std::stoul(time.substr(3, 5));
 }

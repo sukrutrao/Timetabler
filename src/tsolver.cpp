@@ -11,7 +11,7 @@ TSolver::TSolver(int verb = _VERBOSITY_MINIMAL_, int enc = _CARD_TOTALIZER_)
 
 }
 
-vec<lbool> TSolver::search() {
+vec<lbool> TSolver::tSearch() {
     if (encoding != _CARD_TOTALIZER_) {
         printf("Error: Currently algorithm MSU3 with iterative encoding only "
                "supports the totalizer encoding.\n");
@@ -20,7 +20,7 @@ vec<lbool> TSolver::search() {
     }
 
     if (maxsat_formula->getProblemType() == _WEIGHTED_) {
-        return weighted();
+        return tWeighted();
     } else {
         printf("Error: Use the solver in 'weighted' mode only!\n");
         exit(_ERROR_);

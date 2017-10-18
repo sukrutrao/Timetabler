@@ -44,7 +44,7 @@ Clauses Clauses::operator~() {
     return negationClause;
 }
 
-Clauses Clauses::operator&(const Clauses &other) {
+Clauses Clauses::operator&(Clauses &other) {
     std::vector<CClause> thisClauses = clauses;
     std::vector<CClause> otherClauses = other.clauses;
     thisClauses.insert(std::end(thisClauses), std::begin(otherClauses), std::end(otherClauses));
@@ -56,7 +56,7 @@ Clauses Clauses::operator&(CClause &other) {
     return (other & (*this));
 }
 
-Clauses Clauses::operator|(const Clauses &other) {
+Clauses Clauses::operator|(Clauses &other) {
     std::vector<CClause> resultClauses;
     resultClauses.clear();
     for(int i = 0; i < clauses.size(); i++) {
@@ -68,11 +68,11 @@ Clauses Clauses::operator|(const Clauses &other) {
     return result;
 }
 
-Clauses Clauses::operator|(const CClause &other) {
-    return ((*this) | other);
+Clauses Clauses::operator|(CClause &other) {
+    return other | (*this);
 }
 
-Clauses Clauses::operator>>(const Clauses &other) {
+Clauses Clauses::operator>>(Clauses &other) {
     return ((~(*this)) | other);
 }
 

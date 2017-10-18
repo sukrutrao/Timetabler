@@ -18,13 +18,12 @@ public:
     CClause(Var);
     CClause();
     std::vector<CClause> operator~();
-    std::vector<CClause> operator&(const CClause&);
+    std::vector<CClause> operator&(CClause&);
     Clauses operator&(Clauses&);
     CClause operator|(CClause&);
-    CClause operator|(const Clauses&);
     Clauses operator|(Clauses&);
-    std::vector<CClause> operator>>(const CClause&);
-    Clauses operator>>(const Clauses&);
+    std::vector<CClause> operator>>(CClause&);
+    Clauses operator>>(Clauses&);
     void createLitAndAdd(Var);
     void createLitAndAdd(Var,Var);
     void createLitAndAdd(Var,Var,Var);

@@ -6,6 +6,7 @@
 #include "core/SolverTypes.h"
 #include "tsolver.h"
 #include "utils.h"
+#include "MaxSATFormula.h"
 
 using namespace Minisat;
 

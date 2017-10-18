@@ -8,13 +8,13 @@ void Parser::parseFields(std::string &file) {
     YAML::Node config = YAML::LoadFile(file);
 
     YAML::Node instructorsConfig = config["instructors"];
-    for (YAML::Node& instructorNode : instructorsConfig) {
+    for (YAML::Node instructorNode : instructorsConfig) {
         Instructor instructor(instructorNode.as<std::string>());
         timeTabler->data.instructors.push_back(instructor);
     }
 
     YAML::Node classroomsConfig = config["classrooms"];
-    for (YAML::Node& classroomNode : classroomsConfig) {
+    for (YAML::Node classroomNode : classroomsConfig) {
         Classroom classroom(classroomNode["number"].as<std::string>(), classroomNode["size"].as<unsigned>());
         timeTabler->data.classrooms.push_back(classroom);
     }
@@ -29,12 +29,12 @@ void Parser::parseFields(std::string &file) {
     }
 
     YAML::Node slotsConfig = config["slots"];
-    for (YAML::Node& slotNode : slotsConfig) {
+    for (YAML::Node slotNode : slotsConfig) {
         std::vector<SlotElement> slotElements;
-        IsMinor isMinor = (slotNode["is_minor"].as<bool>()) ? IsMinor::isMinorCourse : IsMinor::isNotMinorCourse;
-        for (YAML::Node& periodNode : slotElements["time_periods"]) {
+        IsMinor isMinor = (slotNode["is_minor"].as<bool>()) ? MinorType::isMinorCourse : MinorType::isNotMinorCourse;
+        for (YAML::Node periodNode : slotNode["time_periods"]) {
             Time start(periodNode["start"].as<std::string>());
-            Time end(periodNode["end"].as<std::string>())
+            Time end(periodNode["end"].as<std::string>());
             Day day = getDayFromString(periodNode["day"].as<std::string>());
             slotElements.push_back(SlotElement(start, end, day));
         }
@@ -45,7 +45,7 @@ void Parser::parseFields(std::string &file) {
     timeTabler->data.isMinors.push_back(IsMinor(MinorType::isNotMinorCourse));
 
     YAML::Node programsConfig = config["programs"];
-    for (YAML::Node& programNode : programsConfig) {
+    for (YAML::Node programNode : programsConfig) {
         std::string name = programNode.as<std::string>();
         programsConfig.push_back(Program(name, CourseType::core));
         programsConfig.push_back(Program(name, CourseType::elective));
@@ -53,11 +53,11 @@ void Parser::parseFields(std::string &file) {
 
 }
 
-Day Parser::getDayFromString(std::string &day) {
+Day Parser::getDayFromString(std::string day) {
     if (day == "Monday") return Day::Monday;
     if (day == "Tuesday") return Day::Tuesday;
     if (day == "Wednesday") return Day::Wednesday;
-    if (day == "Thursady") return Day::Thursady;
+    if (day == "Thursday") return Day::Thursday;
     if (day == "Friday") return Day::Friday;
     if (day == "Saturday") return Day::Saturday;
     if (day == "Sunday") return Day::Sunday;
@@ -67,39 +67,38 @@ Day Parser::getDayFromString(std::string &day) {
 
 void Parser::parseInput(std::string &file) {
     csv::Parser parser(file);
-    for (unsigned i=0; i<parser.rowCount; ++i) {
+    for (unsigned i=0; i<parser.rowCount(); ++i) {
         std::string name = parser[i]["name"];
         std::string classSizeStr = parser[i]["class_size"];
         unsigned classSize = unsigned(std::stoi(classSizeStr));
         std::string instructorStr = parser[i]["instructor"];
-        Instructor *instructor = null_ptr;
+        Instructor *instructor = nullptr;
         for (unsigned i = 0; i < timeTabler->data.instructors.size(); i++) {
             if (timeTabler->data.instructors[i].getName() == instructorStr) {
                 instructor = &(timeTabler->data.instructors[i]);
                 break;
             }
         }
-        if (instructor == null_ptr) {
+        if (instructor == nullptr) {
             // TODO Error and exit
         }
         std::string segmentStr = parser[i]["segment"];
-        Segment *segment = null_ptr;
+        Segment *segment = nullptr;
         for (unsigned i = 0; i < timeTabler->data.segments.size(); i++) {
             if (timeTabler->data.segments[i].toString() == segmentStr) {
                 segment = &(timeTabler->data.segments[i]);
                 break;
             }
         }
-        if (segment == null_ptr) {
+        if (segment == nullptr) {
             // TODO Error and exit
         }
-        std::string segment(std::stoi(segmentStr[0]), std::stoi(segmentStr[1]));
         std::string isMinorStr = parser[i]["is_minor"];
-        IsMinor *isMinor = null_ptr;
+        IsMinor *isMinor = nullptr;
         if (isMinorStr == "Yes") {
-            isMinor = timeTabler->data.isMinors[0];
+            isMinor = &(timeTabler->data.isMinors[0]);
         } else if (isMinorStr == "No") {
-            isMinor = timeTabler->data.IsMinors[1];
+            isMinor = &(timeTabler->data.isMinors[1]);
         } else {
             // TODO Error and exit
         }
@@ -120,39 +119,39 @@ void Parser::parseInput(std::string &file) {
     }
 }
 
-void Praser::addVars() {
+void Parser::addVars() {
     for (Course c : timeTabler->data.courses) {
         std::vector<std::vector<Lit>> courseVars;
         courseVars.resize(Global::FIELD_COUNT);
         for (Classroom cr : timeTabler->data.classrooms) {
-            Lit v = timeTabler->solver.newLiteral();// TODO create vars using solver
+            Lit v = timeTabler->formula->newLiteral();// TODO create vars using solver
             courseVars[FieldType::classroom].push_back(v);
         }
         for (Instructor i : timeTabler->data.instructor) {
-            Lit v = timeTabler->solver.newLiteral()
+            Lit v = timeTabler->formula->newLiteral()
             courseVars[FieldType::instructor].push_back(v);
         }
         for (IsMinor i : timeTabler->data.isMinors) {
-            Lit v = timeTabler->solver.newLiteral()
+            Lit v = timeTabler->formula->newLiteral()
             courseVars[FieldType::isMinor].push_back(v);
         }
         for (Program p : timeTabler->data.programs) {
-            Lit v = timeTabler->solver.newLiteral()
+            Lit v = timeTabler->formula->newLiteral()
             courseVars[FieldType::program].push_back(v);
         }
         for (Segment s : timeTabler->data.segments) {
-            Lit v = timeTabler->solver.newLiteral()
+            Lit v = timeTabler->formula->newLiteral()
             courseVars[FieldType::segment].push_back(v);
         }
         for (Slot s : timeTabler->data.slots) {
-            Lit v = timeTabler->solver.newLiteral()
+            Lit v = timeTabler->formula->newLiteral()
             courseVars[FieldType::slot].push_back(v);
         }
         timeTabler->data.fieldValueVars.push_back(courseVars);
 
         std::vector<Lit> highLevelCourseVars;
         for (unsigned i = 0; i < Global::FIELD_COUNT; ++i) {
-            Lit v = timeTabler->solver.newLiteral()
+            Lit v = timeTabler->formula->newLiteral()
             highLevelCourseVars.push_back(v);
         }
         timeTabler->data.highLevelVars.push_back(highLevelCourseVars)

@@ -23,7 +23,7 @@ private:
     unsigned minutes;
 public:
     Time(unsigned, unsigned);
-    Time(std::string &);
+    Time(std::string);
     Time& operator=(const Time&);
     bool operator==(const Time&);
     bool operator<(const Time&);
