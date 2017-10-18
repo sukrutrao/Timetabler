@@ -123,7 +123,7 @@ void Parser::parseInput(std::string &file) {
 void Praser::addVars() {
     for (Course c : timeTabler->data.courses) {
         std::vector<std::vector<Lit>> courseVars;
-        courseVars.resize(6);
+        courseVars.resize(Global::FIELD_COUNT);
         for (Classroom cr : timeTabler->data.classrooms) {
             Lit v = timeTabler->solver.newLiteral();// TODO create vars using solver
             courseVars[FieldType::classroom].push_back(v);
@@ -151,7 +151,7 @@ void Praser::addVars() {
         timeTabler->data.fieldValueVars.push_back(courseVars);
 
         std::vector<Lit> highLevelCourseVars;
-        for (unsigned i = 0; i < 6; ++i) {
+        for (unsigned i = 0; i < Global::FIELD_COUNT; ++i) {
             Lit v = timeTabler->solver.newLiteral()
             highLevelCourseVars.push_back(v);
         }

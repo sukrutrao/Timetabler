@@ -6,6 +6,10 @@
 #include "solver.h"
 #include "utils.h"
 
+void TimeTabler::TimeTabler() {
+    solver = new Solver();
+}
+
 void TimeTabler::addClauses(std::vector<CClause> clauses) {
     for(int i = 0; i < clauses.size(); i++) {
         vec<Lit> clause = Utils::convertVectorToVec<Lit>(clauses.getLits());

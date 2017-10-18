@@ -7,10 +7,10 @@
 #include <string>
 
 class Parser {
-	TimeTabler *timeTabler;
-	Day getDayFromString(std::string &);
+    TimeTabler *timeTabler;
+    Day getDayFromString(std::string &);
 public:
-	Parser(TimeTabler *);
+    Parser(TimeTabler *);
     void parseFields(std::string &file);
     void parseInput(std::string &file);
     void addVars();
