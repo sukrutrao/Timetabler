@@ -8,8 +8,9 @@
 
 class TimeTabler {
 private:
-    Solver *solver;
+    MaxSATSolver *solver;
     std::vector<Var> assumptions;
+    vec<lbool> model;
 public:
     Data data;
     TimeTabler();
