@@ -22,6 +22,7 @@ public:
     TimeTabler();
     void addClauses(std::vector<CClause>);
     bool solve();
+    
 };
 
 #endif

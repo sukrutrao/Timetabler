@@ -1,4 +1,4 @@
-#include "encoder.h"
+#include "constraint_encoder.h"
 
 #include <vector>
 #include <cassert>
@@ -10,16 +10,16 @@
 
 using namespace Minisat;
 
-Encoder::Encoder(std::vector<std::vector<std::vector<Var>>> vars) {
+ConstraintEncoder::ConstraintEncoder(std::vector<std::vector<std::vector<Var>>> vars) {
     this->vars = vars;
 }
 
-Encoder::Encoder(TimeTabler *timeTabler) {
+ConstraintEncoder::ConstraintEncoder(TimeTabler *timeTabler) {
     this->timeTabler = timeTabler;
     this->vars = timeTabler->data.fieldValueVars;
 }
 
-Clauses Encoder::hasSameFieldTypeAndValue(int course1, int course2, FieldType fieldType) {
+Clauses ConstraintEncoder::hasSameFieldTypeAndValue(int course1, int course2, FieldType fieldType) {
     Clauses result;
     for(int i = 0; i < vars[course1][fieldType].size(); i++) {
         CClause field1, field2;
@@ -30,7 +30,7 @@ Clauses Encoder::hasSameFieldTypeAndValue(int course1, int course2, FieldType fi
     return result;
 }
 
-Clauses Encoder::hasCommonProgram(int course1, int course2) {
+Clauses ConstraintEncoder::hasCommonProgram(int course1, int course2) {
     Clauses result;
     for(int i = 0; i < vars[course1][FieldType::program].size(); i++) {
         if(timeTabler->data.programs[i].isCoreProgram()) {
@@ -43,13 +43,13 @@ Clauses Encoder::hasCommonProgram(int course1, int course2) {
     return result;
 }
 
-Clauses Encoder::notIntersectingTime(int course1, int course2) {
+Clauses ConstraintEncoder::notIntersectingTime(int course1, int course2) {
     Clauses notSegmentIntersecting = Clauses(notIntersectingTimeField(course1, course2, FieldType::segment));
     Clauses notSlotIntersecting = Clauses(notIntersectingTimeField(course1, course2, FieldType::slot));
     return (notSegmentIntersecting | notSlotIntersecting);
 }
 
-Clauses Encoder::notIntersectingTimeField(int course1, int course2, FieldType fieldType) {
+Clauses ConstraintEncoder::notIntersectingTimeField(int course1, int course2, FieldType fieldType) {
     assert(fieldType == FieldType::segment || fieldType == FieldType::slot);
     Clauses result;
     for(int i = 0; i < vars[course1][fieldType].size(); i++) {
@@ -73,13 +73,13 @@ Clauses Encoder::notIntersectingTimeField(int course1, int course2, FieldType fi
     return result;
 }
 
-Clauses Encoder::hasExactlyOneFieldValueTrue(int course, FieldType fieldType) {
+Clauses ConstraintEncoder::hasExactlyOneFieldValueTrue(int course, FieldType fieldType) {
     Clauses atLeastOne = Clauses(hasAtLeastOneFieldValueTrue(course, fieldType));
     Clauses atMostOne = Clauses(hasAtMostOneFieldValueTrue(course, fieldType));
     return (atLeastOne & atMostOne);
 }
 
-Clauses Encoder::hasAtLeastOneFieldValueTrue(int course, FieldType fieldType) {
+Clauses ConstraintEncoder::hasAtLeastOneFieldValueTrue(int course, FieldType fieldType) {
     CClause resultClause;
     for(int i = 0; i < vars[course][fieldType].size(); i++) {
         resultClause.createLitAndAdd(vars[course][fieldType][i]);
@@ -90,7 +90,7 @@ Clauses Encoder::hasAtLeastOneFieldValueTrue(int course, FieldType fieldType) {
 
 // TODO - incomplete - who is responsible for add Var s to the solver?
 // TODO - use a good encoding, using binomial for now
-Clauses Encoder::hasAtMostOneFieldValueTrue(int course, FieldType fieldType) {
+Clauses ConstraintEncoder::hasAtMostOneFieldValueTrue(int course, FieldType fieldType) {
   /*  int size = vars[course][fieldType].size();
     std::vector<Var> encoderVars = */
     Clauses result;
@@ -104,7 +104,7 @@ Clauses Encoder::hasAtMostOneFieldValueTrue(int course, FieldType fieldType) {
     return result;
 }
 
-Clauses Encoder::hasFieldType(int course, FieldType fieldType) {
+Clauses ConstraintEncoder::hasFieldType(int course, FieldType fieldType) {
     CClause resultClause;
     for(int i = 0; i < vars[course][fieldType].size(); i++) {
         resultClause.createLitAndAdd(vars[course][fieldType][i]);
@@ -113,12 +113,12 @@ Clauses Encoder::hasFieldType(int course, FieldType fieldType) {
     return result;
 }
 
-Clauses Encoder::isMinorCourse(int course) {
+Clauses ConstraintEncoder::isMinorCourse(int course) {
     Clauses result(vars[course][FieldType::isMinor][MinorType::isMinorCourse]);
     return result;
 }
 
-Clauses Encoder::slotInMinorTime(int course) {
+Clauses ConstraintEncoder::slotInMinorTime(int course) {
     CClause resultClause;
     for(int i = 0; i < vars[course][FieldType::slot].size(); i++) {
         if(timeTabler->data.slots[i].isMinorSlot()) {

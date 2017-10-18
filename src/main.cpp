@@ -1,5 +1,5 @@
 #include "parser.h"
-#include "encoder.h"
+#include "constraint_encoder.h"
 #include "core/Solver.h"
 #include "constraint_adder.h"
 #include "mtl/Vec.h"
@@ -11,7 +11,7 @@ int main(int argc, char const *argv[]) {
     parser.parseInput("config/input.csv");
     parser.addVars();
 
-    Encoder encoder(timeTabler);
+    ConstraintEncoder encoder(timeTabler);
     ConstraintAdder constraintAdder(encoder, timeTabler);
     ConstraintAdder.addConstraints();
     

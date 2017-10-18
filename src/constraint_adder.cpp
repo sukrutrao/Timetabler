@@ -1,22 +1,18 @@
 #include "constraint_adder.h"
 
 #include <vector>
-#include "encoder.h"
+#include "constraint_encoder.h"
 #include "time_tabler.h"
 #include "global.h"
 #include "clauses.h"
-
-#include "encoder.h"
-#include "clauses.h"
-#include "time_tabler.h"
-#include "global.h"
 #include "core/SolverTypes.h"
+#include "utils.h"
 
 using namespace Minisat;
 
 // TODO - we should define high level variables for each course
 
-ConstraintAdder::ConstraintAdder(Encoder *encoder, TimeTabler *timeTabler) {
+ConstraintAdder::ConstraintAdder(ConstraintEncoder *encoder, TimeTabler *timeTabler) {
     this->encoder = encoder;
     this->timeTabler = timeTabler;
 }
@@ -76,7 +72,7 @@ Clauses ConstraintAdder::exactlyOneFieldValuePerCourse(FieldType fieldType) {
     std::vector<Course> courses = timeTabler->data.courses;
     for(int i = 0; i < courses.size(); i++) {
         Clauses exactlyOneFieldValue = encoder->hasExactlyOneFieldValueTrue(i, fieldType);
-        CClause cclause(timeTabler->data.highLevelVars[i][fieldType]);
+        Clauses cclause(timeTabler->data.highLevelVars[i][fieldType]);
         result.addClauses((exactlyOneFieldValue | ~cclause) & (~exactlyOneFieldValue | cclause));
     }
     return result;
@@ -113,17 +109,16 @@ Clauses ConstraintAdder::addConstraints() {
     result.addClauses(minorInMinorTime());
     // result.addClauses(exactlyOneTimePerCourse());
     // result.addClauses(exactlyOneClassroomPerCourse());
-    result.addClauses(exactlyOneFieldValue(FieldType::slot));
-    result.addClauses(exactlyOneFieldValue(FieldType::classroom));
-    result.addClauses(exactlyOneFieldValue(FieldType::instructor));
-    result.addClauses(exactlyOneFieldValue(FieldType::isMinor));
-    result.addClauses(exactlyOneFieldValue(FieldType::segment));
+    result.addClauses(exactlyOneFieldValuePerCourse(FieldType::slot));
+    result.addClauses(exactlyOneFieldValuePerCourse(FieldType::classroom));
+    result.addClauses(exactlyOneFieldValuePerCourse(FieldType::instructor));
+    result.addClauses(exactlyOneFieldValuePerCourse(FieldType::isMinor));
+    result.addClauses(exactlyOneFieldValuePerCourse(FieldType::segment));
 
 
     vec<vec<Lit>> clauses; // These are hard clauses ?
-    for (CClause cclause : result.clauses) {
-        vec<Lit> clause = convertVectotToVec(cclause.lits);
-        clauses.push(clause);
+    for (CClause cclause : result.getClauses()) {
+        clauses.push(Utils::convertVectorToVec<Lit>(cclause.getLits()));
     }
 
     // TODO Add clauses to timeTabler Solver

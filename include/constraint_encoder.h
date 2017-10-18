@@ -1,5 +1,5 @@
-#ifndef ENCODER_H
-#define ENCODER_H
+#ifndef CONSTRAINT_ENCODER_H
+#define CONSTRAINT_ENCODER_H
 
 #include <vector>
 #include "global.h"
@@ -9,13 +9,13 @@
 
 using namespace Minisat;
 
-class Encoder {
+class ConstraintEncoder {
 private:
     std::vector<std::vector<std::vector<Var>>> vars;
     TimeTabler *timeTabler;
 public:
-    Encoder(std::vector<std::vector<std::vector<Var>>>);
-    Encoder(TimeTabler*);
+    ConstraintEncoder(std::vector<std::vector<std::vector<Var>>>);
+    ConstraintEncoder(TimeTabler*);
 //  Clauses createClauses(int, int, std::function<bool(int, int, FieldType)>);
     Clauses hasSameFieldTypeAndValue(int, int, FieldType);
     Clauses hasFieldType(int, FieldType); // is this needed?
