@@ -14,13 +14,14 @@ private:
     Encoder *encoder;
     TimeTabler *timeTabler;
     Clauses fieldSingleValueAtATime(FieldType);
+    Clauses exactlyOneFieldValuePerCourse(FieldType);
     Clauses instructorSingleCourseAtATime();
     Clauses classroomSingleCourseAtATime();
     Clauses programSingleCoreCourseAtATime();
     Clauses minorInMinorTime();
 //    Clauses noCoreInMinorTime();
-    Clauses exactlyOneTimePerCourse();
-    Clauses exactlyOneClassroomPerCourse();
+    // Clauses exactlyOneTimePerCourse();
+    // Clauses exactlyOneClassroomPerCourse();
     Clauses softCoreInMorningTime();
     Clauses softElectiveInAfternoonTime();
     Clauses addCustomConstraint(ClauseType, unsigned);

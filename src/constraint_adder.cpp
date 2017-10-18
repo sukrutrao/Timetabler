@@ -70,27 +70,39 @@ Clauses ConstraintAdder::minorInMinorTime() {
     return result;
 }
 
-Clauses ConstraintAdder::exactlyOneTimePerCourse() {
+Clauses ConstraintAdder::exactlyOneFieldValuePerCourse(FieldType fieldType) {
     Clauses result;
     result.clear();
     std::vector<Course> courses = timeTabler->data.courses;
     for(int i = 0; i < courses.size(); i++) {
-        Clauses exactlyOneSlot = encoder->hasExactlyOneFieldValueTrue(i, FieldType::slot);
-        result.addClauses(exactlyOneSlot);
+        Clauses exactlyOneFieldValue = encoder->hasExactlyOneFieldValueTrue(i, fieldType);
+        CClause cclause(timeTabler->data.highLevelVars[i][fieldType]);
+        result.addClauses((exactlyOneFieldValue | ~cclause) & (~exactlyOneFieldValue | cclause));
     }
     return result;
 }
 
-Clauses ConstraintAdder::exactlyOneClassroomPerCourse() {
-    Clauses result;
-    result.clear();
-    std::vector<Course> courses = timeTabler->data.courses;
-    for(int i = 0; i < courses.size(); i++) {
-        Clauses exactlyOneClassroom = encoder->hasExactlyOneFieldValueTrue(i, FieldType::classroom);
-        result.addClauses(exactlyOneClassroom);
-    }
-    return result;
-}
+// Clauses ConstraintAdder::exactlyOneTimePerCourse() {
+//     Clauses result;
+//     result.clear();
+//     std::vector<Course> courses = timeTabler->data.courses;
+//     for(int i = 0; i < courses.size(); i++) {
+//         Clauses exactlyOneSlot = encoder->hasExactlyOneFieldValueTrue(i, FieldType::slot);
+//         result.addClauses(exactlyOneSlot);
+//     }
+//     return result;
+// }
+
+// Clauses ConstraintAdder::exactlyOneClassroomPerCourse() {
+//     Clauses result;
+//     result.clear();
+//     std::vector<Course> courses = timeTabler->data.courses;
+//     for(int i = 0; i < courses.size(); i++) {
+//         Clauses exactlyOneClassroom = encoder->hasExactlyOneFieldValueTrue(i, FieldType::classroom);
+//         result.addClauses(exactlyOneClassroom);
+//     }
+//     return result;
+// }
 
 Clauses ConstraintAdder::addConstraints() {
     Clauses result;
@@ -99,10 +111,16 @@ Clauses ConstraintAdder::addConstraints() {
     result.addClauses(classroomSingleCourseAtATime());
     result.addClauses(programSingleCoreCourseAtATime());
     result.addClauses(minorInMinorTime());
-    result.addClauses(exactlyOneTimePerCourse());
-    result.addClauses(exactlyOneClassroomPerCourse());
+    // result.addClauses(exactlyOneTimePerCourse());
+    // result.addClauses(exactlyOneClassroomPerCourse());
+    result.addClauses(exactlyOneFieldValue(FieldType::slot));
+    result.addClauses(exactlyOneFieldValue(FieldType::classroom));
+    result.addClauses(exactlyOneFieldValue(FieldType::instructor));
+    result.addClauses(exactlyOneFieldValue(FieldType::isMinor));
+    result.addClauses(exactlyOneFieldValue(FieldType::segment));
 
-    vec<vec<Lit>> clauses;
+
+    vec<vec<Lit>> clauses; // These are hard clauses ?
     for (CClause cclause : result.clauses) {
         vec<Lit> clause = convertVectotToVec(cclause.lits);
         clauses.push(clause);
