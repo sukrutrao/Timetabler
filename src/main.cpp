@@ -1,6 +1,8 @@
 #include "parser.h"
 #include "encoder.h"
 #include "core/Solver.h"
+#include "constraint_adder.h"
+#include "mtl/Vec.h"
 
 int main(int argc, char const *argv[]) {
     TimeTabler *timeTabler = new TimeTabler();
@@ -10,7 +12,9 @@ int main(int argc, char const *argv[]) {
     parser.addVars();
 
     Encoder encoder(timeTabler);
-    // TODO Constraint Adder
+    ConstraintAdder constraintAdder(encoder, timeTabler);
+    ConstraintAdder.addConstraints();
+    
     timeTabler->solve();
     return 0;
 }
