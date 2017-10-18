@@ -33,3 +33,6 @@
 
 # Gedit Backup files
 *~
+
+# Object files and Executables 
+bin
