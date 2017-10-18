@@ -7,7 +7,7 @@
 enum class MinorType {
     isMinor,
     isNotMinor
-}
+};
 
 
 class IsMinor : public Field {

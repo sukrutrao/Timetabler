@@ -2,13 +2,15 @@
 #define DATA_H
 
 #include "fields/course.h"
-#include "fields/course_type.h"
 #include "fields/instructor.h"
 #include "fields/classroom.h"
 #include "fields/program.h"
 #include "fields/segment.h"
 #include "fields/slot.h"
+#include "core/Solver.h"
 #include <vector>
+
+using namespace Minisat;
 
 class Data {
 public:

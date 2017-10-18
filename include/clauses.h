@@ -2,7 +2,8 @@
 #define CLAUSES_H
 
 #include <vector>
-#include "cclause.h"
+
+class CClause;
 
 // TODO - handle empty inputs for operators
 

@@ -3,12 +3,12 @@
 
 #include <vector>
 #include "core/SolverTypes.h"
-#include "core/MaxSAT.h"
+#include "cclause.h"
 #include "data.h"
 
 class TimeTabler {
 private:
-    MaxSATSolver *solver;
+    Solver *solver;
     std::vector<Var> assumptions;
     vec<lbool> model;
 public:

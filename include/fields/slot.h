@@ -43,7 +43,7 @@ public:
 class Slot : public Field {
 private:
     std::string name;
-    IsMinor isMinor
+    IsMinor isMinor;
     std::vector<SlotElement> slotElements;
 public:
     Slot(std::string, IsMinor, std::vector<SlotElement>);

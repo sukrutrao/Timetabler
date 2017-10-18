@@ -4,6 +4,7 @@
 #include <yaml-cpp/yaml.h>
 #include "CSVParser.hpp"
 #include "data.h"
+#include "time_tabler.h"
 #include <string>
 
 class Parser {
