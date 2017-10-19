@@ -25,7 +25,7 @@ Clauses ConstraintEncoder::hasSameFieldTypeAndValue(int course1, int course2, Fi
     for(int i = 0; i < vars[course1][fieldType].size(); i++) {
         CClause field1, field2;
         field1.createLitAndAdd(vars[course1][fieldType][i]);
-        field2.createLitAndAdd(vars[course1][fieldType][i]);
+        field2.createLitAndAdd(vars[course2][fieldType][i]);
         Clauses conjunction(field1 & field2);
         result = result | conjunction;
     }
@@ -38,7 +38,7 @@ Clauses ConstraintEncoder::hasCommonProgram(int course1, int course2) {
         if(timeTabler->data.programs[i].isCoreProgram()) {
             CClause field1, field2;
             field1.createLitAndAdd(vars[course1][FieldType::program][i]);
-            field2.createLitAndAdd(vars[course1][FieldType::program][i]);
+            field2.createLitAndAdd(vars[course2][FieldType::program][i]);
             Clauses conjunction(field1 & field2);
             result = result | conjunction;
         }

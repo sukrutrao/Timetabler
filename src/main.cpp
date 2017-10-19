@@ -22,6 +22,7 @@ int main(int argc, char const *argv[]) {
     timeTabler->addSoftClauses(constraintAdder.softConstraints());
     bool solved = timeTabler->solve();
     if (solved) {
+        std::cout << "Solved" << std::endl;
         std::cout << timeTabler->checkAllTrue(timeTabler->data.highLevelVars[0]) << std::endl;
         std::cout << timeTabler->checkAllTrue(timeTabler->data.highLevelVars[1]) << std::endl;
     }

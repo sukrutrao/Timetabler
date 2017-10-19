@@ -1,18 +1,12 @@
 instructors:
-  - A
-  - B
-  - C
-  - D
+  - Dr. Saurabh Joshi
+  - Dr. Ramakrishna Upadrasta
 
 classrooms:
-  - number: 1
+  - number: "414"
     size: 50
-  - number: 2
+  - number: "317"
     size: 30
-  - number: 3
-    size: 10
-  - number: 4
-    size: 10
   
 
 segments:
@@ -35,12 +29,6 @@ slots:
       - day: "Tuesday"
         start: "10:00"
         end: "11:00"
-  - name: "C"
-    is_minor: false
-    time_periods:
-      - day: "Wednesday"
-        start: '09:00'
-        end: 10:00
 
 programs:
   - "B.Tech.1"

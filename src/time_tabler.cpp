@@ -111,6 +111,11 @@ void TimeTabler::displayTimeTable() {
                 std::cout << "Slot : " << data.slots[j].getName() << std::endl;
             }
         }
+        for(int j = 0; j < data.fieldValueVars[i][FieldType::instructor].size(); j++) {
+            if(isVarTrue(data.fieldValueVars[i][FieldType::instructor][j])) {
+                std::cout << "Instructor : " << data.instructors[j].getName() << std::endl;
+            }
+        }
         for(int j = 0; j < data.fieldValueVars[i][FieldType::classroom].size(); j++) {
             if(isVarTrue(data.fieldValueVars[i][FieldType::classroom][j])) {
                 std::cout << "Classroom : " << data.classrooms[j].getName() << std::endl;
