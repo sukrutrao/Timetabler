@@ -18,6 +18,7 @@ public:
     IsMinor(bool);
     FieldType getType();
     MinorType getMinorType();
+    std::string getTypeName();
 };
 
 #endif

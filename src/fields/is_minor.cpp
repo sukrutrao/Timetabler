@@ -1,5 +1,6 @@
 #include "fields/is_minor.h"
 
+#include <string>
 #include "global.h"
 
 IsMinor::IsMinor(MinorType minorType) {
@@ -21,4 +22,8 @@ FieldType IsMinor::getType() {
 
 MinorType IsMinor::getMinorType() {
 	return minorType;
+}
+
+std::string IsMinor::getTypeName() {
+	return "Minor Type";
 }

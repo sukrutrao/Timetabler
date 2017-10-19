@@ -19,3 +19,7 @@ bool Classroom::sizeLessThan(const Classroom &other) {
 FieldType Classroom::getType() {
     return FieldType::classroom;
 }
+
+std::string Classroom::getTypeName() {
+	return "Classroom";
+}

@@ -23,10 +23,11 @@ public:
     void addClauses(std::vector<CClause>);
     void addClauses(Clauses);
     bool checkAllTrue(std::vector<Var>);
-    bool checkVar(Var);
+    bool isVarTrue(Var);
     bool solve();
     Var newVar();
     Lit newLiteral(bool);
+    void printResult();
 };
 
 #endif

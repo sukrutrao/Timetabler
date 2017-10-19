@@ -16,5 +16,9 @@ FieldType Instructor::getType() {
 }
 
 std::string Instructor::getName() {
-    return name;
+	return name;
+}
+
+std::string Instructor::getTypeName() {
+    return "Instructor";
 }

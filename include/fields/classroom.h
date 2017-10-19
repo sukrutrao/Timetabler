@@ -14,6 +14,7 @@ public:
     bool operator==(const Classroom &other);
     bool sizeLessThan(const Classroom &other);
     FieldType getType();
+    std::string getTypeName();
 };
 
 #endif

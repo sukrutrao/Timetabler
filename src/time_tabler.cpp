@@ -1,6 +1,7 @@
 #include "time_tabler.h"
 
 #include <vector>
+#include <iostream>
 #include "cclause.h"
 #include "mtl/Vec.h"
 #include "core/SolverTypes.h"
@@ -56,7 +57,7 @@ bool TimeTabler::checkAllTrue(std::vector<Var> inputs) {
     return true;
 }
 
-bool TimeTabler::checkVar(Var v) {
+bool TimeTabler::isVarTrue(Var v) {
     if (model[v] == l_False) {
         return false;
     }
@@ -73,4 +74,22 @@ Lit TimeTabler::newLiteral(bool sign = false) {
     Lit p = mkLit(formula->nVars(), sign);
     formula->newVar();
     return p;
+}
+
+void TimeTabler::printResult() {
+    if(checkAllTrue(Utils::flattenVector<Var>(data.highLevelVars))) {
+        std::cout << "All high level clauses were satisfied" << std::endl;
+    }
+    else {
+        std::cout << "Some high level clauses were not satisfied" << std::endl;
+        for(int i = 0; i < data.highLevelVars.size(); i++) {
+            for(int j = 0; j < data.highLevelVars[i].size(); j++) {
+                if(!isVarTrue(data.highLevelVars[i][j])) {
+                    std::cout << "Field : " << Utils::getFieldTypeName(FieldType(j));
+                    std::cout << " of Course : " << data.courses[i].getName();
+                    std::cout << "could not be satisfied" << std::endl;
+                }
+            }
+        }
+    }
 }

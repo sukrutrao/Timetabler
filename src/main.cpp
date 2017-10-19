@@ -24,5 +24,6 @@ int main(int argc, char const *argv[]) {
         std::cout << timeTabler->checkAllTrue(timeTabler->data.highLevelVars[0]) << std::endl;
         std::cout << timeTabler->checkAllTrue(timeTabler->data.highLevelVars[1]) << std::endl;
     }
+    timeTabler->printResult();
     return 0;
 }

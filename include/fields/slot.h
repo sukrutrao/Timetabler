@@ -53,6 +53,7 @@ public:
     void addSlotElements(SlotElement);
     bool isMinorSlot();
     FieldType getType();
+    std::string getTypeName();
 };
 
 #endif

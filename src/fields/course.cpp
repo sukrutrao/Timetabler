@@ -38,4 +38,8 @@ bool Course::operator==(const Course &other) {
     return (this->name == other.name);
 }
 
+std::string Course::getName() {
+    return name;
+}
+
 

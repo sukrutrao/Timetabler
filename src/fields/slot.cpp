@@ -95,3 +95,7 @@ FieldType Slot::getType() {
 bool Slot::isMinorSlot() {
     return isMinor.getMinorType() == MinorType::isMinorCourse;
 }
+
+std::string Slot::getTypeName() {
+    return "Slot";
+}

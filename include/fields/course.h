@@ -22,6 +22,7 @@ public:
     void setPrograms(std::vector<Program*>);
     void addProgram(Program*);
     bool operator==(const Course &other);
+    std::string getName();
 };
 
 #endif

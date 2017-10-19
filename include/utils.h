@@ -2,7 +2,9 @@
 #define UTILS_H
 
 #include <vector>
+#include <string>
 #include "mtl/Vec.h"
+#include "global.h"
 
 using namespace Minisat;
 
@@ -55,6 +57,8 @@ std::vector<T> flattenVector(std::vector<std::vector<std::vector<T>>> inputs) {
 	}
 	return result;
 }
+
+std::string getFieldTypeName(FieldType fieldType);
 
 }
 

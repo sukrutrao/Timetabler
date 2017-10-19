@@ -17,7 +17,7 @@ EXEC_FULL_PATH = $(BIN_DIR)/$(EXEC)
 
 OBJ_LIST = classroom.o course.o instructor.o is_minor.o program.o segment.o slot.o cclause.o \
 			clauses.o constraint_adder.o constraint_encoder.o parser.o time_tabler.o tsolver.o \
-			main.o CSVparser.o
+			main.o CSVparser.o utils.o
 
 OBJS = $(addprefix $(BIN_DIR)/, $(OBJ_LIST))
 

@@ -20,6 +20,7 @@ public:
     FieldType getType();
     std::string getName();
     bool isCoreProgram();
+    std::string getTypeName();
 };
 
 #endif

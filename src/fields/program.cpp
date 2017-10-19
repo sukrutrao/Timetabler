@@ -23,3 +23,7 @@ std::string Program::getName() {
 bool Program::isCoreProgram() {
 	return courseType == CourseType::core;
 }
+
+std::string Program::getTypeName() {
+	return "Programs";
+}

@@ -13,6 +13,7 @@ public:
     bool operator==(const Instructor &other);
     FieldType getType();
     std::string getName();
+    std::string getTypeName();
 };
 
 #endif

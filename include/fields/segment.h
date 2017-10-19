@@ -16,6 +16,7 @@ public:
     bool isIntersecting(const Segment &other);
     FieldType getType();
     std::string toString();
+    std::string getTypeName();
 };
 
 #endif
