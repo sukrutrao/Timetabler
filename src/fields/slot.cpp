@@ -2,6 +2,7 @@
 
 #include <string>
 #include <vector>
+#include <iostream>
 #include "global.h"
 #include "fields/is_minor.h"
 
@@ -45,21 +46,31 @@ bool Time::operator>(const Time &other) {
     return !(*this <= other);
 }
 
+std::string Time::getTimeString() {
+    return std::to_string(hours)+":"+std::to_string(minutes);
+}
+
 SlotElement::SlotElement(Time &startTime, Time &endTime, Day day) 
     : startTime(startTime), endTime(endTime) {
     this->day = day;
 }
 
-bool SlotElement::isIntersecting(const SlotElement &other) {
+bool SlotElement::isIntersecting(SlotElement &other) {
+    std::cout << "TT : " << startTime.getTimeString() << "-" << endTime.getTimeString() << std::endl;
+    std::cout << "OT : " << other.startTime.getTimeString() << "-" << other.endTime.getTimeString() << std::endl;
     if(this->day != other.day) {
+        std::cout << "0" << std::endl;
         return false;
     }
     if(this->startTime < other.startTime) {
-        return !(this->endTime < other.startTime);    
+        std::cout << !(this->endTime <= other.startTime) << std::endl;
+        return !(this->endTime <= other.startTime);    
     }
     else if(this->startTime > other.startTime) {
-        return !(this->startTime > other.endTime);
+        std::cout << !(this->startTime >= other.endTime) << std::endl;
+        return !(this->startTime >= other.endTime);
     }
+    return true;
 }
 
 
@@ -73,7 +84,7 @@ bool Slot::operator==(const Slot &other) {
     return (this->name == other.name);
 }
 
-bool Slot::isIntersecting(const Slot &other) {
+bool Slot::isIntersecting(Slot &other) {
     for(int i = 0; i < slotElements.size(); i++) {
         for(int j = 0; j < other.slotElements.size(); j++) {
             if(slotElements[i].isIntersecting(other.slotElements[j])) {

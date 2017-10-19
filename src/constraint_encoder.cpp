@@ -2,6 +2,7 @@
 
 #include <vector>
 #include <cassert>
+#include <iostream>
 #include "global.h"
 #include "clauses.h"
 #include "cclause.h"
@@ -53,6 +54,8 @@ Clauses ConstraintEncoder::notIntersectingTime(int course1, int course2) {
 
 Clauses ConstraintEncoder::notIntersectingTimeField(int course1, int course2, FieldType fieldType) {
     assert(fieldType == FieldType::segment || fieldType == FieldType::slot);
+    assert(vars[course1][fieldType].size() == vars[course2][fieldType].size());
+    assert(course1 != course2);
     Clauses result;
     for(int i = 0; i < vars[course1][fieldType].size(); i++) {
         Clauses hasFieldValue1(vars[course1][fieldType][i]);
@@ -60,13 +63,23 @@ Clauses ConstraintEncoder::notIntersectingTimeField(int course1, int course2, Fi
         Clauses notIntersecting1;
         Clauses notIntersecting2;
         for(int j = 0; j < vars[course1][fieldType].size(); j++) {
-            if(i == j) {
+      /*      if(i == j) {
                 continue;
-            }
+            }*/ // TODO - can we have this?
             if((fieldType == FieldType::segment && timeTabler->data.segments[i].isIntersecting(timeTabler->data.segments[j]))
                 || (fieldType == FieldType::slot && timeTabler->data.slots[i].isIntersecting(timeTabler->data.slots[j]))) {
                 notIntersecting1.addClauses(~Clauses(vars[course2][fieldType][j]));
                 notIntersecting2.addClauses(~Clauses(vars[course1][fieldType][j]));
+                std::cout << "CN : " << course1 << " " << course2 << std::endl;
+                std::cout << timeTabler->data.courses[course1].getName() << " " << timeTabler->data.courses[course2].getName() << std::endl;
+                if(fieldType == FieldType::segment) {
+                    std::cout << "1 : " << timeTabler->data.segments[i].toString();
+                    std::cout << " 2 : " << timeTabler->data.segments[j].toString() << std::endl;   
+                }
+                if(fieldType == FieldType::slot) {
+                    std::cout << "1 : " << timeTabler->data.slots[i].getName();
+                    std::cout << " 2 : " << timeTabler->data.slots[j].getName() << std::endl;
+                }
             }
         }
         result.addClauses(hasFieldValue1>>notIntersecting1);
@@ -99,6 +112,11 @@ Clauses ConstraintEncoder::hasAtMostOneFieldValueTrue(int course, FieldType fiel
     // Sequential encoding
     std::vector<Lit> s;
     int n = vars[course][fieldType].size();
+    // TODO : check this
+    if(n == 1) {
+        result.addClauses(CClause(timeTabler->newVar())); // just a new dummy so that clause is not empty
+        return result;
+    }
     for (int i=0; i<n-1; i++) {
         Var v = timeTabler->newVar();
         s.push_back(mkLit(v, false));
@@ -114,13 +132,14 @@ Clauses ConstraintEncoder::hasAtMostOneFieldValueTrue(int course, FieldType fiel
         result.addClauses(Clauses(~CClause(s[i-1])) | si);
         result.addClauses(Clauses(~CClause(s[i-1])) | xi);
     }
-    // for(int i = 0; i < vars[course][fieldType].size(); i++) {
-    //     for(int j = i+1; j < vars[course][fieldType].size(); j++) {
-    //         Clauses first(vars[course][fieldType][i]);
-    //         Clauses second(vars[course][fieldType][j]);
-    //         result.addClauses(first | second);
-    //     }
-    // }
+  /*  for(int i = 0; i < vars[course][fieldType].size(); i++) {
+        for(int j = i+1; j < vars[course][fieldType].size(); j++) {
+            Clauses first(vars[course][fieldType][i]);
+            Clauses second(vars[course][fieldType][j]);
+            Clauses negSecond = ~second;
+            result.addClauses(~first | negSecond);
+        }
+    }*/
     return result;
 }
 

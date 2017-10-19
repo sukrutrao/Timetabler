@@ -30,6 +30,7 @@ public:
     bool operator<=(const Time&);  
     bool operator>=(const Time&);
     bool operator>(const Time&);
+    std::string getTimeString();
 };
 
 class SlotElement {
@@ -38,7 +39,7 @@ private:
     Day day;
 public:
     SlotElement(Time&, Time&, Day);
-    bool isIntersecting(const SlotElement &other);
+    bool isIntersecting(SlotElement &other);
 };
 
 class Slot : public Field {
@@ -49,7 +50,7 @@ private:
 public:
     Slot(std::string, IsMinor, std::vector<SlotElement>);
     bool operator==(const Slot &other);
-    bool isIntersecting(const Slot &other);
+    bool isIntersecting(Slot &other);
     void addSlotElements(SlotElement);
     bool isMinorSlot();
     FieldType getType();

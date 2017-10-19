@@ -19,6 +19,7 @@ TimeTabler::TimeTabler() {
 
 void TimeTabler::addClauses(std::vector<CClause> clauses) {
     vec<vec<Lit>> clausesVec;
+    std::cout << "Clause count : " << clauses.size() << std::endl;
     for(int i = 0; i < clauses.size(); i++) {
         vec<Lit> clauseVec;
         std::vector<Lit> clauseVector = clauses[i].getLits();
@@ -92,12 +93,17 @@ void TimeTabler::displayTimeTable() {
         std::cout << "Course : " << data.courses[i].getName() << std::endl;
         for(int j = 0; j < data.fieldValueVars[i][FieldType::slot].size(); j++) {
             if(isVarTrue(data.fieldValueVars[i][FieldType::slot][j])) {
-                std::cout << "Slot : " << data.slots[i].getName() << std::endl;
+                std::cout << "Slot : " << data.slots[j].getName() << std::endl;
             }
         }
         for(int j = 0; j < data.fieldValueVars[i][FieldType::classroom].size(); j++) {
             if(isVarTrue(data.fieldValueVars[i][FieldType::classroom][j])) {
-                std::cout << "Slot : " << data.classrooms[i].getName() << std::endl;
+                std::cout << "Classroom : " << data.classrooms[j].getName() << std::endl;
+            }
+        }
+        for(int j = 0; j < data.fieldValueVars[i][FieldType::segment].size(); j++) {
+            if(isVarTrue(data.fieldValueVars[i][FieldType::segment][j])) {
+                std::cout << "Segment : " << data.segments[j].toString() << std::endl;
             }
         }
         std::cout << std::endl;
