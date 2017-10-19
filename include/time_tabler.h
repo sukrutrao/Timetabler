@@ -28,6 +28,8 @@ public:
     Var newVar();
     Lit newLiteral(bool);
     void printResult();
+    void displayTimeTable();
+    void displayUnsatisfiedOutputReasons();
 };
 
 #endif

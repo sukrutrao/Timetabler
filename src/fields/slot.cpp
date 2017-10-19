@@ -99,3 +99,7 @@ bool Slot::isMinorSlot() {
 std::string Slot::getTypeName() {
     return "Slot";
 }
+
+std::string Slot::getName() {
+    return name;
+}

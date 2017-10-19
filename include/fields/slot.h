@@ -54,6 +54,7 @@ public:
     bool isMinorSlot();
     FieldType getType();
     std::string getTypeName();
+    std::string getName();
 };
 
 #endif

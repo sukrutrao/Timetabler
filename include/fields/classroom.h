@@ -15,6 +15,7 @@ public:
     bool sizeLessThan(const Classroom &other);
     FieldType getType();
     std::string getTypeName();
+    std::string getName();
 };
 
 #endif

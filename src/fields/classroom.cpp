@@ -23,3 +23,7 @@ FieldType Classroom::getType() {
 std::string Classroom::getTypeName() {
 	return "Classroom";
 }
+
+std::string Classroom::getName() {
+	return number;
+}

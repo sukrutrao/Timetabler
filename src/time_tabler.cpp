@@ -79,16 +79,38 @@ Lit TimeTabler::newLiteral(bool sign = false) {
 void TimeTabler::printResult() {
     if(checkAllTrue(Utils::flattenVector<Var>(data.highLevelVars))) {
         std::cout << "All high level clauses were satisfied" << std::endl;
+        displayTimeTable();
     }
     else {
         std::cout << "Some high level clauses were not satisfied" << std::endl;
-        for(int i = 0; i < data.highLevelVars.size(); i++) {
-            for(int j = 0; j < data.highLevelVars[i].size(); j++) {
-                if(!isVarTrue(data.highLevelVars[i][j])) {
-                    std::cout << "Field : " << Utils::getFieldTypeName(FieldType(j));
-                    std::cout << " of Course : " << data.courses[i].getName();
-                    std::cout << "could not be satisfied" << std::endl;
-                }
+        displayUnsatisfiedOutputReasons();
+    }
+}
+
+void TimeTabler::displayTimeTable() {
+    for(int i = 0; i < data.courses.size(); i++) {
+        std::cout << "Course : " << data.courses[i].getName() << std::endl;
+        for(int j = 0; j < data.fieldValueVars[i][FieldType::slot].size(); j++) {
+            if(isVarTrue(data.fieldValueVars[i][FieldType::slot][j])) {
+                std::cout << "Slot : " << data.slots[i].getName() << std::endl;
+            }
+        }
+        for(int j = 0; j < data.fieldValueVars[i][FieldType::classroom].size(); j++) {
+            if(isVarTrue(data.fieldValueVars[i][FieldType::classroom][j])) {
+                std::cout << "Slot : " << data.classrooms[i].getName() << std::endl;
+            }
+        }
+        std::cout << std::endl;
+    }
+}
+
+void TimeTabler::displayUnsatisfiedOutputReasons() {
+    for(int i = 0; i < data.highLevelVars.size(); i++) {
+        for(int j = 0; j < data.highLevelVars[i].size(); j++) {
+            if(!isVarTrue(data.highLevelVars[i][j])) {
+                std::cout << "Field : " << Utils::getFieldTypeName(FieldType(j));
+                std::cout << " of Course : " << data.courses[i].getName();
+                std::cout << "could not be satisfied" << std::endl;
             }
         }
     }
