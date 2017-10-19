@@ -14,7 +14,7 @@ public:
 	TSolver(int, int);
 	std::vector<lbool> tSearch();
 	void tWeighted();
-
+	void tUnweighted();
 };
 
 #endif

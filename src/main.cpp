@@ -5,6 +5,8 @@
 #include "mtl/Vec.h"
 #include "global.h"
 
+TimeTabler *Global::timeTabler = nullptr;
+
 int main(int argc, char const *argv[]) {
     TimeTabler *timeTabler = new TimeTabler();
     Global::timeTabler = timeTabler;

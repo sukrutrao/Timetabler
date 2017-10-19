@@ -23,7 +23,5 @@ public:
     static TimeTabler *timeTabler;
 };
 
-TimeTabler *Global::timeTabler = nullptr;
-
 #endif
 

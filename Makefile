@@ -8,7 +8,7 @@ INCLUDE_DIR = include
 SRC_DIR = src
 
 CC = g++
-CC_FLAGS = --std=c++11
+CC_FLAGS = --std=c++11 -g
 LIB_FLAGS = -lopen-wbo -lyaml-cpp
 INCLUDE_PATH = -I $(INCLUDE_DIR) -I $(OPEN_WBO_PATH) -I $(OPEN_WBO_PATH)/solvers/minisat2.2 -I $(CSV_PARSER_PATH)
 LIB_PATH = -L $(OPEN_WBO_PATH)

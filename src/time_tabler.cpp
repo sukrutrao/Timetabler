@@ -26,6 +26,12 @@ void TimeTabler::addClauses(std::vector<CClause> clauses) {
         }
         formula->addHardClause(clauseVec);
     }
+    std::vector<Var> highLevelVars = Utils::flattenVector<Var>(data.highLevelVars);
+    for(int i = 0; i < highLevelVars.size(); i++) {
+        vec<Lit> highLevelClause;
+        highLevelClause.push(mkLit(highLevelVars[i],false));
+        formula->addSoftClause(1, highLevelClause);
+    }
 }
 
 void TimeTabler::addClauses(Clauses clauses) {
@@ -33,6 +39,7 @@ void TimeTabler::addClauses(Clauses clauses) {
 }
 
 bool TimeTabler::solve() {
+    solver->loadFormula(formula);
     model = solver->tSearch();
     if(checkAllTrue(Utils::flattenVector<Var>(data.highLevelVars))) {
         return true;
