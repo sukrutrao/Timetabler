@@ -56,6 +56,13 @@ bool TimeTabler::checkAllTrue(std::vector<Var> inputs) {
     return true;
 }
 
+bool TimeTabler::checkVar(Var v) {
+    if (model[v] == l_False) {
+        return false;
+    }
+    return true;
+}
+
 Var TimeTabler::newVar() {
     Var var = formula->nVars();
     formula->newVar();

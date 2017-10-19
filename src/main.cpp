@@ -4,6 +4,7 @@
 #include "constraint_adder.h"
 #include "mtl/Vec.h"
 #include "global.h"
+#include <iostream>
 
 TimeTabler *Global::timeTabler = nullptr;
 
@@ -18,6 +19,10 @@ int main(int argc, char const *argv[]) {
     ConstraintEncoder encoder(timeTabler);
     ConstraintAdder constraintAdder(&encoder, timeTabler);
     timeTabler->addClauses(constraintAdder.addConstraints());
-    timeTabler->solve();
+    bool solved = timeTabler->solve();
+    if (solved) {
+        std::cout << timeTabler->checkAllTrue(timeTabler->data.highLevelVars[0]) << std::endl;
+        std::cout << timeTabler->checkAllTrue(timeTabler->data.highLevelVars[1]) << std::endl;
+    }
     return 0;
 }
