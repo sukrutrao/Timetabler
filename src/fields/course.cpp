@@ -7,8 +7,8 @@
 #include "fields/segment.h"
 #include "fields/is_minor.h"
 
-Course::Course(std::string name, unsigned classSize, Instructor* instructor, Segment* segment, 
-            IsMinor *isMinor) {
+Course::Course(std::string name, unsigned classSize, int instructor, int segment, 
+            int isMinor) {
     this->name = name;
     this->classSize = classSize;
     this->instructor = instructor;
@@ -16,8 +16,8 @@ Course::Course(std::string name, unsigned classSize, Instructor* instructor, Seg
     this->isMinor = isMinor;
 }
 
-Course::Course(std::string name, unsigned classSize, Instructor* instructor, Segment* segment, 
-            IsMinor *isMinor, std::vector<Program*> programs) {
+Course::Course(std::string name, unsigned classSize, int instructor, int segment, 
+            int isMinor, std::vector<int> programs) {
     this->name = name;
     this->classSize = classSize;
     this->instructor = instructor;
@@ -26,11 +26,11 @@ Course::Course(std::string name, unsigned classSize, Instructor* instructor, Seg
     this->programs = programs;
 }
 
-void Course::setPrograms(std::vector<Program*> programs) {
+void Course::setPrograms(std::vector<int> programs) {
     this->programs = programs;
 }
 
-void Course::addProgram(Program* programs) {
+void Course::addProgram(int programs) {
     this->programs.push_back(programs);
 }
 
@@ -42,4 +42,18 @@ std::string Course::getName() {
     return name;
 }
 
+int Course::getInstructor() {
+    return instructor;
+}
 
+std::vector<int> Course::getPrograms() {
+    return programs;
+}
+
+int Course::getSegment() {
+    return segment;
+}
+
+int Course::getIsMinor() {
+    return isMinor;
+}

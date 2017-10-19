@@ -22,8 +22,8 @@ void Parser::parseFields(std::string file) {
     YAML::Node segmentsConfig = config["segments"];
     unsigned segmentStart = segmentsConfig["start"].as<unsigned>();
     unsigned segmentEnd = segmentsConfig["end"].as<unsigned>();
-    for (unsigned i = segmentStart; i<segmentEnd; ++i) {
-        for (unsigned j = i; j<segmentEnd; ++j) {
+    for (unsigned i = segmentStart; i<=segmentEnd; ++i) {
+        for (unsigned j = i; j<=segmentEnd; ++j) {
             timeTabler->data.segments.push_back(Segment(i, j));
         }
     }
@@ -72,33 +72,33 @@ void Parser::parseInput(std::string file) {
         std::string classSizeStr = parser[i]["class_size"];
         unsigned classSize = unsigned(std::stoi(classSizeStr));
         std::string instructorStr = parser[i]["instructor"];
-        Instructor *instructor = nullptr;
+        int instructor = -1;
         for (unsigned i = 0; i < timeTabler->data.instructors.size(); i++) {
             if (timeTabler->data.instructors[i].getName() == instructorStr) {
-                instructor = &(timeTabler->data.instructors[i]);
+                instructor = i;
                 break;
             }
         }
-        if (instructor == nullptr) {
+        if (instructor == -1) {
             // TODO Error and exit
         }
         std::string segmentStr = parser[i]["segment"];
-        Segment *segment = nullptr;
+        int segment = -1;
         for (unsigned i = 0; i < timeTabler->data.segments.size(); i++) {
             if (timeTabler->data.segments[i].toString() == segmentStr) {
-                segment = &(timeTabler->data.segments[i]);
+                segment = i;
                 break;
             }
         }
-        if (segment == nullptr) {
+        if (segment == -1) {
             // TODO Error and exit
         }
         std::string isMinorStr = parser[i]["is_minor"];
-        IsMinor *isMinor = nullptr;
+        int isMinor;
         if (isMinorStr == "Yes") {
-            isMinor = &(timeTabler->data.isMinors[0]);
+            isMinor = 0;
         } else if (isMinorStr == "No") {
-            isMinor = &(timeTabler->data.isMinors[1]);
+            isMinor = 1;
         } else {
             // TODO Error and exit
         }
@@ -107,9 +107,11 @@ void Parser::parseInput(std::string file) {
         for (unsigned j = 0; j < timeTabler->data.programs.size(); j+=2) {
             std::string s = timeTabler->data.programs[j].getName();
             if (parser[i][s] == "Core") {
-                course.addProgram(&(timeTabler->data.programs[j]));
+                course.addProgram(j);
             } else if (parser[i][s] == "Elective") {
-                course.addProgram(&(timeTabler->data.programs[j+1]));
+                course.addProgram(j+1);
+            } else if (parser[i][s] == "No") {
+                continue;
             } else {
                 // TODO Error and exit
             }

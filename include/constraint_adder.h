@@ -25,9 +25,11 @@ private:
     Clauses softCoreInMorningTime();
     Clauses softElectiveInAfternoonTime();
     Clauses addCustomConstraint(ClauseType, unsigned);
+    Clauses existingAssignmentClausesSoft();
 public:
     ConstraintAdder(ConstraintEncoder*, TimeTabler*);
     Clauses addConstraints();
+    Clauses softConstraints();
 };
 
 #endif

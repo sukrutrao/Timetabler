@@ -32,6 +32,7 @@ public:
     void addLits(Lit,Lit,Lit);
     void addLits(std::vector<Lit>);
     std::vector<Lit> getLits();
+    void clear();
 };
 
 #endif

@@ -80,6 +80,16 @@ Clauses ConstraintAdder::exactlyOneFieldValuePerCourse(FieldType fieldType) {
     return result;
 }
 
+Clauses ConstraintAdder::existingAssignmentClausesSoft() {
+    Clauses result;
+    std::vector<Course> courses = timeTabler->data.courses;
+    for(int i = 0; i < courses.size(); i++) {
+        Clauses thisCourse = encoder->existingAssignments(i);
+        result.addClauses(thisCourse);
+    }
+    return result;
+}
+
 // Clauses ConstraintAdder::exactlyOneTimePerCourse() {
 //     Clauses result;
 //     result.clear();
@@ -117,8 +127,11 @@ Clauses ConstraintAdder::addConstraints() {
     result.addClauses(exactlyOneFieldValuePerCourse(FieldType::instructor));
     result.addClauses(exactlyOneFieldValuePerCourse(FieldType::isMinor));
     result.addClauses(exactlyOneFieldValuePerCourse(FieldType::segment));
-
     // TODO Add clauses to timeTabler Solver
 
     return result;
+}
+
+Clauses ConstraintAdder::softConstraints() {
+    return existingAssignmentClausesSoft();
 }

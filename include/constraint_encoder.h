@@ -28,6 +28,7 @@ public:
     Clauses hasCommonProgram(int, int);
     Clauses isMinorCourse(int);
     Clauses slotInMinorTime(int);
+    Clauses existingAssignments(int);
 };
 
 #endif

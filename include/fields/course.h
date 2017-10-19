@@ -12,17 +12,21 @@ class Course {
 private:
     std::string name;
     unsigned classSize;
-    Instructor *instructor;
-    std::vector<Program*> programs;
-    Segment *segment;
-    IsMinor *isMinor;
+    int instructor;
+    std::vector<int> programs;
+    int segment;
+    int isMinor;
 public:
-    Course(std::string, unsigned, Instructor*, Segment*, IsMinor*);
-    Course(std::string, unsigned, Instructor*, Segment*, IsMinor*, std::vector<Program*>);
-    void setPrograms(std::vector<Program*>);
-    void addProgram(Program*);
+    Course(std::string, unsigned, int, int, int);
+    Course(std::string, unsigned, int, int, int, std::vector<int>);
+    void setPrograms(std::vector<int>);
+    void addProgram(int);
     bool operator==(const Course &other);
     std::string getName();
+    int getInstructor();
+    std::vector<int> getPrograms();
+    int getSegment();
+    int getIsMinor();
 };
 
 #endif

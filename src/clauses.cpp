@@ -1,6 +1,7 @@
 #include "clauses.h"
 
 #include <vector>
+#include <iostream>
 #include "core/SolverTypes.h"
 #include "cclause.h"
 
@@ -53,10 +54,14 @@ Clauses Clauses::operator&(Clauses &other) {
 }
 
 Clauses Clauses::operator&(CClause &other) {
-    return (other & (*this));
+    Clauses otherClauses(other);
+    return operator&(otherClauses);
 }
 
 Clauses Clauses::operator|(Clauses &other) {
+    if(other.getClauses().size() == 0) {
+        return (*this);
+    }
     std::vector<CClause> resultClauses;
     resultClauses.clear();
     CClause auxiliary;
@@ -82,11 +87,13 @@ Clauses Clauses::operator|(Clauses &other) {
 }
 
 Clauses Clauses::operator|(CClause &other) {
-    return other | (*this);
+    Clauses otherClauses(other);
+    return operator|(otherClauses);
 }
 
 Clauses Clauses::operator>>(Clauses &other) {
-    return ((~(*this)) | other);
+    Clauses negateThis = operator~();
+    return (negateThis | other);
 }
 
 void Clauses::addClauses(CClause other) {

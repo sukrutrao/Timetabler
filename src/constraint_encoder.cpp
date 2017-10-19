@@ -167,3 +167,45 @@ Clauses ConstraintEncoder::slotInMinorTime(int course) {
     Clauses result(resultClause);
     return result;
 }
+
+Clauses ConstraintEncoder::existingAssignments(int course) {
+    Clauses result;
+    for(int i = 0; i < vars[course][FieldType::instructor].size(); i++) {
+        Lit p = mkLit(vars[course][FieldType::instructor][i], false);
+        if(timeTabler->data.courses[course].getInstructor() == i) {
+            result.addClauses(Clauses(p));
+        }
+        else {
+            result.addClauses(Clauses(~p));
+        }
+    }
+    for(int i = 0; i < vars[course][FieldType::segment].size(); i++) {
+        Lit p = mkLit(vars[course][FieldType::segment][i], false);
+        if(timeTabler->data.courses[course].getSegment() == i) {
+            result.addClauses(Clauses(p));
+        }
+        else {
+            result.addClauses(Clauses(~p));
+        }
+    }
+    for(int i = 0; i < vars[course][FieldType::isMinor].size(); i++) {
+        Lit p = mkLit(vars[course][FieldType::isMinor][i], false);
+        if(timeTabler->data.courses[course].getIsMinor() == i) {
+            result.addClauses(Clauses(p));
+        }
+        else {
+            result.addClauses(Clauses(~p));
+        }
+    }
+    for(int i = 0; i < vars[course][FieldType::program].size(); i++) {
+        Lit p = mkLit(vars[course][FieldType::program][i], false);
+        std::vector<int> programsThisCourse = timeTabler->data.courses[course].getPrograms();
+        if(std::find(programsThisCourse.begin(), programsThisCourse.end(), i) != programsThisCourse.end()) {
+            result.addClauses(Clauses(p));
+        }
+        else {
+            result.addClauses(Clauses(~p));
+        }
+    }
+    return result;
+}

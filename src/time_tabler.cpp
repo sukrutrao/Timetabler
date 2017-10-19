@@ -18,7 +18,6 @@ TimeTabler::TimeTabler() {
 }
 
 void TimeTabler::addClauses(std::vector<CClause> clauses) {
-    vec<vec<Lit>> clausesVec;
     std::cout << "Clause count : " << clauses.size() << std::endl;
     for(int i = 0; i < clauses.size(); i++) {
         vec<Lit> clauseVec;
@@ -38,6 +37,22 @@ void TimeTabler::addClauses(std::vector<CClause> clauses) {
 
 void TimeTabler::addClauses(Clauses clauses) {
     addClauses(clauses.getClauses());
+}
+
+void TimeTabler::addSoftClauses(std::vector<CClause> clauses) {
+    std::cout << "Soft Clause count : " << clauses.size() << std::endl;
+    for(int i = 0; i < clauses.size(); i++) {
+        vec<Lit> clauseVec;
+        std::vector<Lit> clauseVector = clauses[i].getLits();
+        for(int j = 0; j < clauseVector.size(); j++) {
+            clauseVec.push(clauseVector[j]);
+        }
+        formula->addSoftClause(1, clauseVec);
+    }    
+}
+
+void TimeTabler::addSoftClauses(Clauses clauses) {
+    addSoftClauses(clauses.getClauses());
 }
 
 bool TimeTabler::solve() {
@@ -116,7 +131,7 @@ void TimeTabler::displayUnsatisfiedOutputReasons() {
             if(!isVarTrue(data.highLevelVars[i][j])) {
                 std::cout << "Field : " << Utils::getFieldTypeName(FieldType(j));
                 std::cout << " of Course : " << data.courses[i].getName();
-                std::cout << "could not be satisfied" << std::endl;
+                std::cout << " could not be satisfied" << std::endl;
             }
         }
     }

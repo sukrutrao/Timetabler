@@ -114,3 +114,7 @@ void CClause::addLits(std::vector<Lit> otherLits) {
 std::vector<Lit> CClause::getLits() {
     return lits;
 }
+
+void CClause::clear() {
+    lits.clear();
+}

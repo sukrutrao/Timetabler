@@ -22,6 +22,8 @@ public:
     TimeTabler();
     void addClauses(std::vector<CClause>);
     void addClauses(Clauses);
+    void addSoftClauses(std::vector<CClause>);
+    void addSoftClauses(Clauses);
     bool checkAllTrue(std::vector<Var>);
     bool isVarTrue(Var);
     bool solve();
