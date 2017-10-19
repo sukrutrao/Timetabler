@@ -27,6 +27,7 @@ public:
     std::vector<int> getPrograms();
     int getSegment();
     int getIsMinor();
+    unsigned getClassSize();
 };
 
 #endif

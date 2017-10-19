@@ -95,9 +95,11 @@ Clauses ConstraintEncoder::hasExactlyOneFieldValueTrue(int course, FieldType fie
 }
 
 Clauses ConstraintEncoder::hasAtLeastOneFieldValueTrue(int course, FieldType fieldType) {
+    std::vector<Var> varsToUse = getAllowedVars(course, fieldType);
+    // TODO - check that an empty clause is actually created. This can be easily verified if we give input so that varsToUse is empty
     CClause resultClause;
-    for(int i = 0; i < vars[course][fieldType].size(); i++) {
-        resultClause.createLitAndAdd(vars[course][fieldType][i]);
+    for(int i = 0; i < varsToUse.size(); i++) {
+        resultClause.createLitAndAdd(varsToUse[i]);
     }
     Clauses result(resultClause);
     return result;
@@ -108,12 +110,13 @@ Clauses ConstraintEncoder::hasAtLeastOneFieldValueTrue(int course, FieldType fie
 Clauses ConstraintEncoder::hasAtMostOneFieldValueTrue(int course, FieldType fieldType) {
   /*  int size = vars[course][fieldType].size();
     std::vector<Var> encoderVars = */
+    std::vector<Var> varsToUse = getAllowedVars(course, fieldType);
     Clauses result;
     // Sequential encoding
     std::vector<Lit> s;
-    int n = vars[course][fieldType].size();
+    int n = varsToUse.size();
     // TODO : check this
-    if(n == 1) {
+    if(n <= 1) {
         result.addClauses(CClause(timeTabler->newVar())); // just a new dummy so that clause is not empty
         return result;
     }
@@ -121,12 +124,12 @@ Clauses ConstraintEncoder::hasAtMostOneFieldValueTrue(int course, FieldType fiel
         Var v = timeTabler->newVar();
         s.push_back(mkLit(v, false));
     }
-    Clauses x1 = ~CClause(vars[course][fieldType][0]);
+    Clauses x1 = ~CClause(varsToUse[0]);
     result.addClauses(CClause(s[0]) | x1);
-    Clauses xn = ~CClause(vars[course][fieldType][n-1]);
+    Clauses xn = ~CClause(varsToUse[n-1]);
     result.addClauses(Clauses(~CClause(s[n-2])) | xn);
     for (int i=1; i<n-1; i++) {
-        Clauses xi = ~CClause(vars[course][fieldType][i]);
+        Clauses xi = ~CClause(varsToUse[i]);
         CClause si = CClause(s[i]);
         result.addClauses(CClause(s[i]) | xi);
         result.addClauses(Clauses(~CClause(s[i-1])) | si);
@@ -141,6 +144,22 @@ Clauses ConstraintEncoder::hasAtMostOneFieldValueTrue(int course, FieldType fiel
         }
     }*/
     return result;
+}
+
+std::vector<Var> ConstraintEncoder::getAllowedVars(int course, FieldType fieldType) {
+    std::vector<Var> varsToUse;
+    varsToUse.clear();
+    if(fieldType != FieldType::classroom) {
+        varsToUse = vars[course][fieldType];
+    }
+    else {
+        for(int i = 0; i < vars[course][fieldType].size(); i++) {
+            if(timeTabler->data.courses[course].getClassSize() <= timeTabler->data.classrooms[i].getSize()) {
+                varsToUse.push_back(vars[course][fieldType][i]);
+            }
+        }
+    }
+    return varsToUse;
 }
 
 Clauses ConstraintEncoder::hasFieldType(int course, FieldType fieldType) {

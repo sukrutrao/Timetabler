@@ -13,6 +13,7 @@ class ConstraintEncoder {
 private:
     std::vector<std::vector<std::vector<Var>>> vars;
     TimeTabler *timeTabler;
+    std::vector<Var> getAllowedVars(int, FieldType);
 public:
     ConstraintEncoder(std::vector<std::vector<std::vector<Var>>>);
     ConstraintEncoder(TimeTabler*);

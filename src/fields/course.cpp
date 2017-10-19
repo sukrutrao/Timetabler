@@ -57,3 +57,7 @@ int Course::getSegment() {
 int Course::getIsMinor() {
     return isMinor;
 }
+
+unsigned Course::getClassSize() {
+    return classSize;
+}

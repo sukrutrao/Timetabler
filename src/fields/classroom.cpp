@@ -27,3 +27,7 @@ std::string Classroom::getTypeName() {
 std::string Classroom::getName() {
 	return number;
 }
+
+unsigned Classroom::getSize() {
+	return size;
+}

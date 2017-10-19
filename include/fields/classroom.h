@@ -16,6 +16,7 @@ public:
     FieldType getType();
     std::string getTypeName();
     std::string getName();
+    unsigned getSize();
 };
 
 #endif
