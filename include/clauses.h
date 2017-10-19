@@ -3,6 +3,7 @@
 
 #include <vector>
 #include "cclause.h"
+#include "time_tabler.h"
 
 using namespace Minisat;
 

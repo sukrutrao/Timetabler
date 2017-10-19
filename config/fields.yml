@@ -8,11 +8,11 @@ classrooms:
   - number: "317"
     size: 30
 
-segment:
+segments:
   start: 1
   end: 6
 
-slot:
+slots:
   - name: "A"
     is_minor: false
     time_periods:

@@ -59,11 +59,24 @@ Clauses Clauses::operator&(CClause &other) {
 Clauses Clauses::operator|(Clauses &other) {
     std::vector<CClause> resultClauses;
     resultClauses.clear();
+    CClause auxiliary;
+    Lit newAuxVars[2];
+    for(int i = 0; i < 2; i++) {
+        newAuxVars[i] = Global::timeTabler->newLiteral(false);
+        auxiliary.addLits(newAuxVars[i]);
+    }
+    resultClauses.push_back(auxiliary);
     for(int i = 0; i < clauses.size(); i++) {
+        resultClauses.push_back(CClause(~newAuxVars[0]) | clauses[i]);
+    }
+    for(int i = 0; i < other.clauses.size(); i++) {
+        resultClauses.push_back(CClause(~newAuxVars[1]) | other.clauses[i]);
+    }
+    /*for(int i = 0; i < clauses.size(); i++) {
         for(int j = 0; j < other.clauses.size(); j++) {
             resultClauses.push_back((clauses[i]) | (other.clauses[j]));
         }
-    }
+    }*/
     Clauses result(resultClauses);
     return result;
 }

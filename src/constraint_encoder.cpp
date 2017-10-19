@@ -25,7 +25,8 @@ Clauses ConstraintEncoder::hasSameFieldTypeAndValue(int course1, int course2, Fi
         CClause field1, field2;
         field1.createLitAndAdd(vars[course1][fieldType][i]);
         field2.createLitAndAdd(vars[course1][fieldType][i]);
-        result.addClauses(field1 & field2);
+        Clauses conjunction(field1 & field2);
+        result = result | conjunction;
     }
     return result;
 }
@@ -37,7 +38,8 @@ Clauses ConstraintEncoder::hasCommonProgram(int course1, int course2) {
             CClause field1, field2;
             field1.createLitAndAdd(vars[course1][FieldType::program][i]);
             field2.createLitAndAdd(vars[course1][FieldType::program][i]);
-            result.addClauses(field1 & field2);
+            Clauses conjunction(field1 & field2);
+            result = result | conjunction;
         }
     }
     return result;

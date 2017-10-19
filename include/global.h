@@ -1,6 +1,8 @@
 #ifndef GLOBAL_H
 #define GLOBAL_H
 
+class TimeTabler;
+
 enum FieldType {
     classroom = 0,
     instructor = 1,
@@ -18,7 +20,10 @@ enum class ClauseType {
 class Global {
 public:
     static const int FIELD_COUNT = 6;
+    static TimeTabler *timeTabler;
 };
+
+TimeTabler *Global::timeTabler = nullptr;
 
 #endif
 
