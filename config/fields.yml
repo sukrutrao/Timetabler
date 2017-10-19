@@ -28,3 +28,10 @@ slots:
       - day: "Tuesday"
         start: "10:00"
         end: "11:00"
+
+programs:
+  - "B.Tech.1"
+  - "B.Tech.2"
+  - "B.Tech.3"
+  - "B.Tech.4"
+  - "M.Tech."

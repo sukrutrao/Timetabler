@@ -96,13 +96,31 @@ Clauses ConstraintEncoder::hasAtMostOneFieldValueTrue(int course, FieldType fiel
   /*  int size = vars[course][fieldType].size();
     std::vector<Var> encoderVars = */
     Clauses result;
-    for(int i = 0; i < vars[course][fieldType].size(); i++) {
-        for(int j = i+1; j < vars[course][fieldType].size(); j++) {
-            Clauses first(vars[course][fieldType][i]);
-            Clauses second(vars[course][fieldType][j]);
-            result.addClauses(first | second);
-        }
+    // Sequential encoding
+    std::vector<Lit> s;
+    int n = vars[course][fieldType].size();
+    for (int i=0; i<n-1; i++) {
+        Var v = timeTabler->newVar();
+        s.push_back(mkLit(v, false));
     }
+    Clauses x1 = ~CClause(vars[course][fieldType][0]);
+    result.addClauses(CClause(s[0]) | x1);
+    Clauses xn = ~CClause(vars[course][fieldType][n-1]);
+    result.addClauses(Clauses(~CClause(s[n-2])) | xn);
+    for (int i=1; i<n-1; i++) {
+        Clauses xi = ~CClause(vars[course][fieldType][i]);
+        CClause si = CClause(s[i]);
+        result.addClauses(CClause(s[i]) | xi);
+        result.addClauses(Clauses(~CClause(s[i-1])) | si);
+        result.addClauses(Clauses(~CClause(s[i-1])) | xi);
+    }
+    // for(int i = 0; i < vars[course][fieldType].size(); i++) {
+    //     for(int j = i+1; j < vars[course][fieldType].size(); j++) {
+    //         Clauses first(vars[course][fieldType][i]);
+    //         Clauses second(vars[course][fieldType][j]);
+    //         result.addClauses(first | second);
+    //     }
+    // }
     return result;
 }
 
