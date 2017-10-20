@@ -19,6 +19,7 @@ public:
     FieldType getType();
     MinorType getMinorType();
     std::string getTypeName();
+    std::string getName();
 };
 
 #endif

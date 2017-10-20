@@ -2,6 +2,7 @@
 
 #include <vector>
 #include <iostream>
+#include <fstream>
 #include "cclause.h"
 #include "mtl/Vec.h"
 #include "core/SolverTypes.h"
@@ -47,7 +48,7 @@ void TimeTabler::addHighLevelClauses() {
         vec<Lit> highLevelClause;
         highLevelClause.clear();
         highLevelClause.push(mkLit(highLevelVars[i],false));
-        formula->addHardClause(highLevelClause);
+        formula->addSoftClause(10, highLevelClause);
     }
 }
 
@@ -63,7 +64,7 @@ void TimeTabler::addSoftClauses(std::vector<CClause> clauses) {
         for(int j = 0; j < clauseVector.size(); j++) {
             clauseVec.push(clauseVector[j]);
         }
-        formula->addHardClause(clauseVec);
+        formula->addSoftClause(1, clauseVec);
     }    
 }
 
@@ -128,26 +129,82 @@ void TimeTabler::displayTimeTable() {
         std::cout << "Course : " << data.courses[i].getName() << std::endl;
         for(int j = 0; j < data.fieldValueVars[i][FieldType::slot].size(); j++) {
             if(isVarTrue(data.fieldValueVars[i][FieldType::slot][j])) {
-                std::cout << "Slot : " << data.slots[j].getName() << std::endl;
+                std::cout << "Slot : " << data.slots[j].getName() << " " << data.fieldValueVars[i][FieldType::slot][j] << std::endl;
             }
         }
         for(int j = 0; j < data.fieldValueVars[i][FieldType::instructor].size(); j++) {
             if(isVarTrue(data.fieldValueVars[i][FieldType::instructor][j])) {
-                std::cout << "Instructor : " << data.instructors[j].getName() << std::endl;
+                std::cout << "Instructor : " << data.instructors[j].getName() << " " << data.fieldValueVars[i][FieldType::instructor][j] << std::endl;
             }
         }
         for(int j = 0; j < data.fieldValueVars[i][FieldType::classroom].size(); j++) {
             if(isVarTrue(data.fieldValueVars[i][FieldType::classroom][j])) {
-                std::cout << "Classroom : " << data.classrooms[j].getName() << std::endl;
+                std::cout << "Classroom : " << data.classrooms[j].getName() << " " << data.fieldValueVars[i][FieldType::classroom][j] << std::endl;
             }
         }
         for(int j = 0; j < data.fieldValueVars[i][FieldType::segment].size(); j++) {
             if(isVarTrue(data.fieldValueVars[i][FieldType::segment][j])) {
-                std::cout << "Segment : " << data.segments[j].toString() << std::endl;
+                std::cout << "Segment : " << data.segments[j].getName() << " " << data.fieldValueVars[i][FieldType::segment][j] << std::endl;
+            }
+        }
+        for(int j = 0; j < data.fieldValueVars[i][FieldType::program].size(); j++) {
+            if(isVarTrue(data.fieldValueVars[i][FieldType::program][j])) {
+                std::cout << "Program : " << data.programs[j/2].getName() << " ";
+                if(j%2 == 0) {
+                    std::cout << "Core" << std::endl;
+                }
+                else {
+                    std::cout << "Elective" << std::endl;
+                }
             }
         }
         std::cout << std::endl;
     }
+}
+
+void TimeTabler::writeOutput(std::string fileName) {
+    std::ofstream fileObject;
+    fileObject.open(fileName);
+    fileObject << "name,class_size,instructor,segment,is_minor,";
+    for(int i = 0; i < data.programs.size(); i++) {
+        fileObject << data.programs[i].getName() << ",";
+    }
+    fileObject << "classroom,slot" << std::endl;
+    for(int i = 0; i < data.courses.size(); i++) {
+        fileObject << data.courses[i].getName() << "," << data.courses[i].getClassSize() << ",";
+        for(int j = 0; j < data.fieldValueVars[i][FieldType::instructor].size(); j++) {
+            if(isVarTrue(data.fieldValueVars[i][FieldType::instructor][j])) {
+                fileObject << data.instructors[j].getName() << ",";
+            }
+        }
+        for(int j = 0; j < data.fieldValueVars[i][FieldType::segment].size(); j++) {
+            if(isVarTrue(data.fieldValueVars[i][FieldType::segment][j])) {
+                fileObject << data.segments[j].getName() << ",";
+            }
+        }
+        for(int j = 0; j < data.fieldValueVars[i][FieldType::isMinor].size(); j++) {
+            if(isVarTrue(data.fieldValueVars[i][FieldType::isMinor][j])) {
+                fileObject << data.isMinors[j].getName() << ",";
+            }
+        }
+        for(int j = 0; j < data.fieldValueVars[i][FieldType::program].size(); j++) {
+            if(isVarTrue(data.fieldValueVars[i][FieldType::program][j])) {
+                fileObject << data.programs[j].getCourseTypeName() << ",";
+            }
+        }
+        for(int j = 0; j < data.fieldValueVars[i][FieldType::classroom].size(); j++) {
+            if(isVarTrue(data.fieldValueVars[i][FieldType::classroom][j])) {
+                fileObject << data.classrooms[j].getName() << ",";
+            }
+        }
+        for(int j = 0; j < data.fieldValueVars[i][FieldType::slot].size(); j++) {
+            if(isVarTrue(data.fieldValueVars[i][FieldType::slot][j])) {
+                fileObject << data.slots[j].getName();
+            }
+        }
+        fileObject << std::endl;
+    }
+    fileObject.close();
 }
 
 void TimeTabler::displayUnsatisfiedOutputReasons() {

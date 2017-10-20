@@ -85,7 +85,7 @@ void Parser::parseInput(std::string file) {
         std::string segmentStr = parser[i]["segment"];
         int segment = -1;
         for (unsigned i = 0; i < timeTabler->data.segments.size(); i++) {
-            if (timeTabler->data.segments[i].toString() == segmentStr) {
+            if (timeTabler->data.segments[i].getName() == segmentStr) {
                 segment = i;
                 break;
             }

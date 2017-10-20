@@ -21,6 +21,7 @@ public:
     std::string getName();
     bool isCoreProgram();
     std::string getTypeName();
+    std::string getCourseTypeName();
 };
 
 #endif

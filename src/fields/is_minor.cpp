@@ -27,3 +27,10 @@ MinorType IsMinor::getMinorType() {
 std::string IsMinor::getTypeName() {
 	return "Minor Type";
 }
+
+std::string IsMinor::getName() {
+	if(minorType == MinorType::isMinorCourse) {
+		return "Yes";
+	}
+	return "No";
+}

@@ -37,7 +37,7 @@ FieldType Segment::getType() {
     return FieldType::segment;
 }
 
-std::string Segment::toString() {
+std::string Segment::getName() {
     return std::to_string(startSegment) + std::to_string(endSegment);
 }
 

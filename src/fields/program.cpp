@@ -27,3 +27,10 @@ bool Program::isCoreProgram() {
 std::string Program::getTypeName() {
 	return "Program";
 }
+
+std::string Program::getCourseTypeName() {
+	if(courseType == CourseType::core) {
+		return "Core";
+	}
+	return "Elective";
+}

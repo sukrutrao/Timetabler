@@ -27,10 +27,10 @@ Clauses ConstraintAdder::fieldSingleValueAtATime(FieldType fieldType) {
             Clauses antecedent = encoder->hasSameFieldTypeAndValue(i, j, fieldType);
             Clauses consequent = encoder->notIntersectingTime(i, j);
             // std::cout << "Course " << i << ", " << j << " : " << std::endl;
-            // antecedent.print();
-            // consequent.print();
+            antecedent.print();
+            consequent.print();
             Clauses r = antecedent>>consequent;
-            // r.print();
+            r.print();
             result.addClauses(r);
 
         }

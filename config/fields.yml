@@ -10,7 +10,7 @@ classrooms:
 
 segments:
   start: 1
-  end: 1
+  end: 2
 
 slots:
   - name: A
@@ -19,6 +19,12 @@ slots:
       - day: "Tuesday"
         start: "10:00"
         end: "11:00"
+  - name: B
+    is_minor: false
+    time_periods:
+      - day: "Tuesday"
+        start: "10:00"
+        end: "13:00"
 
 programs:
   - "B.Tech.1"

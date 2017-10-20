@@ -24,9 +24,9 @@ Clauses ConstraintEncoder::hasSameFieldTypeAndValue(int course1, int course2, Fi
     Clauses result;
     for(int i = 0; i < vars[course1][fieldType].size(); i++) {
         if(fieldType == FieldType::classroom) {
-            // std::cout << "FIELDTYPECLASSROOM:::::::\n";
-            // std::cout << timeTabler->data.courses[course1].getName() << " " << timeTabler->data.courses[course2].getName() << "\n";
-            // std::cout << timeTabler->data.classrooms[i].getName() << "\n";
+            std::cout << "FIELDTYPECLASSROOM:::::::\n";
+            std::cout << timeTabler->data.courses[course1].getName() << " " << timeTabler->data.courses[course2].getName() << "\n";
+            std::cout << timeTabler->data.classrooms[i].getName() << "\n";
         }
         CClause field1, field2;
         field1.createLitAndAdd(vars[course1][fieldType][i]);
@@ -35,6 +35,7 @@ Clauses ConstraintEncoder::hasSameFieldTypeAndValue(int course1, int course2, Fi
         if (i == 0) result = conjunction;
         else result = result | conjunction;
     }
+    result.print();
     return result;
 }
 
@@ -46,7 +47,8 @@ Clauses ConstraintEncoder::hasCommonProgram(int course1, int course2) {
             field1.createLitAndAdd(vars[course1][FieldType::program][i]);
             field2.createLitAndAdd(vars[course2][FieldType::program][i]);
             Clauses conjunction(field1 & field2);
-            result = result | conjunction;
+            if (i == 0) result = conjunction;
+            else result = result | conjunction;
         }
     }
     return result;

@@ -33,6 +33,7 @@ public:
     void displayTimeTable();
     void displayUnsatisfiedOutputReasons();
     void addHighLevelClauses();
+    void writeOutput(std::string);
 };
 
 #endif
