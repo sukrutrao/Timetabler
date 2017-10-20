@@ -25,5 +25,5 @@ bool Program::isCoreProgram() {
 }
 
 std::string Program::getTypeName() {
-	return "Programs";
+	return "Program";
 }

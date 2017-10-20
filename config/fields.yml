@@ -1,18 +1,11 @@
 instructors:
   - A
-  - B
-  - C
-  - D
 
 classrooms:
   - number: 1
     size: 50
   - number: 2
     size: 30
-  - number: 3
-    size: 10
-  - number: 4
-    size: 10
   
 
 segments:
@@ -20,31 +13,13 @@ segments:
   end: 6
 
 slots:
-  - name: "A"
-    is_minor: false
-    time_periods:
-      - day: "Monday"
-        start: "16:00"
-        end: "17:30"
-      - day: "Wednesday"
-        start: "14:30"
-        end: "16:00"
   - name: "B"
-    is_minor: true
+    is_minor: false
     time_periods:
       - day: "Tuesday"
         start: "10:00"
         end: "11:00"
-  - name: "C"
-    is_minor: false
-    time_periods:
-      - day: "Wednesday"
-        start: '09:00'
-        end: 10:00
 
 programs:
   - "B.Tech.1"
   - "B.Tech.2"
-  - "B.Tech.3"
-  - "B.Tech.4"
-  - "M.Tech."
