@@ -24,11 +24,11 @@ void TimeTabler::addClauses(std::vector<CClause> clauses) {
         vec<Lit> clauseVec;
         std::vector<Lit> clauseVector = clauses[i].getLits();
         for(int j = 0; j < clauseVector.size(); j++) {
-            if(sign(clauseVector[j])) { std::cout << "-"; }
-            std::cout << var(clauseVector[j]) << " ";
+            // if(sign(clauseVector[j])) { std::cout << "-"; }
+            // std::cout << var(clauseVector[j]) << " ";
             clauseVec.push(clauseVector[j]);
         }
-        std::cout << std::endl;
+        // std::cout << std::endl;
         formula->addHardClause(clauseVec);
     }
 }
@@ -36,12 +36,12 @@ void TimeTabler::addClauses(std::vector<CClause> clauses) {
 void TimeTabler::addHighLevelClauses() {
     for(int i = 0; i < data.courses.size(); i++) {
         for(int j = 0; j < 6; j++) {
-            std::cout << "DHL : " << data.highLevelVars[i][j] << std::endl;
+            // std::cout << "DHL : " << data.highLevelVars[i][j] << std::endl;
         }
     }
     std::vector<Var> highLevelVars = Utils::flattenVector<Var>(data.highLevelVars);
     for(int i = 0; i < highLevelVars.size(); i++) {
-        std::cout << "DHLF : " << highLevelVars[i] << std::endl;
+        // std::cout << "DHLF : " << highLevelVars[i] << std::endl;
     }
     for(int i = 0; i < highLevelVars.size(); i++) {
         vec<Lit> highLevelClause;

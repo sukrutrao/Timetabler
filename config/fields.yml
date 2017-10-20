@@ -1,19 +1,19 @@
 instructors:
   - A
+  - B
 
 classrooms:
   - number: 1
     size: 50
   - number: 2
-    size: 30
-  
+    size: 50
 
 segments:
   start: 1
-  end: 6
+  end: 1
 
 slots:
-  - name: "B"
+  - name: A
     is_minor: false
     time_periods:
       - day: "Tuesday"
@@ -22,4 +22,3 @@ slots:
 
 programs:
   - "B.Tech.1"
-  - "B.Tech.2"

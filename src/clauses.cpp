@@ -35,7 +35,8 @@ Clauses::Clauses() {
 
 Clauses Clauses::operator~() {
     if(clauses.size() == 0) {
-        return (*this);
+        CClause clause;
+        return Clauses(clause);
     }
     Clauses negationClause(~(clauses[0]));
     for(int i = 1; i < clauses.size(); i++) {
@@ -61,7 +62,8 @@ Clauses Clauses::operator&(CClause &other) {
 
 Clauses Clauses::operator|(Clauses &other) {
     if(other.getClauses().size() == 0) {
-        return (*this);
+        Clauses result = other;
+        return result;
     }
     std::vector<CClause> resultClauses;
     resultClauses.clear();
@@ -94,6 +96,7 @@ Clauses Clauses::operator|(CClause &other) {
 
 Clauses Clauses::operator>>(Clauses &other) {
     Clauses negateThis = operator~();
+    // negateThis.print();
     return (negateThis | other);
 }
 

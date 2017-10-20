@@ -51,9 +51,9 @@ int main(int argc, char const *argv[]) {
     timeTabler->addClauses(constraintAdder.addConstraints());
     timeTabler->addSoftClauses(constraintAdder.softConstraints());
     timeTabler->addHighLevelClauses();
-    std::cout << "START\n";
-    timeTabler->addClauses(constraintAdder.classroomSingleCourseAtATime());
-    std::cout << "END\n";
+    // std::cout << "START\n";
+    // timeTabler->addClauses(constraintAdder.classroomSingleCourseAtATime());
+    // std::cout << "END\n";
     bool solved = timeTabler->solve();
     if (solved) {
         std::cout << "Solved" << std::endl;

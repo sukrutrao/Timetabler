@@ -26,7 +26,7 @@ Clauses ConstraintAdder::fieldSingleValueAtATime(FieldType fieldType) {
         for(int j = i+1; j < courses.size(); j++) {
             Clauses antecedent = encoder->hasSameFieldTypeAndValue(i, j, fieldType);
             Clauses consequent = encoder->notIntersectingTime(i, j);
-            // std::cout << "Antecedent : " << std::endl;
+            // std::cout << "Course " << i << ", " << j << " : " << std::endl;
             // antecedent.print();
             // consequent.print();
             Clauses r = antecedent>>consequent;
@@ -40,7 +40,6 @@ Clauses ConstraintAdder::fieldSingleValueAtATime(FieldType fieldType) {
 }
 
 Clauses ConstraintAdder::instructorSingleCourseAtATime() {
-    std::cout << "instructorSingleCourseAtATime" << std::endl;
     return fieldSingleValueAtATime(FieldType::instructor);
 }
 
@@ -81,6 +80,8 @@ Clauses ConstraintAdder::exactlyOneFieldValuePerCourse(FieldType fieldType) {
     std::vector<Course> courses = timeTabler->data.courses;
     for(int i = 0; i < courses.size(); i++) {
         Clauses exactlyOneFieldValue = encoder->hasExactlyOneFieldValueTrue(i, fieldType);
+        // std::cout << "Course " << i << " : " << std::endl;
+        // exactlyOneFieldValue.print();
         Clauses cclause(timeTabler->data.highLevelVars[i][fieldType]);
      /*   Clauses negateCClause = ~cclause;
         Clauses rhs = ~exactlyOneFieldValue | cclause;
@@ -129,11 +130,15 @@ Clauses ConstraintAdder::addConstraints() {
     result.clear();
     // TODO - need to define high level variables here
     result.addClauses(instructorSingleCourseAtATime());
-//    result.addClauses(classroomSingleCourseAtATime());
+    result.addClauses(classroomSingleCourseAtATime());
     result.addClauses(programSingleCoreCourseAtATime());
     result.addClauses(minorInMinorTime());
     // result.addClauses(exactlyOneTimePerCourse());
     // result.addClauses(exactlyOneClassroomPerCourse());
+
+    // Clauses r = exactlyOneFieldValuePerCourse(FieldType::slot);
+    // r.print();
+    // result.addClauses(r);
 
     result.addClauses(exactlyOneFieldValuePerCourse(FieldType::slot));
     result.addClauses(exactlyOneFieldValuePerCourse(FieldType::classroom));

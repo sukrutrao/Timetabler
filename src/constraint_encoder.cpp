@@ -32,7 +32,8 @@ Clauses ConstraintEncoder::hasSameFieldTypeAndValue(int course1, int course2, Fi
         field1.createLitAndAdd(vars[course1][fieldType][i]);
         field2.createLitAndAdd(vars[course2][fieldType][i]);
         Clauses conjunction(field1 & field2);
-        result = result | conjunction;
+        if (i == 0) result = conjunction;
+        else result = result | conjunction;
     }
     return result;
 }
@@ -64,9 +65,9 @@ Clauses ConstraintEncoder::notIntersectingTimeField(int course1, int course2, Fi
     Clauses result;
     for(int i = 0; i < vars[course1][fieldType].size(); i++) {
         Clauses hasFieldValue1(vars[course1][fieldType][i]);
-        Clauses hasFieldValue2(vars[course2][fieldType][i]);
+        // Clauses hasFieldValue2(vars[course2][fieldType][i]);
         Clauses notIntersecting1;
-        Clauses notIntersecting2;
+        // Clauses notIntersecting2;
         for(int j = 0; j < vars[course1][fieldType].size(); j++) {
       /*      if(i == j) {
                 continue;
@@ -74,7 +75,7 @@ Clauses ConstraintEncoder::notIntersectingTimeField(int course1, int course2, Fi
             if((fieldType == FieldType::segment && timeTabler->data.segments[i].isIntersecting(timeTabler->data.segments[j]))
                 || (fieldType == FieldType::slot && timeTabler->data.slots[i].isIntersecting(timeTabler->data.slots[j]))) {
                 notIntersecting1.addClauses(~Clauses(vars[course2][fieldType][j]));
-                notIntersecting2.addClauses(~Clauses(vars[course1][fieldType][j]));
+                // notIntersecting2.addClauses(~Clauses(vars[course1][fieldType][j]));
             //    std::cout << "CN : " << course1 << " " << course2 << std::endl;
              //   std::cout << timeTabler->data.courses[course1].getName() << " " << timeTabler->data.courses[course2].getName() << std::endl;
          /*       if(fieldType == FieldType::segment) {
@@ -87,8 +88,9 @@ Clauses ConstraintEncoder::notIntersectingTimeField(int course1, int course2, Fi
                 }*/
             }
         }
-        result.addClauses(hasFieldValue1>>notIntersecting1);
-        result.addClauses(hasFieldValue2>>notIntersecting2);
+        Clauses r = hasFieldValue1>>notIntersecting1;
+        result.addClauses(r);
+        // result.addClauses(hasFieldValue2>>notIntersecting2);
     }
     return result;
 }
