@@ -23,6 +23,11 @@ ConstraintEncoder::ConstraintEncoder(TimeTabler *timeTabler) {
 Clauses ConstraintEncoder::hasSameFieldTypeAndValue(int course1, int course2, FieldType fieldType) {
     Clauses result;
     for(int i = 0; i < vars[course1][fieldType].size(); i++) {
+        if(fieldType == FieldType::classroom) {
+            std::cout << "FIELDTYPECLASSROOM:::::::\n";
+            std::cout << timeTabler->data.courses[course1].getName() << " " << timeTabler->data.courses[course2].getName() << "\n";
+            std::cout << timeTabler->data.classrooms[i].getName() << "\n";
+        }
         CClause field1, field2;
         field1.createLitAndAdd(vars[course1][fieldType][i]);
         field2.createLitAndAdd(vars[course2][fieldType][i]);
@@ -70,16 +75,16 @@ Clauses ConstraintEncoder::notIntersectingTimeField(int course1, int course2, Fi
                 || (fieldType == FieldType::slot && timeTabler->data.slots[i].isIntersecting(timeTabler->data.slots[j]))) {
                 notIntersecting1.addClauses(~Clauses(vars[course2][fieldType][j]));
                 notIntersecting2.addClauses(~Clauses(vars[course1][fieldType][j]));
-                std::cout << "CN : " << course1 << " " << course2 << std::endl;
-                std::cout << timeTabler->data.courses[course1].getName() << " " << timeTabler->data.courses[course2].getName() << std::endl;
-                if(fieldType == FieldType::segment) {
+            //    std::cout << "CN : " << course1 << " " << course2 << std::endl;
+             //   std::cout << timeTabler->data.courses[course1].getName() << " " << timeTabler->data.courses[course2].getName() << std::endl;
+         /*       if(fieldType == FieldType::segment) {
                     std::cout << "1 : " << timeTabler->data.segments[i].toString();
                     std::cout << " 2 : " << timeTabler->data.segments[j].toString() << std::endl;   
                 }
                 if(fieldType == FieldType::slot) {
                     std::cout << "1 : " << timeTabler->data.slots[i].getName();
                     std::cout << " 2 : " << timeTabler->data.slots[j].getName() << std::endl;
-                }
+                }*/
             }
         }
         result.addClauses(hasFieldValue1>>notIntersecting1);

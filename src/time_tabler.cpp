@@ -13,8 +13,9 @@
 using namespace Minisat;
 
 TimeTabler::TimeTabler() {
-    solver = new TSolver(_VERBOSITY_MINIMAL_, _CARD_TOTALIZER_);
+    solver = new TSolver(1, _CARD_TOTALIZER_);
     formula = new MaxSATFormula();
+    formula->setProblemType(_WEIGHTED_);
 }
 
 void TimeTabler::addClauses(std::vector<CClause> clauses) {
@@ -27,11 +28,20 @@ void TimeTabler::addClauses(std::vector<CClause> clauses) {
         }
         formula->addHardClause(clauseVec);
     }
+    for(int i = 0; i < data.courses.size(); i++) {
+        for(int j = 0; j < 6; j++) {
+            std::cout << "DHL : " << data.highLevelVars[i][j] << std::endl;
+        }
+    }
     std::vector<Var> highLevelVars = Utils::flattenVector<Var>(data.highLevelVars);
     for(int i = 0; i < highLevelVars.size(); i++) {
+        std::cout << "DHLF : " << highLevelVars[i] << std::endl;
+    }
+    for(int i = 0; i < highLevelVars.size(); i++) {
         vec<Lit> highLevelClause;
+        highLevelClause.clear();
         highLevelClause.push(mkLit(highLevelVars[i],false));
-        formula->addSoftClause(1, highLevelClause);
+        formula->addHardClause(highLevelClause);
     }
 }
 
@@ -47,7 +57,7 @@ void TimeTabler::addSoftClauses(std::vector<CClause> clauses) {
         for(int j = 0; j < clauseVector.size(); j++) {
             clauseVec.push(clauseVector[j]);
         }
-        formula->addSoftClause(1, clauseVec);
+        formula->addHardClause(clauseVec);
     }    
 }
 
@@ -57,6 +67,10 @@ void TimeTabler::addSoftClauses(Clauses clauses) {
 
 bool TimeTabler::solve() {
     solver->loadFormula(formula);
+    if(formula->getProblemType() == _WEIGHTED_) {
+        std::cout << "WEIGHTED" << std::endl;
+    }
+    solver->search();
     model = solver->tSearch();
     if(checkAllTrue(Utils::flattenVector<Var>(data.highLevelVars))) {
         return true;

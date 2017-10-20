@@ -25,10 +25,13 @@ CClause::CClause() {
 }
 
 std::vector<CClause> CClause::operator~() {
+    std::vector<Lit> litCopy = lits;
+    std::sort(litCopy.begin(), litCopy.end());
+    litCopy.erase(std::unique(litCopy.begin(), litCopy.end()), litCopy.end());
     std::vector<CClause> result;
     result.clear();
-    for(int i = 0; i < lits.size(); i++) {
-        CClause unitClause(~(lits[i]));
+    for(int i = 0; i < litCopy.size(); i++) {
+        CClause unitClause(~(litCopy[i]));
         result.push_back(unitClause);
     }
     return result;
@@ -52,6 +55,8 @@ CClause CClause::operator|(CClause &other) {
     std::vector<Lit> thisLits = this->lits;
     std::vector<Lit> otherLits = other.getLits();
     thisLits.insert(std::end(thisLits), std::begin(otherLits), std::end(otherLits));
+    std::sort(thisLits.begin(), thisLits.end());
+    thisLits.erase(std::unique(thisLits.begin(), thisLits.end()), thisLits.end());
     CClause result(thisLits);
     return result;
 }
@@ -61,7 +66,7 @@ Clauses CClause::operator|(Clauses &other) {
     return (thisLHS | other);
 }
 
-std::vector<CClause> CClause::operator>>(CClause &other) {
+/*std::vector<CClause> CClause::operator>>(CClause &other) {
     std::vector<CClause> lhs = ~(*this);
     std::vector<CClause> result;
     result.clear();
@@ -70,7 +75,7 @@ std::vector<CClause> CClause::operator>>(CClause &other) {
         result.push_back(thisClause);
     }
     return result;
-}
+}*/
 
 Clauses CClause::operator>>(Clauses &other) {
     Clauses thisLHS(~(*this));
