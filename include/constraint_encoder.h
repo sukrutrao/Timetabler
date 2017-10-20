@@ -30,6 +30,8 @@ public:
     Clauses isMinorCourse(int);
     Clauses slotInMinorTime(int);
     Clauses existingAssignments(int);
+    Clauses isCoreCourse(int);
+    Clauses courseInMorningTime(int);
 };
 
 #endif

@@ -166,7 +166,7 @@ void TimeTabler::writeOutput(std::string fileName) {
     std::ofstream fileObject;
     fileObject.open(fileName);
     fileObject << "name,class_size,instructor,segment,is_minor,";
-    for(int i = 0; i < data.programs.size(); i++) {
+    for(int i = 0; i < data.programs.size(); i+=2) {
         fileObject << data.programs[i].getName() << ",";
     }
     fileObject << "classroom,slot" << std::endl;

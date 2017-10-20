@@ -153,3 +153,15 @@ Clauses ConstraintAdder::addConstraints() {
 Clauses ConstraintAdder::softConstraints() {
     return existingAssignmentClausesSoft();
 }
+
+Clauses ConstraintAdder::coreInMorningTime() {
+    Clauses result;
+    result.clear();
+    std::vector<Course> courses = timeTabler->data.courses;
+    for(int i = 0; i < courses.size(); i++) {
+        Clauses coreCourse = encoder->isCoreCourse(i);
+        Clauses morningTime = encoder->courseInMorningTime(i);
+        result.addClauses(coreCourse>>morningTime); // TODO - have to do the converse as well, but with lower priority (weight)
+    }
+    return result;
+}

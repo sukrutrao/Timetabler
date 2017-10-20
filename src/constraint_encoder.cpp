@@ -237,3 +237,25 @@ Clauses ConstraintEncoder::existingAssignments(int course) {
     }
     return result;
 }
+
+Clauses ConstraintEncoder::isCoreCourse(int course) {
+    CClause resultClause;
+    for(int i = 0; i < vars[course][FieldType::program].size(); i++) {
+        if(timeTabler->data.programs[i].isCoreProgram()) {
+            resultClause.createLitAndAdd(vars[course][FieldType::program][i]);
+        }
+    }
+    Clauses result(resultClause);
+    return result;
+}
+
+Clauses ConstraintEncoder::courseInMorningTime(int course) {
+    CClause resultClause;
+    for(int i = 0; i < vars[course][FieldType::slot].size(); i++) {
+        if(timeTabler->data.slots[i].isMorningSlot()) {
+            resultClause.createLitAndAdd(vars[course][FieldType::slot][i]);
+        }
+    }
+    Clauses result(resultClause);
+    return result;
+}

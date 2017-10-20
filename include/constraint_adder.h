@@ -16,18 +16,17 @@ private:
     Clauses fieldSingleValueAtATime(FieldType);
     Clauses exactlyOneFieldValuePerCourse(FieldType);
     Clauses instructorSingleCourseAtATime();
-    /*Clauses classroomSingleCourseAtATime();*/
+    Clauses classroomSingleCourseAtATime();
     Clauses programSingleCoreCourseAtATime();
     Clauses minorInMinorTime();
 //    Clauses noCoreInMinorTime();
     // Clauses exactlyOneTimePerCourse();
     // Clauses exactlyOneClassroomPerCourse();
-    Clauses softCoreInMorningTime();
-    Clauses softElectiveInAfternoonTime();
+    Clauses coreInMorningTime();
     Clauses addCustomConstraint(ClauseType, unsigned);
     Clauses existingAssignmentClausesSoft();
 public:
-    Clauses classroomSingleCourseAtATime();
+    /*Clauses classroomSingleCourseAtATime();*/
     ConstraintAdder(ConstraintEncoder*, TimeTabler*);
     Clauses addConstraints();
     Clauses softConstraints();
