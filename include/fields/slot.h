@@ -31,6 +31,7 @@ public:
     bool operator>=(const Time&);
     bool operator>(const Time&);
     std::string getTimeString();
+    bool isMorningTime();
 };
 
 class SlotElement {
@@ -40,6 +41,7 @@ private:
 public:
     SlotElement(Time&, Time&, Day);
     bool isIntersecting(SlotElement &other);
+    bool isMorningSlotElement();
 };
 
 class Slot : public Field {
@@ -56,6 +58,7 @@ public:
     FieldType getType();
     std::string getTypeName();
     std::string getName();
+    bool isMorningSlot();
 };
 
 #endif

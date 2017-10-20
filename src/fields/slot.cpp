@@ -50,6 +50,14 @@ std::string Time::getTimeString() {
     return std::to_string(hours)+":"+std::to_string(minutes);
 }
 
+bool Time::isMorningTime() {
+    // TODO - replace this with user given data
+    if(hours >= 0 && hours < 13) {
+        return true;
+    }
+    return false;
+}
+
 SlotElement::SlotElement(Time &startTime, Time &endTime, Day day) 
     : startTime(startTime), endTime(endTime) {
     this->day = day;
@@ -71,6 +79,10 @@ bool SlotElement::isIntersecting(SlotElement &other) {
         return !(this->startTime >= other.endTime);
     }
     return true;
+}
+
+bool SlotElement::isMorningSlotElement() {
+    return startTime.isMorningTime();
 }
 
 
@@ -113,4 +125,13 @@ std::string Slot::getTypeName() {
 
 std::string Slot::getName() {
     return name;
+}
+
+bool Slot::isMorningSlot() {
+    for(int i = 0; i < slotElements.size(); i++) {
+        if(!slotElements[i].isMorningSlotElement()) {
+            return false;
+        }
+    }
+    return true;
 }
