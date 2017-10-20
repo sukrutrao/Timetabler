@@ -56,18 +56,18 @@ SlotElement::SlotElement(Time &startTime, Time &endTime, Day day)
 }
 
 bool SlotElement::isIntersecting(SlotElement &other) {
-    std::cout << "TT : " << startTime.getTimeString() << "-" << endTime.getTimeString() << std::endl;
-    std::cout << "OT : " << other.startTime.getTimeString() << "-" << other.endTime.getTimeString() << std::endl;
+ /*   std::cout << "TT : " << startTime.getTimeString() << "-" << endTime.getTimeString() << std::endl;
+    std::cout << "OT : " << other.startTime.getTimeString() << "-" << other.endTime.getTimeString() << std::endl;*/
     if(this->day != other.day) {
-        std::cout << "0" << std::endl;
+   //     std::cout << "0" << std::endl;
         return false;
     }
     if(this->startTime < other.startTime) {
-        std::cout << !(this->endTime <= other.startTime) << std::endl;
+ //       std::cout << !(this->endTime <= other.startTime) << std::endl;
         return !(this->endTime <= other.startTime);    
     }
     else if(this->startTime > other.startTime) {
-        std::cout << !(this->startTime >= other.endTime) << std::endl;
+ //       std::cout << !(this->startTime >= other.endTime) << std::endl;
         return !(this->startTime >= other.endTime);
     }
     return true;

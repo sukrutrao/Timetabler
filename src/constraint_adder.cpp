@@ -73,9 +73,12 @@ Clauses ConstraintAdder::exactlyOneFieldValuePerCourse(FieldType fieldType) {
     for(int i = 0; i < courses.size(); i++) {
         Clauses exactlyOneFieldValue = encoder->hasExactlyOneFieldValueTrue(i, fieldType);
         Clauses cclause(timeTabler->data.highLevelVars[i][fieldType]);
-        Clauses negateCClause = ~cclause;
+     /*   Clauses negateCClause = ~cclause;
         Clauses rhs = ~exactlyOneFieldValue | cclause;
-        result.addClauses((exactlyOneFieldValue | negateCClause) & rhs);
+        result.addClauses((exactlyOneFieldValue | negateCClause) & rhs);*/
+        Clauses first = cclause>>exactlyOneFieldValue;
+   //     Clauses second = exactlyOneFieldValue>>cclause;
+        result.addClauses(first);// & second);
     }
     return result;
 }
@@ -114,6 +117,7 @@ Clauses ConstraintAdder::existingAssignmentClausesSoft() {
 
 Clauses ConstraintAdder::addConstraints() {
     Clauses result;
+    result.clear();
     // TODO - need to define high level variables here
     result.addClauses(instructorSingleCourseAtATime());
     result.addClauses(classroomSingleCourseAtATime());
