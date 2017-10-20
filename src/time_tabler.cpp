@@ -70,7 +70,7 @@ bool TimeTabler::solve() {
     if(formula->getProblemType() == _WEIGHTED_) {
         std::cout << "WEIGHTED" << std::endl;
     }
-    solver->search();
+    // solver->search();
     model = solver->tSearch();
     if(checkAllTrue(Utils::flattenVector<Var>(data.highLevelVars))) {
         return true;

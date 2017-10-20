@@ -7,6 +7,7 @@
 #include "clauses.h"
 #include "core/SolverTypes.h"
 #include "utils.h"
+#include <iostream>
 
 using namespace Minisat;
 
@@ -25,13 +26,21 @@ Clauses ConstraintAdder::fieldSingleValueAtATime(FieldType fieldType) {
         for(int j = i+1; j < courses.size(); j++) {
             Clauses antecedent = encoder->hasSameFieldTypeAndValue(i, j, fieldType);
             Clauses consequent = encoder->notIntersectingTime(i, j);
-            result.addClauses(antecedent>>consequent);
+            // std::cout << "Antecedent : " << std::endl;
+            // antecedent.print();
+            // consequent.print();
+            Clauses r = antecedent>>consequent;
+            // r.print();
+            result.addClauses(r);
+
         }
     }
+    // result.print();
     return result;
 }
 
 Clauses ConstraintAdder::instructorSingleCourseAtATime() {
+    std::cout << "instructorSingleCourseAtATime" << std::endl;
     return fieldSingleValueAtATime(FieldType::instructor);
 }
 

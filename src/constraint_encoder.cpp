@@ -24,9 +24,9 @@ Clauses ConstraintEncoder::hasSameFieldTypeAndValue(int course1, int course2, Fi
     Clauses result;
     for(int i = 0; i < vars[course1][fieldType].size(); i++) {
         if(fieldType == FieldType::classroom) {
-            std::cout << "FIELDTYPECLASSROOM:::::::\n";
-            std::cout << timeTabler->data.courses[course1].getName() << " " << timeTabler->data.courses[course2].getName() << "\n";
-            std::cout << timeTabler->data.classrooms[i].getName() << "\n";
+            // std::cout << "FIELDTYPECLASSROOM:::::::\n";
+            // std::cout << timeTabler->data.courses[course1].getName() << " " << timeTabler->data.courses[course2].getName() << "\n";
+            // std::cout << timeTabler->data.classrooms[i].getName() << "\n";
         }
         CClause field1, field2;
         field1.createLitAndAdd(vars[course1][fieldType][i]);

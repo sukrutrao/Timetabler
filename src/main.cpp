@@ -55,6 +55,8 @@ int main(int argc, char const *argv[]) {
         std::cout << "Solved" << std::endl;
         std::cout << timeTabler->checkAllTrue(timeTabler->data.highLevelVars[0]) << std::endl;
         std::cout << timeTabler->checkAllTrue(timeTabler->data.highLevelVars[1]) << std::endl;
+    } else {
+        std::cout << "Not Solved" << std::endl;
     }
     timeTabler->printResult();
     return 0;

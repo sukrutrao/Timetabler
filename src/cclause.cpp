@@ -123,7 +123,7 @@ std::vector<Lit> CClause::getLits() {
 
 void CClause::printClause() {
     for (Lit lit : lits) {
-        std::cout << (sign(lit) ? "-" : "0") << var(lit) << " ";
+        std::cout << (sign(lit) ? "-" : " ") << var(lit) << " ";
     }
     std::cout << std::endl;
 }

@@ -4,6 +4,7 @@
 #include <iostream>
 #include "core/SolverTypes.h"
 #include "cclause.h"
+#include <iostream>
 
 using namespace Minisat;
 
@@ -111,6 +112,14 @@ void Clauses::addClauses(Clauses other) {
 
 std::vector<CClause> Clauses::getClauses() {
     return clauses;
+}
+
+void Clauses::print() {
+    std::cout << "Clauses :" << std::endl;
+    for (CClause c : clauses) {
+        c.printClause();
+    }
+    std::cout << std::endl;
 }
 
 void Clauses::clear() {

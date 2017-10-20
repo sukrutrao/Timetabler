@@ -30,6 +30,7 @@ public:
     void addClauses(std::vector<CClause>);
     void addClauses(Clauses);
     std::vector<CClause> getClauses();
+    void print();
     void clear();
 };
 
