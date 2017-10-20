@@ -129,7 +129,7 @@ Clauses ConstraintAdder::addConstraints() {
     result.clear();
     // TODO - need to define high level variables here
     result.addClauses(instructorSingleCourseAtATime());
-    result.addClauses(classroomSingleCourseAtATime());
+//    result.addClauses(classroomSingleCourseAtATime());
     result.addClauses(programSingleCoreCourseAtATime());
     result.addClauses(minorInMinorTime());
     // result.addClauses(exactlyOneTimePerCourse());

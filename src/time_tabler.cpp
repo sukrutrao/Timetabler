@@ -24,10 +24,16 @@ void TimeTabler::addClauses(std::vector<CClause> clauses) {
         vec<Lit> clauseVec;
         std::vector<Lit> clauseVector = clauses[i].getLits();
         for(int j = 0; j < clauseVector.size(); j++) {
+            if(sign(clauseVector[j])) { std::cout << "-"; }
+            std::cout << var(clauseVector[j]) << " ";
             clauseVec.push(clauseVector[j]);
         }
+        std::cout << std::endl;
         formula->addHardClause(clauseVec);
     }
+}
+
+void TimeTabler::addHighLevelClauses() {
     for(int i = 0; i < data.courses.size(); i++) {
         for(int j = 0; j < 6; j++) {
             std::cout << "DHL : " << data.highLevelVars[i][j] << std::endl;

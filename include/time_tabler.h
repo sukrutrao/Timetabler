@@ -32,6 +32,7 @@ public:
     void printResult();
     void displayTimeTable();
     void displayUnsatisfiedOutputReasons();
+    void addHighLevelClauses();
 };
 
 #endif
