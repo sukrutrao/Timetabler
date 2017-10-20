@@ -12,7 +12,7 @@ Segment::Segment(int startSegment, int endSegment) {
 }
 
 bool Segment::operator==(const Segment &other) {
-    return ((this->startSegment == other.startSegment) && (this->endSegment && other.endSegment));
+    return ((this->startSegment == other.startSegment) && (this->endSegment == other.endSegment));
 }
 
 int Segment::length() {
