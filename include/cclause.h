@@ -33,6 +33,7 @@ public:
     void addLits(std::vector<Lit>);
     std::vector<Lit> getLits();
     void clear();
+    void printClause();
 };
 
 #endif

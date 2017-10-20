@@ -3,6 +3,7 @@
 #include <vector>
 #include "core/SolverTypes.h"
 #include "clauses.h"
+#include <iostream>
 
 using namespace Minisat;
 
@@ -113,6 +114,13 @@ void CClause::addLits(std::vector<Lit> otherLits) {
 
 std::vector<Lit> CClause::getLits() {
     return lits;
+}
+
+void CClause::printClause() {
+    for (Lit lit : lits) {
+        std::cout << (sign(lit) ? "-" : "0") << var(lit) << " ";
+    }
+    std::cout << std::endl;
 }
 
 void CClause::clear() {
