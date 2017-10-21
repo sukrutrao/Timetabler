@@ -9,6 +9,10 @@
 #include "fields/slot.h"
 #include "core/Solver.h"
 #include <vector>
+#include <functional>
+#include <string>
+#include <utility>
+#include <map>
 
 using namespace Minisat;
 
@@ -23,6 +27,10 @@ public:
     std::vector<IsMinor> isMinors;
     std::vector<std::vector<std::vector<Var>>> fieldValueVars;
     std::vector<std::vector<Var>> highLevelVars;
+    std::vector<std::vector<std::vector<lbool>>> existingAssignmentVars;
+    std::vector<int> highLevelVarWeights;
+    std::vector<int> existingAssignmentWeights;
+    std::vector<int> predefinedClausesWeights;
 };
 
 #endif

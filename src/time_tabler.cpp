@@ -19,7 +19,7 @@ TimeTabler::TimeTabler() {
     formula->setProblemType(_WEIGHTED_);
 }
 
-void TimeTabler::addClauses(std::vector<CClause> clauses) {
+void TimeTabler::addClauses(std::vector<CClause> clauses, int weight) {
     std::cout << "Clause count : " << clauses.size() << std::endl;
     for(int i = 0; i < clauses.size(); i++) {
         vec<Lit> clauseVec;
@@ -30,17 +30,18 @@ void TimeTabler::addClauses(std::vector<CClause> clauses) {
             clauseVec.push(clauseVector[j]);
         }
         // std::cout << std::endl;
-        formula->addHardClause(clauseVec);
+        addToFormula(clauseVec, weight);
+
     }
 }
 
 void TimeTabler::addHighLevelClauses() {
-    for(int i = 0; i < data.courses.size(); i++) {
+  /*  for(int i = 0; i < data.courses.size(); i++) {
         for(int j = 0; j < 6; j++) {
             // std::cout << "DHL : " << data.highLevelVars[i][j] << std::endl;
         }
-    }
-    std::vector<Var> highLevelVars = Utils::flattenVector<Var>(data.highLevelVars);
+    }*/
+   /* std::vector<Var> highLevelVars = Utils::flattenVector<Var>(data.highLevelVars);
     for(int i = 0; i < highLevelVars.size(); i++) {
         // std::cout << "DHLF : " << highLevelVars[i] << std::endl;
     }
@@ -49,11 +50,49 @@ void TimeTabler::addHighLevelClauses() {
         highLevelClause.clear();
         highLevelClause.push(mkLit(highLevelVars[i],false));
         formula->addSoftClause(10, highLevelClause);
+    }*/
+    for(int i = 0; i < Global::FIELD_COUNT; i++) {
+        for(int j = 0; j < data.highLevelVars.size(); j++) {
+            vec<Lit> highLevelClause;
+            highLevelClause.clear();
+            highLevelClause.push(mkLit(data.highLevelVars[j][i],false));
+            addToFormula(highLevelClause, data.highLevelVarWeights[i]);
+        }
     }
 }
 
-void TimeTabler::addClauses(Clauses clauses) {
-    addClauses(clauses.getClauses());
+void TimeTabler::addExistingAssignments() {
+    for(int i = 0; i < data.existingAssignmentVars.size(); i++) {
+        for(int j = 0; j < data.existingAssignmentVars[i].size(); j++) {
+            for(int k = 0; k < data.existingAssignmentVars[i][j].size(); k++) {
+                if(data.existingAssignmentVars[i][j][k] == l_Undef) {
+                    continue;
+                }
+                vec<Lit> clause;
+                clause.clear();
+                if(data.existingAssignmentVars[i][j][k] == l_True) {
+                    clause.push(mkLit(data.fieldValueVars[i][j][k]));
+                }
+                else {
+                    clause.push(mkLit(data.fieldValueVars[i][j][k]));    
+                }
+                addToFormula(clause, data.existingAssignmentWeights[j]);
+            }
+        }
+    }
+}
+
+void TimeTabler::addToFormula(vec<Lit> &input, int weight) {
+    if(weight == -1) {
+        formula->addHardClause(input);
+    }
+    else if(weight > 0) {
+        formula->addSoftClause(weight, input);
+    }
+}
+
+void TimeTabler::addClauses(Clauses clauses, int weight) {
+    addClauses(clauses.getClauses(), weight);
 }
 
 void TimeTabler::addSoftClauses(std::vector<CClause> clauses) {

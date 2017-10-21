@@ -67,17 +67,23 @@ Day Parser::getDayFromString(std::string day) {
 
 void Parser::parseInput(std::string file) {
     csv::Parser parser(file);
+    timeTabler->data.existingAssignmentVars.clear();
     for (unsigned i=0; i<parser.rowCount(); ++i) {
+        std::vector<std::vector<lbool>> assignmentsThisCourse(Global::FIELD_COUNT);
+
         std::string name = parser[i]["name"];
         std::string classSizeStr = parser[i]["class_size"];
         unsigned classSize = unsigned(std::stoi(classSizeStr));
+        
         std::string instructorStr = parser[i]["instructor"];
         int instructor = -1;
         for (unsigned i = 0; i < timeTabler->data.instructors.size(); i++) {
             if (timeTabler->data.instructors[i].getName() == instructorStr) {
                 instructor = i;
-                break;
+                assignmentsThisCourse[FieldType::instructor].push_back(l_True);
+                continue;
             }
+            assignmentsThisCourse[FieldType::instructor].push_back(l_False);
         }
         if (instructor == -1) {
             // TODO Error and exit
@@ -87,8 +93,10 @@ void Parser::parseInput(std::string file) {
         for (unsigned i = 0; i < timeTabler->data.segments.size(); i++) {
             if (timeTabler->data.segments[i].getName() == segmentStr) {
                 segment = i;
-                break;
+                assignmentsThisCourse[FieldType::segment].push_back(l_True);
+                continue;
             }
+            assignmentsThisCourse[FieldType::segment].push_back(l_False);
         }
         if (segment == -1) {
             // TODO Error and exit
@@ -97,8 +105,10 @@ void Parser::parseInput(std::string file) {
         int isMinor;
         if (isMinorStr == "Yes") {
             isMinor = 0;
+            assignmentsThisCourse[FieldType::isMinor].push_back(l_True);
         } else if (isMinorStr == "No") {
             isMinor = 1;
+            assignmentsThisCourse[FieldType::isMinor].push_back(l_False);
         } else {
             // TODO Error and exit
         }
@@ -108,16 +118,23 @@ void Parser::parseInput(std::string file) {
             std::string s = timeTabler->data.programs[j].getName();
             if (parser[i][s] == "Core") {
                 course.addProgram(j);
+                assignmentsThisCourse[FieldType::program].push_back(l_True);
+                assignmentsThisCourse[FieldType::program].push_back(l_False);
             } else if (parser[i][s] == "Elective") {
                 course.addProgram(j+1);
+                assignmentsThisCourse[FieldType::program].push_back(l_False);
+                assignmentsThisCourse[FieldType::program].push_back(l_True);
             } else if (parser[i][s] == "No") {
-                continue;
+                assignmentsThisCourse[FieldType::program].push_back(l_False);
+                assignmentsThisCourse[FieldType::program].push_back(l_False);
             } else {
                 // TODO Error and exit
             }
         }
-
+        assignmentsThisCourse[FieldType::classroom].resize(timeTabler->data.classrooms.size(), l_Undef);
+        assignmentsThisCourse[FieldType::slot].resize(timeTabler->data.slots.size(), l_Undef);
         timeTabler->data.courses.push_back(course);
+        timeTabler->data.existingAssignmentVars.push_back(assignmentsThisCourse);
     }
 }
 

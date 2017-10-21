@@ -4,17 +4,30 @@
 class TimeTabler;
 
 enum FieldType {
-    classroom = 0,
-    instructor = 1,
+    instructor = 0,
+    segment = 1,
     isMinor = 2,
     program = 3,
-    segment = 4,
+    classroom = 4,
     slot = 5
 };
 
 enum class ClauseType {
     hard,
     soft
+};
+
+enum PredefinedClauses {
+    instructorSingleCourseAtATime,
+    classroomSingleCourseAtATime,
+    programSingleCoreCourseAtATime,
+    minorInMinorTime,
+    exactlyOneSlotPerCourse,
+    exactlyOneInstructorPerCourse,
+    exactlyOneSegmentPerCourse,
+    exactlyOneIsMinorPerCourse,
+    exactlyOneClassroomPerCourse,
+    coreInMorningTime
 };
 
 class Global {

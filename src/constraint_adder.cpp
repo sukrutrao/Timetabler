@@ -99,7 +99,7 @@ Clauses ConstraintAdder::exactlyOneFieldValuePerCourse(FieldType fieldType) {
     return result;
 }
 
-Clauses ConstraintAdder::existingAssignmentClausesSoft() {
+/*Clauses ConstraintAdder::existingAssignmentClauses() {
     Clauses result;
     std::vector<Course> courses = timeTabler->data.courses;
     for(int i = 0; i < courses.size(); i++) {
@@ -107,7 +107,7 @@ Clauses ConstraintAdder::existingAssignmentClausesSoft() {
         result.addClauses(thisCourse);
     }
     return result;
-}
+}*/
 
 // Clauses ConstraintAdder::exactlyOneTimePerCourse() {
 //     Clauses result;
@@ -131,12 +131,26 @@ Clauses ConstraintAdder::existingAssignmentClausesSoft() {
 //     return result;
 // }
 
-Clauses ConstraintAdder::addConstraints() {
+void ConstraintAdder::addConstraints() {
     Clauses result;
     result.clear();
+    std::vector<int> weights = timeTabler->data.predefinedClausesWeights;
     // TODO - need to define high level variables here
-    std::cout << "-3\n";
-    result.addClauses(instructorSingleCourseAtATime());
+   // std::cout << "-3\n";
+    timeTabler->addClauses(instructorSingleCourseAtATime(), weights[PredefinedClauses::instructorSingleCourseAtATime]);
+    timeTabler->addClauses(classroomSingleCourseAtATime(), weights[PredefinedClauses::classroomSingleCourseAtATime]);
+    timeTabler->addClauses(programSingleCoreCourseAtATime(), weights[PredefinedClauses::programSingleCoreCourseAtATime]);
+    timeTabler->addClauses(minorInMinorTime(), weights[PredefinedClauses::minorInMinorTime]);
+
+    timeTabler->addClauses(exactlyOneFieldValuePerCourse(FieldType::slot), weights[PredefinedClauses::exactlyOneSlotPerCourse]);
+    timeTabler->addClauses(exactlyOneFieldValuePerCourse(FieldType::classroom), weights[PredefinedClauses::exactlyOneClassroomPerCourse]);
+    timeTabler->addClauses(exactlyOneFieldValuePerCourse(FieldType::instructor), weights[PredefinedClauses::exactlyOneInstructorPerCourse]);
+    timeTabler->addClauses(exactlyOneFieldValuePerCourse(FieldType::isMinor), weights[PredefinedClauses::exactlyOneIsMinorPerCourse]);
+    timeTabler->addClauses(exactlyOneFieldValuePerCourse(FieldType::segment), weights[PredefinedClauses::exactlyOneSegmentPerCourse]);
+
+    timeTabler->addClauses(coreInMorningTime(), weights[PredefinedClauses::coreInMorningTime]);
+
+   /* result.addClauses(instructorSingleCourseAtATime());
     std::cout << "-2\n";
     result.addClauses(classroomSingleCourseAtATime());
     std::cout << "-1\n";
@@ -159,15 +173,14 @@ Clauses ConstraintAdder::addConstraints() {
     result.addClauses(exactlyOneFieldValuePerCourse(FieldType::isMinor));
     std::cout << "5\n";
     result.addClauses(exactlyOneFieldValuePerCourse(FieldType::segment));
-    std::cout << "6\n";
+    std::cout << "6\n";*/
     // TODO Add clauses to timeTabler Solver
-
-    return result;
+//    return result;
 }
 
-Clauses ConstraintAdder::softConstraints() {
+/*Clauses ConstraintAdder::softConstraints() {
     return existingAssignmentClausesSoft();
-}
+}*/
 
 Clauses ConstraintAdder::coreInMorningTime() {
     Clauses result;
