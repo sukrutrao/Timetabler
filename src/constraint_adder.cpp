@@ -24,17 +24,18 @@ Clauses ConstraintAdder::fieldSingleValueAtATime(FieldType fieldType) {
     std::vector<Course> courses = timeTabler->data.courses;
     for(int i = 0; i < courses.size(); i++) {
         for(int j = i+1; j < courses.size(); j++) {
-            Clauses antecedent = encoder->hasSameFieldTypeAndValue(i, j, fieldType);
+            Clauses antecedent = encoder->hasSameFieldTypeNotSameValue(i, j, fieldType);
             Clauses consequent = encoder->notIntersectingTime(i, j);
             // std::cout << "Course " << i << ", " << j << " : " << std::endl;
             antecedent.print();
             consequent.print();
-            Clauses r = antecedent>>consequent;
+            Clauses r = antecedent | consequent;
             r.print();
             result.addClauses(r);
 
         }
     }
+    std::cout << "Result size : " << result.getClauses().size() << std::endl;
     // result.print();
     return result;
 }
@@ -53,11 +54,16 @@ Clauses ConstraintAdder::programSingleCoreCourseAtATime() {
     std::vector<Course> courses = timeTabler->data.courses;
     for(int i = 0; i < courses.size(); i++) {
         for(int j = i+1; j < courses.size(); j++) {
-            Clauses antecedent = encoder->hasCommonProgram(i, j);
+            Clauses antecedent = encoder->hasNoCommonCoreProgram(i, j);
+            std::cout << "HCP : " << antecedent.getClauses().size() << "\n";
             Clauses consequent = encoder->notIntersectingTime(i, j);
-            result.addClauses(antecedent>>consequent);
+            std::cout << "NIT : " << consequent.getClauses().size() << "\n";
+            Clauses r = antecedent | consequent;
+            std::cout << "R\n";
+            result.addClauses(r);
         }
     }
+    std::cout << "Ret\n";
     return result;
 }
 
@@ -129,9 +135,13 @@ Clauses ConstraintAdder::addConstraints() {
     Clauses result;
     result.clear();
     // TODO - need to define high level variables here
+    std::cout << "-3\n";
     result.addClauses(instructorSingleCourseAtATime());
+    std::cout << "-2\n";
     result.addClauses(classroomSingleCourseAtATime());
+    std::cout << "-1\n";
     result.addClauses(programSingleCoreCourseAtATime());
+    std::cout << "0\n";
     result.addClauses(minorInMinorTime());
     // result.addClauses(exactlyOneTimePerCourse());
     // result.addClauses(exactlyOneClassroomPerCourse());
@@ -139,12 +149,17 @@ Clauses ConstraintAdder::addConstraints() {
     // Clauses r = exactlyOneFieldValuePerCourse(FieldType::slot);
     // r.print();
     // result.addClauses(r);
-
+    std::cout << "1\n";
     result.addClauses(exactlyOneFieldValuePerCourse(FieldType::slot));
+    std::cout << "2\n";
     result.addClauses(exactlyOneFieldValuePerCourse(FieldType::classroom));
+    std::cout << "3\n";
     result.addClauses(exactlyOneFieldValuePerCourse(FieldType::instructor));
+    std::cout << "4\n";
     result.addClauses(exactlyOneFieldValuePerCourse(FieldType::isMinor));
+    std::cout << "5\n";
     result.addClauses(exactlyOneFieldValuePerCourse(FieldType::segment));
+    std::cout << "6\n";
     // TODO Add clauses to timeTabler Solver
 
     return result;

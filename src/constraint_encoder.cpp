@@ -39,6 +39,18 @@ Clauses ConstraintEncoder::hasSameFieldTypeAndValue(int course1, int course2, Fi
     return result;
 }
 
+Clauses ConstraintEncoder::hasSameFieldTypeNotSameValue(int course1, int course2, FieldType fieldType) {
+    Clauses result;
+    for(int i = 0; i < vars[course1][fieldType].size(); i++) {
+        CClause resultClause;
+        resultClause.addLits(~mkLit(vars[course1][fieldType][i],false));
+        resultClause.addLits(~mkLit(vars[course2][fieldType][i],false));
+        result.addClauses(resultClause);
+    }
+    result.print();
+    return result;
+}
+
 Clauses ConstraintEncoder::hasCommonProgram(int course1, int course2) {
     Clauses result;
     for(int i = 0; i < vars[course1][FieldType::program].size(); i++) {
@@ -51,6 +63,20 @@ Clauses ConstraintEncoder::hasCommonProgram(int course1, int course2) {
             else result = result | conjunction;
         }
     }
+    return result;
+}
+
+Clauses ConstraintEncoder::hasNoCommonCoreProgram(int course1, int course2) {
+    Clauses result;
+    for(int i = 0; i < vars[course1][FieldType::program].size(); i++) {
+        if(!timeTabler->data.programs[i].isCoreProgram()) {
+            CClause resultClause;
+            resultClause.addLits(~mkLit(vars[course1][FieldType::program][i],false));
+            resultClause.addLits(~mkLit(vars[course2][FieldType::program][i],false));
+            result.addClauses(resultClause);
+        }
+    }
+    result.print();
     return result;
 }
 

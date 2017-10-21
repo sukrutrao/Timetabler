@@ -1,3 +1,3 @@
-name,class_size,instructor,segment,is_minor,B.Tech.1,classroom,slot
-1,10,A,11,No,2,A
-2,10,B,11,No,Core,1,A
+name,class_size,instructor,segment,is_minor,B.Tech.1,B.Tech.2,B.Tech.3,B.Tech.4,M.Tech.,classroom,slot
+CS6403,50,Dr. Saurabh Joshi,14,No,Core,Elective,414,A
+CS6383,30,Dr. Ramakrishna Upadrasta,16,Yes,Elective,Core,317,B
