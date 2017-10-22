@@ -60,7 +60,7 @@ void Parser::parseFields(std::string file) {
     timeTabler->data.highLevelVarWeights[FieldType::segment] = weightsConfig["segment"][1].as<int>();
     timeTabler->data.existingAssignmentWeights[FieldType::isMinor] = weightsConfig["is_minor"][0].as<int>();
     timeTabler->data.highLevelVarWeights[FieldType::isMinor] = weightsConfig["is_minor"][1].as<int>();
-    timeTabler->data.existingAssignmentWeights[FieldType::program] = weightsConfig["program"][0].as<int>();
+    timeTabler->data.existingAssignmentWeights[FieldType::program] = weightsConfig["program"].as<int>();
     timeTabler->data.existingAssignmentWeights[FieldType::classroom] = weightsConfig["classroom"][0].as<int>();
     timeTabler->data.highLevelVarWeights[FieldType::classroom] = weightsConfig["classroom"][1].as<int>();
     timeTabler->data.existingAssignmentWeights[FieldType::slot] = weightsConfig["slot"][0].as<int>();
