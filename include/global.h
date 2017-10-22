@@ -27,7 +27,8 @@ enum PredefinedClauses {
     exactlyOneSegmentPerCourse,
     exactlyOneIsMinorPerCourse,
     exactlyOneClassroomPerCourse,
-    coreInMorningTime
+    coreInMorningTime,
+    programAtMostOneOfCoreOrElective
 };
 
 class Global {

@@ -34,6 +34,7 @@ public:
     Clauses existingAssignments(int);
     Clauses isCoreCourse(int);
     Clauses courseInMorningTime(int);
+    Clauses programAtMostOneOfCoreOrElective(int);
 };
 
 #endif

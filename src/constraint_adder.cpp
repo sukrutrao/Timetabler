@@ -193,3 +193,13 @@ Clauses ConstraintAdder::coreInMorningTime() {
     }
     return result;
 }
+
+Clauses ConstraintAdder::programAtMostOneOfCoreOrElective() {
+    Clauses result;
+    result.clear();
+    std::vector<Course> courses = timeTabler->data.courses;
+    for(int i = 0; i < courses.size(); i++) {
+        result.addClauses(encoder->programAtMostOneOfCoreOrElective(i));
+    }
+    return result;
+}

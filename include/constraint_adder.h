@@ -25,6 +25,7 @@ private:
     Clauses coreInMorningTime();
     Clauses addCustomConstraint(ClauseType, unsigned);
     Clauses existingAssignmentClauses();
+    Clauses programAtMostOneOfCoreOrElective();
 public:
     /*Clauses classroomSingleCourseAtATime();*/
     ConstraintAdder(ConstraintEncoder*, TimeTabler*);
