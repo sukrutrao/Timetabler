@@ -150,6 +150,8 @@ void ConstraintAdder::addConstraints() {
 
     timeTabler->addClauses(coreInMorningTime(), weights[PredefinedClauses::coreInMorningTime]);
 
+ //   timeTabler->addClauses(programAtMostOneOfCoreOrElective(), weights[PredefinedClauses::programAtMostOneOfCoreOrElective]);
+
    /* result.addClauses(instructorSingleCourseAtATime());
     std::cout << "-2\n";
     result.addClauses(classroomSingleCourseAtATime());

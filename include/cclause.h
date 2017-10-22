@@ -37,11 +37,3 @@ public:
 };
 
 #endif
-
-
-/*
-Link between Variable and CClause - and between Variable and Var
-CClause stores Lit, not Var
-
-
-*/

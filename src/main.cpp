@@ -72,5 +72,6 @@ int main(int argc, char const *argv[]) {
     }
     timeTabler->printResult();
     timeTabler->writeOutput("output.csv");
+    delete timeTabler;
     return 0;
 }

@@ -20,6 +20,7 @@ private:
 public:
     Data data;
     TimeTabler();
+    ~TimeTabler();
     void addClauses(std::vector<CClause>, int);
     void addClauses(Clauses, int);
     void addSoftClauses(std::vector<CClause>);
