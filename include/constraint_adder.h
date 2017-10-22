@@ -24,11 +24,11 @@ private:
     // Clauses exactlyOneClassroomPerCourse();
     Clauses coreInMorningTime();
     Clauses addCustomConstraint(ClauseType, unsigned);
-    Clauses existingAssignmentClausesSoft();
+    Clauses existingAssignmentClauses();
 public:
     /*Clauses classroomSingleCourseAtATime();*/
     ConstraintAdder(ConstraintEncoder*, TimeTabler*);
-    Clauses addConstraints();
+    void addConstraints();
     Clauses softConstraints();
 };
 

@@ -54,9 +54,11 @@ int main(int argc, char const *argv[]) {
 
     ConstraintEncoder encoder(timeTabler);
     ConstraintAdder constraintAdder(&encoder, timeTabler);
-    timeTabler->addClauses(constraintAdder.addConstraints());
-    timeTabler->addSoftClauses(constraintAdder.softConstraints());
+    constraintAdder.addConstraints();
+//    timeTabler->addClauses(constraintAdder.addConstraints());
+  //  timeTabler->addSoftClauses(constraintAdder.softConstraints());
     timeTabler->addHighLevelClauses();
+    timeTabler->addExistingAssignments();
     // std::cout << "START\n";
     // timeTabler->addClauses(constraintAdder.classroomSingleCourseAtATime());
     // std::cout << "END\n";

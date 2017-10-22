@@ -20,8 +20,8 @@ private:
 public:
     Data data;
     TimeTabler();
-    void addClauses(std::vector<CClause>);
-    void addClauses(Clauses);
+    void addClauses(std::vector<CClause>, int);
+    void addClauses(Clauses, int);
     void addSoftClauses(std::vector<CClause>);
     void addSoftClauses(Clauses);
     bool checkAllTrue(std::vector<Var>);
@@ -34,6 +34,8 @@ public:
     void displayUnsatisfiedOutputReasons();
     void addHighLevelClauses();
     void writeOutput(std::string);
+    void addExistingAssignments();
+    void addToFormula(vec<Lit>&, int);
 };
 
 #endif
