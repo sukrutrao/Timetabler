@@ -150,6 +150,8 @@ void ConstraintAdder::addConstraints() {
 
     timeTabler->addClauses(coreInMorningTime(), weights[PredefinedClauses::coreInMorningTime]);
 
+ //   timeTabler->addClauses(programAtMostOneOfCoreOrElective(), weights[PredefinedClauses::programAtMostOneOfCoreOrElective]);
+
    /* result.addClauses(instructorSingleCourseAtATime());
     std::cout << "-2\n";
     result.addClauses(classroomSingleCourseAtATime());
@@ -190,6 +192,16 @@ Clauses ConstraintAdder::coreInMorningTime() {
         Clauses coreCourse = encoder->isCoreCourse(i);
         Clauses morningTime = encoder->courseInMorningTime(i);
         result.addClauses(coreCourse>>morningTime); // TODO - have to do the converse as well, but with lower priority (weight)
+    }
+    return result;
+}
+
+Clauses ConstraintAdder::programAtMostOneOfCoreOrElective() {
+    Clauses result;
+    result.clear();
+    std::vector<Course> courses = timeTabler->data.courses;
+    for(int i = 0; i < courses.size(); i++) {
+        result.addClauses(encoder->programAtMostOneOfCoreOrElective(i));
     }
     return result;
 }

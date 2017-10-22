@@ -31,6 +31,15 @@ public:
     std::vector<int> highLevelVarWeights;
     std::vector<int> existingAssignmentWeights;
     std::vector<int> predefinedClausesWeights;
+    // TODO - this is only a temporary measure - fix this
+    Data() {
+        highLevelVarWeights.resize(6, 1);
+        existingAssignmentWeights.resize(6, 1);
+        predefinedClausesWeights.resize(11, -1);
+        existingAssignmentWeights[FieldType::isMinor] = -1;
+        existingAssignmentWeights[FieldType::program] = -1;
+        predefinedClausesWeights[PredefinedClauses::coreInMorningTime] = 1;
+    }
 };
 
 #endif

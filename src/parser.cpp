@@ -1,5 +1,7 @@
 #include "parser.h"
 
+#include <iostream>
+
 Parser::Parser(TimeTabler* timeTabler) {
     this->timeTabler = timeTabler;
 }
@@ -96,6 +98,7 @@ void Parser::parseInput(std::string file) {
                 assignmentsThisCourse[FieldType::segment].push_back(l_True);
                 continue;
             }
+            std::cout << "SEG : " << timeTabler->data.segments[i].getName() << " " << segmentStr << std::endl;
             assignmentsThisCourse[FieldType::segment].push_back(l_False);
         }
         if (segment == -1) {
@@ -131,6 +134,9 @@ void Parser::parseInput(std::string file) {
                 // TODO Error and exit
             }
         }
+
+        std::string classroomStr = parser[i]["classroom"];
+        std::string slotStr = parser[i]["slot"];
         assignmentsThisCourse[FieldType::classroom].resize(timeTabler->data.classrooms.size(), l_Undef);
         assignmentsThisCourse[FieldType::slot].resize(timeTabler->data.slots.size(), l_Undef);
         timeTabler->data.courses.push_back(course);

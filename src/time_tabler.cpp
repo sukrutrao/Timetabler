@@ -3,6 +3,7 @@
 #include <vector>
 #include <iostream>
 #include <fstream>
+#include <cstdlib>
 #include "cclause.h"
 #include "mtl/Vec.h"
 #include "core/SolverTypes.h"
@@ -20,7 +21,7 @@ TimeTabler::TimeTabler() {
 }
 
 void TimeTabler::addClauses(std::vector<CClause> clauses, int weight) {
-    std::cout << "Clause count : " << clauses.size() << std::endl;
+    std::cout << "Clause count : " << clauses.size() << " W : " << weight << std::endl;
     for(int i = 0; i < clauses.size(); i++) {
         vec<Lit> clauseVec;
         std::vector<Lit> clauseVector = clauses[i].getLits();
@@ -74,7 +75,7 @@ void TimeTabler::addExistingAssignments() {
                     clause.push(mkLit(data.fieldValueVars[i][j][k]));
                 }
                 else {
-                    clause.push(mkLit(data.fieldValueVars[i][j][k]));    
+                    clause.push(~mkLit(data.fieldValueVars[i][j][k]));    
                 }
                 addToFormula(clause, data.existingAssignmentWeights[j]);
             }
@@ -226,9 +227,15 @@ void TimeTabler::writeOutput(std::string fileName) {
                 fileObject << data.isMinors[j].getName() << ",";
             }
         }
-        for(int j = 0; j < data.fieldValueVars[i][FieldType::program].size(); j++) {
+        for(int j = 0; j < data.fieldValueVars[i][FieldType::program].size(); j+=2) {
             if(isVarTrue(data.fieldValueVars[i][FieldType::program][j])) {
                 fileObject << data.programs[j].getCourseTypeName() << ",";
+            }
+            else if(isVarTrue(data.fieldValueVars[i][FieldType::program][j+1])) {
+                fileObject << data.programs[j+1].getCourseTypeName() << ",";
+            }
+            else {
+                fileObject << "No,";
             }
         }
         for(int j = 0; j < data.fieldValueVars[i][FieldType::classroom].size(); j++) {
@@ -256,4 +263,8 @@ void TimeTabler::displayUnsatisfiedOutputReasons() {
             }
         }
     }
+}
+
+TimeTabler::~TimeTabler() {
+    delete solver;
 }

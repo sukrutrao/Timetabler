@@ -25,8 +25,8 @@ std::vector<lbool> TSolver::tSearch() {
         return Utils::convertVecDataToVector<lbool>(model, model.size());
     } else {
         tUnweighted();
-        printf("Completed\n");
-        return Utils::convertVecDataToVector<lbool>(model, model.size());
+        /*printf("Completed\n");
+        return Utils::convertVecDataToVector<lbool>(model, model.size());*/
         printf("Error: Use the solver in 'weighted' mode only!\n");
         exit(_ERROR_);
     }

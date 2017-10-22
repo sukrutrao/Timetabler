@@ -285,3 +285,14 @@ Clauses ConstraintEncoder::courseInMorningTime(int course) {
     Clauses result(resultClause);
     return result;
 }
+
+Clauses ConstraintEncoder::programAtMostOneOfCoreOrElective(int course) {
+    Clauses result;
+    for(int i = 0; i < vars[course][FieldType::program].size(); i+=2) {
+        CClause resultClause;
+        resultClause.addLits(~mkLit(vars[course][FieldType::program][i], false));
+        resultClause.addLits(~mkLit(vars[course][FieldType::program][i+1], false));
+        result.addClauses(resultClause);
+    }
+    return result;
+}
