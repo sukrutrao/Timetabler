@@ -20,7 +20,7 @@ TEST_EXEC_FULL_PATH = $(BIN_DIR)/test
 
 OBJ_LIST = classroom.o course.o instructor.o is_minor.o program.o segment.o slot.o cclause.o \
 			clauses.o constraint_adder.o constraint_encoder.o parser.o time_tabler.o tsolver.o \
-			CSVparser.o utils.o
+			CSVparser.o utils.o custom_parser.o
 
 TEST_OBJ_LIST = test_clauses.o
 

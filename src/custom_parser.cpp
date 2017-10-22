@@ -126,12 +126,28 @@ template <> struct action<constraint_expr> {
     template <typename Input>
     static void apply(const Input& in, Object &obj) {
         Clauses clauses;
-        if (obj.fieldType == "INSTRUCTOR") {
-            
-        } else if (obj.fieldType == "COURSE") {
-
-        } else if (obj.fieldType == "SEGMENT") {
-            
+        FieldType RHSType;
+        FieldType fieldType;
+        if(obj.takeClassValues) {
+            RHSType = FieldType::classroom;
+        }
+        else {
+            RHSType = FieldType::slot;
+        }
+        if (obj.fieldType == "COURSE") {
+            clauses = constraintAdder->customConstraint(obj.fieldValues, RHSType, /**/obj.classValues, obj.isNot);
+        }
+        else {
+            if (obj.fieldType == "INSTRUCTOR") {
+                fieldType = FieldType::instructor;
+            } else if (obj.fieldType == "PROGRAM") {
+                fieldType = FieldType::program;
+            } else if (obj.fieldType == "SEGMENT") {
+                fieldtype = FieldType::segment;
+            } else if (obj.fieldType == "ISMINOR") {
+                fieldtype = FieldType::isMinor;
+            }
+            clauses = constraintAdder->customConstraint(fieldtype, obj.fieldValues, RHSType, /**/obj.classValues, obj.isNot);
         }
         obj.constraint = clauses;
         obj.fieldValues.clear();

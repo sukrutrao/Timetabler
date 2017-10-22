@@ -205,3 +205,31 @@ Clauses ConstraintAdder::programAtMostOneOfCoreOrElective() {
     }
     return result;
 }
+
+Clauses ConstraintAdder::customConstraint(FieldType fieldLHS, std::vector<int> list1, FieldType classroomOrSlot, std::vector<int> list2, bool isNegated) {
+    Clauses result;
+    result.clear();
+    std::vector<Course> courses = timeTabler->data.courses;
+    for(int i = 0; i < courses.size(); i++) {
+        Clauses antecedent = encoder->hasFieldTypeListedValues(i, fieldLHS, list1);
+        Clauses consequent = encoder->hasFieldTypeListedValues(i, classroomOrSlot, list2);
+        if(isNegated) {
+            consequent = ~consequent;
+        }
+        result.addClauses(antecedent>>consequent);
+    }
+    return result;
+}
+
+Clauses ConstraintAdder::customConstraint(std::vector<int> courseList, FieldType classroomOrSlot, std::vector<int> listOfValues, bool isNegated) {
+    Clauses result;
+    result.clear();
+    for(int i = 0; i < courseList.size(); i++) {
+        Clauses clause = encoder->hasFieldTypeListedValues(i, classroomOrSlot, listOfValues);
+        if(isNegated) {
+            clause = ~clause;
+        }
+        result.addClauses(clause);
+    }
+    return result;
+}

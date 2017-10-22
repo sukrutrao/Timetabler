@@ -296,3 +296,12 @@ Clauses ConstraintEncoder::programAtMostOneOfCoreOrElective(int course) {
     }
     return result;
 }
+
+Clauses ConstraintEncoder::hasFieldTypeListedValues(int course, FieldType fieldType, std::vector<int> indexList) {
+    CClause resultClause;
+    for(int i = 0; i < indexList.size(); i++) {
+        resultClause.createLitAndAdd(vars[course][fieldType][i]);
+    }
+    Clauses result(resultClause);
+    return result;
+}

@@ -35,6 +35,7 @@ public:
     Clauses isCoreCourse(int);
     Clauses courseInMorningTime(int);
     Clauses programAtMostOneOfCoreOrElective(int);
+    Clauses hasFieldTypeListedValues(int, FieldType, std::vector<int>);
 };
 
 #endif

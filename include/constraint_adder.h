@@ -23,7 +23,6 @@ private:
     // Clauses exactlyOneTimePerCourse();
     // Clauses exactlyOneClassroomPerCourse();
     Clauses coreInMorningTime();
-    Clauses addCustomConstraint(ClauseType, unsigned);
     Clauses existingAssignmentClauses();
     Clauses programAtMostOneOfCoreOrElective();
 public:
@@ -31,6 +30,9 @@ public:
     ConstraintAdder(ConstraintEncoder*, TimeTabler*);
     void addConstraints();
     Clauses softConstraints();
+    Clauses customConstraint(FieldType, std::vector<int>, FieldType, std::vector<int>, bool);
+    Clauses customConstraint(std::vector<int>, FieldType, std::vector<int>, bool);
+
 };
 
 #endif
