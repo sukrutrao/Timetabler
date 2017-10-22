@@ -3,6 +3,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <cstdlib>
 #include "clauses.h"
 #include "global.h"
 
@@ -231,7 +232,7 @@ struct action<wconstraint> {
     }
 };
 
-struct grammar : pegtl::star<wconstraint> {};
+struct grammar : pegtl::try_catch<pegtl::must<pegtl::star<wconstraint>, pegtl::eof>> {};
 template <>
 struct action<grammar> {
     template <typename Input>
@@ -241,10 +242,20 @@ struct action<grammar> {
     }
 };
 
+template <typename Rule>
+struct control : pegtl::normal<Rule> {
+    template <typename Input, typename... States>
+    static void raise(const Input& in, States&&...) {
+        std::cout << in.position() << " Error parsing custom constraints" << std::endl;
+        // throw pegtl::parse_error( "parse error matching " + pegtl::internal::demangle< Rule >(), in );
+        exit(1);
+    }
+};
+
 void parseCustomConstraints(ConstraintAdder* constraintAdder, TimeTabler* timeTabler) {
     Object obj;
     obj.constraintAdder = constraintAdder;
     obj.timeTabler = timeTabler;
     pegtl::file_input<> in("config/custom.txt");
-    pegtl::parse<grammar, action>(in, obj);
+    pegtl::parse<grammar, action, control>(in, obj);
 }
