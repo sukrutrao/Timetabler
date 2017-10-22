@@ -1,2 +1,0 @@
-clasom {a,b} IN CLASSROOM{c,d} AND
-file {a,c} NOT IN SLOT {c,d} WEIGHT 2
