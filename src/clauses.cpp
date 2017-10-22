@@ -95,9 +95,9 @@ Clauses Clauses::operator|(CClause &other) {
 }
 
 Clauses Clauses::operator>>(Clauses &other) {
-    std::cout << "Negating\n";
+//    std::cout << "Negating\n";
     Clauses negateThis = operator~();
-    std::cout << "Negated\n";
+//    std::cout << "Negated\n";
     // negateThis.print();
     return (negateThis | other);
 }

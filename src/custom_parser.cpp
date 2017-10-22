@@ -12,7 +12,7 @@ namespace pegtl = tao::TAOCPP_PEGTL_NAMESPACE;
 template <typename Rule>
 struct action : pegtl::nothing<Rule> {};
 
-struct integer : pegtl::seq<pegtl::opt<pegtl::one<'-'>>, pegtl::range<'1', '9'>, pegtl::star<pegtl::digit>> {};
+struct integer : pegtl::seq<pegtl::opt<pegtl::one<'-'>>, pegtl::plus<pegtl::digit>> {};
 template <>
 struct action<integer> {
     template <typename Input>
@@ -117,7 +117,7 @@ struct action<value> {
                     break;
                 }
             }
-            obj.slotValues.push_back(index);
+            obj.classValues.push_back(index);
         }
     }
 };
@@ -147,7 +147,7 @@ struct action<constraint_expr> {
             RHSType = FieldType::slot;
         }
         if (obj.fieldType == "COURSE") {
-            clauses = obj.constraintAdder->customConstraint(obj.fieldValues, RHSType, /**/obj.classValues, obj.isNot);
+            clauses = obj.constraintAdder->customConstraint(obj.fieldValues, RHSType, obj.classValues, obj.isNot);
         }
         else {
             if (obj.fieldType == "INSTRUCTOR") {
@@ -159,7 +159,7 @@ struct action<constraint_expr> {
             } else if (obj.fieldType == "ISMINOR") {
                 fieldType = FieldType::isMinor;
             }
-            clauses = obj.constraintAdder->customConstraint(fieldType, obj.fieldValues, RHSType, /**/obj.classValues, obj.isNot);
+            clauses = obj.constraintAdder->customConstraint(fieldType, obj.fieldValues, RHSType, obj.classValues, obj.isNot);
         }
         obj.constraint = clauses;
         obj.fieldValues.clear();

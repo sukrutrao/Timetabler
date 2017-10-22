@@ -44,10 +44,10 @@ int main(int argc, char const *argv[]) {
             std::cout << "Slot : " << timeTabler->data.slots[j].getName()
                 << " " << timeTabler->data.fieldValueVars[i][FieldType::slot][j] << std::endl;
 
-        for (int j=0; j<timeTabler->data.highLevelVars.size(); j++) {
+    /*    for (int j=0; j<timeTabler->data.highLevelVars.size(); j++) {
             for(int k = 0; k < timeTabler->data.highLevelVars[j].size(); k++)
                 std::cout << "HLV : Course : " << j << " Field : " << k << " " << timeTabler->data.highLevelVars[j][k] << std::endl;
-        }
+        } */
             
 
         std::cout << std::endl;

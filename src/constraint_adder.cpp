@@ -27,10 +27,10 @@ Clauses ConstraintAdder::fieldSingleValueAtATime(FieldType fieldType) {
             Clauses antecedent = encoder->hasSameFieldTypeNotSameValue(i, j, fieldType);
             Clauses consequent = encoder->notIntersectingTime(i, j);
             // std::cout << "Course " << i << ", " << j << " : " << std::endl;
-            antecedent.print();
-            consequent.print();
+        //    antecedent.print();
+        //    consequent.print();
             Clauses r = antecedent | consequent;
-            r.print();
+        //    r.print();
             result.addClauses(r);
 
         }
@@ -143,6 +143,8 @@ void ConstraintAdder::addConstraints() {
     timeTabler->addClauses(minorInMinorTime(), weights[PredefinedClauses::minorInMinorTime]);
 
     timeTabler->addClauses(exactlyOneFieldValuePerCourse(FieldType::slot), weights[PredefinedClauses::exactlyOneSlotPerCourse]);
+    std::cout << "WEIGHT CLASSROOM : " << weights[PredefinedClauses::exactlyOneInstructorPerCourse] << std::endl;
+    exactlyOneFieldValuePerCourse(FieldType::classroom).print();
     timeTabler->addClauses(exactlyOneFieldValuePerCourse(FieldType::classroom), weights[PredefinedClauses::exactlyOneClassroomPerCourse]);
     timeTabler->addClauses(exactlyOneFieldValuePerCourse(FieldType::instructor), weights[PredefinedClauses::exactlyOneInstructorPerCourse]);
     timeTabler->addClauses(exactlyOneFieldValuePerCourse(FieldType::isMinor), weights[PredefinedClauses::exactlyOneIsMinorPerCourse]);
@@ -210,14 +212,30 @@ Clauses ConstraintAdder::customConstraint(FieldType fieldLHS, std::vector<int> l
     Clauses result;
     result.clear();
     std::vector<Course> courses = timeTabler->data.courses;
+    if(fieldLHS == FieldType::instructor) {
+        std::cout << "instructor\n";
+        for(int i = 0; i < list1.size(); i++) {
+            std::cout << timeTabler->data.instructors[list1[i]].getName() << std::endl;
+        }
+    }
+    if(classroomOrSlot == FieldType::classroom) {
+        std::cout << "classroom\n";
+        for(int i = 0; i < list2.size(); i++) {
+            std::cout << timeTabler->data.classrooms[list2[i]].getName() << std::endl;
+        }
+    }
+    std::cout << isNegated << "\n";
     for(int i = 0; i < courses.size(); i++) {
         Clauses antecedent = encoder->hasFieldTypeListedValues(i, fieldLHS, list1);
         Clauses consequent = encoder->hasFieldTypeListedValues(i, classroomOrSlot, list2);
+        consequent.print();
         if(isNegated) {
+            std::cout << "NEGATED!!!\n";
             consequent = ~consequent;
         }
         result.addClauses(antecedent>>consequent);
     }
+    result.print();
     return result;
 }
 
@@ -225,7 +243,7 @@ Clauses ConstraintAdder::customConstraint(std::vector<int> courseList, FieldType
     Clauses result;
     result.clear();
     for(int i = 0; i < courseList.size(); i++) {
-        Clauses clause = encoder->hasFieldTypeListedValues(i, classroomOrSlot, listOfValues);
+        Clauses clause = encoder->hasFieldTypeListedValues(courseList[i], classroomOrSlot, listOfValues);
         if(isNegated) {
             clause = ~clause;
         }

@@ -1,2 +1,1 @@
-INSTRUCTOR {Dr. Saurabh Joshi,Dr. Ramakrishna Upadrasta} IN CLASSROOM {414} WEIGHT -1
-SS
+INSTRUCTOR {Dr. Saurabh Joshi} IN CLASSROOM {317} WEIGHT -1
