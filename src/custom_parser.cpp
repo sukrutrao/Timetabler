@@ -1,64 +1,77 @@
 #include "custom_parser.h"
+#include <tao/pegtl.hpp>
+#include <string>
+#include <vector>
+#include "clauses.h"
+#include "global.h"
 
-template <> struct action<integer> {
+namespace pegtl = tao::TAOCPP_PEGTL_NAMESPACE;
+
+template <typename Rule>
+struct action : pegtl::nothing<Rule> {};
+
+struct integer : pegtl::seq<pegtl::range<'1', '9'>, pegtl::star<pegtl::digit>> {};
+template <>
+struct action<integer> {
     template <typename Input>
     static void apply(const Input& in, Object &obj) {
         obj.integer = std::stoi(in.string());
     }
 };
 
-template <> struct action<instr> {
-    template <typename Input>
-    static void apply(const Input& in, Object &obj) {}
-};
+struct instr : TAOCPP_PEGTL_KEYWORD("IN") {};
 
-template <> struct action<notstr> {
+struct notstr : TAOCPP_PEGTL_KEYWORD("NOT") {};
+template <>
+struct action<notstr> {
     template <typename Input>
     static void apply(const Input& in, Object &obj) {
         obj.isNot = true;
     }
 };
 
-template <> struct action<andstr> {
-    template <typename Input>
-    static void apply(const Input& in, Object &obj) {}
-};
+struct andstr : TAOCPP_PEGTL_KEYWORD("AND") {};
 
-template <> struct action<orstr> {
-    template <typename Input>
-    static void apply(const Input& in, Object &obj) {}
-};
+struct orstr : TAOCPP_PEGTL_KEYWORD("OR") {};
 
-template <> struct action<classroomstr> {
+struct classroomstr : TAOCPP_PEGTL_KEYWORD("CLASSROOM") {};
+template <>
+struct action<classroomstr> {
     template <typename Input>
     static void apply(const Input& in, Object &obj) {
         obj.takeFieldValues = false;
         obj.takeClassValues = true;
-        obj.taleSlotValues = false;
+        obj.takeSlotValues = false;
     }
 };
 
-template <> struct action<slotstr> {
+struct slotstr : TAOCPP_PEGTL_KEYWORD("SLOT") {};
+template <>
+struct action<slotstr> {
     template <typename Input>
     static void apply(const Input& in, Object &obj) {
         obj.takeFieldValues = false;
         obj.takeClassValues = false;
-        obj.taleSlotValues = true;
+        obj.takeSlotValues = true;
     }
 };
 
-template <> struct action<fieldtype> {
+struct fieldtype : pegtl::identifier {};
+template <>
+struct action<fieldtype> {
     template <typename Input>
     static void apply(const Input& in, Object &obj) {
         obj.fieldType = in.string();
         obj.takeFieldValues = true;
         obj.takeClassValues = false;
-        obj.taleSlotValues = false;
+        obj.takeSlotValues = false;
         obj.isNot = false;
     }
 };
 
-template <> struct action<value> {
+struct value : pegtl::plus<pegtl::not_one<','>> {};
+template <>
+struct action<value> {
     template <typename Input>
     static void apply(const Input& in, Object &obj) {
         std::string val = in.string();
@@ -80,7 +93,7 @@ template <> struct action<value> {
                 }
             } else if (obj.fieldType == "SEGMENT") {
                 for (int i=0; i<obj.timeTabler->data.segments.size(); i++) {
-                    if (obj.timeTabler->data.segments[i].toString() == val) {
+                    if (obj.timeTabler->data.segments[i].getName() == val) {
                         index = i;
                         break;
                     }
@@ -89,7 +102,7 @@ template <> struct action<value> {
             obj.fieldValues.push_back(index);
         } else if (obj.takeClassValues) {
             for (int i=0; i<obj.timeTabler->data.classrooms.size(); i++) {
-                if (obj.timeTabler->data.classrooms[i].getNumber() == val) {
+                if (obj.timeTabler->data.classrooms[i].getName() == val) {
                     index = i;
                     break;
                 }
@@ -97,7 +110,7 @@ template <> struct action<value> {
             obj.classValues.push_back(index);
         } else if (obj.takeSlotValues) {
             for (int i=0; i<obj.timeTabler->data.slots.size(); i++) {
-                if (obj.timeTabler->data.slots[i].getNumber() == val) {
+                if (obj.timeTabler->data.slots[i].getName() == val) {
                     index = i;
                     break;
                 }
@@ -107,22 +120,18 @@ template <> struct action<value> {
     }
 };
 
-template <> struct action<values> {
-    template <typename Input>
-    static void apply(const Input& in, Object &obj) {}
-};
+struct values : pegtl::seq<pegtl::pad<pegtl::one<'{'>,
+    pegtl::space>,pegtl::list<value,pegtl::one<','>,pegtl::space>,
+    pegtl::pad<pegtl::one<'}'>,pegtl::space>> {};
 
-template <> struct action<classroomdecl> {
-    template <typename Input>
-    static void apply(const Input& in, Object &obj) {}
-};
+struct classroomdecl : pegtl::seq<pegtl::pad<classroomstr, pegtl::space>, values> {};
 
-template <> struct action<slotdecl> {
-    template <typename Input>
-    static void apply(const Input& in, Object &obj) {}
-};
+struct slotdecl : pegtl::seq<pegtl::pad<slotstr, pegtl::space>, values> {};
 
-template <> struct action<constraint_expr> {
+struct constraint_expr : pegtl::seq<pegtl::pad<fieldtype,pegtl::space>,
+    values,pegtl::opt<notstr>,pegtl::pad<instr,pegtl::space>,pegtl::sor<classroomdecl,slotdecl>> {};
+template <>
+struct action<constraint_expr> {
     template <typename Input>
     static void apply(const Input& in, Object &obj) {
         Clauses clauses;
@@ -135,7 +144,7 @@ template <> struct action<constraint_expr> {
             RHSType = FieldType::slot;
         }
         if (obj.fieldType == "COURSE") {
-            clauses = constraintAdder->customConstraint(obj.fieldValues, RHSType, /**/obj.classValues, obj.isNot);
+            clauses = obj.constraintAdder->customConstraint(obj.fieldValues, RHSType, /**/obj.classValues, obj.isNot);
         }
         else {
             if (obj.fieldType == "INSTRUCTOR") {
@@ -143,11 +152,11 @@ template <> struct action<constraint_expr> {
             } else if (obj.fieldType == "PROGRAM") {
                 fieldType = FieldType::program;
             } else if (obj.fieldType == "SEGMENT") {
-                fieldtype = FieldType::segment;
+                fieldType = FieldType::segment;
             } else if (obj.fieldType == "ISMINOR") {
-                fieldtype = FieldType::isMinor;
+                fieldType = FieldType::isMinor;
             }
-            clauses = constraintAdder->customConstraint(fieldtype, obj.fieldValues, RHSType, /**/obj.classValues, obj.isNot);
+            clauses = obj.constraintAdder->customConstraint(fieldType, obj.fieldValues, RHSType, /**/obj.classValues, obj.isNot);
         }
         obj.constraint = clauses;
         obj.fieldValues.clear();
@@ -156,12 +165,14 @@ template <> struct action<constraint_expr> {
     }
 };
 
-template <> struct action<constraint_braced> {
-    template <typename Input>
-    static void apply(const Input& in, Object &obj) {}
-};
+struct constraint_or;
+struct constraint_braced : pegtl::seq<pegtl::opt<notstr>,
+    pegtl::if_must<pegtl::pad<pegtl::one<'('>,
+    pegtl::space>,constraint_or,pegtl::pad<pegtl::one<')'>,pegtl::space>>> {};
 
-template <> struct action<constraint_not> {
+struct constraint_not : pegtl::seq<pegtl::pad<notstr, pegtl::space>, constraint_braced> {};
+template <>
+struct action<constraint_not> {
     template <typename Input>
     static void apply(const Input& in, Object &obj) {
         Clauses clauses = obj.constraint;
@@ -169,14 +180,18 @@ template <> struct action<constraint_not> {
     }
 };
 
-template <> struct action<constraint_val> {
+struct constraint_val : pegtl::sor<constraint_expr, constraint_not, constraint_braced> {};
+template <>
+struct action<constraint_val> {
     template <typename Input>
     static void apply(const Input& in, Object &obj) {
         obj.constraintVals.push_back(obj.constraint);
     }
 };
 
-template <> struct action<constraint_and> {
+struct constraint_and : pegtl::list<constraint_val, andstr, pegtl::space> {};
+template <>
+struct action<constraint_and> {
     template <typename Input>
     static void apply(const Input& in, Object &obj) {
         Clauses clauses = obj.constraintVals[0];
@@ -188,7 +203,9 @@ template <> struct action<constraint_and> {
     }
 };
 
-template <> struct action<constraint_or> {
+struct constraint_or : pegtl::list<constraint_and, orstr, pegtl::space> {};
+template <>
+struct action<constraint_or> {
     template <typename Input>
     static void apply(const Input& in, Object &obj) {
         Clauses clauses = obj.constraintAnds[0];
@@ -200,14 +217,28 @@ template <> struct action<constraint_or> {
     }
 };
 
-template <> struct action<wconstraint> {
+struct wconstraint : pegtl::seq<pegtl::pad<constraint_or, pegtl::space>,
+    pegtl::pad<TAOCPP_PEGTL_KEYWORD("WEIGHT"), pegtl::space>, pegtl::pad<integer, pegtl::space>> {};
+template <>
+struct action<wconstraint> {
     template <typename Input>
     static void apply(const Input& in, Object &obj) {
-        // TODO
+        obj.timeTabler->addClauses(obj.constraint, obj.integer);
     }
 };
 
-template <> struct action<grammar> {
+struct grammar : pegtl::star<wconstraint> {};
+template <>
+struct action<grammar> {
     template <typename Input>
-    static void apply(const Input& in, Object &obj) {}
+    static void apply(const Input& in, Object &obj) {
+    }
 };
+
+void parseCustomConstraints(ConstraintAdder* constraintAdder, TimeTabler* timeTabler) {
+    Object obj;
+    obj.constraintAdder = constraintAdder;
+    obj.timeTabler = timeTabler;
+    pegtl::file_input<> in("config/custom.txt");
+    pegtl::parse<grammar, action>(in, obj);
+}

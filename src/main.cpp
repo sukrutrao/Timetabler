@@ -4,6 +4,7 @@
 #include "constraint_adder.h"
 #include "mtl/Vec.h"
 #include "global.h"
+#include "custom_parser.h"
 #include <iostream>
 
 TimeTabler *Global::timeTabler = nullptr;
@@ -55,6 +56,7 @@ int main(int argc, char const *argv[]) {
     ConstraintEncoder encoder(timeTabler);
     ConstraintAdder constraintAdder(&encoder, timeTabler);
     constraintAdder.addConstraints();
+    parseCustomConstraints(&constraintAdder, timeTabler);
 //    timeTabler->addClauses(constraintAdder.addConstraints());
   //  timeTabler->addSoftClauses(constraintAdder.softConstraints());
     timeTabler->addHighLevelClauses();

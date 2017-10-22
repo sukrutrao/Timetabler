@@ -1,38 +1,45 @@
+weights: # Assignment, high level
+  instructor: [1, 2]
+  segment: [1, 2]
+  is_minor: [1, 2]
+  program: 1
+  classroom: [1, 2]
+  slot: [1, 2]
+
 instructors:
   - Dr. Saurabh Joshi
   - Dr. Ramakrishna Upadrasta
 
 classrooms:
-  - number: "414"
+  - number: 414
     size: 50
-  - number: "317"
+  - number: 317
     size: 30
-  
 
 segments:
   start: 1
   end: 6
 
 slots:
-  - name: "A"
+  - name: A
     is_minor: false
     time_periods:
-      - day: "Monday"
-        start: "16:00"
-        end: "17:30"
-      - day: "Wednesday"
-        start: "14:30"
-        end: "16:00"
-  - name: "B"
+      - day: Monday
+        start: 16:00
+        end: 17:30
+      - day: Wednesday
+        start: 14:30
+        end: 16:00
+  - name: B
     is_minor: true
     time_periods:
-      - day: "Tuesday"
-        start: "10:00"
-        end: "11:00"
+      - day: Tuesday
+        start: 10:00
+        end: 11:00
 
 programs:
-  - "B.Tech.1"
-  - "B.Tech.2"
-  - "B.Tech.3"
-  - "B.Tech.4"
-  - "M.Tech."
+  - B.Tech.1
+  - B.Tech.2
+  - B.Tech.3
+  - B.Tech.4
+  - M.Tech.
