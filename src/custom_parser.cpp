@@ -1,5 +1,6 @@
 #include "custom_parser.h"
 #include <tao/pegtl.hpp>
+#include <iostream>
 #include <string>
 #include <vector>
 #include "clauses.h"
@@ -10,7 +11,7 @@ namespace pegtl = tao::TAOCPP_PEGTL_NAMESPACE;
 template <typename Rule>
 struct action : pegtl::nothing<Rule> {};
 
-struct integer : pegtl::seq<pegtl::range<'1', '9'>, pegtl::star<pegtl::digit>> {};
+struct integer : pegtl::seq<pegtl::opt<pegtl::one<'-'>>, pegtl::range<'1', '9'>, pegtl::star<pegtl::digit>> {};
 template <>
 struct action<integer> {
     template <typename Input>
@@ -69,7 +70,7 @@ struct action<fieldtype> {
     }
 };
 
-struct value : pegtl::plus<pegtl::not_one<','>> {};
+struct value : pegtl::plus<pegtl::sor<pegtl::range<'a','z'>,pegtl::range<'A','Z'>,pegtl::digit,pegtl::one<'.'>,pegtl::space>> {};
 template <>
 struct action<value> {
     template <typename Input>
@@ -134,6 +135,7 @@ template <>
 struct action<constraint_expr> {
     template <typename Input>
     static void apply(const Input& in, Object &obj) {
+        std::cout << in.string() << std::endl;
         Clauses clauses;
         FieldType RHSType;
         FieldType fieldType;
@@ -214,6 +216,7 @@ struct action<constraint_or> {
         }
         obj.constraintAnds.clear();
         obj.constraint = clauses;
+        std::cout << in.string() << std::endl;
     }
 };
 
@@ -224,6 +227,7 @@ struct action<wconstraint> {
     template <typename Input>
     static void apply(const Input& in, Object &obj) {
         obj.timeTabler->addClauses(obj.constraint, obj.integer);
+        std::cout << in.string() << std::endl;
     }
 };
 
@@ -232,6 +236,8 @@ template <>
 struct action<grammar> {
     template <typename Input>
     static void apply(const Input& in, Object &obj) {
+        std::cout << "CUSTOM CONSTRAINTS SUCCESSFULLY PARSED" <<std::endl;
+        std::cout << in.string() << std::endl;
     }
 };
 
