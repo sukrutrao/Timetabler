@@ -148,7 +148,7 @@ Clauses ConstraintEncoder::hasAtMostOneFieldValueTrue(int course, FieldType fiel
     std::vector<Var> varsToUse = getAllowedVars(course, fieldType);
     Clauses result;
     // Sequential encoding
-    std::vector<Lit> s;
+ /*   std::vector<Lit> s;
     int n = varsToUse.size();
     // TODO : check this
     if(n <= 1) {
@@ -169,15 +169,15 @@ Clauses ConstraintEncoder::hasAtMostOneFieldValueTrue(int course, FieldType fiel
         result.addClauses(CClause(s[i]) | xi);
         result.addClauses(Clauses(~CClause(s[i-1])) | si);
         result.addClauses(Clauses(~CClause(s[i-1])) | xi);
-    }
-  /*  for(int i = 0; i < vars[course][fieldType].size(); i++) {
+    } */
+    for(int i = 0; i < vars[course][fieldType].size(); i++) {
         for(int j = i+1; j < vars[course][fieldType].size(); j++) {
             Clauses first(vars[course][fieldType][i]);
             Clauses second(vars[course][fieldType][j]);
             Clauses negSecond = ~second;
             result.addClauses(~first | negSecond);
         }
-    }*/
+    }
     return result;
 }
 
@@ -299,9 +299,16 @@ Clauses ConstraintEncoder::programAtMostOneOfCoreOrElective(int course) {
 
 Clauses ConstraintEncoder::hasFieldTypeListedValues(int course, FieldType fieldType, std::vector<int> indexList) {
     CClause resultClause;
+    if(fieldType == FieldType::classroom) {
+        std::cout << "CLASSROOM!\n";
+        for(int i = 0; i < indexList.size(); i++) {
+            std::cout << timeTabler->data.classrooms[indexList[i]].getName() << std::endl;
+        }
+    }
     for(int i = 0; i < indexList.size(); i++) {
-        resultClause.createLitAndAdd(vars[course][fieldType][i]);
+        resultClause.createLitAndAdd(vars[course][fieldType][indexList[i]]);
     }
     Clauses result(resultClause);
+    result.print();
     return result;
 }

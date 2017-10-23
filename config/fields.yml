@@ -14,7 +14,7 @@ classrooms:
   - number: 414
     size: 50
   - number: 317
-    size: 30
+    size: 80
 
 segments:
   start: 1

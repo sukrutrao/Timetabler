@@ -12,7 +12,7 @@ namespace pegtl = tao::TAOCPP_PEGTL_NAMESPACE;
 template <typename Rule>
 struct action : pegtl::nothing<Rule> {};
 
-struct integer : pegtl::seq<pegtl::opt<pegtl::one<'-'>>, pegtl::range<'1', '9'>, pegtl::star<pegtl::digit>> {};
+struct integer : pegtl::seq<pegtl::opt<pegtl::one<'-'>>, pegtl::plus<pegtl::digit>> {};
 template <>
 struct action<integer> {
     template <typename Input>
@@ -201,7 +201,7 @@ struct action<allvalues> {
         } else if (obj.fieldType == FieldValuesType::SLOT) {
             for (int i=0; i<obj.timeTabler->data.slots.size(); i++) {
                 obj.slotValues.push_back(i);
-            }            
+            }
         }
     }
 };
@@ -233,6 +233,7 @@ struct action<constraint_expr> {
     static void apply(const Input& in, Object &obj) {
         std::cout << in.string() << std::endl;
         Clauses clauses;
+<<<<<<< HEAD
         for (int course : obj.courseValues) {
             Clauses ante, cons, clause;
             if (obj.instructorValues.size() > 0) {
@@ -261,6 +262,30 @@ struct action<constraint_expr> {
             }
             clause = ante >> cons;
             clauses = clauses & clause;
+=======
+        FieldType RHSType;
+        FieldType fieldType;
+        if(obj.takeClassValues) {
+            RHSType = FieldType::classroom;
+        }
+        else {
+            RHSType = FieldType::slot;
+        }
+        if (obj.fieldType == "COURSE") {
+            clauses = obj.constraintAdder->customConstraint(obj.fieldValues, RHSType, obj.classValues, obj.isNot);
+        }
+        else {
+            if (obj.fieldType == "INSTRUCTOR") {
+                fieldType = FieldType::instructor;
+            } else if (obj.fieldType == "PROGRAM") {
+                fieldType = FieldType::program;
+            } else if (obj.fieldType == "SEGMENT") {
+                fieldType = FieldType::segment;
+            } else if (obj.fieldType == "ISMINOR") {
+                fieldType = FieldType::isMinor;
+            }
+            clauses = obj.constraintAdder->customConstraint(fieldType, obj.fieldValues, RHSType, obj.classValues, obj.isNot);
+>>>>>>> 5188bdc27ed6b21c9bb7a09b47041c022d5c8464
         }
         obj.constraint = clauses;
         obj.courseValues.clear();

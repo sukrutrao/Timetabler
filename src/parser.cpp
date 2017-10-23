@@ -110,7 +110,7 @@ void Parser::parseInput(std::string file) {
                 assignmentsThisCourse[FieldType::segment].push_back(l_True);
                 continue;
             }
-            std::cout << "SEG : " << timeTabler->data.segments[i].getName() << " " << segmentStr << std::endl;
+     //       std::cout << "SEG : " << timeTabler->data.segments[i].getName() << " " << segmentStr << std::endl;
             assignmentsThisCourse[FieldType::segment].push_back(l_False);
         }
         if (segment == -1) {
