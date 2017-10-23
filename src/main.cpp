@@ -57,7 +57,7 @@ int main(int argc, char const *argv[]) {
     ConstraintEncoder encoder(timeTabler);
     ConstraintAdder constraintAdder(&encoder, timeTabler);
     constraintAdder.addConstraints();
-    parseCustomConstraints(&encoder, &constraintAdder, timeTabler);
+    parseCustomConstraints(&encoder, timeTabler);
 //    timeTabler->addClauses(constraintAdder.addConstraints());
   //  timeTabler->addSoftClauses(constraintAdder.softConstraints());
     timeTabler->addHighLevelClauses();

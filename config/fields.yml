@@ -6,6 +6,23 @@ weights: # Assignment, high level
   classroom: [1, 1]
   slot: [1, 1]
 
+# Predefined Weights
+# instructorSingleCourseAtATime
+# classroomSingleCourseAtATime
+# programSingleCoreCourseAtATime
+# minorInMinorTime
+# exactlyOneSlotPerCourse
+# exactlyOneInstructorPerCourse
+# exactlyOneSegmentPerCourse
+# exactlyOneIsMinorPerCourse
+# exactlyOneClassroomPerCourse
+# coreInMorningTime
+# programAtMostOneOfCoreOrElective
+
+predefined_weights:
+  - clause: 0
+    weight: 1
+
 instructors:
   - Dr. Saurabh Joshi
   - Dr. Ramakrishna Upadrasta

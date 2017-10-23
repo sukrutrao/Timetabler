@@ -65,6 +65,13 @@ void Parser::parseFields(std::string file) {
     timeTabler->data.highLevelVarWeights[FieldType::classroom] = 2*weightsConfig["classroom"][1].as<int>();
     timeTabler->data.existingAssignmentWeights[FieldType::slot] = weightsConfig["slot"][0].as<int>();
     timeTabler->data.highLevelVarWeights[FieldType::slot] = 2*weightsConfig["slot"][1].as<int>();
+
+    YAML::Node predefinedWeightsConfig = config["predefined_weights"];
+    for (YAML::Node predefinedWeightNode : predefinedWeightsConfig) {
+        unsigned clauseNo = predefinedWeightNode["clause"].as<int>();
+        int weight = predefinedWeightNode["weight"].as<int>();
+        timeTabler->data.predefinedClausesWeights[clauseNo] = weight;
+    }
 }
 
 Day Parser::getDayFromString(std::string day) {
