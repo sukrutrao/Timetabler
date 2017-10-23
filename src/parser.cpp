@@ -55,17 +55,16 @@ void Parser::parseFields(std::string file) {
 
     YAML::Node weightsConfig = config["weights"];
     timeTabler->data.existingAssignmentWeights[FieldType::instructor] = weightsConfig["instructor"][0].as<int>();
-    timeTabler->data.highLevelVarWeights[FieldType::instructor] = weightsConfig["instructor"][1].as<int>();
+    timeTabler->data.highLevelVarWeights[FieldType::instructor] = 2*weightsConfig["instructor"][1].as<int>();
     timeTabler->data.existingAssignmentWeights[FieldType::segment] = weightsConfig["segment"][0].as<int>();
-    timeTabler->data.highLevelVarWeights[FieldType::segment] = weightsConfig["segment"][1].as<int>();
+    timeTabler->data.highLevelVarWeights[FieldType::segment] = 2*weightsConfig["segment"][1].as<int>();
     timeTabler->data.existingAssignmentWeights[FieldType::isMinor] = weightsConfig["is_minor"][0].as<int>();
-    timeTabler->data.highLevelVarWeights[FieldType::isMinor] = weightsConfig["is_minor"][1].as<int>();
+    timeTabler->data.highLevelVarWeights[FieldType::isMinor] = 2*weightsConfig["is_minor"][1].as<int>();
     timeTabler->data.existingAssignmentWeights[FieldType::program] = weightsConfig["program"].as<int>();
     timeTabler->data.existingAssignmentWeights[FieldType::classroom] = weightsConfig["classroom"][0].as<int>();
-    timeTabler->data.highLevelVarWeights[FieldType::classroom] = weightsConfig["classroom"][1].as<int>();
+    timeTabler->data.highLevelVarWeights[FieldType::classroom] = 2*weightsConfig["classroom"][1].as<int>();
     timeTabler->data.existingAssignmentWeights[FieldType::slot] = weightsConfig["slot"][0].as<int>();
-    timeTabler->data.highLevelVarWeights[FieldType::slot] = weightsConfig["slot"][1].as<int>();
-
+    timeTabler->data.highLevelVarWeights[FieldType::slot] = 2*weightsConfig["slot"][1].as<int>();
 }
 
 Day Parser::getDayFromString(std::string day) {
