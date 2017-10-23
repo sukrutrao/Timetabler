@@ -12,7 +12,7 @@ using namespace Minisat;
  *
  * @param[in]  lits  The literals in the clause
  */
-CClause::CClause(std::vector<Lit> lits) {
+CClause::CClause(const std::vector<Lit> &lits) {
     this->lits = lits;
 }
 
@@ -21,7 +21,7 @@ CClause::CClause(std::vector<Lit> lits) {
  *
  * @param[in]  lit   A literal, which creates a unit clause
  */
-CClause::CClause(Lit lit) {
+CClause::CClause(const Lit &lit) {
     lits.clear();
     lits.push_back(lit);
 }
@@ -32,7 +32,7 @@ CClause::CClause(Lit lit) {
  * @param[in]  var   A variable, which is converted to a Lit with
  *                   positive polarity and added to create a unit clause
  */
-CClause::CClause(Var var) {
+CClause::CClause(const Var &var) {
     lits.clear();
     lits.push_back(mkLit(var, false));
 }
@@ -78,7 +78,7 @@ std::vector<CClause> CClause::operator~() {
  * @return     The vector with the clauses as the result of performing
  *             the AND operation 
  */
-std::vector<CClause> CClause::operator&(CClause &other) {
+std::vector<CClause> CClause::operator&(const CClause &other) {
     std::vector<CClause> result;
     result.clear();
     result.push_back(*this);
@@ -97,7 +97,7 @@ std::vector<CClause> CClause::operator&(CClause &other) {
  *
  * @return     A Clauses object with the result of performing the AND operation
  */
-Clauses CClause::operator&(Clauses &other) {
+Clauses CClause::operator&(const Clauses &other) {
     Clauses result(other.getClauses());
     result.addClauses(*this);
     return result;
@@ -115,7 +115,7 @@ Clauses CClause::operator&(Clauses &other) {
  *
  * @return     The clause with the result on performing the OR operation
  */
-CClause CClause::operator|(CClause &other) {
+CClause CClause::operator|(const CClause &other) {
     std::vector<Lit> thisLits = this->lits;
     std::vector<Lit> otherLits = other.getLits();
     thisLits.insert(std::end(thisLits), std::begin(otherLits), std::end(otherLits));
@@ -156,7 +156,7 @@ CClause CClause::operator|(CClause &other) {
  *
  * @return     A Clauses with the result of performing the AND operation
  */
-Clauses CClause::operator|(Clauses &other) {
+Clauses CClause::operator|(const Clauses &other) {
     Clauses thisLHS(*this);
     return (thisLHS | other);
 }
@@ -174,7 +174,7 @@ Clauses CClause::operator|(Clauses &other) {
  *
  * @return     A vector of clauses as a result of the implication
  */
-std::vector<CClause> CClause::operator>>(CClause &other) {
+std::vector<CClause> CClause::operator>>(const CClause &other) {
     std::cout << "#################################################################\n";
     std::vector<CClause> lhs = ~(*this);
     std::vector<CClause> result;
@@ -196,7 +196,7 @@ std::vector<CClause> CClause::operator>>(CClause &other) {
  *
  * @return     A Clauses object as a result of the implication
  */
-Clauses CClause::operator>>(Clauses &other) {
+Clauses CClause::operator>>(const Clauses &other) {
     Clauses thisLHS(~(*this));
     return (thisLHS | other);
 }
@@ -208,7 +208,7 @@ Clauses CClause::operator>>(Clauses &other) {
  *
  * @param[in]  var1  The variable to be added
  */
-void CClause::createLitAndAdd(Var var1) {
+void CClause::createLitAndAdd(const Var &var1) {
     lits.push_back(mkLit(var1, false));
 }
 
@@ -220,7 +220,7 @@ void CClause::createLitAndAdd(Var var1) {
  * @param[in]  var1  The first Var
  * @param[in]  var2  The second Var
  */
-void CClause::createLitAndAdd(Var var1, Var var2) {
+void CClause::createLitAndAdd(const Var &var1, const Var &var2) {
     lits.push_back(mkLit(var1, false));
     lits.push_back(mkLit(var2, false));
 }
@@ -234,7 +234,7 @@ void CClause::createLitAndAdd(Var var1, Var var2) {
  * @param[in]  var2  The second Var
  * @param[in]  var3  The third Var
  */
-void CClause::createLitAndAdd(Var var1, Var var2, Var var3) {
+void CClause::createLitAndAdd(const Var &var1, const Var &var2, const Var &var3) {
     lits.push_back(mkLit(var1, false));
     lits.push_back(mkLit(var2, false));
     lits.push_back(mkLit(var3, false));
@@ -245,7 +245,7 @@ void CClause::createLitAndAdd(Var var1, Var var2, Var var3) {
  *
  * @param[in]  lit1  The literal to be added
  */
-void CClause::addLits(Lit lit1) {
+void CClause::addLits(const Lit &lit1) {
     lits.push_back(lit1);
 }
 
@@ -255,7 +255,7 @@ void CClause::addLits(Lit lit1) {
  * @param[in]  lit1  The first Lit
  * @param[in]  lit2  The second Lit
  */
-void CClause::addLits(Lit lit1, Lit lit2) {
+void CClause::addLits(const Lit &lit1, const Lit &lit2) {
     lits.push_back(lit1);
     lits.push_back(lit2);
 }
@@ -267,7 +267,7 @@ void CClause::addLits(Lit lit1, Lit lit2) {
  * @param[in]  lit2  The second Lit
  * @param[in]  lit3  The third Lit
  */
-void CClause::addLits(Lit lit1, Lit lit2, Lit lit3) {
+void CClause::addLits(const Lit &lit1, const Lit &lit2, const Lit &lit3) {
     lits.push_back(lit1);
     lits.push_back(lit2);
     lits.push_back(lit3);
@@ -278,7 +278,7 @@ void CClause::addLits(Lit lit1, Lit lit2, Lit lit3) {
  *
  * @param[in]  otherLits  The vector of Lits to be added
  */
-void CClause::addLits(std::vector<Lit> otherLits) {
+void CClause::addLits(const std::vector<Lit> &otherLits) {
     lits.insert(std::end(lits), std::begin(otherLits), std::end(otherLits));
 }
 
@@ -287,7 +287,7 @@ void CClause::addLits(std::vector<Lit> otherLits) {
  *
  * @return     The literals in the clause
  */
-std::vector<Lit> CClause::getLits() {
+std::vector<Lit> CClause::getLits() const {
     return lits;
 }
 

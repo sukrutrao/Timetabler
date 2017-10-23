@@ -31,18 +31,17 @@ private:
      * A pointer to the MaxSAT formula object
      */
     MaxSATFormula *formula;
-    std::vector<Var> assumptions;
     std::vector<lbool> model;
 public:
     Data data;
     TimeTabler();
     ~TimeTabler();
-    void addClauses(std::vector<CClause>, int);
-    void addClauses(Clauses, int);
-    void addSoftClauses(std::vector<CClause>);
-    void addSoftClauses(Clauses);
-    bool checkAllTrue(std::vector<Var>);
-    bool isVarTrue(Var);
+    void addClauses(const std::vector<CClause>&, int);
+    void addClauses(const Clauses&, int);
+  /*  void addSoftClauses(std::vector<CClause>);
+    void addSoftClauses(Clauses);*/
+    bool checkAllTrue(const std::vector<Var>&);
+    bool isVarTrue(const Var&);
     bool solve();
     Var newVar();
     Lit newLiteral(bool);

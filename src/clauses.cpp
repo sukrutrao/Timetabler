@@ -13,7 +13,7 @@ using namespace Minisat;
  *
  * @param[in]  clauses  The clauses in the set of clauses
  */
-Clauses::Clauses(std::vector<CClause> clauses) {
+Clauses::Clauses(const std::vector<CClause> &clauses) {
     this->clauses = clauses;
 }
 
@@ -22,7 +22,7 @@ Clauses::Clauses(std::vector<CClause> clauses) {
  *
  * @param[in]  clause  A single clause that forms the set of clauses
  */
-Clauses::Clauses(CClause clause) {
+Clauses::Clauses(const CClause &clause) {
     clauses.clear();
     clauses.push_back(clause);
 }
@@ -33,7 +33,7 @@ Clauses::Clauses(CClause clause) {
  * @param[in]  lit   A single literal, a Lit, that is converted
  *                   to a unit clause and forms the set of clauses
  */
-Clauses::Clauses(Lit lit) {
+Clauses::Clauses(const Lit &lit) {
     clauses.clear();
     CClause clause(lit);
     clauses.push_back(clause);
@@ -47,7 +47,7 @@ Clauses::Clauses(Lit lit) {
  *                   converted to a unit clause, which then forms
  *                   the set of clauses
  */
-Clauses::Clauses(Var var) {
+Clauses::Clauses(const Var &var) {
     clauses.clear();
     CClause clause(var);
     clauses.push_back(clause);
@@ -96,7 +96,7 @@ Clauses Clauses::operator~() {
  *
  * @return     A Clauses object with the result of the AND operation
  */
-Clauses Clauses::operator&(Clauses &other) {
+Clauses Clauses::operator&(const Clauses &other) {
     std::vector<CClause> thisClauses = clauses;
     std::vector<CClause> otherClauses = other.clauses;
     thisClauses.insert(std::end(thisClauses), std::begin(otherClauses), std::end(otherClauses));
@@ -111,7 +111,7 @@ Clauses Clauses::operator&(Clauses &other) {
  *
  * @return     A Clauses object with the result of the AND operation
  */
-Clauses Clauses::operator&(CClause &other) {
+Clauses Clauses::operator&(const CClause &other) {
     Clauses otherClauses(other);
     return operator&(otherClauses);
 }
@@ -136,7 +136,7 @@ Clauses Clauses::operator&(CClause &other) {
  *
  * @return     A Clauses object with the result of the OR operation
  */
-Clauses Clauses::operator|(Clauses &other) {
+Clauses Clauses::operator|(const Clauses &other) {
     if(other.getClauses().size() == 0) {
         Clauses result = other;
         return result;
@@ -172,7 +172,7 @@ Clauses Clauses::operator|(Clauses &other) {
  *
  * @return     A Clauses object with the result of the OR operation
  */
-Clauses Clauses::operator|(CClause &other) {
+Clauses Clauses::operator|(const CClause &other) {
     Clauses otherClauses(other);
     return operator|(otherClauses);
 }
@@ -188,7 +188,7 @@ Clauses Clauses::operator|(CClause &other) {
  *
  * @return     A Clauses object with the result of the implication operation
  */
-Clauses Clauses::operator>>(Clauses &other) {
+Clauses Clauses::operator>>(const Clauses &other) {
 //    std::cout << "Negating\n";
     Clauses negateThis = operator~();
 //    std::cout << "Negated\n";
@@ -201,7 +201,7 @@ Clauses Clauses::operator>>(Clauses &other) {
  *
  * @param[in]  other  The CClause to add
  */
-void Clauses::addClauses(CClause other) {
+void Clauses::addClauses(const CClause &other) {
     clauses.push_back(other);
 }
 
@@ -210,7 +210,7 @@ void Clauses::addClauses(CClause other) {
  *
  * @param[in]  other  The CClause vector to append
  */
-void Clauses::addClauses(std::vector<CClause> other) {
+void Clauses::addClauses(const std::vector<CClause> &other) {
     clauses.insert(std::end(clauses), std::begin(other), std::end(other));
 }
 
@@ -219,7 +219,7 @@ void Clauses::addClauses(std::vector<CClause> other) {
  *
  * @param[in]  other  The Clauses object whose clauses are to be added
  */
-void Clauses::addClauses(Clauses other) {
+void Clauses::addClauses(const Clauses &other) {
     std::vector<CClause> otherClauses = other.getClauses();
     addClauses(otherClauses);
 }
@@ -229,7 +229,7 @@ void Clauses::addClauses(Clauses other) {
  *
  * @return     The clauses
  */
-std::vector<CClause> Clauses::getClauses() {
+std::vector<CClause> Clauses::getClauses() const {
     return clauses;
 }
 
