@@ -28,6 +28,7 @@ enum PredefinedClauses {
     exactlyOneIsMinorPerCourse,
     exactlyOneClassroomPerCourse,
     coreInMorningTime,
+    electiveInNonMorningTime,
     programAtMostOneOfCoreOrElective
 };
 

@@ -42,6 +42,10 @@ Clauses ConstraintAdder::fieldSingleValueAtATime(FieldType fieldType) {
     std::vector<Course> courses = timeTabler->data.courses;
     for(int i = 0; i < courses.size(); i++) {
         for(int j = i+1; j < courses.size(); j++) {
+            /*
+             * For every pair of courses, either the field value of the FieldType
+             * is different or their times do not intersect
+             */
             Clauses antecedent = encoder->hasSameFieldTypeNotSameValue(i, j, fieldType);
             Clauses consequent = encoder->notIntersectingTime(i, j);
             result.addClauses(antecedent | consequent);
@@ -91,6 +95,10 @@ Clauses ConstraintAdder::programSingleCoreCourseAtATime() {
     std::vector<Course> courses = timeTabler->data.courses;
     for(int i = 0; i < courses.size(); i++) {
         for(int j = i+1; j < courses.size(); j++) {
+            /*
+             * For every pair of courses, either there is no Program for which
+             * they are both core or their times do not intersect
+             */
             Clauses antecedent = encoder->hasNoCommonCoreProgram(i, j);
             Clauses consequent = encoder->notIntersectingTime(i, j);
             result.addClauses(antecedent | consequent);
@@ -112,6 +120,10 @@ Clauses ConstraintAdder::minorInMinorTime() {
     result.clear();
     std::vector<Course> courses = timeTabler->data.courses;
     for(int i = 0; i < courses.size(); i++) {
+        /*
+         * a minor course must be in a minor Slot.
+         * a non-minor course must not be in a minor Slot.
+         */
         Clauses antecedent = encoder->isMinorCourse(i);
         Clauses consequent = encoder->slotInMinorTime(i);
         result.addClauses(antecedent>>consequent);
@@ -138,8 +150,12 @@ Clauses ConstraintAdder::exactlyOneFieldValuePerCourse(FieldType fieldType) {
     result.clear();
     std::vector<Course> courses = timeTabler->data.courses;
     for(int i = 0; i < courses.size(); i++) {
+        // exactly one field value must be true
         Clauses exactlyOneFieldValue = encoder->hasExactlyOneFieldValueTrue(i, fieldType);
         Clauses cclause(timeTabler->data.highLevelVars[i][fieldType]);
+        // high level variable implies the clause, and by default is hard
+        // if high level variable is false, this clause could not be satisfied
+        // this provides a reason to the user
         result.addClauses(cclause>>exactlyOneFieldValue);
     }
     return result;
@@ -152,6 +168,7 @@ Clauses ConstraintAdder::exactlyOneFieldValuePerCourse(FieldType fieldType) {
 void ConstraintAdder::addConstraints() {
     std::vector<int> weights = timeTabler->data.predefinedClausesWeights;
 
+    // add the constraints to the formula
     timeTabler->addClauses(instructorSingleCourseAtATime(), weights[PredefinedClauses::instructorSingleCourseAtATime]);
     timeTabler->addClauses(classroomSingleCourseAtATime(), weights[PredefinedClauses::classroomSingleCourseAtATime]);
     timeTabler->addClauses(programSingleCoreCourseAtATime(), weights[PredefinedClauses::programSingleCoreCourseAtATime]);
@@ -165,6 +182,7 @@ void ConstraintAdder::addConstraints() {
     timeTabler->addClauses(exactlyOneFieldValuePerCourse(FieldType::segment), weights[PredefinedClauses::exactlyOneSegmentPerCourse]);
 
     timeTabler->addClauses(coreInMorningTime(), weights[PredefinedClauses::coreInMorningTime]);
+    timeTabler->addClauses(electiveInNonMorningTime(), weights[PredefinedClauses::electiveInNonMorningTime]);
 }
 
 /*Clauses ConstraintAdder::softConstraints() {
@@ -174,7 +192,7 @@ void ConstraintAdder::addConstraints() {
 /**
  * @brief      Imposes that a core course is given a morning slot.
  * 
- * By default, this constraint is soft with weight 1.
+ * By default, this constraint is soft.
  *
  * @return     A Clauses object describing the constraint
  */
@@ -185,7 +203,26 @@ Clauses ConstraintAdder::coreInMorningTime() {
     for(int i = 0; i < courses.size(); i++) {
         Clauses coreCourse = encoder->isCoreCourse(i);
         Clauses morningTime = encoder->courseInMorningTime(i);
-        result.addClauses(coreCourse>>morningTime); // TODO - have to do the converse as well, but with lower priority (weight)
+        result.addClauses(coreCourse>>morningTime);
+    }
+    return result;
+}
+
+/**
+ * @brief      Imposes that a elective course is given a afternoon slot.
+ * 
+ * By default, this constraint is soft.
+ *
+ * @return     A Clauses object describing the constraint
+ */
+Clauses ConstraintAdder::electiveInNonMorningTime() {
+    Clauses result;
+    result.clear();
+    std::vector<Course> courses = timeTabler->data.courses;
+    for(int i = 0; i < courses.size(); i++) {
+        Clauses coreCourse = encoder->isElectiveCourse(i);
+        Clauses morningTime = encoder->courseInMorningTime(i);
+        result.addClauses(coreCourse>>(~morningTime));
     }
     return result;
 }

@@ -6,10 +6,16 @@
 #include <vector>
 #include <string>
 
+/**
+ * @brief      Class for field values types.
+ */
 enum class FieldValuesType {
     COURSE, INSTRUCTOR, PROGRAM, ISMINOR, SEGMENT, CLASSROOM, SLOT
 };
 
+/**
+ * @brief      Struct for the type used by actions in the parser.
+ */
 struct Object {
     bool isNot;
     bool classSame;

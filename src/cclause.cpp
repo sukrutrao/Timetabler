@@ -54,13 +54,10 @@ CClause::CClause() {
  * @return     The negation of the clause
  */
 std::vector<CClause> CClause::operator~() {
-    std::vector<Lit> litCopy = lits;
-    std::sort(litCopy.begin(), litCopy.end());
-    litCopy.erase(std::unique(litCopy.begin(), litCopy.end()), litCopy.end());
     std::vector<CClause> result;
     result.clear();
-    for(int i = 0; i < litCopy.size(); i++) {
-        CClause unitClause(~(litCopy[i]));
+    for(int i = 0; i < lits.size(); i++) {
+        CClause unitClause(~(lits[i]));
         result.push_back(unitClause);
     }
     return result;
@@ -118,13 +115,16 @@ Clauses CClause::operator&(const Clauses &other) {
 CClause CClause::operator|(const CClause &other) {
     std::vector<Lit> thisLits = this->lits;
     std::vector<Lit> otherLits = other.getLits();
+    // appending the literals
     thisLits.insert(std::end(thisLits), std::begin(otherLits), std::end(otherLits));
     std::sort(thisLits.begin(), thisLits.end());
+    // removing duplicates
     thisLits.erase(std::unique(thisLits.begin(), thisLits.end()), thisLits.end());
     bool existBothPolarities = false;
     int indexLitBothPolarities = -1;
     for(int i = 0; i < thisLits.size(); i++) {
         for(int j = i+1; j < thisLits.size(); j++) {
+            // if any two literals are such that they are x and ~x
             if(var(thisLits[i]) == var(thisLits[j])) {
                 existBothPolarities = true;
                 indexLitBothPolarities = i;
@@ -135,6 +135,7 @@ CClause CClause::operator|(const CClause &other) {
             break;
         }
     }
+    // replace the entire clause with x AND ~x, as it is true anyway
     if(existBothPolarities) {
         CClause result;
         result.addLits(thisLits[indexLitBothPolarities]);

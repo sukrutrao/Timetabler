@@ -126,7 +126,7 @@ struct action<value> {
                     break;
                 }
                 if (!found) {
-                    std::cout << "Instructor " << val << " does not exists." << std::endl;
+                    std::cout << "Instructor " << val << " does not exist." << std::endl;
                     exit(1);
                 }
                 found = false;
@@ -139,7 +139,7 @@ struct action<value> {
                     break;
                 }
                 if (!found) {
-                    std::cout << "Course " << val << " does not exists." << std::endl;
+                    std::cout << "Course " << val << " does not exist." << std::endl;
                     exit(1);
                 }
                 found = false;
@@ -152,7 +152,7 @@ struct action<value> {
                     break;
                 }
                 if (!found) {
-                    std::cout << "Segment " << val << " does not exists." << std::endl;
+                    std::cout << "Segment " << val << " does not exist." << std::endl;
                     exit(1);
                 }
                 found = false;
@@ -165,7 +165,7 @@ struct action<value> {
                     break;
                 }
                 if (!found) {
-                    std::cout << "Program " << val << " does not exists." << std::endl;
+                    std::cout << "Program " << val << " does not exist." << std::endl;
                     exit(1);
                 }
                 found = false;
@@ -178,7 +178,7 @@ struct action<value> {
                     break;
                 }
                 if (!found) {
-                    std::cout << "IsMinor " << val << " does not exists." << std::endl;
+                    std::cout << "IsMinor " << val << " does not exist." << std::endl;
                     exit(1);
                 }
                 found = false;
@@ -191,7 +191,7 @@ struct action<value> {
                     break;
                 }
                 if (!found) {
-                    std::cout << "Classroom " << val << " does not exists." << std::endl;
+                    std::cout << "Classroom " << val << " does not exist." << std::endl;
                     exit(1);
                 }
                 found = false;
@@ -204,7 +204,7 @@ struct action<value> {
                     break;
                 }
                 if (!found) {
-                    std::cout << "Slot " << val << " does not exists." << std::endl;
+                    std::cout << "Slot " << val << " does not exist." << std::endl;
                     exit(1);
                 }
                 found = false;
@@ -341,7 +341,6 @@ template <>
 struct action<constraint_expr> {
     template <typename Input>
     static void apply(const Input& in, Object &obj) {
-        std::cout << in.string() << std::endl;
         Clauses clauses;
         for (int i = 0; i < obj.courseValues.size(); i++) {
             int course = obj.courseValues[i];
@@ -409,7 +408,6 @@ struct action<constraint_or> {
         }
         obj.constraintAnds.clear();
         obj.constraint = clauses;
-        std::cout << in.string() << std::endl;
     }
 };
 
@@ -420,30 +418,27 @@ struct action<wconstraint> {
     template <typename Input>
     static void apply(const Input& in, Object &obj) {
         obj.timeTabler->addClauses(obj.constraint, obj.integer);
-        std::cout << in.string() << std::endl;
     }
 };
 
 struct grammar : pegtl::try_catch<pegtl::must<pegtl::star<wconstraint>, pegtl::eof>> {};
-template <>
-struct action<grammar> {
-    template <typename Input>
-    static void apply(const Input& in, Object &obj) {
-        std::cout << "CUSTOM CONSTRAINTS SUCCESSFULLY PARSED" <<std::endl;
-        std::cout << in.string() << std::endl;
-    }
-};
 
 template <typename Rule>
 struct control : pegtl::normal<Rule> {
     template <typename Input, typename... States>
     static void raise(const Input& in, States&&...) {
         std::cout << in.position() << " Error parsing custom constraints" << std::endl;
-        // throw pegtl::parse_error( "parse error matching " + pegtl::internal::demangle< Rule >(), in );
         exit(1);
     }
 };
 
+/**
+ * @brief      Parses custom constraints given in a file and adds them to the solver.
+ *
+ * @param[in]  file               The file containing the constraints
+ * @param      constraintEncoder  The ConstraintEncoder object
+ * @param      timeTabler         The TimeTabler object
+ */
 void parseCustomConstraints(std::string file, ConstraintEncoder* constraintEncoder, TimeTabler* timeTabler) {
     Object obj;
     obj.constraintEncoder = constraintEncoder;

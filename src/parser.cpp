@@ -1,11 +1,22 @@
 #include "parser.h"
 
 #include <iostream>
+#include <cstdlib>
 
+/**
+ * @brief      Constructs the Parser object.
+ *
+ * @param      timeTabler  The time tabler
+ */
 Parser::Parser(TimeTabler* timeTabler) {
     this->timeTabler = timeTabler;
 }
 
+/**
+ * @brief      Parse the fields given in a file.
+ *
+ * @param[in]  file  The file containing the fields
+ */
 void Parser::parseFields(std::string file) {
     YAML::Node config = YAML::LoadFile(file);
 
@@ -74,6 +85,15 @@ void Parser::parseFields(std::string file) {
     }
 }
 
+/**
+ * @brief      Gets the day from the string as a member of the Day enum.
+ * 
+ * For example, the input "Monday" returns Day::Monday.
+ *
+ * @param[in]  day   The day as a string
+ *
+ * @return     A member of the Day enum, corresponding the the day the string represented
+ */
 Day Parser::getDayFromString(std::string day) {
     if (day == "Monday") return Day::Monday;
     if (day == "Tuesday") return Day::Tuesday;
@@ -86,6 +106,11 @@ Day Parser::getDayFromString(std::string day) {
     return Day::Monday;
 }
 
+/**
+ * @brief      Parses the input given in a file.
+ *
+ * @param[in]  file  The file containig the input
+ */
 void Parser::parseInput(std::string file) {
     csv::Parser parser(file);
     timeTabler->data.existingAssignmentVars.clear();
@@ -107,7 +132,8 @@ void Parser::parseInput(std::string file) {
             assignmentsThisCourse[FieldType::instructor].push_back(l_False);
         }
         if (instructor == -1) {
-            // TODO Error and exit
+            std::cout << "Input contains invalid Instructor name" << std::endl;
+            exit(1);
         }
         std::string segmentStr = parser[i]["segment"];
         int segment = -1;
@@ -117,11 +143,11 @@ void Parser::parseInput(std::string file) {
                 assignmentsThisCourse[FieldType::segment].push_back(l_True);
                 continue;
             }
-     //       std::cout << "SEG : " << timeTabler->data.segments[i].getName() << " " << segmentStr << std::endl;
             assignmentsThisCourse[FieldType::segment].push_back(l_False);
         }
         if (segment == -1) {
-            // TODO Error and exit
+            std::cout << "Input contains invalid Segment name" << std::endl;
+            exit(1);
         }
         std::string isMinorStr = parser[i]["is_minor"];
         int isMinor;
@@ -132,7 +158,8 @@ void Parser::parseInput(std::string file) {
             isMinor = 1;
             assignmentsThisCourse[FieldType::isMinor].push_back(l_False);
         } else {
-            // TODO Error and exit
+            std::cout << "Input contains invalid IsMinor value (should be 'Yes' or 'No')" << std::endl;
+            exit(1);
         }
         Course course(name, classSize, instructor, segment, isMinor);
 
@@ -150,30 +177,43 @@ void Parser::parseInput(std::string file) {
                 assignmentsThisCourse[FieldType::program].push_back(l_False);
                 assignmentsThisCourse[FieldType::program].push_back(l_False);
             } else {
-                // TODO Error and exit
+                std::cout << "Input contains invalid Program type (should be 'Core', 'Elective', or 'No')" << std::endl;
+                exit(1);
             }
         }
 
         std::string classroomStr = parser[i]["classroom"];
         std::string slotStr = parser[i]["slot"];
+        bool foundClassroom = false;
+        bool foundSlot = false;
         assignmentsThisCourse[FieldType::classroom].resize(timeTabler->data.classrooms.size(), l_Undef);
         assignmentsThisCourse[FieldType::slot].resize(timeTabler->data.slots.size(), l_Undef);
         if(classroomStr != "") {
             for(unsigned j = 0; j < timeTabler->data.classrooms.size(); j++) {
                 if(timeTabler->data.classrooms[j].getName() == classroomStr) {
                     assignmentsThisCourse[FieldType::classroom][j] = l_True;
+                    foundClassroom = true;
                     continue;
                 }
                 assignmentsThisCourse[FieldType::classroom][j] = l_False;
+            }
+            if(!foundClassroom) {
+                std::cout << "Input contains invalid Classroom name" << std::endl;
+                exit(1);
             }
         }
         if(slotStr != "") {
             for(unsigned j = 0; j < timeTabler->data.slots.size(); j++) {
                 if(timeTabler->data.slots[j].getName() == slotStr) {
                     assignmentsThisCourse[FieldType::slot][j] = l_True;
+                    foundSlot = true;
                     continue;
                 }
                 assignmentsThisCourse[FieldType::slot][j] = l_False;
+            }
+            if(!foundSlot) {
+                std::cout << "Input contains invalid Slot name" << std::endl;
+                exit(1);
             }
         }
         timeTabler->data.courses.push_back(course);
@@ -181,12 +221,15 @@ void Parser::parseInput(std::string file) {
     }
 }
 
+/**
+ * @brief      Requests for variables to be added to the solver and stores the data.
+ */
 void Parser::addVars() {
     for (Course c : timeTabler->data.courses) {
         std::vector<std::vector<Var>> courseVars;
         courseVars.resize(Global::FIELD_COUNT);
         for (Classroom cr : timeTabler->data.classrooms) {
-            Var v = timeTabler->newVar(); // TODO create vars using solver
+            Var v = timeTabler->newVar();
             courseVars[FieldType::classroom].push_back(v);
         }
         for (Instructor i : timeTabler->data.instructors) {

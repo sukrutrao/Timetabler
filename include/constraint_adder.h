@@ -38,6 +38,7 @@ private:
     Clauses programSingleCoreCourseAtATime();
     Clauses minorInMinorTime();
     Clauses coreInMorningTime();
+    Clauses electiveInNonMorningTime();
     Clauses existingAssignmentClauses();
     Clauses programAtMostOneOfCoreOrElective();
 public:

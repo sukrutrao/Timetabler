@@ -47,6 +47,7 @@ public:
     Clauses isMinorCourse(int);
     Clauses slotInMinorTime(int);
     Clauses isCoreCourse(int);
+    Clauses isElectiveCourse(int);
     Clauses courseInMorningTime(int);
     Clauses programAtMostOneOfCoreOrElective(int);
     Clauses hasFieldTypeListedValues(int, FieldType, std::vector<int>);

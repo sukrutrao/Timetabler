@@ -317,6 +317,24 @@ Clauses ConstraintEncoder::isCoreCourse(int course) {
 }
 
 /**
+ * @brief      Gives Clauses that represent that a Course is an elective Course.
+ *
+ * @param[in]  course  The course
+ *
+ * @return     A Clauses object representing the condition
+ */
+Clauses ConstraintEncoder::isElectiveCourse(int course) {
+    CClause resultClause;
+    for(int i = 0; i < vars[course][FieldType::program].size(); i++) {
+        if(!(timeTabler->data.programs[i].isCoreProgram())) {
+            resultClause.createLitAndAdd(vars[course][FieldType::program][i]);
+        }
+    }
+    Clauses result(resultClause);
+    return result;
+}
+
+/**
  * @brief      Gives Clauses that represent that a Course is
  *             scheduled in a morning Slot.
  *
