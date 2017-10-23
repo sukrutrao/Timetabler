@@ -9,9 +9,27 @@ class TimeTabler;
 
 using namespace Minisat; 
 
+/**
+ * @brief      Class for constraint adder.
+ * 
+ * This class is responsible for interpreting each constraint at
+ * a high level and creating clauses to represent them. This class contains
+ * functions each which represents a high level constraint. In the function,
+ * courses are iterated over and calls are made to an object of ConstraintEncoder
+ * to get Clauses corresponding to lower level constraints for a given course, which
+ * are then joined together using the defined operations. It also contains functions
+ * to add these predefined constraints with their prescribed weights to
+ * the TimeTabler, which then adds it to the solver.
+ */
 class ConstraintAdder {
 private:
+    /**
+     * A pointer to the ConstraintEncoder object used for getting constraints for a given course
+     */
     ConstraintEncoder *encoder;
+    /**
+     * A pointer to a TimeTabler object to access data, variables, and add constraints to the solver
+     */
     TimeTabler *timeTabler;
     Clauses fieldSingleValueAtATime(FieldType);
     Clauses exactlyOneFieldValuePerCourse(FieldType);
@@ -29,9 +47,9 @@ public:
     /*Clauses classroomSingleCourseAtATime();*/
     ConstraintAdder(ConstraintEncoder*, TimeTabler*);
     void addConstraints();
-    Clauses softConstraints();
-    Clauses customConstraint(FieldType, std::vector<int>, FieldType, std::vector<int>, bool);
-    Clauses customConstraint(std::vector<int>, FieldType, std::vector<int>, bool);
+    /*Clauses softConstraints();*/
+    /*Clauses customConstraint(FieldType, std::vector<int>, FieldType, std::vector<int>, bool);
+    Clauses customConstraint(std::vector<int>, FieldType, std::vector<int>, bool);*/
 
 };
 

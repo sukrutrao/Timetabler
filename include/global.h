@@ -1,22 +1,22 @@
 #ifndef GLOBAL_H
 #define GLOBAL_H
 
-class TimeTabler;
 
+/**
+ * @brief      Enum that represents all the field types.
+ */
 enum FieldType {
-    instructor = 0,
-    segment = 1,
-    isMinor = 2,
-    program = 3,
-    classroom = 4,
-    slot = 5
+    instructor,
+    segment,
+    isMinor,
+    program,
+    classroom,
+    slot
 };
 
-enum class ClauseType {
-    hard,
-    soft
-};
-
+/**
+ * @brief      Enum that represents all the predefined constraints.
+ */
 enum PredefinedClauses {
     instructorSingleCourseAtATime,
     classroomSingleCourseAtATime,
@@ -31,10 +31,19 @@ enum PredefinedClauses {
     programAtMostOneOfCoreOrElective
 };
 
+/**
+ * @brief      Class for global values.
+ */
 class Global {
 public:
+    /**
+     * The number of field types in the FieldType enumerator
+     */
     static const int FIELD_COUNT = 6;
-    static TimeTabler *timeTabler;
+    /**
+     * The number of predefined clauses in the PredefinedClauses enumerator
+     */
+    static const int PREDEFINED_CLAUSES_COUNT = 11;
 };
 
 #endif

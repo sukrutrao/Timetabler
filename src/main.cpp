@@ -7,12 +7,9 @@
 #include "custom_parser.h"
 #include <iostream>
 
-TimeTabler *Global::timeTabler = nullptr;
-
 
 int main(int argc, char const *argv[]) {
     TimeTabler *timeTabler = new TimeTabler();
-    Global::timeTabler = timeTabler;
     Parser parser(timeTabler);
     parser.parseFields("config/fields.yml");
     parser.parseInput("config/input.csv");
