@@ -20,7 +20,7 @@ TimeTabler::TimeTabler() {
     formula->setProblemType(_WEIGHTED_);
 }
 
-void TimeTabler::addClauses(std::vector<CClause> clauses, int weight) {
+void TimeTabler::addClauses(const std::vector<CClause> &clauses, int weight) {
     std::cout << "Clause count : " << clauses.size() << " W : " << weight << std::endl;
     for(int i = 0; i < clauses.size(); i++) {
         vec<Lit> clauseVec;
@@ -92,11 +92,11 @@ void TimeTabler::addToFormula(vec<Lit> &input, int weight) {
     }
 }
 
-void TimeTabler::addClauses(Clauses clauses, int weight) {
+void TimeTabler::addClauses(const Clauses &clauses, int weight) {
     addClauses(clauses.getClauses(), weight);
 }
 
-void TimeTabler::addSoftClauses(std::vector<CClause> clauses) {
+/*void TimeTabler::addSoftClauses(std::vector<CClause> clauses) {
     std::cout << "Soft Clause count : " << clauses.size() << std::endl;
     for(int i = 0; i < clauses.size(); i++) {
         vec<Lit> clauseVec;
@@ -108,9 +108,9 @@ void TimeTabler::addSoftClauses(std::vector<CClause> clauses) {
     }    
 }
 
-void TimeTabler::addSoftClauses(Clauses clauses) {
+void TimeTabler::addSoftClauses(const Clauses &clauses) {
     addSoftClauses(clauses.getClauses());
-}
+}*/
 
 bool TimeTabler::solve() {
     solver->loadFormula(formula);
@@ -125,7 +125,7 @@ bool TimeTabler::solve() {
     return false;  
 }
 
-bool TimeTabler::checkAllTrue(std::vector<Var> inputs) {
+bool TimeTabler::checkAllTrue(const std::vector<Var> &inputs) {
     for(int i = 0; i < inputs.size(); i++) {
         if(model[inputs[i]] == l_False) {
             return false;
@@ -134,7 +134,7 @@ bool TimeTabler::checkAllTrue(std::vector<Var> inputs) {
     return true;
 }
 
-bool TimeTabler::isVarTrue(Var v) {
+bool TimeTabler::isVarTrue(const Var &v) {
     if (model[v] == l_False) {
         return false;
     }

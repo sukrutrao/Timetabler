@@ -27,21 +27,21 @@ private:
      */
     std::vector<CClause> clauses;
 public:
-    Clauses(std::vector<CClause>);
-    Clauses(CClause);
-    Clauses(Lit);
-    Clauses(Var);
+    Clauses(const std::vector<CClause>&);
+    Clauses(const CClause&);
+    Clauses(const Lit&);
+    Clauses(const Var&);
     Clauses();
     Clauses operator~();
-    Clauses operator&(Clauses&);
-    Clauses operator&(CClause&);
-    Clauses operator|(Clauses&);
-    Clauses operator|(CClause&);
-    Clauses operator>>(Clauses&);
-    void addClauses(CClause);
-    void addClauses(std::vector<CClause>);
-    void addClauses(Clauses);
-    std::vector<CClause> getClauses();
+    Clauses operator&(const Clauses&);
+    Clauses operator&(const CClause&);
+    Clauses operator|(const Clauses&);
+    Clauses operator|(const CClause&);
+    Clauses operator>>(const Clauses&);
+    void addClauses(const CClause&);
+    void addClauses(const std::vector<CClause>&);
+    void addClauses(const Clauses&);
+    std::vector<CClause> getClauses() const;
     void print();
     void clear();
 };
