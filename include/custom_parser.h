@@ -6,17 +6,23 @@
 #include <vector>
 #include <string>
 
+enum class FieldValuesType {
+    COURSE, INSTRUCTOR, PROGRAM, ISMINOR, SEGMENT, CLASSROOM, SLOT
+};
+
 struct Object {
     bool isNot;
-    bool takeFieldValues;
-    bool takeClassValues;
-    bool takeSlotValues;
     int integer;
     TimeTabler* timeTabler;
     ConstraintAdder* constraintAdder;
+    ConstraintEncoder* constraintEncoder;
 
-    std::string fieldType;
-    std::vector<int> fieldValues;
+    FieldValuesType fieldType;
+    std::vector<int> courseValues;
+    std::vector<int> instructorValues;
+    std::vector<int> programValues;
+    std::vector<int> isMinorValues;
+    std::vector<int> segmentValues;
     std::vector<int> classValues;
     std::vector<int> slotValues;
 
@@ -25,6 +31,6 @@ struct Object {
     std::vector<Clauses> constraintVals;
 };
 
-void parseCustomConstraints(ConstraintAdder*, TimeTabler*);
+void parseCustomConstraints(ConstraintEncoder*, ConstraintAdder*, TimeTabler*);
 
 #endif

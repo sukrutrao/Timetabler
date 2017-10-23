@@ -9,6 +9,7 @@
 
 TimeTabler *Global::timeTabler = nullptr;
 
+
 int main(int argc, char const *argv[]) {
     TimeTabler *timeTabler = new TimeTabler();
     Global::timeTabler = timeTabler;
@@ -56,7 +57,7 @@ int main(int argc, char const *argv[]) {
     ConstraintEncoder encoder(timeTabler);
     ConstraintAdder constraintAdder(&encoder, timeTabler);
     constraintAdder.addConstraints();
-    parseCustomConstraints(&constraintAdder, timeTabler);
+    parseCustomConstraints(&encoder, &constraintAdder, timeTabler);
 //    timeTabler->addClauses(constraintAdder.addConstraints());
   //  timeTabler->addSoftClauses(constraintAdder.softConstraints());
     timeTabler->addHighLevelClauses();
