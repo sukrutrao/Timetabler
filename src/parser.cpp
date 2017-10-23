@@ -98,9 +98,9 @@ void Parser::parseInput(std::string file) {
         
         std::string instructorStr = parser[i]["instructor"];
         int instructor = -1;
-        for (unsigned i = 0; i < timeTabler->data.instructors.size(); i++) {
-            if (timeTabler->data.instructors[i].getName() == instructorStr) {
-                instructor = i;
+        for (unsigned j = 0; j < timeTabler->data.instructors.size(); j++) {
+            if (timeTabler->data.instructors[j].getName() == instructorStr) {
+                instructor = j;
                 assignmentsThisCourse[FieldType::instructor].push_back(l_True);
                 continue;
             }
@@ -111,9 +111,9 @@ void Parser::parseInput(std::string file) {
         }
         std::string segmentStr = parser[i]["segment"];
         int segment = -1;
-        for (unsigned i = 0; i < timeTabler->data.segments.size(); i++) {
-            if (timeTabler->data.segments[i].getName() == segmentStr) {
-                segment = i;
+        for (unsigned j = 0; j < timeTabler->data.segments.size(); j++) {
+            if (timeTabler->data.segments[j].getName() == segmentStr) {
+                segment = j;
                 assignmentsThisCourse[FieldType::segment].push_back(l_True);
                 continue;
             }
@@ -158,6 +158,24 @@ void Parser::parseInput(std::string file) {
         std::string slotStr = parser[i]["slot"];
         assignmentsThisCourse[FieldType::classroom].resize(timeTabler->data.classrooms.size(), l_Undef);
         assignmentsThisCourse[FieldType::slot].resize(timeTabler->data.slots.size(), l_Undef);
+        if(classroomStr != "") {
+            for(unsigned j = 0; j < timeTabler->data.classrooms.size(); j++) {
+                if(timeTabler->data.classrooms[j].getName() == classroomStr) {
+                    assignmentsThisCourse[FieldType::classroom][j] = l_True;
+                    continue;
+                }
+                assignmentsThisCourse[FieldType::classroom][j] = l_False;
+            }
+        }
+        if(slotStr != "") {
+            for(unsigned j = 0; j < timeTabler->data.slots.size(); j++) {
+                if(timeTabler->data.slots[j].getName() == slotStr) {
+                    assignmentsThisCourse[FieldType::slot][j] = l_True;
+                    continue;
+                }
+                assignmentsThisCourse[FieldType::slot][j] = l_False;
+            }
+        }
         timeTabler->data.courses.push_back(course);
         timeTabler->data.existingAssignmentVars.push_back(assignmentsThisCourse);
     }
