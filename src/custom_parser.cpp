@@ -105,6 +105,8 @@ struct action<fieldtype> {
     template <typename Input>
     static void apply(const Input& in, Object &obj) {
         obj.isNot = false;
+        obj.classSame = false;
+        obj.slotSame = false;
     }
 };
 
@@ -157,7 +159,7 @@ struct action<value> {
             }
         } else if (obj.fieldType == FieldValuesType::PROGRAM) {
             for (int i=0; i<obj.timeTabler->data.programs.size(); i++) {
-                if (obj.timeTabler->data.programs[i].getName() == val) {
+                if (obj.timeTabler->data.programs[i].getNameWithType() == val) {
                     found = true;
                     obj.programValues.push_back(i);
                     break;
@@ -249,11 +251,26 @@ struct action<allvalues> {
     }
 };
 
+struct sameval : pegtl::pad<TAOCPP_PEGTL_KEYWORD("SAME"), pegtl::space> {};
+template <>
+struct action<sameval> {
+    template <typename Input>
+    static void apply(const Input& in, Object &obj) {
+        if (obj.fieldType == FieldValuesType::CLASSROOM) {
+            obj.classSame = true;
+        } else if (obj.fieldType == FieldValuesType::SLOT) {
+            obj.slotSame = true;
+        }
+    }
+};
+
+struct notsameval : pegtl::pad<TAOCPP_PEGTL_KEYWORD("NOTSAME"), pegtl::space> {};
+
 struct listvalues : pegtl::seq<pegtl::pad<pegtl::one<'{'>,
     pegtl::space>,pegtl::list<value,pegtl::one<','>,pegtl::space>,
     pegtl::pad<pegtl::one<'}'>,pegtl::space>> {};
 
-struct values : pegtl::sor<allvalues, listvalues> {};
+struct values : pegtl::sor<allvalues, listvalues, sameval, notsameval> {};
 
 struct classroomdecl : pegtl::seq<pegtl::pad<classroomstr, pegtl::space>, values> {};
 
@@ -269,6 +286,56 @@ struct fielddecl : pegtl::seq<pegtl::pad<fieldtype,pegtl::space>,values> {};
 
 struct fielddecls : pegtl::list<fielddecl,andstr,pegtl::space> {};
 
+Clauses makeAntecedent(Object &obj, int course) {
+    Clauses ante, clause;
+    if (obj.instructorValues.size() > 0) {
+        clause = obj.constraintEncoder->hasFieldTypeListedValues(course, FieldType::instructor, obj.instructorValues);
+        ante = ante & clause;
+    }
+    if (obj.programValues.size() > 0) {
+        clause = obj.constraintEncoder->hasFieldTypeListedValues(course, FieldType::program, obj.programValues);
+        ante = ante & clause;
+    }
+    if (obj.segmentValues.size() > 0) {
+        clause = obj.constraintEncoder->hasFieldTypeListedValues(course, FieldType::segment, obj.segmentValues);
+        ante = ante & clause;
+    }
+    if (obj.isMinorValues.size() > 0) {
+        clause = obj.constraintEncoder->hasFieldTypeListedValues(course, FieldType::isMinor, obj.isMinorValues);
+        ante = ante & clause;
+    }
+    return ante;
+}
+
+Clauses makeConsequent(Object &obj, int course, int i) {
+    Clauses cons, clause;
+    if (obj.classSame) {
+        for (int j = i+1; j < obj.courseValues.size(); j++) {
+            Clauses a = makeAntecedent(obj, obj.courseValues[j]);
+            Clauses b = obj.constraintEncoder->hasSameFieldTypeAndValue(course, obj.courseValues[j], FieldType::classroom);
+            a = a >> b;
+            cons = cons & a;
+        }
+    }
+    if (obj.classSame) {
+        for (int j = i+1; j < obj.courseValues.size(); j++) {
+            Clauses a = makeAntecedent(obj, obj.courseValues[j]);
+            Clauses b = obj.constraintEncoder->hasSameFieldTypeAndValue(course, obj.courseValues[j], FieldType::slot);
+            a = a >> b;
+            cons = cons & a;
+        }
+    }
+    if (obj.classValues.size() > 0) {
+        clause = obj.constraintEncoder->hasFieldTypeListedValues(course, FieldType::classroom, obj.classValues);
+        cons = cons & clause;
+    }
+    if (obj.slotValues.size() > 0) {
+        clause = obj.constraintEncoder->hasFieldTypeListedValues(course, FieldType::slot, obj.slotValues);
+        cons = cons & clause;
+    }
+    return cons;
+}
+
 struct constraint_expr : pegtl::seq<coursedecl,fielddecls,pegtl::opt<notstr>,pegtl::pad<instr,pegtl::space>,decls> {};
 template <>
 struct action<constraint_expr> {
@@ -276,32 +343,11 @@ struct action<constraint_expr> {
     static void apply(const Input& in, Object &obj) {
         std::cout << in.string() << std::endl;
         Clauses clauses;
-        for (int course : obj.courseValues) {
+        for (int i = 0; i < obj.courseValues.size(); i++) {
+            int course = obj.courseValues[i];
             Clauses ante, cons, clause;
-            if (obj.instructorValues.size() > 0) {
-                clause = obj.constraintEncoder->hasFieldTypeListedValues(course, FieldType::instructor, obj.instructorValues);
-                ante = ante & clause;
-            }
-            if (obj.programValues.size() > 0) {
-                clause = obj.constraintEncoder->hasFieldTypeListedValues(course, FieldType::program, obj.programValues);
-                ante = ante & clause;
-            }
-            if (obj.segmentValues.size() > 0) {
-                clause = obj.constraintEncoder->hasFieldTypeListedValues(course, FieldType::segment, obj.segmentValues);
-                ante = ante & clause;
-            }
-            if (obj.isMinorValues.size() > 0) {
-                clause = obj.constraintEncoder->hasFieldTypeListedValues(course, FieldType::isMinor, obj.isMinorValues);
-                ante = ante & clause;
-            }
-            if (obj.classValues.size() > 0) {
-                clause = obj.constraintEncoder->hasFieldTypeListedValues(course, FieldType::classroom, obj.classValues);
-                cons = cons & clause;
-            }
-            if (obj.slotValues.size() > 0) {
-                clause = obj.constraintEncoder->hasFieldTypeListedValues(course, FieldType::slot, obj.slotValues);
-                cons = cons & clause;
-            }
+            ante = makeAntecedent(obj, course);
+            cons = makeConsequent(obj, course, i);
             clause = ante >> cons;
             clauses = clauses & clause;
         }

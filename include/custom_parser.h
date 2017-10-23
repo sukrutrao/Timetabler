@@ -12,6 +12,8 @@ enum class FieldValuesType {
 
 struct Object {
     bool isNot;
+    bool classSame;
+    bool slotSame;
     int integer;
     TimeTabler* timeTabler;
     ConstraintAdder* constraintAdder;
