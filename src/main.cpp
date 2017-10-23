@@ -9,13 +9,16 @@
 
 TimeTabler *Global::timeTabler = nullptr;
 
-
 int main(int argc, char const *argv[]) {
+    if (argc != 5) {
+        std::cout << "Run as ./bin/TimeTabler fields.yml input.csv custom.txt output.csv" << std::endl;
+        return 0;
+    }
     TimeTabler *timeTabler = new TimeTabler();
     Global::timeTabler = timeTabler;
     Parser parser(timeTabler);
-    parser.parseFields("config/testfields.yml");
-    parser.parseInput("config/testinput.csv");
+    parser.parseFields(std::string(argv[1]));
+    parser.parseInput(std::string(argv[2]));
     parser.addVars();
 
     std::cout << "FieldValueVars" << std::endl;
@@ -57,7 +60,7 @@ int main(int argc, char const *argv[]) {
     ConstraintEncoder encoder(timeTabler);
     ConstraintAdder constraintAdder(&encoder, timeTabler);
     constraintAdder.addConstraints();
-    parseCustomConstraints(&encoder, timeTabler);
+    parseCustomConstraints(std::string(argv[3]), &encoder, timeTabler);
 //    timeTabler->addClauses(constraintAdder.addConstraints());
   //  timeTabler->addSoftClauses(constraintAdder.softConstraints());
     timeTabler->addHighLevelClauses();
@@ -70,11 +73,11 @@ int main(int argc, char const *argv[]) {
         std::cout << "Solved" << std::endl;
         std::cout << timeTabler->checkAllTrue(timeTabler->data.highLevelVars[0]) << std::endl;
         std::cout << timeTabler->checkAllTrue(timeTabler->data.highLevelVars[1]) << std::endl;
+        timeTabler->printResult();
+        timeTabler->writeOutput(std::string(argv[4]));
     } else {
         std::cout << "Not Solved" << std::endl;
     }
-    timeTabler->printResult();
-    timeTabler->writeOutput("output.csv");
     delete timeTabler;
     return 0;
 }

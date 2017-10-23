@@ -169,9 +169,11 @@ void TSolver::tWeighted() {
         printf("c LB : %-12" PRIu64 "\n", lbCost);
 
       if (nbSatisfiable == 0) {
-        assert(false && "Should not ever be unsatisfiable");
+
+        // assert(false && "Should not ever be unsatisfiable");
         printAnswer(_UNSATISFIABLE_);
-        exit(_UNSATISFIABLE_);
+        return;
+        // exit(_UNSATISFIABLE_);
       }
 
       if (lbCost == ubCost) {

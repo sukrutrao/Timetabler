@@ -84,7 +84,7 @@ void TimeTabler::addExistingAssignments() {
 }
 
 void TimeTabler::addToFormula(vec<Lit> &input, int weight) {
-    if(weight == -1) {
+    if(weight < 0) {
         formula->addHardClause(input);
     }
     else if(weight > 0) {
@@ -127,6 +127,7 @@ bool TimeTabler::solve() {
 
 bool TimeTabler::checkAllTrue(std::vector<Var> inputs) {
     for(int i = 0; i < inputs.size(); i++) {
+        if (model.size() == 0) return false;
         if(model[inputs[i]] == l_False) {
             return false;
         }

@@ -9,7 +9,7 @@ SRC_DIR = src
 TEST_DIR = tests
 
 CC = g++
-CC_FLAGS = --std=c++11 -O2 -Wno-literal-suffix
+CC_FLAGS = --std=c++11 -g -Wno-literal-suffix
 TEST_FLAGS = -lgtest -pthread
 LIB_FLAGS = -lopen-wbo -lyaml-cpp
 INCLUDE_PATH = -I $(INCLUDE_DIR) -I $(OPEN_WBO_PATH) -I $(OPEN_WBO_PATH)/solvers/minisat2.2 -I $(CSV_PARSER_PATH)
