@@ -284,7 +284,7 @@ struct decls : pegtl::list<decl,andstr,pegtl::space> {};
 
 struct fielddecl : pegtl::seq<pegtl::pad<fieldtype,pegtl::space>,values> {};
 
-struct fielddecls : pegtl::list<fielddecl,andstr,pegtl::space> {};
+struct fielddecls : pegtl::opt<pegtl::list<fielddecl,andstr,pegtl::space>> {};
 
 Clauses makeAntecedent(Object &obj, int course) {
     Clauses ante, clause;
@@ -360,8 +360,7 @@ struct action<constraint_expr> {
 };
 
 struct constraint_or;
-struct constraint_braced : pegtl::seq<pegtl::opt<notstr>,
-    pegtl::if_must<pegtl::pad<pegtl::one<'('>,
+struct constraint_braced : pegtl::seq<pegtl::if_must<pegtl::pad<pegtl::one<'('>,
     pegtl::space>,constraint_or,pegtl::pad<pegtl::one<')'>,pegtl::space>>> {};
 
 struct constraint_not : pegtl::seq<pegtl::pad<notstr, pegtl::space>, constraint_braced> {};
