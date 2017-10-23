@@ -13,6 +13,8 @@ This is used to parse valid field values and weight inputs. Download and install
 This is used to parse the CSV containing the input data. Download from https://github.com/MyBoon/CSVparser/tree/540e3e2f46b77ea8178f90910a165695cbb6cc12.
 * PEGTL 2.2.0
 This is used to parse custom constraints. Download and install from https://github.com/taocpp/PEGTL/releases/tag/2.2.0.
+* googletest 1.8.0
+This is required if tests are to be run. Download and install from https://github.com/google/googletest/releases/tag/release-1.8.0.
 
 `g++` with support for C++11, using the `--std=c++11` flag, is required.
 
@@ -32,6 +34,8 @@ Then, build the project
 $ make
 ```
 The build files are created in the `bin/` directory. The executable is `TimeTabler`, found in this directory.
+
+To make and run tests, use `make test`, and then run the `test` executable from the `bin/` directory.
 
 ## Running the Time Tabler
 To execute the program, the format is
