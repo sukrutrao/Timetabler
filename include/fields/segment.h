@@ -5,9 +5,18 @@
 #include "fields/field.h"
 #include "global.h"
 
+/**
+ * @brief      Class for segment.
+ */
 class Segment : public Field{
 private:
+	/**
+	 * The start segment ID
+	 */
     int startSegment;
+    /**
+     * The end segment ID
+     */
     int endSegment;
 public:
     Segment(int, int);

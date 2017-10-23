@@ -55,7 +55,10 @@ void TestClauses::printClause(Clauses input) {
 }
 
 TEST_F(TestClauses, ORTestNormal) {
+	clauseG1.print();
+	clauseG2.print();
 	Clauses result = clauseG1 | clauseG2;
+	result.print();
 	std::vector<CClause> resultClauses = result.getClauses();
 	ASSERT_EQ(resultClauses.size(), 5);
 	ASSERT_EQ(resultClauses[0].getLits().size(), 2);

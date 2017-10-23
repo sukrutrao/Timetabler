@@ -11,8 +11,20 @@ class CClause;
 
 // TODO - handle empty inputs for operators
 
+/**
+ * @brief      Class for representing a set of clauses.
+ * 
+ * A set of clauses is represented as a vector of type CClause.
+ * This class defines operations between sets of clauses, such as 
+ * AND, OR, NOT, and IMPLIES. This also defines functions to
+ * create Clauses, add clauses, and work with them. All clauses
+ * are always maintained in the CNF form.
+ */
 class Clauses {
 private:
+    /**
+     * The clauses, each a CClause member object, in this set of Clauses
+     */
     std::vector<CClause> clauses;
 public:
     Clauses(std::vector<CClause>);

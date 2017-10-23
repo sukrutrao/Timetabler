@@ -9,8 +9,20 @@ using namespace Minisat;
 
 // TODO - handle empty inputs for operators
 
+/**
+ * @brief      Class for  representing a clause.
+ * 
+ * A clause is represented as a vector of Lits. This class
+ * defines operators for operations between clauses, such as AND, 
+ * OR, NOT, and IMPLIES, and functions to add literals and work 
+ * with them in the clause. After each operation,
+ * the clause is maintained in the CNF form.
+ */
 class CClause {
 private:
+    /**
+     * The literals in the clause.
+     */
     std::vector<Lit> lits;
 public:
     CClause(std::vector<Lit>);

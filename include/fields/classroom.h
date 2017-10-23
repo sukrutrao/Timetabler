@@ -5,9 +5,18 @@
 #include "fields/field.h"
 #include "global.h"
 
+/**
+ * @brief      Class for a classroom.
+ */
 class Classroom : public Field {
 private:
+	/**
+	 * Represents the classroom number, which uniquely identifies the Classroom
+	 */
     std::string number;
+    /**
+     * The size of the Classroom, which is the maximum number of students it can hold
+     */
     unsigned size;
 public:
     Classroom(std::string, unsigned);
