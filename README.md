@@ -5,15 +5,15 @@ This project generates a time table given a set of inputs and constraints. It en
 ## Installation
 ### Prerequisities
 The following software are prerequisites for this program:
-* Open WBO 2.0
+* Open WBO 2.0 : 
 This is the MaxSAT solver used to solve the encoded formula. The code can be downloaded from https://github.com/sat-group/open-wbo/tree/f193a3bd802551b13d6424bc1baba6ad35ec6ba6. Also see http://sat.inesc-id.pt/open-wbo/ for details.
-* yaml-cpp 0.5.3
+* yaml-cpp 0.5.3 : 
 This is used to parse valid field values and weight inputs. Download and install from https://github.com/jbeder/yaml-cpp/releases/tag/yaml-cpp-0.5.3.
-* CSVparser
+* CSVparser : 
 This is used to parse the CSV containing the input data. Download from https://github.com/MyBoon/CSVparser/tree/540e3e2f46b77ea8178f90910a165695cbb6cc12.
-* PEGTL 2.2.0
+* PEGTL 2.2.0 : 
 This is used to parse custom constraints. Download and install from https://github.com/taocpp/PEGTL/releases/tag/2.2.0.
-* googletest 1.8.0
+* googletest 1.8.0 : 
 This is required if tests are to be run. Download and install from https://github.com/google/googletest/releases/tag/release-1.8.0.
 
 `g++` with support for C++11, using the `--std=c++11` flag, is required.

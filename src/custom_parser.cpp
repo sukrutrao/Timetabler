@@ -432,13 +432,6 @@ struct control : pegtl::normal<Rule> {
     }
 };
 
-/**
- * @brief      Parses custom constraints given in a file and adds them to the solver.
- *
- * @param[in]  file               The file containing the constraints
- * @param      constraintEncoder  The ConstraintEncoder object
- * @param      timeTabler         The TimeTabler object
- */
 void parseCustomConstraints(std::string file, ConstraintEncoder* constraintEncoder, TimeTabler* timeTabler) {
     Object obj;
     obj.constraintEncoder = constraintEncoder;
