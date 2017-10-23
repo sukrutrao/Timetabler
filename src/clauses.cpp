@@ -143,19 +143,6 @@ Clauses Clauses::operator|(const Clauses &other) {
     }
     std::vector<CClause> resultClauses;
     resultClauses.clear();
-/*    CClause auxiliary;
-    Lit newAuxVars[2];
-    for(int i = 0; i < 2; i++) {
-        newAuxVars[i] = Global::timeTabler->newLiteral(false);
-        auxiliary.addLits(newAuxVars[i]);
-    }
-    resultClauses.push_back(auxiliary);
-    for(int i = 0; i < clauses.size(); i++) {
-        resultClauses.push_back(CClause(~newAuxVars[0]) | clauses[i]);
-    }
-    for(int i = 0; i < other.clauses.size(); i++) {
-        resultClauses.push_back(CClause(~newAuxVars[1]) | other.clauses[i]);
-    }*/
     for(int i = 0; i < clauses.size(); i++) {
         for(int j = 0; j < other.clauses.size(); j++) {
             resultClauses.push_back((clauses[i]) | (other.clauses[j]));
@@ -189,10 +176,7 @@ Clauses Clauses::operator|(const CClause &other) {
  * @return     A Clauses object with the result of the implication operation
  */
 Clauses Clauses::operator>>(const Clauses &other) {
-//    std::cout << "Negating\n";
     Clauses negateThis = operator~();
-//    std::cout << "Negated\n";
-    // negateThis.print();
     return (negateThis | other);
 }
 
@@ -237,7 +221,6 @@ std::vector<CClause> Clauses::getClauses() const {
  * @brief      Displays the clauses in this object.
  */
 void Clauses::print() {
-    std::cout << "Clauses :" << std::endl;
     for (CClause c : clauses) {
         c.printClause();
     }

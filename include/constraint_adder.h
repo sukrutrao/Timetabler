@@ -37,20 +37,12 @@ private:
     Clauses classroomSingleCourseAtATime();
     Clauses programSingleCoreCourseAtATime();
     Clauses minorInMinorTime();
-//    Clauses noCoreInMinorTime();
-    // Clauses exactlyOneTimePerCourse();
-    // Clauses exactlyOneClassroomPerCourse();
     Clauses coreInMorningTime();
     Clauses existingAssignmentClauses();
     Clauses programAtMostOneOfCoreOrElective();
 public:
-    /*Clauses classroomSingleCourseAtATime();*/
     ConstraintAdder(ConstraintEncoder*, TimeTabler*);
     void addConstraints();
-    /*Clauses softConstraints();*/
-    /*Clauses customConstraint(FieldType, std::vector<int>, FieldType, std::vector<int>, bool);
-    Clauses customConstraint(std::vector<int>, FieldType, std::vector<int>, bool);*/
-
 };
 
 #endif

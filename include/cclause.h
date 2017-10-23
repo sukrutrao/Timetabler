@@ -7,8 +7,6 @@ class Clauses;
 
 using namespace Minisat;
 
-// TODO - handle empty inputs for operators
-
 /**
  * @brief      Class for  representing a clause.
  * 

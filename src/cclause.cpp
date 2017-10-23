@@ -175,7 +175,6 @@ Clauses CClause::operator|(const Clauses &other) {
  * @return     A vector of clauses as a result of the implication
  */
 std::vector<CClause> CClause::operator>>(const CClause &other) {
-    std::cout << "#################################################################\n";
     std::vector<CClause> lhs = ~(*this);
     std::vector<CClause> result;
     result.clear();

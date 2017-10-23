@@ -35,10 +35,8 @@ private:
     std::vector<Var> getAllowedVars(int, FieldType);
 public:
     ConstraintEncoder(TimeTabler*);
-//  Clauses createClauses(int, int, std::function<bool(int, int, FieldType)>);
     Clauses hasSameFieldTypeAndValue(int, int, FieldType);
     Clauses hasSameFieldTypeNotSameValue(int, int, FieldType);
-    Clauses hasSameFieldType(int, int, FieldType); // is this needed?
     Clauses notIntersectingTime(int, int);
     Clauses notIntersectingTimeField(int, int, FieldType);
     Clauses hasExactlyOneFieldValueTrue(int, FieldType);
@@ -48,7 +46,6 @@ public:
     Clauses hasNoCommonCoreProgram(int, int);
     Clauses isMinorCourse(int);
     Clauses slotInMinorTime(int);
-    /*Clauses existingAssignments(int);*/
     Clauses isCoreCourse(int);
     Clauses courseInMorningTime(int);
     Clauses programAtMostOneOfCoreOrElective(int);

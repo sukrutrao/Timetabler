@@ -111,7 +111,6 @@ public:
      * or to disable certain constraints.
      */
     std::vector<int> predefinedClausesWeights;
-    // TODO - this is only a temporary measure - fix this
     Data();
 };
 

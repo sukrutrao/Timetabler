@@ -31,6 +31,9 @@ private:
      * A pointer to the MaxSAT formula object
      */
     MaxSATFormula *formula;
+    /**
+     * Stores the values of each solver variable to be checked after solving
+     */
     std::vector<lbool> model;
 public:
     Data data;
@@ -38,8 +41,6 @@ public:
     ~TimeTabler();
     void addClauses(const std::vector<CClause>&, int);
     void addClauses(const Clauses&, int);
-  /*  void addSoftClauses(std::vector<CClause>);
-    void addSoftClauses(Clauses);*/
     bool checkAllTrue(const std::vector<Var>&);
     bool isVarTrue(const Var&);
     bool solve();

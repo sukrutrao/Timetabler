@@ -7,7 +7,7 @@
 /**
  * @brief      Class for a field.
  *
- *             This is a virtual base class from which all fields inherit.
+ * This is a virtual base class from which all fields inherit.
  */
 class Field {
 public:

@@ -14,44 +14,39 @@
 
 using namespace Minisat;
 
+/**
+ * @brief      Constructs the TimeTabler object.
+ */
 TimeTabler::TimeTabler() {
     solver = new TSolver(1, _CARD_TOTALIZER_);
     formula = new MaxSATFormula();
     formula->setProblemType(_WEIGHTED_);
 }
 
+/**
+ * @brief      Adds clauses to the solver with specified weights.
+ * 
+ * A negative weight implies that the clauses are had, and a zero weight implies
+ * that the clauses are not added to the solver.
+ *
+ * @param[in]  clauses  The clauses
+ * @param[in]  weight   The weight
+ */
 void TimeTabler::addClauses(const std::vector<CClause> &clauses, int weight) {
-    std::cout << "Clause count : " << clauses.size() << " W : " << weight << std::endl;
     for(int i = 0; i < clauses.size(); i++) {
         vec<Lit> clauseVec;
         std::vector<Lit> clauseVector = clauses[i].getLits();
         for(int j = 0; j < clauseVector.size(); j++) {
-            // if(sign(clauseVector[j])) { std::cout << "-"; }
-            // std::cout << var(clauseVector[j]) << " ";
             clauseVec.push(clauseVector[j]);
         }
-        // std::cout << std::endl;
         addToFormula(clauseVec, weight);
-
     }
 }
 
+/**
+ * @brief      Adds unit soft clauses for the high level variables to the solver.
+ */
 void TimeTabler::addHighLevelClauses() {
-  /*  for(int i = 0; i < data.courses.size(); i++) {
-        for(int j = 0; j < 6; j++) {
-            // std::cout << "DHL : " << data.highLevelVars[i][j] << std::endl;
-        }
-    }*/
-   /* std::vector<Var> highLevelVars = Utils::flattenVector<Var>(data.highLevelVars);
-    for(int i = 0; i < highLevelVars.size(); i++) {
-        // std::cout << "DHLF : " << highLevelVars[i] << std::endl;
-    }
-    for(int i = 0; i < highLevelVars.size(); i++) {
-        vec<Lit> highLevelClause;
-        highLevelClause.clear();
-        highLevelClause.push(mkLit(highLevelVars[i],false));
-        formula->addSoftClause(10, highLevelClause);
-    }*/
     for(int i = 0; i < Global::FIELD_COUNT; i++) {
         for(int j = 0; j < data.highLevelVars.size(); j++) {
             vec<Lit> highLevelClause;
@@ -62,6 +57,10 @@ void TimeTabler::addHighLevelClauses() {
     }
 }
 
+/**
+ * @brief      Adds unit clauses corresponding to existing assignments given in the input
+ *             to the solver.
+ */
 void TimeTabler::addExistingAssignments() {
     for(int i = 0; i < data.existingAssignmentVars.size(); i++) {
         for(int j = 0; j < data.existingAssignmentVars[i].size(); j++) {
@@ -83,6 +82,15 @@ void TimeTabler::addExistingAssignments() {
     }
 }
 
+/**
+ * @brief      Add a given vec of literals with the given weight to the formula.
+ * 
+ * A negative weight implies that the clauses are had, and a zero weight implies
+ * that the clauses are not added to the solver.
+ *
+ * @param      input   The input
+ * @param[in]  weight  The weight
+ */
 void TimeTabler::addToFormula(vec<Lit> &input, int weight) {
     if(weight == -1) {
         formula->addHardClause(input);
@@ -92,32 +100,26 @@ void TimeTabler::addToFormula(vec<Lit> &input, int weight) {
     }
 }
 
+/**
+ * @brief      Adds clauses to the solver with specified weights.
+ * 
+ * A negative weight implies that the clauses are had, and a zero weight implies
+ * that the clauses are not added to the solver.
+ *
+ * @param[in]  clauses  The clauses
+ * @param[in]  weight   The weight
+ */
 void TimeTabler::addClauses(const Clauses &clauses, int weight) {
     addClauses(clauses.getClauses(), weight);
 }
 
-/*void TimeTabler::addSoftClauses(std::vector<CClause> clauses) {
-    std::cout << "Soft Clause count : " << clauses.size() << std::endl;
-    for(int i = 0; i < clauses.size(); i++) {
-        vec<Lit> clauseVec;
-        std::vector<Lit> clauseVector = clauses[i].getLits();
-        for(int j = 0; j < clauseVector.size(); j++) {
-            clauseVec.push(clauseVector[j]);
-        }
-        formula->addSoftClause(1, clauseVec);
-    }    
-}
-
-void TimeTabler::addSoftClauses(const Clauses &clauses) {
-    addSoftClauses(clauses.getClauses());
-}*/
-
+/**
+ * @brief      Calls the solver to solve for the constraints.
+ *
+ * @return     True, if all high level variables were satisfied, False otherwise
+ */
 bool TimeTabler::solve() {
     solver->loadFormula(formula);
-    if(formula->getProblemType() == _WEIGHTED_) {
-        std::cout << "WEIGHTED" << std::endl;
-    }
-    // solver->search();
     model = solver->tSearch();
     if(checkAllTrue(Utils::flattenVector<Var>(data.highLevelVars))) {
         return true;
@@ -125,6 +127,13 @@ bool TimeTabler::solve() {
     return false;  
 }
 
+/**
+ * @brief      Checks if a given set of variables are true in the model returned by the solver.
+ *
+ * @param[in]  inputs  The input variables
+ *
+ * @return     True, if all variables are True, False otherwise
+ */
 bool TimeTabler::checkAllTrue(const std::vector<Var> &inputs) {
     for(int i = 0; i < inputs.size(); i++) {
         if(model[inputs[i]] == l_False) {
@@ -134,6 +143,13 @@ bool TimeTabler::checkAllTrue(const std::vector<Var> &inputs) {
     return true;
 }
 
+/**
+ * @brief      Determines if a given variable is true in the model returned by the solver.
+ *
+ * @param[in]  v     The variable to be checked
+ *
+ * @return     True if variable true, False otherwise
+ */
 bool TimeTabler::isVarTrue(const Var &v) {
     if (model[v] == l_False) {
         return false;
@@ -141,18 +157,33 @@ bool TimeTabler::isVarTrue(const Var &v) {
     return true;
 }
 
+/**
+ * @brief      Calls the formula to issue a new variable and returns it.
+ *
+ * @return     The new Var added to the formula
+ */
 Var TimeTabler::newVar() {
     Var var = formula->nVars();
     formula->newVar();
     return var;
 }
 
+/**
+ * @brief      Calls the formula to issue a new literal and returns it.
+ *
+ * @param[in]  sign  The sign, whether the literal contains a sign with the variable
+ *
+ * @return     The Lit corresponding to the new Var added to the formula
+ */
 Lit TimeTabler::newLiteral(bool sign = false) {
     Lit p = mkLit(formula->nVars(), sign);
     formula->newVar();
     return p;
 }
 
+/**
+ * @brief      Prints the result of the problem.
+ */
 void TimeTabler::printResult() {
     if(checkAllTrue(Utils::flattenVector<Var>(data.highLevelVars))) {
         std::cout << "All high level clauses were satisfied" << std::endl;
@@ -164,6 +195,9 @@ void TimeTabler::printResult() {
     }
 }
 
+/**
+ * @brief      Displays the generated time table.
+ */
 void TimeTabler::displayTimeTable() {
     for(int i = 0; i < data.courses.size(); i++) {
         std::cout << "Course : " << data.courses[i].getName() << std::endl;
@@ -202,6 +236,11 @@ void TimeTabler::displayTimeTable() {
     }
 }
 
+/**
+ * @brief      Writes the generated time table to a CSV file.
+ *
+ * @param[in]  fileName  The file path of the output CSV file
+ */
 void TimeTabler::writeOutput(std::string fileName) {
     std::ofstream fileObject;
     fileObject.open(fileName);
@@ -253,6 +292,10 @@ void TimeTabler::writeOutput(std::string fileName) {
     fileObject.close();
 }
 
+/**
+ * @brief      Displays the reasons due to which the formula could not be
+ *             satisfied, if applicable.
+ */
 void TimeTabler::displayUnsatisfiedOutputReasons() {
     for(int i = 0; i < data.highLevelVars.size(); i++) {
         for(int j = 0; j < data.highLevelVars[i].size(); j++) {
@@ -265,6 +308,9 @@ void TimeTabler::displayUnsatisfiedOutputReasons() {
     }
 }
 
+/**
+ * @brief      Destroys the object, and deletes the solver.
+ */
 TimeTabler::~TimeTabler() {
     delete solver;
 }
