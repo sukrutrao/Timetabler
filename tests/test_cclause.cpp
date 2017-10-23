@@ -15,15 +15,20 @@ public:
 	void printClause(CClause);
 };
 
-void TestClauses::SetUp() {
+void TestCClause::SetUp() {
+	TimeTabler *timeTabler = new TimeTabler();
 	for(int i = 0; i < 6; i++) {
-		lit[i] = Global::timeTabler->newLiteral(false);
+		lit[i] = timeTabler->newLiteral(false);
 	}
-	clause1 = CClause(lit[0], lit[1], lit[3]);
-	clause2 = CClause(~lit[0], lit[5], lit[3]);
+	clause1.addLits(lit[0]);
+	clause1.addLits(lit[1]);
+	clause1.addLits(lit[3]);
+	clause2.addLits(~lit[0]);
+	clause2.addLits(lit[5]);
+	clause2.addLits(lit[3]);
 }
 
-void TestClauses::printClause(CClause input) {
+void TestCClause::printClause(CClause input) {
 	std::cout << "Start printing " << std::endl;
 	std::vector<Lit> lits = input.getLits();
 	for(int j = 0; j < lits.size(); j++) {
@@ -36,140 +41,64 @@ void TestClauses::printClause(CClause input) {
 	std::cout << "Done" << std::endl;
 }
 
-// TODO - these are the tests for Clauses. Have to modify for CClause.
-
 TEST_F(TestCClause, ORTestNormal) {
-	CClause result = clauseG1 | clauseG2;
-	std::vector<Lit> resultClauses = result.getLits();
-	ASSERT_EQ(resultClauses.size(), 5);
-	ASSERT_EQ(resultClauses[0].getLits().size(), 2);
+	CClause result = clause1 | clause2;
+	std::vector<Lit> resultLits = result.getLits();
 
-	ASSERT_EQ(resultClauses[1].getLits().size(), 3);
-	ASSERT_EQ(resultClauses[2].getLits().size(), 4);
-	ASSERT_EQ(resultClauses[3].getLits().size(), 4);
-	ASSERT_EQ(resultClauses[4].getLits().size(), 4);
+	ASSERT_EQ(resultLits.size(), 2);
+
+	ASSERT_EQ(resultLits[0], lit[0]);
+	ASSERT_EQ(resultLits[1], ~lit[0]);
+}
+
+TEST_F(TestCClause, ORTestRHSEmpty) {
+	CClause clause;
+	CClause result = clause1 | clause;
+	std::vector<Lit> resultLits = result.getLits();
+
+	ASSERT_EQ(resultLits.size(), 3);
+
+	ASSERT_EQ(resultLits[0], lit[0]);
+	ASSERT_EQ(resultLits[1], lit[1]);
+	ASSERT_EQ(resultLits[2], lit[3]);
+}
+
+TEST_F(TestCClause, ANDTestNormal) {
+	std::vector<CClause> result = clause1 & clause2;
 	
-	ASSERT_EQ(resultClauses[1].getLits()[0], ~auxLits[0]);
-	ASSERT_EQ(resultClauses[2].getLits()[0], ~auxLits[0]);
-	ASSERT_EQ(resultClauses[3].getLits()[0], ~auxLits[1]);
-	ASSERT_EQ(resultClauses[4].getLits()[0], ~auxLits[1]);
+	ASSERT_EQ(result.size(), 2);
+
+	ASSERT_EQ(result[0].getLits(), clause1.getLits());
+	ASSERT_EQ(result[1].getLits(), clause2.getLits());
+}
+
+TEST_F(TestCClause, ANDTestRHSEmpty) {
+	CClause clause;
+	std::vector<CClause> result = clause1 & clause;
+
+	ASSERT_EQ(result.size(), 2);
+
+	ASSERT_EQ(result[0].getLits(), clause1.getLits());
+	ASSERT_EQ(result[1].getLits(), clause.getLits());
+}
+
+TEST_F(TestCClause, NOTTestNormal) {
+	std::vector<CClause> result = ~clause1;
+
+	ASSERT_EQ(result.size(), 3);
+
+	ASSERT_EQ(result[0].getLits().size(), 1);
+	ASSERT_EQ(result[1].getLits().size(), 1);
+	ASSERT_EQ(result[2].getLits().size(), 1);
+
+	ASSERT_EQ(result[0].getLits()[0], ~lit[0]);
+	ASSERT_EQ(result[1].getLits()[0], ~lit[1]);
+	ASSERT_EQ(result[2].getLits()[0], ~lit[3]);
+}
+
+TEST_F(TestCClause, NOTTestEmpty) {
+	CClause clauses;
+	std::vector<CClause> result = ~clauses;
 	
-	ASSERT_EQ(resultClauses[1].getLits()[1], lit[0]);
-	ASSERT_EQ(resultClauses[1].getLits()[2], lit[1]);
-
-	ASSERT_EQ(resultClauses[2].getLits()[1], lit[2]);
-	ASSERT_EQ(resultClauses[2].getLits()[2], ~lit[3]);
-	ASSERT_EQ(resultClauses[2].getLits()[3], lit[4]);
-
-	ASSERT_EQ(resultClauses[3].getLits()[1], ~lit[0]);
-	ASSERT_EQ(resultClauses[3].getLits()[2], lit[5]);
-	ASSERT_EQ(resultClauses[3].getLits()[3], lit[3]);
-
-	ASSERT_EQ(resultClauses[4].getLits()[1], lit[1]);
-	ASSERT_EQ(resultClauses[4].getLits()[2], ~lit[2]);
-	ASSERT_EQ(resultClauses[4].getLits()[3], ~lit[3]);
-
+	ASSERT_EQ(result.size(), 0);
 }
-
-TEST_F(TestClauses, ORTestRHSEmpty) {
-	Clauses clause;
-	Clauses result = clauseG1 | clause;
-	std::vector<CClause> resultClauses = result.getClauses();
-	ASSERT_EQ(resultClauses.size(), 2);
-
-	ASSERT_EQ(resultClauses[0].getLits()[0], lit[0]);
-	ASSERT_EQ(resultClauses[0].getLits()[1], lit[1]);
-
-	ASSERT_EQ(resultClauses[1].getLits()[0], lit[2]);
-	ASSERT_EQ(resultClauses[1].getLits()[1], ~lit[3]);
-	ASSERT_EQ(resultClauses[1].getLits()[2], lit[4]);
-}
-
-TEST_F(TestClauses, ANDTestNormal) {
-	Clauses result = clauseG1 & clauseG2;
-	std::vector<CClause> resultClauses = result.getClauses();
-	ASSERT_EQ(resultClauses.size(), 4);
-	
-	ASSERT_EQ(resultClauses[0].getLits()[0], lit[0]);
-	ASSERT_EQ(resultClauses[0].getLits()[1], lit[1]);
-
-	ASSERT_EQ(resultClauses[1].getLits()[0], lit[2]);
-	ASSERT_EQ(resultClauses[1].getLits()[1], ~lit[3]);
-	ASSERT_EQ(resultClauses[1].getLits()[2], lit[4]);
-
-	ASSERT_EQ(resultClauses[2].getLits()[0], ~lit[0]);
-	ASSERT_EQ(resultClauses[2].getLits()[1], lit[5]);
-	ASSERT_EQ(resultClauses[2].getLits()[2], lit[3]);
-
-	ASSERT_EQ(resultClauses[3].getLits()[0], lit[1]);
-	ASSERT_EQ(resultClauses[3].getLits()[1], ~lit[2]);
-	ASSERT_EQ(resultClauses[3].getLits()[2], ~lit[3]);
-}
-
-TEST_F(TestClauses, ANDTestRHSEmpty) {
-	Clauses clause;
-	Clauses result = clauseG1 & clause;
-	std::vector<CClause> resultClauses = result.getClauses();
-	ASSERT_EQ(resultClauses.size(), 2);
-
-	ASSERT_EQ(resultClauses[0].getLits()[0], lit[0]);
-	ASSERT_EQ(resultClauses[0].getLits()[1], lit[1]);
-
-	ASSERT_EQ(resultClauses[1].getLits()[0], lit[2]);
-	ASSERT_EQ(resultClauses[1].getLits()[1], ~lit[3]);
-	ASSERT_EQ(resultClauses[1].getLits()[2], lit[4]);
-}
-
-TEST_F(TestClauses, NOTTestNormal) {
-	Clauses result = ~clauseG1;
-	std::vector<CClause> resultClauses = result.getClauses();
-	ASSERT_EQ(resultClauses.size(), 6);
-	ASSERT_EQ(resultClauses[0].getLits().size(), 2);
-	Lit auxLits[2];
-	for(int i = 0; i < resultClauses[0].getLits().size(); i++) {
-		auxLits[i] = resultClauses[0].getLits()[i];
-	}
-	for(int i = 1; i <=5; i++) {
-		ASSERT_EQ(resultClauses[i].getLits().size(), 2);
-	}
-
-	
-	ASSERT_EQ(resultClauses[1].getLits()[0], ~auxLits[0]);
-	ASSERT_EQ(resultClauses[2].getLits()[0], ~auxLits[0]);
-	ASSERT_EQ(resultClauses[3].getLits()[0], ~auxLits[1]);
-	ASSERT_EQ(resultClauses[4].getLits()[0], ~auxLits[1]);
-	ASSERT_EQ(resultClauses[5].getLits()[0], ~auxLits[1]);
-	
-	ASSERT_EQ(resultClauses[1].getLits()[1], ~lit[0]);
-	ASSERT_EQ(resultClauses[2].getLits()[1], ~lit[1]);
-	ASSERT_EQ(resultClauses[3].getLits()[1], ~lit[2]);
-	ASSERT_EQ(resultClauses[4].getLits()[1], lit[3]);
-	ASSERT_EQ(resultClauses[5].getLits()[1], ~lit[4]);
-}
-
-TEST_F(TestClauses, NOTTestEmpty) {
-	Clauses clauses;
-	Clauses result = ~clauses;
-	std::vector<CClause> resultClauses = result.getClauses();
-	ASSERT_EQ(resultClauses.size(), 0);
-}
-
-TEST_F(TestClauses, IMPLIESTestNormal) {
-	/*printClause(clauseG1);
-	printClause(clauseG2);*/
-	Clauses result = clauseG1>>clauseG2;
-	/*printClause(clauseG1);
-	printClause(clauseG2);*/
-	Clauses otherWay = (~clauseG1) | clauseG2;
-	/*printClause(clauseG1);
-	printClause(clauseG2);
-	printClause(result);
-	printClause(otherWay);*/
-	ASSERT_EQ(result.getClauses().size(), otherWay.getClauses().size());
-	for(int i = 0; i < result.getClauses().size(); i++) {
-		ASSERT_EQ(result.getClauses()[i].getLits().size(), otherWay.getClauses()[i].getLits().size());
-	}
-	// Checked using print that values were ok. Auxiliary vars causing issues
-}
-
-

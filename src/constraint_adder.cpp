@@ -11,8 +11,6 @@
 
 using namespace Minisat;
 
-// TODO - we should define high level variables for each course
-
 /**
  * @brief      Constructs the ConstraintAdder object.
  *

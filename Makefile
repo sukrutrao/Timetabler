@@ -22,7 +22,7 @@ OBJ_LIST = classroom.o course.o instructor.o is_minor.o program.o segment.o slot
 			clauses.o constraint_adder.o constraint_encoder.o parser.o time_tabler.o tsolver.o \
 			CSVparser.o utils.o custom_parser.o data.o
 
-TEST_OBJ_LIST = test_clauses.o
+TEST_OBJ_LIST = test_clauses.o test_cclause.o
 
 MAIN_OBJ = $(BIN_DIR)/main.o
 MAIN_TEST_OBJ = $(BIN_DIR)/tests_main.o
