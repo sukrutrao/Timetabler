@@ -186,7 +186,7 @@ Clauses Clauses::operator|(CClause &other) {
  *
  * @param      other  The Clauses object which is implied by this object
  *
- * @return     { description_of_the_return_value }
+ * @return     A Clauses object with the result of the implication operation
  */
 Clauses Clauses::operator>>(Clauses &other) {
 //    std::cout << "Negating\n";
@@ -196,23 +196,46 @@ Clauses Clauses::operator>>(Clauses &other) {
     return (negateThis | other);
 }
 
+/**
+ * @brief      Adds a CClause to the set of clauses.
+ *
+ * @param[in]  other  The CClause to add
+ */
 void Clauses::addClauses(CClause other) {
     clauses.push_back(other);
 }
 
+/**
+ * @brief      Adds a vector of CClause to the set of clauses.
+ *
+ * @param[in]  other  The CClause vector to append
+ */
 void Clauses::addClauses(std::vector<CClause> other) {
     clauses.insert(std::end(clauses), std::begin(other), std::end(other));
 }
 
+/**
+ * @brief      Adds the clauses of a Clauses object to this object.
+ *
+ * @param[in]  other  The Clauses object whose clauses are to be added
+ */
 void Clauses::addClauses(Clauses other) {
     std::vector<CClause> otherClauses = other.getClauses();
     addClauses(otherClauses);
 }
 
+/**
+ * @brief      Gets the clauses in this object.
+ *
+ * @return     The clauses
+ */
 std::vector<CClause> Clauses::getClauses() {
     return clauses;
 }
 
+/**
+ * @brief      Displays the clauses in this object.
+ */
 void Clauses::print() {
     std::cout << "Clauses :" << std::endl;
     for (CClause c : clauses) {
@@ -221,6 +244,9 @@ void Clauses::print() {
     std::cout << std::endl;
 }
 
+/**
+ * @brief      Clears the Clauses object by removing all the clauses.
+ */
 void Clauses::clear() {
     clauses.clear();
 }
