@@ -125,25 +125,26 @@ struct action<value> {
                     obj.instructorValues.push_back(i);
                     break;
                 }
-                if (!found) {
-                    std::cout << "Instructor " << val << " does not exist." << std::endl;
-                    exit(1);
-                }
-                found = false;
             }
+            if (!found) {
+                std::cout << "Instructor " << val << " does not exist." << std::endl;
+                exit(1);
+            }
+            found = false;
         } else if (obj.fieldType == FieldValuesType::COURSE) {
             for (int i=0; i<obj.timeTabler->data.courses.size(); i++) {
+                    std::cout << obj.timeTabler->data.courses[i].getName() << std::endl;
                 if (obj.timeTabler->data.courses[i].getName() == val) {
                     found = true;
                     obj.courseValues.push_back(i);
                     break;
                 }
-                if (!found) {
-                    std::cout << "Course " << val << " does not exist." << std::endl;
-                    exit(1);
-                }
-                found = false;
             }
+            if (!found) {
+                std::cout << "Course " << val << " does not exist." << std::endl;
+                exit(1);
+            }
+            found = false;
         } else if (obj.fieldType == FieldValuesType::SEGMENT) {
             for (int i=0; i<obj.timeTabler->data.segments.size(); i++) {
                 if (obj.timeTabler->data.segments[i].getName() == val) {
@@ -151,12 +152,12 @@ struct action<value> {
                     obj.segmentValues.push_back(i);
                     break;
                 }
-                if (!found) {
-                    std::cout << "Segment " << val << " does not exist." << std::endl;
-                    exit(1);
-                }
-                found = false;
             }
+            if (!found) {
+                std::cout << "Segment " << val << " does not exist." << std::endl;
+                exit(1);
+            }
+            found = false;
         } else if (obj.fieldType == FieldValuesType::PROGRAM) {
             for (int i=0; i<obj.timeTabler->data.programs.size(); i++) {
                 if (obj.timeTabler->data.programs[i].getNameWithType() == val) {
@@ -164,12 +165,12 @@ struct action<value> {
                     obj.programValues.push_back(i);
                     break;
                 }
-                if (!found) {
-                    std::cout << "Program " << val << " does not exist." << std::endl;
-                    exit(1);
-                }
-                found = false;
             }
+            if (!found) {
+                std::cout << "Program " << val << " does not exist." << std::endl;
+                exit(1);
+            }
+            found = false;
         } else if (obj.fieldType == FieldValuesType::ISMINOR) {
             for (int i=0; i<obj.timeTabler->data.isMinors.size(); i++) {
                 if (obj.timeTabler->data.isMinors[i].getName() == val) {
@@ -177,12 +178,12 @@ struct action<value> {
                     obj.isMinorValues.push_back(i);
                     break;
                 }
-                if (!found) {
-                    std::cout << "IsMinor " << val << " does not exist." << std::endl;
-                    exit(1);
-                }
-                found = false;
             }
+            if (!found) {
+                std::cout << "IsMinor " << val << " does not exist." << std::endl;
+                exit(1);
+            }
+            found = false;
         } else if (obj.fieldType == FieldValuesType::CLASSROOM) {
             for (int i=0; i<obj.timeTabler->data.classrooms.size(); i++) {
                 if (obj.timeTabler->data.classrooms[i].getName() == val) {
@@ -190,12 +191,12 @@ struct action<value> {
                     obj.classValues.push_back(i);
                     break;
                 }
-                if (!found) {
-                    std::cout << "Classroom " << val << " does not exist." << std::endl;
-                    exit(1);
-                }
-                found = false;
-            }            
+            }
+            if (!found) {
+                std::cout << "Classroom " << val << " does not exist." << std::endl;
+                exit(1);
+            }
+            found = false;
         } else if (obj.fieldType == FieldValuesType::SLOT) {
             for (int i=0; i<obj.timeTabler->data.slots.size(); i++) {
                 if (obj.timeTabler->data.slots[i].getName() == val) {
@@ -203,12 +204,12 @@ struct action<value> {
                     obj.slotValues.push_back(i);
                     break;
                 }
-                if (!found) {
-                    std::cout << "Slot " << val << " does not exist." << std::endl;
-                    exit(1);
-                }
-                found = false;
-            }            
+            }
+            if (!found) {
+                std::cout << "Slot " << val << " does not exist." << std::endl;
+                exit(1);
+            }
+            found = false;
         }
     }
 };
