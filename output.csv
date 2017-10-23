@@ -1,3 +1,7 @@
-name,class_size,instructor,segment,is_minor,B.Tech.1,B.Tech.2,B.Tech.3,B.Tech.4,M.Tech.,classroom,slot
-CS6403,50,Dr. Saurabh Joshi,14,No,Core,Elective,No,No,No,317,A
-CS6383,30,Dr. Ramakrishna Upadrasta,16,Yes,No,No,Elective,No,Core,414,B
+name,class_size,instructor,segment,is_minor,CS14B,CS15B,CS15M,CS16B,CS16M,CS17B,CS17M,PHD,classroom,slot
+CS3550,40,Manohar Kaul,56,No,No,Core,No,No,No,No,No,No,317,B
+CS6250,40,Ramakrishna Upadrasta,16,No,Elective,No,No,No,Elective,No,Elective,Elective,Auditorium,A
+CS5470,10,Saketha Nath,16,No,Elective,Elective,Elective,No,Elective,No,Elective,Elective,317,A
+CS2400,40,Saurabh Joshi,56,No,No,No,No,Core,No,No,No,No,119,B
+CS5420,15,Manohar Kaul,16,No,Elective,No,Elective,No,Elective,No,Elective,Elective,212,A
+CS3510,40,Sathya Peri,56,No,No,No,No,Core,No,No,No,No,119,A

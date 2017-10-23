@@ -39,6 +39,7 @@ public:
         existingAssignmentWeights[FieldType::isMinor] = -1;
         existingAssignmentWeights[FieldType::program] = -1;
         predefinedClausesWeights[PredefinedClauses::coreInMorningTime] = 1;
+        predefinedClausesWeights[PredefinedClauses::programSingleCoreCourseAtATime] = -1;
     }
 };
 

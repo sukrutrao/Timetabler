@@ -14,8 +14,8 @@ int main(int argc, char const *argv[]) {
     TimeTabler *timeTabler = new TimeTabler();
     Global::timeTabler = timeTabler;
     Parser parser(timeTabler);
-    parser.parseFields("config/fields.yml");
-    parser.parseInput("config/input.csv");
+    parser.parseFields("config/testfields.yml");
+    parser.parseInput("config/testinput.csv");
     parser.addVars();
 
     std::cout << "FieldValueVars" << std::endl;

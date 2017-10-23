@@ -21,7 +21,7 @@ weights: # Assignment, high level
 
 predefined_weights:
   - clause: 0
-    weight: 1
+    weight: -1
 
 instructors:
   - Dr. Saurabh Joshi

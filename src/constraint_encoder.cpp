@@ -69,7 +69,7 @@ Clauses ConstraintEncoder::hasCommonProgram(int course1, int course2) {
 Clauses ConstraintEncoder::hasNoCommonCoreProgram(int course1, int course2) {
     Clauses result;
     for(int i = 0; i < vars[course1][FieldType::program].size(); i++) {
-        if(!timeTabler->data.programs[i].isCoreProgram()) {
+        if(timeTabler->data.programs[i].isCoreProgram()) {
             CClause resultClause;
             resultClause.addLits(~mkLit(vars[course1][FieldType::program][i],false));
             resultClause.addLits(~mkLit(vars[course2][FieldType::program][i],false));
