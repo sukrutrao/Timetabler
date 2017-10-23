@@ -16,4 +16,5 @@ Data::Data() {
     existingAssignmentWeights[FieldType::program] = -1;
     existingAssignmentWeights[FieldType::instructor] = -1;
     predefinedClausesWeights[PredefinedClauses::coreInMorningTime] = 1;
+    predefinedClausesWeights[PredefinedClauses::electiveInNonMorningTime] = 1;
 }

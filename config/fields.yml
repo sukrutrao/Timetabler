@@ -1,10 +1,10 @@
 weights: # Assignment, high level
-  instructor: [-1, -1]
-  segment: [-1, -1]
-  is_minor: [-1, -1]
+  instructor: [1, -1]
+  segment: [1, -1]
+  is_minor: [1, -1]
   program: -1
-  classroom: [-1, -1]
-  slot: [-1, -1]
+  classroom: [1, -1]
+  slot: [1, -1]
 
 # Predefined Weights
 # instructorSingleCourseAtATime

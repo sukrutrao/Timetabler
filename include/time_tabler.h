@@ -53,6 +53,7 @@ public:
     void writeOutput(std::string);
     void addExistingAssignments();
     void addToFormula(vec<Lit>&, int);
+    void displayChangesInGivenAssignment();
 };
 
 #endif

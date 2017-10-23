@@ -1,3 +1,35 @@
+/*
+ * Large portions of code in this file have been taken from algorithms/Alg_OLL.cc of Open WBO
+ * The LICENSE of that is given below
+ */
+
+/*!
+ * \author Ruben Martins - ruben@sat.inesc-id.pt
+ *
+ * @section LICENSE
+ *
+ * Open-WBO, Copyright (c) 2013-2017, Ruben Martins, Vasco Manquinho, Ines Lynce
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ *
+ */
+
 #include "tsolver.h"
 
 #include "algorithms/Alg_OLL.h"
@@ -130,7 +162,6 @@ void TSolver::tWeighted() {
         } else {
           assert(lbCost == newCost);
           return;
-          exit(_OPTIMUM_);
         }
       }
     }
@@ -166,11 +197,7 @@ void TSolver::tWeighted() {
         //printf("c LB : %-12" PRIu64 "\n", lbCost);
 
       if (nbSatisfiable == 0) {
-
-        // assert(false && "Should not ever be unsatisfiable");
-        printAnswer(_UNSATISFIABLE_);
         return;
-        // exit(_UNSATISFIABLE_);
       }
 
       if (lbCost == ubCost) {
@@ -178,7 +205,6 @@ void TSolver::tWeighted() {
         if (verbosity > 0)
           //printf("c LB = UB\n");
         return;
-        exit(_OPTIMUM_);
       }
 
       sumSizeCores += solver->conflict.size();

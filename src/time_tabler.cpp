@@ -188,11 +188,29 @@ Lit TimeTabler::newLiteral(bool sign = false) {
 void TimeTabler::printResult() {
     if(checkAllTrue(Utils::flattenVector<Var>(data.highLevelVars))) {
         std::cout << "All high level clauses were satisfied" << std::endl;
+        displayChangesInGivenAssignment();
         displayTimeTable();
     }
     else {
         std::cout << "Some high level clauses were not satisfied" << std::endl;
         displayUnsatisfiedOutputReasons();
+    }
+}
+
+void TimeTabler::displayChangesInGivenAssignment() {
+    for(int i = 0; i < data.existingAssignmentVars.size(); i++) {
+        for(int j = 0; j < data.existingAssignmentVars[i].size(); j++) {
+            for(int k = 0; k < data.existingAssignmentVars[i][j].size(); k++) {
+                if(data.existingAssignmentVars[i][j][k] == l_True && model[data.fieldValueVars[i][j][k]] == l_False) {
+                    std::cout << "Value of field " << Utils::getFieldTypeName(FieldType(j)) << " for course ";
+                    std::cout << data.courses[i].getName() << " changed from 'True' to 'False'" << std::endl;
+                }
+                else if(data.existingAssignmentVars[i][j][k] == l_False && model[data.fieldValueVars[i][j][k]] == l_True) {
+                    std::cout << "Value of field " << Utils::getFieldTypeName(FieldType(j)) << " for course ";
+                    std::cout << data.courses[i].getName() << " changed from 'False' to 'True'" << std::endl;
+                }
+            }
+        }
     }
 }
 
@@ -204,22 +222,27 @@ void TimeTabler::displayTimeTable() {
         std::cout << "Course : " << data.courses[i].getName() << std::endl;
         for(int j = 0; j < data.fieldValueVars[i][FieldType::slot].size(); j++) {
             if(isVarTrue(data.fieldValueVars[i][FieldType::slot][j])) {
-                std::cout << "Slot : " << data.slots[j].getName() << " " << data.fieldValueVars[i][FieldType::slot][j] << std::endl;
+                std::cout << "Slot : " << data.slots[j].getName() << std::endl;
             }
         }
         for(int j = 0; j < data.fieldValueVars[i][FieldType::instructor].size(); j++) {
             if(isVarTrue(data.fieldValueVars[i][FieldType::instructor][j])) {
-                std::cout << "Instructor : " << data.instructors[j].getName() << " " << data.fieldValueVars[i][FieldType::instructor][j] << std::endl;
+                std::cout << "Instructor : " << data.instructors[j].getName() << std::endl;
             }
         }
         for(int j = 0; j < data.fieldValueVars[i][FieldType::classroom].size(); j++) {
             if(isVarTrue(data.fieldValueVars[i][FieldType::classroom][j])) {
-                std::cout << "Classroom : " << data.classrooms[j].getName() << " " << data.fieldValueVars[i][FieldType::classroom][j] << std::endl;
+                std::cout << "Classroom : " << data.classrooms[j].getName() << std::endl;
             }
         }
         for(int j = 0; j < data.fieldValueVars[i][FieldType::segment].size(); j++) {
             if(isVarTrue(data.fieldValueVars[i][FieldType::segment][j])) {
-                std::cout << "Segment : " << data.segments[j].getName() << " " << data.fieldValueVars[i][FieldType::segment][j] << std::endl;
+                std::cout << "Segment : " << data.segments[j].getName() << std::endl;
+            }
+        }
+        for(int j = 0; j < data.fieldValueVars[i][FieldType::isMinor].size(); j++) {
+            if(isVarTrue(data.fieldValueVars[i][FieldType::isMinor][j])) {
+                std::cout << "Is Minor : " << data.isMinors[j].getName() << std::endl;
             }
         }
         for(int j = 0; j < data.fieldValueVars[i][FieldType::program].size(); j++) {
