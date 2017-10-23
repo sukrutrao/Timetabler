@@ -444,10 +444,9 @@ struct control : pegtl::normal<Rule> {
     }
 };
 
-void parseCustomConstraints(ConstraintEncoder* constraintEncoder , ConstraintAdder* constraintAdder, TimeTabler* timeTabler) {
+void parseCustomConstraints(ConstraintEncoder* constraintEncoder, TimeTabler* timeTabler) {
     Object obj;
     obj.constraintEncoder = constraintEncoder;
-    obj.constraintAdder = constraintAdder;
     obj.timeTabler = timeTabler;
     pegtl::file_input<> in("config/custom.txt");
     pegtl::parse<grammar, action, control>(in, obj);

@@ -33,6 +33,6 @@ struct Object {
     std::vector<Clauses> constraintVals;
 };
 
-void parseCustomConstraints(ConstraintEncoder*, ConstraintAdder*, TimeTabler*);
+void parseCustomConstraints(ConstraintEncoder*, TimeTabler*);
 
 #endif

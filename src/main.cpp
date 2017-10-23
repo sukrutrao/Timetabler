@@ -11,8 +11,8 @@
 int main(int argc, char const *argv[]) {
     TimeTabler *timeTabler = new TimeTabler();
     Parser parser(timeTabler);
-    parser.parseFields("config/fields.yml");
-    parser.parseInput("config/input.csv");
+    parser.parseFields("config/testfields.yml");
+    parser.parseInput("config/testinput.csv");
     parser.addVars();
 
     std::cout << "FieldValueVars" << std::endl;
@@ -54,7 +54,7 @@ int main(int argc, char const *argv[]) {
     ConstraintEncoder encoder(timeTabler);
     ConstraintAdder constraintAdder(&encoder, timeTabler);
     constraintAdder.addConstraints();
-    parseCustomConstraints(&encoder, &constraintAdder, timeTabler);
+    parseCustomConstraints(&encoder, timeTabler);
 //    timeTabler->addClauses(constraintAdder.addConstraints());
   //  timeTabler->addSoftClauses(constraintAdder.softConstraints());
     timeTabler->addHighLevelClauses();
