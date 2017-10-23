@@ -51,14 +51,10 @@ int Segment::length() {
  * @return     True if intersecting, False otherwise.
  */
 bool Segment::isIntersecting(const Segment &other) {
- /*   std::cout << "II1 : " << this->startSegment << " " << this->endSegment << std::endl;
-    std::cout << "II2 : " << other.startSegment << " " << other.endSegment << std::endl;*/
     if(this->startSegment < other.startSegment) {
-     //   std::cout << "If1 " << !(this->endSegment < other.startSegment) << std::endl;
         return !(this->endSegment < other.startSegment);    
     }
     else if(this->startSegment > other.startSegment) {
-     //   std::cout << "If2 " << !(this->startSegment > other.endSegment) << std::endl;
         return !(this->startSegment > other.endSegment);
     }
     return true;

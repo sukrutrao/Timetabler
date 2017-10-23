@@ -9,8 +9,6 @@ using namespace Minisat;
 
 class CClause;
 
-// TODO - handle empty inputs for operators
-
 /**
  * @brief      Class for representing a set of clauses.
  * 

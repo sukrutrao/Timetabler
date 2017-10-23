@@ -7,7 +7,16 @@
 #include "time_tabler.h"
 #include <string>
 
+/**
+ * @brief      Class for parser.
+ * 
+ * This class is responsible for parsing the field and inputs
+ * given by the user, and populating the corresponding data members.
+ */
 class Parser {
+	/**
+	 * A pointer to the TimeTabler object
+	 */
     TimeTabler *timeTabler;
     Day getDayFromString(std::string);
 public:

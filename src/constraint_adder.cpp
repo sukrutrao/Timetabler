@@ -42,19 +42,15 @@ Clauses ConstraintAdder::fieldSingleValueAtATime(FieldType fieldType) {
     std::vector<Course> courses = timeTabler->data.courses;
     for(int i = 0; i < courses.size(); i++) {
         for(int j = i+1; j < courses.size(); j++) {
+            /*
+             * For every pair of courses, either the field value of the FieldType
+             * is different or their times do not intersect
+             */
             Clauses antecedent = encoder->hasSameFieldTypeNotSameValue(i, j, fieldType);
             Clauses consequent = encoder->notIntersectingTime(i, j);
-            // std::cout << "Course " << i << ", " << j << " : " << std::endl;
-        //    antecedent.print();
-        //    consequent.print();
-            Clauses r = antecedent | consequent;
-        //    r.print();
-            result.addClauses(r);
-
+            result.addClauses(antecedent | consequent);
         }
     }
-    std::cout << "Result size : " << result.getClauses().size() << std::endl;
-    // result.print();
     return result;
 }
 
@@ -99,16 +95,15 @@ Clauses ConstraintAdder::programSingleCoreCourseAtATime() {
     std::vector<Course> courses = timeTabler->data.courses;
     for(int i = 0; i < courses.size(); i++) {
         for(int j = i+1; j < courses.size(); j++) {
+            /*
+             * For every pair of courses, either there is no Program for which
+             * they are both core or their times do not intersect
+             */
             Clauses antecedent = encoder->hasNoCommonCoreProgram(i, j);
-            std::cout << "HCP : " << antecedent.getClauses().size() << "\n";
             Clauses consequent = encoder->notIntersectingTime(i, j);
-            std::cout << "NIT : " << consequent.getClauses().size() << "\n";
-            Clauses r = antecedent | consequent;
-            std::cout << "R\n";
-            result.addClauses(r);
+            result.addClauses(antecedent | consequent);
         }
     }
-    std::cout << "Ret\n";
     return result;
 }
 
@@ -125,6 +120,10 @@ Clauses ConstraintAdder::minorInMinorTime() {
     result.clear();
     std::vector<Course> courses = timeTabler->data.courses;
     for(int i = 0; i < courses.size(); i++) {
+        /*
+         * a minor course must be in a minor Slot.
+         * a non-minor course must not be in a minor Slot.
+         */
         Clauses antecedent = encoder->isMinorCourse(i);
         Clauses consequent = encoder->slotInMinorTime(i);
         result.addClauses(antecedent>>consequent);
@@ -151,106 +150,39 @@ Clauses ConstraintAdder::exactlyOneFieldValuePerCourse(FieldType fieldType) {
     result.clear();
     std::vector<Course> courses = timeTabler->data.courses;
     for(int i = 0; i < courses.size(); i++) {
+        // exactly one field value must be true
         Clauses exactlyOneFieldValue = encoder->hasExactlyOneFieldValueTrue(i, fieldType);
-        // std::cout << "Course " << i << " : " << std::endl;
-        // exactlyOneFieldValue.print();
         Clauses cclause(timeTabler->data.highLevelVars[i][fieldType]);
-     /*   Clauses negateCClause = ~cclause;
-        Clauses rhs = ~exactlyOneFieldValue | cclause;
-        result.addClauses((exactlyOneFieldValue | negateCClause) & rhs);*/
-        Clauses first = cclause>>exactlyOneFieldValue;
-   //     Clauses second = exactlyOneFieldValue>>cclause;
-        result.addClauses(first);// & second);
+        // high level variable implies the clause, and by default is hard
+        // if high level variable is false, this clause could not be satisfied
+        // this provides a reason to the user
+        result.addClauses(cclause>>exactlyOneFieldValue);
     }
     return result;
 }
-
-/*Clauses ConstraintAdder::existingAssignmentClauses() {
-    Clauses result;
-    std::vector<Course> courses = timeTabler->data.courses;
-    for(int i = 0; i < courses.size(); i++) {
-        Clauses thisCourse = encoder->existingAssignments(i);
-        result.addClauses(thisCourse);
-    }
-    return result;
-}*/
-
-// Clauses ConstraintAdder::exactlyOneTimePerCourse() {
-//     Clauses result;
-//     result.clear();
-//     std::vector<Course> courses = timeTabler->data.courses;
-//     for(int i = 0; i < courses.size(); i++) {
-//         Clauses exactlyOneSlot = encoder->hasExactlyOneFieldValueTrue(i, FieldType::slot);
-//         result.addClauses(exactlyOneSlot);
-//     }
-//     return result;
-// }
-
-// Clauses ConstraintAdder::exactlyOneClassroomPerCourse() {
-//     Clauses result;
-//     result.clear();
-//     std::vector<Course> courses = timeTabler->data.courses;
-//     for(int i = 0; i < courses.size(); i++) {
-//         Clauses exactlyOneClassroom = encoder->hasExactlyOneFieldValueTrue(i, FieldType::classroom);
-//         result.addClauses(exactlyOneClassroom);
-//     }
-//     return result;
-// }
-
 
 /**
  * @brief      Adds all the constraints with their respective weights using the TimeTabler object
  *             to the solver.
  */
 void ConstraintAdder::addConstraints() {
-    /*Clauses result;
-    result.clear();*/
     std::vector<int> weights = timeTabler->data.predefinedClausesWeights;
-    // TODO - need to define high level variables here
-   // std::cout << "-3\n";
+
+    // add the constraints to the formula
     timeTabler->addClauses(instructorSingleCourseAtATime(), weights[PredefinedClauses::instructorSingleCourseAtATime]);
     timeTabler->addClauses(classroomSingleCourseAtATime(), weights[PredefinedClauses::classroomSingleCourseAtATime]);
     timeTabler->addClauses(programSingleCoreCourseAtATime(), weights[PredefinedClauses::programSingleCoreCourseAtATime]);
     timeTabler->addClauses(minorInMinorTime(), weights[PredefinedClauses::minorInMinorTime]);
+    timeTabler->addClauses(programAtMostOneOfCoreOrElective(), weights[PredefinedClauses::programAtMostOneOfCoreOrElective]);
 
     timeTabler->addClauses(exactlyOneFieldValuePerCourse(FieldType::slot), weights[PredefinedClauses::exactlyOneSlotPerCourse]);
-    std::cout << "WEIGHT CLASSROOM : " << weights[PredefinedClauses::exactlyOneInstructorPerCourse] << std::endl;
-    exactlyOneFieldValuePerCourse(FieldType::classroom).print();
     timeTabler->addClauses(exactlyOneFieldValuePerCourse(FieldType::classroom), weights[PredefinedClauses::exactlyOneClassroomPerCourse]);
     timeTabler->addClauses(exactlyOneFieldValuePerCourse(FieldType::instructor), weights[PredefinedClauses::exactlyOneInstructorPerCourse]);
     timeTabler->addClauses(exactlyOneFieldValuePerCourse(FieldType::isMinor), weights[PredefinedClauses::exactlyOneIsMinorPerCourse]);
     timeTabler->addClauses(exactlyOneFieldValuePerCourse(FieldType::segment), weights[PredefinedClauses::exactlyOneSegmentPerCourse]);
 
     timeTabler->addClauses(coreInMorningTime(), weights[PredefinedClauses::coreInMorningTime]);
-
- //   timeTabler->addClauses(programAtMostOneOfCoreOrElective(), weights[PredefinedClauses::programAtMostOneOfCoreOrElective]);
-
-   /* result.addClauses(instructorSingleCourseAtATime());
-    std::cout << "-2\n";
-    result.addClauses(classroomSingleCourseAtATime());
-    std::cout << "-1\n";
-    result.addClauses(programSingleCoreCourseAtATime());
-    std::cout << "0\n";
-    result.addClauses(minorInMinorTime());
-    // result.addClauses(exactlyOneTimePerCourse());
-    // result.addClauses(exactlyOneClassroomPerCourse());
-
-    // Clauses r = exactlyOneFieldValuePerCourse(FieldType::slot);
-    // r.print();
-    // result.addClauses(r);
-    std::cout << "1\n";
-    result.addClauses(exactlyOneFieldValuePerCourse(FieldType::slot));
-    std::cout << "2\n";
-    result.addClauses(exactlyOneFieldValuePerCourse(FieldType::classroom));
-    std::cout << "3\n";
-    result.addClauses(exactlyOneFieldValuePerCourse(FieldType::instructor));
-    std::cout << "4\n";
-    result.addClauses(exactlyOneFieldValuePerCourse(FieldType::isMinor));
-    std::cout << "5\n";
-    result.addClauses(exactlyOneFieldValuePerCourse(FieldType::segment));
-    std::cout << "6\n";*/
-    // TODO Add clauses to timeTabler Solver
-//    return result;
+    timeTabler->addClauses(electiveInNonMorningTime(), weights[PredefinedClauses::electiveInNonMorningTime]);
 }
 
 /*Clauses ConstraintAdder::softConstraints() {
@@ -260,7 +192,7 @@ void ConstraintAdder::addConstraints() {
 /**
  * @brief      Imposes that a core course is given a morning slot.
  * 
- * By default, this constraint is soft with weight 1.
+ * By default, this constraint is soft.
  *
  * @return     A Clauses object describing the constraint
  */
@@ -271,7 +203,26 @@ Clauses ConstraintAdder::coreInMorningTime() {
     for(int i = 0; i < courses.size(); i++) {
         Clauses coreCourse = encoder->isCoreCourse(i);
         Clauses morningTime = encoder->courseInMorningTime(i);
-        result.addClauses(coreCourse>>morningTime); // TODO - have to do the converse as well, but with lower priority (weight)
+        result.addClauses(coreCourse>>morningTime);
+    }
+    return result;
+}
+
+/**
+ * @brief      Imposes that a elective course is given a afternoon slot.
+ * 
+ * By default, this constraint is soft.
+ *
+ * @return     A Clauses object describing the constraint
+ */
+Clauses ConstraintAdder::electiveInNonMorningTime() {
+    Clauses result;
+    result.clear();
+    std::vector<Course> courses = timeTabler->data.courses;
+    for(int i = 0; i < courses.size(); i++) {
+        Clauses coreCourse = encoder->isElectiveCourse(i);
+        Clauses morningTime = encoder->courseInMorningTime(i);
+        result.addClauses(coreCourse>>(~morningTime));
     }
     return result;
 }
@@ -293,47 +244,3 @@ Clauses ConstraintAdder::programAtMostOneOfCoreOrElective() {
     }
     return result;
 }
-
-/*Clauses ConstraintAdder::customConstraint(FieldType fieldLHS, std::vector<int> list1, FieldType classroomOrSlot, std::vector<int> list2, bool isNegated) {
-    Clauses result;
-    result.clear();
-    std::vector<Course> courses = timeTabler->data.courses;
-    if(fieldLHS == FieldType::instructor) {
-        std::cout << "instructor\n";
-        for(int i = 0; i < list1.size(); i++) {
-            std::cout << timeTabler->data.instructors[list1[i]].getName() << std::endl;
-        }
-    }
-    if(classroomOrSlot == FieldType::classroom) {
-        std::cout << "classroom\n";
-        for(int i = 0; i < list2.size(); i++) {
-            std::cout << timeTabler->data.classrooms[list2[i]].getName() << std::endl;
-        }
-    }
-    std::cout << isNegated << "\n";
-    for(int i = 0; i < courses.size(); i++) {
-        Clauses antecedent = encoder->hasFieldTypeListedValues(i, fieldLHS, list1);
-        Clauses consequent = encoder->hasFieldTypeListedValues(i, classroomOrSlot, list2);
-        consequent.print();
-        if(isNegated) {
-            std::cout << "NEGATED!!!\n";
-            consequent = ~consequent;
-        }
-        result.addClauses(antecedent>>consequent);
-    }
-    result.print();
-    return result;
-}
-
-Clauses ConstraintAdder::customConstraint(std::vector<int> courseList, FieldType classroomOrSlot, std::vector<int> listOfValues, bool isNegated) {
-    Clauses result;
-    result.clear();
-    for(int i = 0; i < courseList.size(); i++) {
-        Clauses clause = encoder->hasFieldTypeListedValues(courseList[i], classroomOrSlot, listOfValues);
-        if(isNegated) {
-            clause = ~clause;
-        }
-        result.addClauses(clause);
-    }
-    return result;
-}*/
