@@ -7,15 +7,12 @@
 #include "custom_parser.h"
 #include <iostream>
 
-TimeTabler *Global::timeTabler = nullptr;
-
 int main(int argc, char const *argv[]) {
     if (argc != 5) {
         std::cout << "Run as ./bin/TimeTabler fields.yml input.csv custom.txt output.csv" << std::endl;
         return 0;
     }
     TimeTabler *timeTabler = new TimeTabler();
-    Global::timeTabler = timeTabler;
     Parser parser(timeTabler);
     parser.parseFields(std::string(argv[1]));
     parser.parseInput(std::string(argv[2]));

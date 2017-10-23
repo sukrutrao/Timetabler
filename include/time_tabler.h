@@ -11,9 +11,25 @@
 
 using namespace Minisat;
 
+/**
+ * @brief      Class for time tabler.
+ * 
+ * This class is responsible for handling the solver.
+ * This accepts constraints, adds it to the MaxSATFormula,
+ * calls the solver, and interprets and displays the result.
+ * It is also responsible for writing the output to a CSV,
+ * and creating new literals or variables in the solver when
+ * requested and returning them.
+ */
 class TimeTabler {
 private:
+    /**
+     * A pointer to the MaxSAT solver object
+     */
     TSolver *solver;
+    /**
+     * A pointer to the MaxSAT formula object
+     */
     MaxSATFormula *formula;
     std::vector<Var> assumptions;
     std::vector<lbool> model;

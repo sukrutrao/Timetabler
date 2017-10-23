@@ -13,11 +13,29 @@ using namespace Minisat;
 
 // TODO - we should define high level variables for each course
 
+/**
+ * @brief      Constructs the ConstraintAdder object.
+ *
+ * @param      encoder     The encoder
+ * @param      timeTabler  The time tabler
+ */
 ConstraintAdder::ConstraintAdder(ConstraintEncoder *encoder, TimeTabler *timeTabler) {
     this->encoder = encoder;
     this->timeTabler = timeTabler;
 }
 
+/**
+ * @brief      Imposes the constraint that a given FieldType value should be true for
+ *             at most one Course at a time.
+ *             
+ * For example, this includes constraints such as enforcing that a given Instructor
+ * cannot have two courses at the same time. Here, a time refers to a combination
+ * of segment and slot. This is not added directly, but called by other functions.
+ *
+ * @param[in]  fieldType  The field type on which this constraint is imposed
+ *
+ * @return     A Clauses object describing this constraint
+ */
 Clauses ConstraintAdder::fieldSingleValueAtATime(FieldType fieldType) {
     Clauses result;
     result.clear();
@@ -40,14 +58,41 @@ Clauses ConstraintAdder::fieldSingleValueAtATime(FieldType fieldType) {
     return result;
 }
 
+/**
+ * @brief      Imposes the constraint that an Instructor can have only a single
+ *             course at a given time.
+ *             
+ * This simply calls fieldSingleValueAtATime with the FieldType as FieldType::instructor.
+ * By default, this constraint is hard.
+ *
+ * @return     A Clauses object describing this constraint
+ */
 Clauses ConstraintAdder::instructorSingleCourseAtATime() {
     return fieldSingleValueAtATime(FieldType::instructor);
 }
 
+/**
+ * @brief      Imposes the constraint that a Classroom can have only a single
+ *             course at a given time.
+ *             
+ * This simply calls fieldSingleValueAtATime with the FieldType as FieldType::classroom.
+ * By default, this constraint is hard.
+ *
+ * @return     A Clauses object describing this constraint
+ */
 Clauses ConstraintAdder::classroomSingleCourseAtATime() {
     return fieldSingleValueAtATime(FieldType::classroom);
 }
 
+/**
+ * @brief      Imposes the constraint that if two courses are core for
+ *             a Program, then they are not scheduled at an intersecting
+ *             time.
+ *             
+ * By default, this constraint is hard.
+ *
+ * @return     A Clauses object describing the constraint
+ */
 Clauses ConstraintAdder::programSingleCoreCourseAtATime() {
     Clauses result;
     result.clear();
@@ -67,6 +112,14 @@ Clauses ConstraintAdder::programSingleCoreCourseAtATime() {
     return result;
 }
 
+/**
+ * @brief      Imposes the constraint that a minor Course must be
+ *             scheduled in a minor slot.
+ *             
+ * By default, this constraint is hard.
+ *
+ * @return     A Clauses object describing the constraint
+ */
 Clauses ConstraintAdder::minorInMinorTime() {
     Clauses result;
     result.clear();
@@ -80,6 +133,19 @@ Clauses ConstraintAdder::minorInMinorTime() {
     return result;
 }
 
+/**
+ * @brief      Imposes the constraint that the given FieldType has exactly one value
+ *             True for a given Course.
+ *             
+ * For example, it imposes the constraint that a given Course has exactly one Instructor.
+ * By default, these constraints are hard. However, there exist high level
+ * variables to notify the user if a particular constraint in this category could
+ * not be satisfied, in order to help in making the necessary modifications.
+ *
+ * @param[in]  fieldType  The field type on which this constraint is imposed
+ *
+ * @return     A Clauses object describing the constraint
+ */
 Clauses ConstraintAdder::exactlyOneFieldValuePerCourse(FieldType fieldType) {
     Clauses result;
     result.clear();
@@ -131,9 +197,14 @@ Clauses ConstraintAdder::exactlyOneFieldValuePerCourse(FieldType fieldType) {
 //     return result;
 // }
 
+
+/**
+ * @brief      Adds all the constraints with their respective weights using the TimeTabler object
+ *             to the solver.
+ */
 void ConstraintAdder::addConstraints() {
-    Clauses result;
-    result.clear();
+    /*Clauses result;
+    result.clear();*/
     std::vector<int> weights = timeTabler->data.predefinedClausesWeights;
     // TODO - need to define high level variables here
    // std::cout << "-3\n";
@@ -186,6 +257,13 @@ void ConstraintAdder::addConstraints() {
     return existingAssignmentClausesSoft();
 }*/
 
+/**
+ * @brief      Imposes that a core course is given a morning slot.
+ * 
+ * By default, this constraint is soft with weight 1.
+ *
+ * @return     A Clauses object describing the constraint
+ */
 Clauses ConstraintAdder::coreInMorningTime() {
     Clauses result;
     result.clear();
@@ -198,6 +276,14 @@ Clauses ConstraintAdder::coreInMorningTime() {
     return result;
 }
 
+/**
+ * @brief      Imposes the constraint that for a course, a program can either
+ *             be a core program or an elective program, or neither, but not both.
+ *             
+ * By default, this constraint is hard.
+ *
+ * @return     A Clauses object describing the constraint
+ */
 Clauses ConstraintAdder::programAtMostOneOfCoreOrElective() {
     Clauses result;
     result.clear();
@@ -208,7 +294,7 @@ Clauses ConstraintAdder::programAtMostOneOfCoreOrElective() {
     return result;
 }
 
-Clauses ConstraintAdder::customConstraint(FieldType fieldLHS, std::vector<int> list1, FieldType classroomOrSlot, std::vector<int> list2, bool isNegated) {
+/*Clauses ConstraintAdder::customConstraint(FieldType fieldLHS, std::vector<int> list1, FieldType classroomOrSlot, std::vector<int> list2, bool isNegated) {
     Clauses result;
     result.clear();
     std::vector<Course> courses = timeTabler->data.courses;
@@ -250,4 +336,4 @@ Clauses ConstraintAdder::customConstraint(std::vector<int> courseList, FieldType
         result.addClauses(clause);
     }
     return result;
-}
+}*/
