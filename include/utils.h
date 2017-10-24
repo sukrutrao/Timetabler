@@ -5,6 +5,7 @@
 #include <string>
 #include "mtl/Vec.h"
 #include "global.h"
+#include "data.h"
 
 using namespace Minisat;
 
@@ -109,6 +110,8 @@ std::vector<T> flattenVector(std::vector<std::vector<std::vector<T>>> inputs) {
 }
 
 std::string getFieldTypeName(FieldType fieldType);
+
+std::string getFieldName(FieldType fieldType, int index, Data &data);
 
 }
 

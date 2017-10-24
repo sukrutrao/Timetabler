@@ -202,11 +202,13 @@ void TimeTabler::displayChangesInGivenAssignment() {
         for(int j = 0; j < data.existingAssignmentVars[i].size(); j++) {
             for(int k = 0; k < data.existingAssignmentVars[i][j].size(); k++) {
                 if(data.existingAssignmentVars[i][j][k] == l_True && model[data.fieldValueVars[i][j][k]] == l_False) {
-                    std::cout << "Value of field " << Utils::getFieldTypeName(FieldType(j)) << " for course ";
+                    std::cout << "Value of field " << Utils::getFieldTypeName(FieldType(j));
+                    std::cout << " " << Utils::getFieldName(FieldType(j), k, data) << " for course ";
                     std::cout << data.courses[i].getName() << " changed from 'True' to 'False'" << std::endl;
                 }
                 else if(data.existingAssignmentVars[i][j][k] == l_False && model[data.fieldValueVars[i][j][k]] == l_True) {
-                    std::cout << "Value of field " << Utils::getFieldTypeName(FieldType(j)) << " for course ";
+                    std::cout << "Value of field " << Utils::getFieldTypeName(FieldType(j));
+                    std::cout << " " << Utils::getFieldName(FieldType(j), k, data) << " for course ";
                     std::cout << data.courses[i].getName() << " changed from 'False' to 'True'" << std::endl;
                 }
             }

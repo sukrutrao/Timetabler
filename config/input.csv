@@ -1,3 +1,4 @@
 name,class_size,instructor,segment,is_minor,B.Tech.1,B.Tech.2,B.Tech.3,B.Tech.4,M.Tech.,classroom,slot
 CS6383,30,Dr. Ramakrishna Upadrasta,16,Yes,No,No,Elective,No,Core,,
 CS6403,50,Dr. Saurabh Joshi,14,No,Core,Elective,No,No,No,,
+CS6401,50,Dr. Ramakrishna Upadrasta,14,Yes,Core,Elective,No,No,No,,
