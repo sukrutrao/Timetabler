@@ -247,13 +247,7 @@ void TimeTabler::displayTimeTable() {
         }
         for(int j = 0; j < data.fieldValueVars[i][FieldType::program].size(); j++) {
             if(isVarTrue(data.fieldValueVars[i][FieldType::program][j])) {
-                std::cout << "Program : " << data.programs[j/2].getName() << " ";
-                if(j%2 == 0) {
-                    std::cout << "Core" << std::endl;
-                }
-                else {
-                    std::cout << "Elective" << std::endl;
-                }
+                std::cout << "Program : " << data.programs[j].getNameWithType() << std::endl;
             }
         }
         std::cout << std::endl;
