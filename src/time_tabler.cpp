@@ -118,13 +118,16 @@ void TimeTabler::addClauses(const Clauses &clauses, int weight) {
  *
  * @return     True, if all high level variables were satisfied, False otherwise
  */
-bool TimeTabler::solve() {
+SolverStatus TimeTabler::solve() {
     solver->loadFormula(formula);
     model = solver->tSearch();
+    if(model.size() == 0) {
+        return SolverStatus::Unsolved;
+    }
     if(checkAllTrue(Utils::flattenVector<Var>(data.highLevelVars))) {
-        return true;
+        return SolverStatus::Solved;
     } 
-    return false;  
+    return SolverStatus::HighLevelFailed;
 }
 
 /**
@@ -135,8 +138,10 @@ bool TimeTabler::solve() {
  * @return     True, if all variables are True, False otherwise
  */
 bool TimeTabler::checkAllTrue(const std::vector<Var> &inputs) {
+    if (model.size() == 0) {
+        return false;
+    }
     for(int i = 0; i < inputs.size(); i++) {
-        if (model.size() == 0) return false;
         if(model[inputs[i]] == l_False) {
             return false;
         }
@@ -152,6 +157,9 @@ bool TimeTabler::checkAllTrue(const std::vector<Var> &inputs) {
  * @return     True if variable true, False otherwise
  */
 bool TimeTabler::isVarTrue(const Var &v) {
+    if(model.size() == 0) {
+        return false;
+    }
     if (model[v] == l_False) {
         return false;
     }
@@ -185,15 +193,18 @@ Lit TimeTabler::newLiteral(bool sign = false) {
 /**
  * @brief      Prints the result of the problem.
  */
-void TimeTabler::printResult() {
-    if(checkAllTrue(Utils::flattenVector<Var>(data.highLevelVars))) {
+void TimeTabler::printResult(SolverStatus status) {
+    if(status == SolverStatus::Solved) {
         std::cout << "All high level clauses were satisfied" << std::endl;
         displayChangesInGivenAssignment();
         displayTimeTable();
     }
-    else {
+    else if(status == SolverStatus::HighLevelFailed) {
         std::cout << "Some high level clauses were not satisfied" << std::endl;
         displayUnsatisfiedOutputReasons();
+    }
+    else {
+        std::cout << "Not Solved" << std::endl;
     }
 }
 

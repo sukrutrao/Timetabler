@@ -23,6 +23,8 @@ weights: # Assignment, high level
 predefined_weights:
   - clause: 0
     weight: -1
+  - clause: 3
+    weight: 1
 
 instructors:
   - Dr. Saurabh Joshi
@@ -31,8 +33,6 @@ instructors:
 classrooms:
   - number: 414
     size: 50
-  - number: 317
-    size: 80
 
 segments:
   start: 1

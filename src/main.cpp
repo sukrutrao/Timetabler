@@ -23,12 +23,10 @@ int main(int argc, char const *argv[]) {
     parseCustomConstraints(std::string(argv[3]), &encoder, timeTabler);
     timeTabler->addHighLevelClauses();
     timeTabler->addExistingAssignments();
-    bool solved = timeTabler->solve();
-    if (solved) {
-        timeTabler->printResult();
+    SolverStatus solverStatus = timeTabler->solve();
+    timeTabler->printResult(solverStatus);
+    if (solverStatus == SolverStatus::Solved) {
         timeTabler->writeOutput(std::string(argv[4]));
-    } else {
-        std::cout << "Not Solved" << std::endl;
     }
     delete timeTabler;
     return 0;

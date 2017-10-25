@@ -11,6 +11,12 @@
 
 using namespace Minisat;
 
+enum SolverStatus {
+    Solved,
+    HighLevelFailed,
+    Unsolved
+};
+
 /**
  * @brief      Class for time tabler.
  * 
@@ -43,10 +49,10 @@ public:
     void addClauses(const Clauses&, int);
     bool checkAllTrue(const std::vector<Var>&);
     bool isVarTrue(const Var&);
-    bool solve();
+    SolverStatus solve();
     Var newVar();
     Lit newLiteral(bool);
-    void printResult();
+    void printResult(SolverStatus);
     void displayTimeTable();
     void displayUnsatisfiedOutputReasons();
     void addHighLevelClauses();
