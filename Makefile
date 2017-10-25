@@ -1,7 +1,7 @@
 OPEN_WBO_PATH = ../newopenwbo/open-wbo
 CSV_PARSER_PATH = ../CSVparser
 
-EXEC = TimeTabler
+EXEC = Timetabler
 
 BIN_DIR = bin
 INCLUDE_DIR = include

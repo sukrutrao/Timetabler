@@ -1,4 +1,4 @@
-# Time Tabling
+# Timetabler
 
 This project generates a time table given a set of inputs and constraints. It encodes constraints of the time tabling problem as a SAT formula in the Conjunctive Normal Form, and then calls a MaxSAT solver to solve the problem.
 
@@ -33,14 +33,14 @@ Then, build the project
 ```
 $ make
 ```
-The build files are created in the `bin/` directory. The executable is `TimeTabler`, found in this directory.
+The build files are created in the `bin/` directory. The executable is `Timetabler`, found in this directory.
 
 To make and run tests, use `make test`, and then run the `test` executable from the `bin/` directory.
 
-## Running the Time Tabler
+## Running the Timetabler
 To execute the program, the format is
 ```
-$ ./TimeTabler fields.yml input.csv custom.txt output.csv
+$ ./Timetabler fields.yml input.csv custom.txt output.csv
 ```
 where
 * `fields.yml` is the file containing the list of values a field can take and the weights for the constraints.
