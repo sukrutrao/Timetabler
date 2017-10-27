@@ -1,3 +1,5 @@
+/** @file */
+
 #ifndef CCLAUSE_H
 #define CCLAUSE_H
 

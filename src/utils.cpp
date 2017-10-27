@@ -2,6 +2,7 @@
 
 #include "data.h"
 
+
 namespace Utils {
 
 /**
@@ -24,6 +25,16 @@ std::string getFieldTypeName(FieldType fieldType) {
 	return "Invalid Type";
 }
 
+/**
+ * @brief      Gets the field name in the Data of a given FieldType at a 
+ *             given index
+ *
+ * @param[in]  fieldType  The FieldType member
+ * @param[in]  index      The index
+ * @param      data       The Data object
+ *
+ * @return     The field name as a string
+ */
 std::string getFieldName(FieldType fieldType, int index, Data &data) {
 	if(fieldType == FieldType::classroom) return data.classrooms[index].getName();
 	if(fieldType == FieldType::instructor) return data.instructors[index].getName();

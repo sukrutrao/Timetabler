@@ -1,3 +1,5 @@
+/** @file */
+
 #ifndef CONSTRAINT_ADDER_H
 #define CONSTRAINT_ADDER_H
 

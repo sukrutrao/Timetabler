@@ -1,3 +1,5 @@
+/** @file */
+
 #ifndef IS_MINOR_H
 #define IS_MINOR_H
 

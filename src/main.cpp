@@ -9,7 +9,7 @@
 
 int main(int argc, char const *argv[]) {
     if (argc != 5) {
-        std::cout << "Run as ./bin/TimeTabler fields.yml input.csv custom.txt output.csv" << std::endl;
+        std::cout << "Run as " << argv[0] << " fields.yml input.csv custom.txt output.csv" << std::endl;
         return 0;
     }
     TimeTabler *timeTabler = new TimeTabler();

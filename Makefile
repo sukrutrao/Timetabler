@@ -57,13 +57,16 @@ $(BIN_DIR)/%.o: $(TEST_DIR)/%.cpp
 $(EXEC_FULL_PATH): $(OBJS) $(MAIN_OBJ)
 	@echo "Building executable..."
 	@$(CC) $(CC_FLAGS) $(INCLUDE_PATH) $(LIB_PATH) -o $@ $^ $(LIB_FLAGS)
+	@echo "Done."
 
 $(TEST_EXEC_FULL_PATH): $(OBJS) $(MAIN_TEST_OBJ) $(TEST_OBJS)
 	@echo "Building executable..."
 	@$(CC) $(CC_FLAGS) $(INCLUDE_PATH) $(LIB_PATH) -o $@ $^ $(LIB_FLAGS) $(TEST_FLAGS)
+	@echo "Done."
 
 test: $(TEST_EXEC_FULL_PATH)
 
 clean:
 	@echo "Cleaning up..."
-	@rm -r $(BIN_DIR)
+	@rm -rf $(BIN_DIR)
+	@echo "Done."

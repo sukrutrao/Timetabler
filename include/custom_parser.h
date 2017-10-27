@@ -1,3 +1,5 @@
+/** @file */
+
 #ifndef CUSTOM_PARSER_H
 #define CUSTOM_PARSER_H
 
@@ -46,6 +48,6 @@ struct Object {
  * @param      constraintEncoder  The ConstraintEncoder object
  * @param      timeTabler         The TimeTabler object
  */
-void parseCustomConstraints(std::string, ConstraintEncoder*, TimeTabler*);
+void parseCustomConstraints(std::string file, ConstraintEncoder* constraintEncoder, TimeTabler* timeTabler);
 
 #endif

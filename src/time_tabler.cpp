@@ -208,6 +208,10 @@ void TimeTabler::printResult(SolverStatus status) {
     }
 }
 
+/**
+ * @brief      Displays  the changes that have been made to the default assignment
+ *             given by the user as input by the solver
+ */
 void TimeTabler::displayChangesInGivenAssignment() {
     for(int i = 0; i < data.existingAssignmentVars.size(); i++) {
         for(int j = 0; j < data.existingAssignmentVars[i].size(); j++) {

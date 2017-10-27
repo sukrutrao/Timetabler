@@ -1,3 +1,5 @@
+/** @file */
+
 #ifndef CONSTRAINT_ENCODER_H
 #define CONSTRAINT_ENCODER_H
 

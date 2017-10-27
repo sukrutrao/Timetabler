@@ -1,3 +1,5 @@
+/** @file */
+
 #ifndef TIME_TABLER_H
 #define TIME_TABLER_H
 
@@ -11,9 +13,22 @@
 
 using namespace Minisat;
 
+
+/**
+ * @brief      Enum to store the solver status
+ */
 enum SolverStatus {
+    /**
+     * A timetable could be generated with the given constraints
+     */
     Solved,
+    /**
+     * Some high level constraints could not be satisfied
+     */
     HighLevelFailed,
+    /**
+     * Some hard clauses could not be satisfied
+     */
     Unsolved
 };
 
@@ -42,6 +57,9 @@ private:
      */
     std::vector<lbool> model;
 public:
+    /**
+     * Stores all the field and input data obtained by the parser
+     */
     Data data;
     TimeTabler();
     ~TimeTabler();

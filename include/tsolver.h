@@ -1,3 +1,5 @@
+/** @file */
+
 #ifndef TSOLVER_H
 #define TSOLVER_H
 

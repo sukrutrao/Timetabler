@@ -1,3 +1,5 @@
+/** @file */
+
 #ifndef CLAUSES_H
 #define CLAUSES_H
 

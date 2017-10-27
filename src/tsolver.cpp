@@ -39,11 +39,28 @@
 using namespace Minisat;
 using namespace openwbo;
 
+/**
+ * @brief      Constructs the TSolver object.
+ *
+ * @param[in]  verb  The verbosity value to be given to the OLL object
+ * @param[in]  enc   The encoding value to be given to the OLL object
+ */
 TSolver::TSolver(int verb = _VERBOSITY_MINIMAL_, int enc = _CARD_TOTALIZER_)
     : OLL(verb, enc) {
 
 }
 
+/**
+ * @brief      Solves the MaxSAT problem by calling the solver
+ * 
+ * This is a modification of the search() function in the OLL algorithm of 
+ * Open WBO. Most of the code is identical, except that it expects the problem
+ * to be weighted and returns the model found by the solver instead of exiting
+ * at the end.
+ *
+ * @return     The model found by the solver. This could be empty if the problem was
+ *             unsatisfiable
+ */
 std::vector<lbool> TSolver::tSearch() {
     if (encoding != _CARD_TOTALIZER_) {
         printf("Error: Currently algorithm MSU3 with iterative encoding only "
@@ -61,6 +78,13 @@ std::vector<lbool> TSolver::tSearch() {
     }
 }
 
+/**
+ * @brief      Solves a weighted MaxSAT problem
+ * 
+ * This is a modification of the weighted() function in the OLL algorithm of 
+ * Open WBO. Most of the code is identical, except that when the result is found,
+ * the function returns instead of printing the answer to stdout and exiting.
+ */
 void TSolver::tWeighted() {
   // nbInitialVariables = nVars();
   lbool res = l_True;
@@ -104,7 +128,7 @@ void TSolver::tWeighted() {
       if (nbSatisfiable == 1) {
         min_weight =
             findNextWeightDiversity(min_weight, cardinality_assumptions);
-        // //printf("current weight %d\n",min_weight);
+        //printf("current weight %d\n",min_weight);
 
         for (int i = 0; i < maxsat_formula->nSoft(); i++)
           if (maxsat_formula->getSoftClause(i).weight >= min_weight)
@@ -117,7 +141,7 @@ void TSolver::tWeighted() {
             not_considered++;
         }
 
-        // //printf("not considered %d\n",not_considered);
+        //printf("not considered %d\n",not_considered);
 
         for (std::set<Lit>::iterator it = cardinality_assumptions.begin();
              it != cardinality_assumptions.end(); ++it) {
@@ -132,7 +156,7 @@ void TSolver::tWeighted() {
           min_weight =
               findNextWeightDiversity(min_weight, cardinality_assumptions);
 
-          // //printf("currentWeight %d\n",currentWeight);
+          //printf("currentWeight %d\n",currentWeight);
 
           // reset the assumptions
           assumptions.clear();
@@ -142,13 +166,13 @@ void TSolver::tWeighted() {
                 maxsat_formula->getSoftClause(i).weight >= min_weight) {
               assumptions.push(
                   ~maxsat_formula->getSoftClause(i).assumption_var);
-              // //printf("s assumption
+              //printf("s assumption
               // %d\n",var(softClauses[i].assumptionVar)+1);
             } else
               active_soft++;
           }
 
-          // //printf("assumptions %d\n",assumptions.size());
+          //printf("assumptions %d\n",assumptions.size());
           for (std::set<Lit>::iterator it = cardinality_assumptions.begin();
                it != cardinality_assumptions.end(); ++it) {
             assert(boundMapping.find(*it) != boundMapping.end());
@@ -156,7 +180,7 @@ void TSolver::tWeighted() {
                 boundMapping[*it];
             if (soft_id.second >= min_weight)
               assumptions.push(~(*it));
-            // //printf("c assumption %d\n",var(*it)+1);
+            //printf("c assumption %d\n",var(*it)+1);
           }
 
         } else {
@@ -189,7 +213,7 @@ void TSolver::tWeighted() {
         }
       }
 
-      // //printf("MIN CORE %d\n",min_core);
+      //printf("MIN CORE %d\n",min_core);
 
       lbCost += min_core;
       nbCores++;
@@ -216,7 +240,7 @@ void TSolver::tWeighted() {
         Lit p = solver->conflict[i];
         if (coreMapping.find(p) != coreMapping.end()) {
           if (maxsat_formula->getSoftClause(coreMapping[p]).weight > min_core) {
-            // //printf("SPLIT THE CLAUSE\n");
+            //printf("SPLIT THE CLAUSE\n");
             assert(!activeSoft[coreMapping[p]]);
             // SPLIT THE CLAUSE
             int indexSoft = coreMapping[p];
@@ -272,19 +296,19 @@ void TSolver::tWeighted() {
             assert(activeSoft.size() == maxsat_formula->nSoft());
 
           } else {
-            // //printf("NOT SPLITTING\n");
+            //printf("NOT SPLITTING\n");
             assert(
                 maxsat_formula->getSoftClause(coreMapping[solver->conflict[i]])
                     .weight == min_core);
             soft_relax.push(p);
-            // //printf("ASSERT %d\n",var(p)+1);
+            //printf("ASSERT %d\n",var(p)+1);
             assert(!activeSoft[coreMapping[p]]);
             activeSoft[coreMapping[p]] = true;
           }
         }
 
         if (boundMapping.find(p) != boundMapping.end()) {
-          // //printf("CARD IN CORE\n");
+          //printf("CARD IN CORE\n");
 
           std::set<Lit>::iterator it;
           it = cardinality_assumptions.find(p);
