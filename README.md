@@ -5,15 +5,15 @@ This project generates a time table given a set of inputs and constraints. It en
 ## Installation
 ### Prerequisities
 The following software are prerequisites for this program:
-* **Open WBO 2.0** : \
+* **Open WBO 2.0** : 
 This is the MaxSAT solver used to solve the encoded formula. The code can be downloaded from https://github.com/sat-group/open-wbo/tree/f193a3bd802551b13d6424bc1baba6ad35ec6ba6. Also see http://sat.inesc-id.pt/open-wbo/ for details.
-* **yaml-cpp 0.5.3** : \
+* **yaml-cpp 0.5.3** : 
 This is used to parse valid field values and weight inputs. Download and install from https://github.com/jbeder/yaml-cpp/releases/tag/yaml-cpp-0.5.3.
-* **CSVparser** : \
+* **CSVparser** : 
 This is used to parse the CSV containing the input data. Download from https://github.com/MyBoon/CSVparser/tree/540e3e2f46b77ea8178f90910a165695cbb6cc12.
-* **PEGTL 2.2.0** : \
+* **PEGTL 2.2.0** : 
 This is used to parse custom constraints. Download and install from https://github.com/taocpp/PEGTL/releases/tag/2.2.0.
-* **googletest 1.8.0** : \
+* **googletest 1.8.0** : 
 This is required if tests are to be run. Download and install from https://github.com/google/googletest/releases/tag/release-1.8.0.
 
 `g++` with support for C++11, using the `--std=c++11` flag, is required.
@@ -43,5 +43,17 @@ where
 * `input.csv` is the path to the file containing the input data.
 * `custom.txt` is the path to the file containing the list of custom constraints.
 * `output.csv` is the path to the file to which the output must be written to.
+
+## Examples of Configuration files
+
+This contains some examples for providing the fields information, the input, and adding custom constraints to the solver.
+
+The structure of this directory is as follows:
+* **custom-constraints** : 
+This contains some examples of custom constraints that can be provided to the solver using the grammar provided. For seeing the grammar, please refer to the [Project Wiki](https://github.com/GoodDeeds/Timetabler/wiki).
+* **field-input** : 
+This contains some examples of the way field inputs can be given to the solver. This includes list of instructors, available classrooms, weights of clauses, etc.
+* **input** : 
+This contains some examples of the course data input given to the solver as a CSV file.
 
 For further details and examples, please refer to the [Project Wiki](https://github.com/GoodDeeds/Timetabler/wiki).
