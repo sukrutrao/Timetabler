@@ -3,21 +3,21 @@
 #ifndef DATA_H
 #define DATA_H
 
+#include "core/Solver.h"
+#include "fields/classroom.h"
 #include "fields/course.h"
 #include "fields/instructor.h"
-#include "fields/classroom.h"
 #include "fields/program.h"
 #include "fields/segment.h"
 #include "fields/slot.h"
-#include "core/Solver.h"
-#include <vector>
 #include <string>
+#include <vector>
 
 using namespace Minisat;
 
 /**
  * @brief      Class for data.
- * 
+ *
  * This represents all the data taken from the input.
  * This contains the list of all the allowed field values
  * for each FieldType, the variables for each
@@ -28,7 +28,7 @@ using namespace Minisat;
  * data is populated by the Parser after parsing fields and inputs.
  */
 class Data {
-public:
+  public:
     /**
      * Stores objects for each Course in the input
      */
@@ -83,7 +83,7 @@ public:
      * FieldType as given in the input. This is of the form
      * (Course, FieldType, field value), where if assigned true,
      * the element is assigned l_True, and if false, is assigned
-     * l_False. If no assignment is given, such as for a 
+     * l_False. If no assignment is given, such as for a
      * Classroom or a Slot, the assigned value is l_Undef.
      */
     std::vector<std::vector<std::vector<lbool>>> existingAssignmentVars;
@@ -100,8 +100,8 @@ public:
      * Stores the weights for the existing assignments given by the
      * user in the input. This represents the weight that must
      * be given in the soft clauses that ask that the value assigned
-     * be the value that the user gave as input. Negative weights imply the clause
-     * is hard, and a zero weight implies that the input can be ignored
+     * be the value that the user gave as input. Negative weights imply the
+     * clause is hard, and a zero weight implies that the input can be ignored
      * completely.
      */
     std::vector<int> existingAssignmentWeights;

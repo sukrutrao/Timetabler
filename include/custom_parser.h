@@ -5,14 +5,20 @@
 
 #include "constraint_adder.h"
 #include "time_tabler.h"
-#include <vector>
 #include <string>
+#include <vector>
 
 /**
  * @brief      Class for field values types.
  */
 enum class FieldValuesType {
-    COURSE, INSTRUCTOR, PROGRAM, ISMINOR, SEGMENT, CLASSROOM, SLOT
+    COURSE,
+    INSTRUCTOR,
+    PROGRAM,
+    ISMINOR,
+    SEGMENT,
+    CLASSROOM,
+    SLOT
 };
 
 /**
@@ -23,9 +29,9 @@ struct Object {
     bool classSame;
     bool slotSame;
     int integer;
-    TimeTabler* timeTabler;
-    ConstraintAdder* constraintAdder;
-    ConstraintEncoder* constraintEncoder;
+    TimeTabler *timeTabler;
+    ConstraintAdder *constraintAdder;
+    ConstraintEncoder *constraintEncoder;
 
     FieldValuesType fieldType;
     std::vector<int> courseValues;
@@ -42,12 +48,15 @@ struct Object {
 };
 
 /**
- * @brief      Parses custom constraints given in a file and adds them to the solver.
+ * @brief      Parses custom constraints given in a file and adds them to the
+ * solver.
  *
  * @param[in]  file               The file containing the constraints
  * @param      constraintEncoder  The ConstraintEncoder object
  * @param      timeTabler         The TimeTabler object
  */
-void parseCustomConstraints(std::string file, ConstraintEncoder* constraintEncoder, TimeTabler* timeTabler);
+void parseCustomConstraints(std::string file,
+                            ConstraintEncoder *constraintEncoder,
+                            TimeTabler *timeTabler);
 
 #endif

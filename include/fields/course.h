@@ -3,18 +3,18 @@
 #ifndef COURSE_H
 #define COURSE_H
 
-#include <string>
-#include <vector>
 #include "fields/instructor.h"
+#include "fields/is_minor.h"
 #include "fields/program.h"
 #include "fields/segment.h"
-#include "fields/is_minor.h"
+#include <string>
+#include <vector>
 
 /**
  * @brief      Class for a course.
  */
 class Course {
-private:
+  private:
     /**
      * The name of the course, typically the course code.
      * This uniquely identifies a given course.
@@ -47,7 +47,8 @@ private:
      * values.
      */
     int isMinor;
-public:
+
+  public:
     Course(std::string, unsigned, int, int, int);
     Course(std::string, unsigned, int, int, int, std::vector<int>);
     void setPrograms(std::vector<int>);

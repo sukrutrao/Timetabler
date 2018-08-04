@@ -1,10 +1,10 @@
 #include "fields/slot.h"
 
+#include "fields/is_minor.h"
+#include "global.h"
+#include <iostream>
 #include <string>
 #include <vector>
-#include <iostream>
-#include "global.h"
-#include "fields/is_minor.h"
 
 /**
  * @brief      Constructs the Time object.
@@ -35,7 +35,7 @@ Time::Time(std::string time) {
  *
  * @return     this Time object
  */
-Time& Time::operator=(const Time &other) {
+Time &Time::operator=(const Time &other) {
     this->hours = other.hours;
     this->minutes = other.minutes;
     return *this;
@@ -58,14 +58,13 @@ bool Time::operator==(const Time &other) {
  *
  * @param[in]  other  The Time object with which the comparison is being made
  *
- * @return     True if the Time of this object is strictly before the other object,
- *             and False otherwise
+ * @return     True if the Time of this object is strictly before the other
+ * object, and False otherwise
  */
 bool Time::operator<(const Time &other) {
-    if(this->hours == other.hours) {
+    if (this->hours == other.hours) {
         return this->minutes < other.minutes;
-    }
-    else {
+    } else {
         return this->hours < other.hours;
     }
 }
@@ -90,43 +89,39 @@ bool Time::operator<=(const Time &other) {
  * @return     True if this is after or identical to the other object, False
  *             otherwise
  */
-bool Time::operator>=(const Time &other) {
-    return !(*this < other);
-}
+bool Time::operator>=(const Time &other) { return !(*this < other); }
 
 /**
  * @brief      Checks if a Time is strictly after another.
  *
  * @param[in]  other  The Time object with which the comparison is being made
  *
- * @return     True if the Time of this object is strictly after the other object,
- *             and False otherwise
+ * @return     True if the Time of this object is strictly after the other
+ * object, and False otherwise
  */
-bool Time::operator>(const Time &other) {
-    return !(*this <= other);
-}
+bool Time::operator>(const Time &other) { return !(*this <= other); }
 
 /**
  * @brief      Gets the time as a string.
- * 
+ *
  *             For example, 10 hours and 30 minutes is represented as "10:30".
  *
  * @return     The time string.
  */
 std::string Time::getTimeString() {
-    return std::to_string(hours)+":"+std::to_string(minutes);
+    return std::to_string(hours) + ":" + std::to_string(minutes);
 }
 
 /**
  * @brief      Determines if the Time is a morning time.
- * 
+ *
  * A Time is said to be a morning time if its hours value lies in the range
  * [0,12].
  *
  * @return     True if morning time, False otherwise.
  */
 bool Time::isMorningTime() {
-    if(hours >= 0 && hours < 13) {
+    if (hours >= 0 && hours < 13) {
         return true;
     }
     return false;
@@ -139,14 +134,14 @@ bool Time::isMorningTime() {
  * @param      endTime    The end time
  * @param[in]  day        The day
  */
-SlotElement::SlotElement(Time &startTime, Time &endTime, Day day) 
+SlotElement::SlotElement(Time &startTime, Time &endTime, Day day)
     : startTime(startTime), endTime(endTime) {
     this->day = day;
 }
 
 /**
  * @brief      Determines if two slot elements are intersecting.
- * 
+ *
  * Two slot elements are said to be intersecting if the Day is
  * identical and there is an intersection in the start and end Times.
  *
@@ -155,13 +150,12 @@ SlotElement::SlotElement(Time &startTime, Time &endTime, Day day)
  * @return     True if intersecting, False otherwise.
  */
 bool SlotElement::isIntersecting(SlotElement &other) {
-    if(this->day != other.day) {
+    if (this->day != other.day) {
         return false;
     }
-    if(this->startTime < other.startTime) {
-        return !(this->endTime <= other.startTime);    
-    }
-    else if(this->startTime > other.startTime) {
+    if (this->startTime < other.startTime) {
+        return !(this->endTime <= other.startTime);
+    } else if (this->startTime > other.startTime) {
         return !(this->startTime >= other.endTime);
     }
     return true;
@@ -169,15 +163,12 @@ bool SlotElement::isIntersecting(SlotElement &other) {
 
 /**
  * @brief      Determines if the SlotElement is a morning slot element.
- * 
+ *
  * A SlotElement is a morning SlotElement if the start time is in the morning.
  *
  * @return     True if morning slot element, False otherwise.
  */
-bool SlotElement::isMorningSlotElement() {
-    return startTime.isMorningTime();
-}
-
+bool SlotElement::isMorningSlotElement() { return startTime.isMorningTime(); }
 
 /**
  * @brief      Constructs the Slot object.
@@ -186,27 +177,26 @@ bool SlotElement::isMorningSlotElement() {
  * @param[in]  isMinor       Indicates if it is a minor Slot
  * @param[in]  slotElements  The slot elements in the Slot
  */
-Slot::Slot(std::string name, IsMinor isMinor, std::vector<SlotElement> slotElements)
+Slot::Slot(std::string name, IsMinor isMinor,
+           std::vector<SlotElement> slotElements)
     : isMinor(isMinor) {
     this->name = name;
     this->slotElements = slotElements;
 }
 
 /**
- * @brief      Checks if two Slot objects are identical, which is if they have the 
- *             same name.  
- * 
+ * @brief      Checks if two Slot objects are identical, which is if they have
+ * the same name.
+ *
  * @param[in]  other  The Slot object with which the comparison is being made
  *
  * @return     True if identical, False otherwise
  */
-bool Slot::operator==(const Slot &other) {
-    return (this->name == other.name);
-}
+bool Slot::operator==(const Slot &other) { return (this->name == other.name); }
 
 /**
  * @brief      Determines if two Slots are intersecting.
- * 
+ *
  * Two Slots are said to be intersecting if there exists a pair of SlotElements,
  * one from each Slot, such that the SlotElements are intersecting.
  *
@@ -215,9 +205,9 @@ bool Slot::operator==(const Slot &other) {
  * @return     True if intersecting, False otherwise.
  */
 bool Slot::isIntersecting(Slot &other) {
-    for(int i = 0; i < slotElements.size(); i++) {
-        for(int j = 0; j < other.slotElements.size(); j++) {
-            if(slotElements[i].isIntersecting(other.slotElements[j])) {
+    for (int i = 0; i < slotElements.size(); i++) {
+        for (int j = 0; j < other.slotElements.size(); j++) {
+            if (slotElements[i].isIntersecting(other.slotElements[j])) {
                 return true;
             }
         }
@@ -236,12 +226,10 @@ void Slot::addSlotElements(SlotElement slotElement) {
 
 /**
  * @brief      Gets the type under the FieldType enum.
- * 
+ *
  * @return     A member of the FieldType enum, which is FieldType::slot
  */
-FieldType Slot::getType() {
-    return FieldType::slot;
-}
+FieldType Slot::getType() { return FieldType::slot; }
 
 /**
  * @brief      Determines if the Slot is a minor Slot.
@@ -257,30 +245,26 @@ bool Slot::isMinorSlot() {
  *
  * @return     The string "Slot"
  */
-std::string Slot::getTypeName() {
-    return "Slot";
-}
+std::string Slot::getTypeName() { return "Slot"; }
 
 /**
  * @brief      Gets the name of the Slot.
  *
  * @return     The name.
  */
-std::string Slot::getName() {
-    return name;
-}
+std::string Slot::getName() { return name; }
 
 /**
  * @brief      Determines if the Slot is a morning Slot.
- * 
+ *
  * A Slot is said to be a morning Slot if all its SlotElements
  * are morning SlotElements.
  *
  * @return     True if morning slot, False otherwise.
  */
 bool Slot::isMorningSlot() {
-    for(int i = 0; i < slotElements.size(); i++) {
-        if(!slotElements[i].isMorningSlotElement()) {
+    for (int i = 0; i < slotElements.size(); i++) {
+        if (!slotElements[i].isMorningSlotElement()) {
             return false;
         }
     }

@@ -1,16 +1,15 @@
 #include "fields/instructor.h"
 
-#include <string>
 #include "global.h"
+#include <string>
 
 /**
  * @brief      Constructs the Instructor object.
  *
- * @param[in]  name  The name of the Instructor, which uniquely identifies the Instructor
+ * @param[in]  name  The name of the Instructor, which uniquely identifies the
+ * Instructor
  */
-Instructor::Instructor(std::string name) {
-    this->name = name;
-}
+Instructor::Instructor(std::string name) { this->name = name; }
 
 /**
  * @brief      Checks if two Instructor objects are identical, i.e., if both
@@ -29,24 +28,18 @@ bool Instructor::operator==(const Instructor &other) {
  *
  * @return     A member of the FieldType enum, which is FieldType::instructor
  */
-FieldType Instructor::getType() {
-    return FieldType::instructor;
-}
+FieldType Instructor::getType() { return FieldType::instructor; }
 
 /**
  * @brief      Gets the name of the Instructor.
  *
  * @return     The name of the Instructor
  */
-std::string Instructor::getName() {
-    return name;
-}
+std::string Instructor::getName() { return name; }
 
 /**
- * @brief      Gets the type name, which is "Instructor". 
+ * @brief      Gets the type name, which is "Instructor".
  *
  * @return     The string "Instructor"
  */
-std::string Instructor::getTypeName() {
-    return "Instructor";
-}
+std::string Instructor::getTypeName() { return "Instructor"; }

@@ -1,10 +1,9 @@
 #include "clauses.h"
 
-#include <vector>
-#include <iostream>
-#include "core/SolverTypes.h"
 #include "cclause.h"
+#include "core/SolverTypes.h"
 #include <iostream>
+#include <vector>
 
 using namespace Minisat;
 
@@ -56,13 +55,11 @@ Clauses::Clauses(const Var &var) {
 /**
  * @brief      Constructs the Clauses object, with no clauses in it
  */
-Clauses::Clauses() {
-    clauses.clear();
-}
+Clauses::Clauses() { clauses.clear(); }
 
 /**
  * @brief      Defines the negation operation on a set of clauses.
- * 
+ *
  * The negation of a set of clauses ((a1 OR a2) AND (b1 OR b2)) is defined
  * as ((~a1 AND ~a2) OR (~b1 AND ~b2)). The OR operation defined in this
  * class is then used to convert the Clauses to CNF form.
@@ -70,22 +67,22 @@ Clauses::Clauses() {
  * @return     The result of the negation operation on the set of clauses
  */
 Clauses Clauses::operator~() {
-    if(clauses.size() == 0) {
+    if (clauses.size() == 0) {
         CClause clause;
         return Clauses(clause);
     }
     Clauses negationClause(~(clauses[0]));
-    for(int i = 1; i < clauses.size(); i++) {
+    for (int i = 1; i < clauses.size(); i++) {
         std::vector<CClause> negationClauseVector = ~(clauses[i]);
         Clauses negationThisClause(negationClauseVector);
         negationClause = (negationClause | negationThisClause);
-    } 
+    }
     return negationClause;
 }
 
 /**
  * @brief      Defines the conjunction operation between two sets of clauses.
- * 
+ *
  * The conjunction of a set of clauses ((a1 OR a2) AND (b1 OR b2)) with
  * ((x1 OR x2) AND (y1 OR y2)) is given by
  * ((a1 OR a2) AND (b1 OR b2) AND (x1 OR x2) AND (y1 OR y2)). Thus,
@@ -99,13 +96,15 @@ Clauses Clauses::operator~() {
 Clauses Clauses::operator&(const Clauses &other) {
     std::vector<CClause> thisClauses = clauses;
     std::vector<CClause> otherClauses = other.clauses;
-    thisClauses.insert(std::end(thisClauses), std::begin(otherClauses), std::end(otherClauses));
+    thisClauses.insert(std::end(thisClauses), std::begin(otherClauses),
+                       std::end(otherClauses));
     Clauses result(thisClauses);
     return result;
 }
 
 /**
- * @brief      Defines the conjunction operation between a Clauses and a CClause.
+ * @brief      Defines the conjunction operation between a Clauses and a
+ * CClause.
  *
  * @param      other  The CClause with which the AND operation is performed
  *
@@ -118,33 +117,34 @@ Clauses Clauses::operator&(const CClause &other) {
 
 /**
  * @brief      Defines the disjunction operation between two sets of clauses.
- * 
+ *
  * The disjunction of a set of clauses ((a1 OR a2) AND (b1 OR b2)) with
  * ((x1 OR x2) AND (y1 OR y2)) is given by
  * ((a1 OR a2 OR x1 OR x2) AND (a1 OR a2 OR y1 OR y2) AND (b1 OR b2 OR x1 OR x2)
- * AND (b1 OR b2 OR y1 OR y2)). This function performs this operation and returns
- * a Clauses object with the resultant clauses. Given m clauses in the first operand
- * and n clauses in the second operand, the solution has O(mn) clauses. Using auxiliary
- * variables could have given a O(m+n) equisatisfiable formula. However,
- * as the Clauses object might be further used as an antecedent of an implication, we
- * need that if the resulting clauses of the disjunction are False, the original set
- * of clauses should also have been False, a property which cannot be guaranteed by
- * equisatisfiability alone. Hence, this less efficient method is used for correctness.
- * The resultant Clauses are kept in CNF form.
+ * AND (b1 OR b2 OR y1 OR y2)). This function performs this operation and
+ * returns a Clauses object with the resultant clauses. Given m clauses in the
+ * first operand and n clauses in the second operand, the solution has O(mn)
+ * clauses. Using auxiliary variables could have given a O(m+n) equisatisfiable
+ * formula. However, as the Clauses object might be further used as an
+ * antecedent of an implication, we need that if the resulting clauses of the
+ * disjunction are False, the original set of clauses should also have been
+ * False, a property which cannot be guaranteed by equisatisfiability alone.
+ * Hence, this less efficient method is used for correctness. The resultant
+ * Clauses are kept in CNF form.
  *
  * @param      other  The Clauses object to perform the OR operation with
  *
  * @return     A Clauses object with the result of the OR operation
  */
 Clauses Clauses::operator|(const Clauses &other) {
-    if(other.getClauses().size() == 0) {
+    if (other.getClauses().size() == 0) {
         Clauses result = other;
         return result;
     }
     std::vector<CClause> resultClauses;
     resultClauses.clear();
-    for(int i = 0; i < clauses.size(); i++) {
-        for(int j = 0; j < other.clauses.size(); j++) {
+    for (int i = 0; i < clauses.size(); i++) {
+        for (int j = 0; j < other.clauses.size(); j++) {
             resultClauses.push_back((clauses[i]) | (other.clauses[j]));
         }
     }
@@ -153,7 +153,8 @@ Clauses Clauses::operator|(const Clauses &other) {
 }
 
 /**
- * @brief      Defines the disjunction operation between a Clauses and a CClause.
+ * @brief      Defines the disjunction operation between a Clauses and a
+ * CClause.
  *
  * @param      other  The CClause to perform the OR operation with
  *
@@ -166,7 +167,7 @@ Clauses Clauses::operator|(const CClause &other) {
 
 /**
  * @brief      Defines the implication operation between two sets of Clauses.
- * 
+ *
  * The implication of a set of clauses p to a set of clauses q, which is
  * (p->q), is given by (~p OR q). Thus, this operation is performed using
  * the existing definitions of NOT and OR for sets of clauses.
@@ -185,9 +186,7 @@ Clauses Clauses::operator>>(const Clauses &other) {
  *
  * @param[in]  other  The CClause to add
  */
-void Clauses::addClauses(const CClause &other) {
-    clauses.push_back(other);
-}
+void Clauses::addClauses(const CClause &other) { clauses.push_back(other); }
 
 /**
  * @brief      Adds a vector of CClause to the set of clauses.
@@ -213,9 +212,7 @@ void Clauses::addClauses(const Clauses &other) {
  *
  * @return     The clauses
  */
-std::vector<CClause> Clauses::getClauses() const {
-    return clauses;
-}
+std::vector<CClause> Clauses::getClauses() const { return clauses; }
 
 /**
  * @brief      Displays the clauses in this object.
@@ -230,6 +227,4 @@ void Clauses::print() {
 /**
  * @brief      Clears the Clauses object by removing all the clauses.
  */
-void Clauses::clear() {
-    clauses.clear();
-}
+void Clauses::clear() { clauses.clear(); }

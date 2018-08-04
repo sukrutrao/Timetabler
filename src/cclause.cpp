@@ -1,9 +1,9 @@
 #include "cclause.h"
 
-#include <vector>
-#include "core/SolverTypes.h"
 #include "clauses.h"
+#include "core/SolverTypes.h"
 #include <iostream>
+#include <vector>
 
 using namespace Minisat;
 
@@ -12,9 +12,7 @@ using namespace Minisat;
  *
  * @param[in]  lits  The literals in the clause
  */
-CClause::CClause(const std::vector<Lit> &lits) {
-    this->lits = lits;
-}
+CClause::CClause(const std::vector<Lit> &lits) { this->lits = lits; }
 
 /**
  * @brief      Constructs the CClause object.
@@ -40,13 +38,11 @@ CClause::CClause(const Var &var) {
 /**
  * @brief      Constructs the CClause object, as an empty clause.
  */
-CClause::CClause() {
-    lits.clear();
-}
+CClause::CClause() { lits.clear(); }
 
 /**
  * @brief      Defines the operator to negate the clause in this object.
- * 
+ *
  * The negation of a clause (a1 OR a2 OR a3) is given by
  * (~a1 AND ~a2 AND ~a3). Thus, the result is a set of clauses,
  * and hence, this function returns this as a vector of CClause.
@@ -56,7 +52,7 @@ CClause::CClause() {
 std::vector<CClause> CClause::operator~() {
     std::vector<CClause> result;
     result.clear();
-    for(int i = 0; i < lits.size(); i++) {
+    for (int i = 0; i < lits.size(); i++) {
         CClause unitClause(~(lits[i]));
         result.push_back(unitClause);
     }
@@ -65,7 +61,7 @@ std::vector<CClause> CClause::operator~() {
 
 /**
  * @brief      Defines the operator to perform conjunction of two clauses.
- * 
+ *
  * The conjunction of clause (a1 OR a2) and (b1 OR b2) is given by
  * ((a1 OR a2) AND (b1 OR b2)). This function simply returns a vector with
  * both clauses appended to it.
@@ -73,7 +69,7 @@ std::vector<CClause> CClause::operator~() {
  * @param      other  The clause to conjunct with
  *
  * @return     The vector with the clauses as the result of performing
- *             the AND operation 
+ *             the AND operation
  */
 std::vector<CClause> CClause::operator&(const CClause &other) {
     std::vector<CClause> result;
@@ -86,9 +82,10 @@ std::vector<CClause> CClause::operator&(const CClause &other) {
 /**
  * @brief      Defines the operator to perform the conjunction of a clause with
  *             a set of clauses.
- *             
- * Given a clause and a set of clauses, the conjunction is simply appending all the
- * clauses together. This does that and returns a Clauses object with all the clauses.
+ *
+ * Given a clause and a set of clauses, the conjunction is simply appending all
+ * the clauses together. This does that and returns a Clauses object with all
+ * the clauses.
  *
  * @param      other  The set of clauses to conjunct with.
  *
@@ -102,11 +99,11 @@ Clauses CClause::operator&(const Clauses &other) {
 
 /**
  * @brief      Defines the operator to perform a disjunction of two clauses.
- * 
+ *
  * The disjunction of clause (a1 OR a2) and (b1 OR b2) is given by
  * (a1 OR a2 OR b1 OR b2). This is achieved by appending the literals of the
- * two clauses and returning the resultant clause. Extra checks are added to avoid
- * repeating literals.
+ * two clauses and returning the resultant clause. Extra checks are added to
+ * avoid repeating literals.
  *
  * @param      other  The clause to disjunct with
  *
@@ -116,27 +113,29 @@ CClause CClause::operator|(const CClause &other) {
     std::vector<Lit> thisLits = this->lits;
     std::vector<Lit> otherLits = other.getLits();
     // appending the literals
-    thisLits.insert(std::end(thisLits), std::begin(otherLits), std::end(otherLits));
+    thisLits.insert(std::end(thisLits), std::begin(otherLits),
+                    std::end(otherLits));
     std::sort(thisLits.begin(), thisLits.end());
     // removing duplicates
-    thisLits.erase(std::unique(thisLits.begin(), thisLits.end()), thisLits.end());
+    thisLits.erase(std::unique(thisLits.begin(), thisLits.end()),
+                   thisLits.end());
     bool existBothPolarities = false;
     int indexLitBothPolarities = -1;
-    for(int i = 0; i < thisLits.size(); i++) {
-        for(int j = i+1; j < thisLits.size(); j++) {
+    for (int i = 0; i < thisLits.size(); i++) {
+        for (int j = i + 1; j < thisLits.size(); j++) {
             // if any two literals are such that they are x and ~x
-            if(var(thisLits[i]) == var(thisLits[j])) {
+            if (var(thisLits[i]) == var(thisLits[j])) {
                 existBothPolarities = true;
                 indexLitBothPolarities = i;
                 break;
             }
         }
-        if(existBothPolarities) {
+        if (existBothPolarities) {
             break;
         }
     }
     // replace the entire clause with x AND ~x, as it is true anyway
-    if(existBothPolarities) {
+    if (existBothPolarities) {
         CClause result;
         result.addLits(thisLits[indexLitBothPolarities]);
         result.addLits(~thisLits[indexLitBothPolarities]);
@@ -147,11 +146,12 @@ CClause CClause::operator|(const CClause &other) {
 }
 
 /**
- * @brief      Defines the operator to perform a disjunction between a clause and a set of
- *             Clauses.
- *             
- * The working is described in the operator defined for OR between two Clauses objects. This
- * function converts the current clause to a Clauses object and performs the operation.
+ * @brief      Defines the operator to perform a disjunction between a clause
+ * and a set of Clauses.
+ *
+ * The working is described in the operator defined for OR between two Clauses
+ * objects. This function converts the current clause to a Clauses object and
+ * performs the operation.
  *
  * @param      other  The Clauses to disjunct with
  *
@@ -162,12 +162,12 @@ Clauses CClause::operator|(const Clauses &other) {
     return (thisLHS | other);
 }
 
-
 /**
- * @brief      Defines the operator to perform an implication with another clause.
- * 
+ * @brief      Defines the operator to perform an implication with another
+ * clause.
+ *
  * Given this clause (a1 OR a2) and another clause (b1 OR b2), this defines
- * ((a1 OR a2) -> (b1 OR b2)). This is done using the fact that (p->q) is 
+ * ((a1 OR a2) -> (b1 OR b2)). This is done using the fact that (p->q) is
  * equivalent to (~p OR q). This clause acts as the antecedent, and the
  * argument as the consequent. The result is converted to CNF form and returned.
  *
@@ -179,7 +179,7 @@ std::vector<CClause> CClause::operator>>(const CClause &other) {
     std::vector<CClause> lhs = ~(*this);
     std::vector<CClause> result;
     result.clear();
-    for(int i = 0; i < lhs.size(); i++) {
+    for (int i = 0; i < lhs.size(); i++) {
         CClause thisClause = lhs[i] | other;
         result.push_back(thisClause);
     }
@@ -187,10 +187,11 @@ std::vector<CClause> CClause::operator>>(const CClause &other) {
 }
 
 /**
- * @brief      Defines the operator to perform an implication with a set of Clauses.
- * 
- * Given this clause p and a set of Clauses q, this computes and returns (p->q) in
- * CNF form.
+ * @brief      Defines the operator to perform an implication with a set of
+ * Clauses.
+ *
+ * Given this clause p and a set of Clauses q, this computes and returns (p->q)
+ * in CNF form.
  *
  * @param      other  The Clauses which form the consequent
  *
@@ -202,8 +203,9 @@ Clauses CClause::operator>>(const Clauses &other) {
 }
 
 /**
- * @brief      Creates a Lit, a literal, given a variable, a Var, and adds it to the clause.
- * 
+ * @brief      Creates a Lit, a literal, given a variable, a Var, and adds it to
+ * the clause.
+ *
  * The literal is created with positive polarity.
  *
  * @param[in]  var1  The variable to be added
@@ -214,7 +216,7 @@ void CClause::createLitAndAdd(const Var &var1) {
 
 /**
  * @brief      Creates Lits given two Vars and adds them to the clause.
- * 
+ *
  * The literals are created with positive polarity.
  *
  * @param[in]  var1  The first Var
@@ -227,14 +229,15 @@ void CClause::createLitAndAdd(const Var &var1, const Var &var2) {
 
 /**
  * @brief      Creates Lits given three Vars and adds them to the clause.
- * 
+ *
  * The literals are created with positive polarity.
  *
  * @param[in]  var1  The first Var
  * @param[in]  var2  The second Var
  * @param[in]  var3  The third Var
  */
-void CClause::createLitAndAdd(const Var &var1, const Var &var2, const Var &var3) {
+void CClause::createLitAndAdd(const Var &var1, const Var &var2,
+                              const Var &var3) {
     lits.push_back(mkLit(var1, false));
     lits.push_back(mkLit(var2, false));
     lits.push_back(mkLit(var3, false));
@@ -245,9 +248,7 @@ void CClause::createLitAndAdd(const Var &var1, const Var &var2, const Var &var3)
  *
  * @param[in]  lit1  The literal to be added
  */
-void CClause::addLits(const Lit &lit1) {
-    lits.push_back(lit1);
-}
+void CClause::addLits(const Lit &lit1) { lits.push_back(lit1); }
 
 /**
  * @brief      Adds two Lits to the clause.
@@ -287,9 +288,7 @@ void CClause::addLits(const std::vector<Lit> &otherLits) {
  *
  * @return     The literals in the clause
  */
-std::vector<Lit> CClause::getLits() const {
-    return lits;
-}
+std::vector<Lit> CClause::getLits() const { return lits; }
 
 /**
  * @brief      Displays the clause.
@@ -304,6 +303,4 @@ void CClause::printClause() {
 /**
  * @brief      Clears the clause by removing all the literals.
  */
-void CClause::clear() {
-    lits.clear();
-}
+void CClause::clear() { lits.clear(); }

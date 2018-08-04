@@ -1,9 +1,9 @@
 #include "fields/segment.h"
 
-#include <cassert>
-#include <string>
-#include <iostream>
 #include "global.h"
+#include <cassert>
+#include <iostream>
+#include <string>
 
 /**
  * @brief      Constructs the Segment object.
@@ -26,7 +26,8 @@ Segment::Segment(int startSegment, int endSegment) {
  * @return     True if identical, False otherwise
  */
 bool Segment::operator==(const Segment &other) {
-    return ((this->startSegment == other.startSegment) && (this->endSegment == other.endSegment));
+    return ((this->startSegment == other.startSegment) &&
+            (this->endSegment == other.endSegment));
 }
 
 /**
@@ -36,9 +37,7 @@ bool Segment::operator==(const Segment &other) {
  *
  * @return     The length
  */
-int Segment::length() {
-    return (endSegment - startSegment + 1);
-}
+int Segment::length() { return (endSegment - startSegment + 1); }
 
 /**
  * @brief      Determines if two Segments are intersecting.
@@ -51,10 +50,9 @@ int Segment::length() {
  * @return     True if intersecting, False otherwise.
  */
 bool Segment::isIntersecting(const Segment &other) {
-    if(this->startSegment < other.startSegment) {
-        return !(this->endSegment < other.startSegment);    
-    }
-    else if(this->startSegment > other.startSegment) {
+    if (this->startSegment < other.startSegment) {
+        return !(this->endSegment < other.startSegment);
+    } else if (this->startSegment > other.startSegment) {
         return !(this->startSegment > other.endSegment);
     }
     return true;
@@ -65,9 +63,7 @@ bool Segment::isIntersecting(const Segment &other) {
  *
  * @return     A member of the FieldType enum, which is FieldType::segment
  */
-FieldType Segment::getType() {
-    return FieldType::segment;
-}
+FieldType Segment::getType() { return FieldType::segment; }
 
 /**
  * @brief      Gets the name of the Segment.
@@ -85,6 +81,4 @@ std::string Segment::getName() {
  *
  * @return     The string "Segment"
  */
-std::string Segment::getTypeName() {
-    return "Segment";
-}
+std::string Segment::getTypeName() { return "Segment"; }

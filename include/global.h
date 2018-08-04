@@ -3,18 +3,10 @@
 #ifndef GLOBAL_H
 #define GLOBAL_H
 
-
 /**
  * @brief      Enum that represents all the field types.
  */
-enum FieldType {
-    instructor,
-    segment,
-    isMinor,
-    program,
-    classroom,
-    slot
-};
+enum FieldType { instructor, segment, isMinor, program, classroom, slot };
 
 /**
  * @brief      Enum that represents all the predefined constraints.
@@ -38,7 +30,7 @@ enum PredefinedClauses {
  * @brief      Class for global values.
  */
 class Global {
-public:
+  public:
     /**
      * The number of field types in the FieldType enumerator
      */
@@ -50,4 +42,3 @@ public:
 };
 
 #endif
-

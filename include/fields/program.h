@@ -3,9 +3,9 @@
 #ifndef PROGRAM_H
 #define PROGRAM_H
 
-#include <string>
 #include "fields/field.h"
 #include "global.h"
+#include <string>
 
 /**
  * @brief      Enum Class for course type.
@@ -21,24 +21,24 @@ enum class CourseType {
     elective
 };
 
-
 /**
  * @brief      Class for a program.
  */
 class Program : public Field {
-private:
+  private:
     /**
      * The name of the Program, which uniquely identifies it.
      * For example, it might be "B Tech 1".
      */
-    std::string name; 
+    std::string name;
     /**
      * The type with which the Program has a certain Course.
-     * This could be core or elective, which specifies whether the 
+     * This could be core or elective, which specifies whether the
      * Program has a particular Course as a core course or as an elective.
      */
     CourseType courseType;
-public:
+
+  public:
     Program(std::string, CourseType);
     bool operator==(const Program &other);
     FieldType getType();

@@ -1,15 +1,16 @@
-#include "parser.h"
+#include "constraint_adder.h"
 #include "constraint_encoder.h"
 #include "core/Solver.h"
-#include "constraint_adder.h"
-#include "mtl/Vec.h"
-#include "global.h"
 #include "custom_parser.h"
+#include "global.h"
+#include "mtl/Vec.h"
+#include "parser.h"
 #include <iostream>
 
 int main(int argc, char const *argv[]) {
     if (argc != 5) {
-        std::cout << "Run as " << argv[0] << " fields.yml input.csv custom.txt output.csv" << std::endl;
+        std::cout << "Run as " << argv[0]
+                  << " fields.yml input.csv custom.txt output.csv" << std::endl;
         return 0;
     }
     TimeTabler *timeTabler = new TimeTabler();
