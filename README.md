@@ -18,16 +18,16 @@ This is required if tests are to be run. Download and install from [here](https:
 
 `g++` with support for C++11, using the `--std=c++11` flag, is required.
 
-#### Setup the dependencies
+### Setting up the dependencies
 This section explains the setup of Open WBO 2.0 and CSVparser. Installation instructions of other dependencies can be found with the code.
 
 **Open WBO 2.0** : 
 
 This needs to be built as a library. The following steps need to be followed:
-* Clone the repository. `$OPENWBOROOT` will be used to denote the path where the repository is cloned.
+* Clone the repository. `$OPENWBO_ROOT` will be used to denote the path where the repository is cloned.
 ```
-$ git clone https://github.com/sat-group/open-wbo.git $OPENWBOROOT
-$ cd $OPENWBOROOT
+$ git clone https://github.com/sat-group/open-wbo.git $OPENWBO_ROOT
+$ cd $OPENWBO_ROOT
 ```
 * Build as a static library
 ```
@@ -36,7 +36,7 @@ $ LIB=open-wbo make libr
 
 **CSVparser**:
 
-This does not require any setup other than cloning the repository. The path where this is cloned will be referred to as `$CSVPARSERROOT`.
+This does not require any setup other than cloning the repository. The path where this is cloned will be referred to as `$CSVPARSER_ROOT`.
 
 ### Building the project
 * Clone the repository
@@ -46,8 +46,8 @@ $ cd Timetabler
 ```
 * In the `Makefile`, edit the first two lines as per your setup:
 ```
-OPEN_WBO_PATH = $OPENWBOROOT
-CSV_PARSER_PATH = $CSVPARSERROOT
+OPEN_WBO_PATH = $OPENWBO_ROOT
+CSV_PARSER_PATH = $CSVPARSER_ROOT
 ```
 * Then, build the project
 ```
@@ -84,6 +84,6 @@ This contains some examples of the course data input given to the solver as a CS
 
 For further details and examples, please refer to the [Project Wiki](https://github.com/GoodDeeds/Timetabler/wiki).
 
-### License
+## License
 
 This software is provided under the [MIT License](LICENSE).
