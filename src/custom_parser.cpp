@@ -342,6 +342,9 @@ template <> struct action<constraint_expr> {
             Clauses ante, cons, clause;
             ante = makeAntecedent(obj, course);
             cons = makeConsequent(obj, course, i);
+            if (obj.isNot) {
+                cons = ~cons;
+            }
             clause = ante >> cons;
             clauses = clauses & clause;
         }
