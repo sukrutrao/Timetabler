@@ -35,5 +35,5 @@
 *~
 
 # Object files, dependencies, and Executables 
-bin
+build
 dependencies

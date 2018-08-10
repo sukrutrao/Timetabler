@@ -6,4 +6,8 @@ before_install:
     - sudo apt update
     - sudo apt install libboost-all-dev
 script:
-    - sudo ./install.sh
+    - ./install_dependencies.sh
+    - mkdir build
+    - cd build
+    - cmake ..
+    - make
