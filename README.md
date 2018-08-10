@@ -1,5 +1,5 @@
 # Timetabler
-
+[![Build Status](https://travis-ci.com/GoodDeeds/Timetabler.svg?branch=development)](https://travis-ci.com/GoodDeeds/Timetabler)
 [![Documentation Status](https://readthedocs.org/projects/timetabler/badge/?version=stable)](https://timetabler.readthedocs.io/en/stable/?badge=stable)
 
 This project generates a time table given a set of inputs and constraints. It encodes constraints of the time tabling problem as a SAT formula in the Conjunctive Normal Form, and then calls a MaxSAT solver to solve the problem.
