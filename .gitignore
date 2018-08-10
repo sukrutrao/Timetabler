@@ -34,5 +34,6 @@
 # Gedit Backup files
 *~
 
-# Object files and Executables 
+# Object files, dependencies, and Executables 
 bin
+dependencies
