@@ -49,7 +49,7 @@ echo "Building Timetabler..."
 export TIMETABLER_ROOT=$(pwd)
 mkdir build
 cd build
-cmake .. -DOPEN_WBO_PATH="${TIMETABLER_ROOT}/open-wbo" -DCSVPARSER_PATH="${TIMETABLER_ROOT}/CSVparser"
+cmake .. -DOPEN_WBO_PATH="${TIMETABLER_ROOT}/dependencies/open-wbo" -DCSVPARSER_PATH="${TIMETABLER_ROOT}/dependencies/CSVparser"
 make -j4
 sudo make install
 echo "Done."
