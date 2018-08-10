@@ -28,6 +28,8 @@ struct Object {
     bool isNot;
     bool classSame;
     bool slotSame;
+    bool classNotSame;
+    bool slotNotSame;
     int integer;
     TimeTabler *timeTabler;
     ConstraintAdder *constraintAdder;

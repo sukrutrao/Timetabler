@@ -120,7 +120,7 @@ template <> struct action<programstr> {
 
 /**
  * @brief      Constraint is on one of the instructor, segment, isminor, program.
- * isNot, classSame, slotSame are reset.
+ * isNot, classSame, slotSame, classNotSame, slotNotSame are reset.
  */
 struct fieldtype
     : pegtl::sor<instructorstr, segmentstr, isminorstr, programstr> {};
@@ -129,6 +129,8 @@ template <> struct action<fieldtype> {
         obj.isNot = false;
         obj.classSame = false;
         obj.slotSame = false;
+        obj.classNotSame = false;
+        obj.slotNotSame = false;
     }
 };
 
@@ -302,7 +304,15 @@ template <> struct action<sameval> {
 /**
  * @brief      Parse "NOTSAME": TODO
  */
-struct notsameval : pegtl::pad<TAOCPP_PEGTL_KEYWORD("NOTSAME"), pegtl::space> {
+struct notsameval : pegtl::pad<TAOCPP_PEGTL_KEYWORD("NOTSAME"), pegtl::space> {};
+template <> struct action<notsameval> {
+    template <typename Input> static void apply(const Input &in, Object &obj) {
+        if (obj.fieldType == FieldValuesType::CLASSROOM) {
+            obj.classNotSame = true;
+        } else if (obj.fieldType == FieldValuesType::SLOT) {
+            obj.slotNotSame = true;
+        }
+    }
 };
 
 /**
@@ -392,7 +402,7 @@ Clauses makeAntecedent(Object &obj, int course) {
  *
  * @param      obj     The object
  * @param[in]  course  The course
- * @param[in]  i       Index of courseValues
+ * @param[in]  i       Index of course in courseValues
  *
  * @return     Clauses corresponding to the consequent
  */
@@ -407,12 +417,30 @@ Clauses makeConsequent(Object &obj, int course, int i) {
             cons = cons & a;
         }
     }
-    if (obj.classSame) {
+    if (obj.classNotSame) {
+        for (int j = i + 1; j < obj.courseValues.size(); j++) {
+            Clauses a = makeAntecedent(obj, obj.courseValues[j]);
+            Clauses b = obj.constraintEncoder->hasSameFieldTypeAndValue(
+                course, obj.courseValues[j], FieldType::classroom);
+            a = a >> (~b);
+            cons = cons & a;
+        }
+    }
+    if (obj.slotSame) {
         for (int j = i + 1; j < obj.courseValues.size(); j++) {
             Clauses a = makeAntecedent(obj, obj.courseValues[j]);
             Clauses b = obj.constraintEncoder->hasSameFieldTypeAndValue(
                 course, obj.courseValues[j], FieldType::slot);
             a = a >> b;
+            cons = cons & a;
+        }
+    }
+    if (obj.slotNotSame) {
+        for (int j = i + 1; j < obj.courseValues.size(); j++) {
+            Clauses a = makeAntecedent(obj, obj.courseValues[j]);
+            Clauses b = obj.constraintEncoder->hasSameFieldTypeAndValue(
+                course, obj.courseValues[j], FieldType::slot);
+            a = a >> (~b);
             cons = cons & a;
         }
     }
@@ -480,7 +508,8 @@ template <> struct action<constraint_not> {
 };
 
 /**
- * @brief      Parse constraint
+ * @brief      Parse a constraint: Constraint expression or negation of some
+ * constraint expression or a constraint enclosed in parantheses
  */
 struct constraint_val
     : pegtl::sor<constraint_expr, constraint_not, constraint_braced> {};
@@ -492,6 +521,7 @@ template <> struct action<constraint_val> {
 
 /**
  * @brief      Parse conjunction of constraints
+ * Add all the constraints to obj.constraintAdds
  */
 struct constraint_and : pegtl::list<constraint_val, andstr, pegtl::space> {};
 template <> struct action<constraint_and> {
@@ -507,6 +537,7 @@ template <> struct action<constraint_and> {
 
 /**
  * @brief      Parse disjunction of constraints
+ * The combined clauses for all the constraints are stored in obj.constraint
  */
 struct constraint_or : pegtl::list<constraint_and, orstr, pegtl::space> {};
 template <> struct action<constraint_or> {
@@ -522,6 +553,7 @@ template <> struct action<constraint_or> {
 
 /**
  * @brief      Parse weighted constraint
+ * Add the clauses corresponding to the constraint along with its weight
  */
 struct wconstraint
     : pegtl::seq<pegtl::pad<constraint_or, pegtl::space>,
