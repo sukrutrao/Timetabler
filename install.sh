@@ -6,8 +6,9 @@ mkdir dependencies
 cd dependencies
 
 echo "Getting Open WBO..."
-git clone https://github.com/GoodDeeds/open-wbo.git
+git clone https://github.com/sat-group/open-wbo.git
 cd open-wbo
+git checkout f193a3b
 echo "Building Open WBO..."
 LIB=open-wbo make libr
 cd ..

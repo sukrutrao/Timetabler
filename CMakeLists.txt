@@ -6,7 +6,7 @@ set(Timetabler_VERSION_MAJOR 0)
 set(Timetabler_VERSION_MINOR 1)
 set(CMAKE_BUILD_TYPE Release)
 
-set(CMAKE_CXX_FLAGS -Wno-literal-suffix)
+set(CMAKE_CXX_FLAGS -Wno-literal-suffix -DNSPACE=Minisat)
 
 set(OPEN_WBO_PATH "" CACHE PATH "Open-WBO path")
 set(CSVPARSER_PATH "" CACHE PATH "CSVParser path")
