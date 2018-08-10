@@ -5,5 +5,6 @@ compiler:
 before_install:
     - sudo apt update
     - sudo apt install libboost-all-dev
+    - sudo apt install cmake
 script:
     - sudo ./install.sh
