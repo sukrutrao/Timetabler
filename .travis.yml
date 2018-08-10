@@ -2,10 +2,12 @@ language: cpp
 dist: xenial
 compiler:
     - g++
+before_install:
+    - sudo apt update
+    - sudo apt install libboost-all-dev
 script:
-    - git clone https://github.com/sat-group/open-wbo.git
+    - git clone https://github.com/GoodDeeds/open-wbo.git
     - cd open-wbo
-    - git checkout f193a3b
     - LIB=open-wbo make libr
     - cd ..
     - wget https://github.com/jbeder/yaml-cpp/archive/yaml-cpp-0.5.3.tar.gz
