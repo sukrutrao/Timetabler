@@ -26,8 +26,12 @@ script:
     - wget https://github.com/taocpp/PEGTL/archive/2.2.0.tar.gz
     - tar -xf 2.2.0.tar.gz
     - cd PEGTL-2.2.0
-    - make
-    - cd ..
+    - mkdir build
+    - cd build
+    - cmake .. -DBUILD_SHARED_LIBS=ON
+    - make -j4
+    - sudo make install
+    - cd ../..
     - export TIMETABLER_ROOT=$(pwd)
     - mkdir build
     - cd build
