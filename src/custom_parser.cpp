@@ -11,6 +11,9 @@ namespace pegtl = tao::TAOCPP_PEGTL_NAMESPACE;
 
 template <typename Rule> struct action : pegtl::nothing<Rule> {};
 
+/**
+ * @brief      Parse integer: Store the integer in the object
+ */
 struct integer
     : pegtl::seq<pegtl::opt<pegtl::one<'-'>>, pegtl::plus<pegtl::digit>> {};
 template <> struct action<integer> {
@@ -19,8 +22,14 @@ template <> struct action<integer> {
     }
 };
 
+/**
+ * @brief      Parse "IN"
+ */
 struct instr : TAOCPP_PEGTL_KEYWORD("IN") {};
 
+/**
+ * @brief      Parse "NOT": Store that NOT keyword is present in the custom constraint
+ */
 struct notstr : TAOCPP_PEGTL_KEYWORD("NOT") {};
 template <> struct action<notstr> {
     template <typename Input> static void apply(const Input &in, Object &obj) {
@@ -28,10 +37,20 @@ template <> struct action<notstr> {
     }
 };
 
+/**
+ * @brief      Parse "NOT"
+ */
 struct andstr : TAOCPP_PEGTL_KEYWORD("AND") {};
 
+/**
+ * @brief      Parse "OR"
+ */
 struct orstr : TAOCPP_PEGTL_KEYWORD("OR") {};
 
+/**
+ * @brief      Parse "CLASSROOM": Store the field type to be classroom
+ * which will be used while forming the custom consraint
+ */
 struct classroomstr : TAOCPP_PEGTL_KEYWORD("CLASSROOM") {};
 template <> struct action<classroomstr> {
     template <typename Input> static void apply(const Input &in, Object &obj) {
@@ -39,6 +58,9 @@ template <> struct action<classroomstr> {
     }
 };
 
+/**
+ * @brief      Parse "SLOT": Similar to classroom
+ */
 struct slotstr : TAOCPP_PEGTL_KEYWORD("SLOT") {};
 template <> struct action<slotstr> {
     template <typename Input> static void apply(const Input &in, Object &obj) {
@@ -46,6 +68,9 @@ template <> struct action<slotstr> {
     }
 };
 
+/**
+ * @brief      Parse "COURSE": Similar to classroom
+ */
 struct coursestr : TAOCPP_PEGTL_KEYWORD("COURSE") {};
 template <> struct action<coursestr> {
     template <typename Input> static void apply(const Input &in, Object &obj) {
@@ -53,6 +78,9 @@ template <> struct action<coursestr> {
     }
 };
 
+/**
+ * @brief      Parse "INSTRUCTOR": Similar to classroom
+ */
 struct instructorstr : TAOCPP_PEGTL_KEYWORD("INSTRUCTOR") {};
 template <> struct action<instructorstr> {
     template <typename Input> static void apply(const Input &in, Object &obj) {
@@ -60,6 +88,9 @@ template <> struct action<instructorstr> {
     }
 };
 
+/**
+ * @brief      Parse "SEGMENT": Similar to classroom
+ */
 struct segmentstr : TAOCPP_PEGTL_KEYWORD("SEGMENT") {};
 template <> struct action<segmentstr> {
     template <typename Input> static void apply(const Input &in, Object &obj) {
@@ -67,6 +98,9 @@ template <> struct action<segmentstr> {
     }
 };
 
+/**
+ * @brief      Parse "ISMNOR": Similar to classroom
+ */
 struct isminorstr : TAOCPP_PEGTL_KEYWORD("ISMINOR") {};
 template <> struct action<isminorstr> {
     template <typename Input> static void apply(const Input &in, Object &obj) {
@@ -74,6 +108,9 @@ template <> struct action<isminorstr> {
     }
 };
 
+/**
+ * @brief      Parse "PROGRAM": Similar to classroom
+ */
 struct programstr : TAOCPP_PEGTL_KEYWORD("PROGRAM") {};
 template <> struct action<programstr> {
     template <typename Input> static void apply(const Input &in, Object &obj) {
@@ -81,6 +118,10 @@ template <> struct action<programstr> {
     }
 };
 
+/**
+ * @brief      Constraint is on one of the instructor, segment, isminor, program.
+ * isNot, classSame, slotSame are reset.
+ */
 struct fieldtype
     : pegtl::sor<instructorstr, segmentstr, isminorstr, programstr> {};
 template <> struct action<fieldtype> {
@@ -91,6 +132,9 @@ template <> struct action<fieldtype> {
     }
 };
 
+/**
+ * @brief      Parse a value of the field that is specified in the constraint
+ */
 struct value
     : pegtl::plus<pegtl::sor<pegtl::range<'a', 'z'>, pegtl::range<'A', 'Z'>,
                              pegtl::digit, pegtl::one<'.'>, pegtl::one<'-'>,
@@ -202,6 +246,9 @@ template <> struct action<value> {
     }
 };
 
+/**
+ * @brief      Parse * as all values of the specified field
+ */
 struct allvalues : pegtl::pad<pegtl::one<'*'>, pegtl::space> {};
 template <> struct action<allvalues> {
     template <typename Input> static void apply(const Input &in, Object &obj) {
@@ -238,6 +285,9 @@ template <> struct action<allvalues> {
     }
 };
 
+/**
+ * @brief      Parse "SAME": Used to specify constraints on courses with same filed values
+ */
 struct sameval : pegtl::pad<TAOCPP_PEGTL_KEYWORD("SAME"), pegtl::space> {};
 template <> struct action<sameval> {
     template <typename Input> static void apply(const Input &in, Object &obj) {
@@ -249,31 +299,69 @@ template <> struct action<sameval> {
     }
 };
 
+/**
+ * @brief      Parse "NOTSAME": TODO
+ */
 struct notsameval : pegtl::pad<TAOCPP_PEGTL_KEYWORD("NOTSAME"), pegtl::space> {
 };
 
+/**
+ * @brief      Parse list of values of a field specified in the constraint
+ */
 struct listvalues
     : pegtl::seq<pegtl::pad<pegtl::one<'{'>, pegtl::space>,
                  pegtl::list<value, pegtl::one<','>, pegtl::space>,
                  pegtl::pad<pegtl::one<'}'>, pegtl::space>> {};
 
+/**
+ * @brief      Parse values
+ */
 struct values : pegtl::sor<allvalues, listvalues, sameval, notsameval> {};
 
+/**
+ * @brief      Parse classrooms
+ */
 struct classroomdecl
     : pegtl::seq<pegtl::pad<classroomstr, pegtl::space>, values> {};
 
+/**
+ * @brief      Parse slots
+ */
 struct slotdecl : pegtl::seq<pegtl::pad<slotstr, pegtl::space>, values> {};
 
+/**
+ * @brief      Parse courses
+ */
 struct coursedecl : pegtl::seq<pegtl::pad<coursestr, pegtl::space>, values> {};
 
+/**
+ * @brief      Parse single decl in consequent of the constraint
+ */
 struct decl : pegtl::sor<slotdecl, classroomdecl> {};
 
+/**
+ * @brief      Parse multi decls in consequent of the constraint
+ */
 struct decls : pegtl::list<decl, andstr, pegtl::space> {};
 
+/**
+ * @brief      Parse fieldd decl in antecedent of the constraint
+ */
 struct fielddecl : pegtl::seq<pegtl::pad<fieldtype, pegtl::space>, values> {};
 
+/**
+ * @brief      Parse multi field decls in antecedent of the constraint
+ */
 struct fielddecls : pegtl::opt<pegtl::list<fielddecl, andstr, pegtl::space>> {};
 
+/**
+ * @brief      Makes an antecedent.
+ *
+ * @param      obj     The object
+ * @param[in]  course  The course
+ *
+ * @return     Clauses corresponding to the antecedent
+ */
 Clauses makeAntecedent(Object &obj, int course) {
     Clauses ante, clause;
     if (obj.instructorValues.size() > 0) {
@@ -299,6 +387,15 @@ Clauses makeAntecedent(Object &obj, int course) {
     return ante;
 }
 
+/**
+ * @brief      Makes a consequent.
+ *
+ * @param      obj     The object
+ * @param[in]  course  The course
+ * @param[in]  i       Index of courseValues
+ *
+ * @return     Clauses corresponding to the consequent
+ */
 Clauses makeConsequent(Object &obj, int course, int i) {
     Clauses cons, clause;
     if (obj.classSame) {
@@ -332,6 +429,9 @@ Clauses makeConsequent(Object &obj, int course, int i) {
     return cons;
 }
 
+/**
+ * @brief      Parse a constraint
+ */
 struct constraint_expr : pegtl::seq<coursedecl, fielddecls, pegtl::opt<notstr>,
                                     pegtl::pad<instr, pegtl::space>, decls> {};
 template <> struct action<constraint_expr> {
@@ -358,11 +458,18 @@ template <> struct action<constraint_expr> {
 };
 
 struct constraint_or;
+
+/**
+ * @brief      Parse constraint enclosed in braces
+ */
 struct constraint_braced
     : pegtl::seq<pegtl::if_must<pegtl::pad<pegtl::one<'('>, pegtl::space>,
                                 constraint_or,
                                 pegtl::pad<pegtl::one<')'>, pegtl::space>>> {};
 
+/**
+ * @brief      Parse negation of a constraint
+ */
 struct constraint_not
     : pegtl::seq<pegtl::pad<notstr, pegtl::space>, constraint_braced> {};
 template <> struct action<constraint_not> {
@@ -372,6 +479,9 @@ template <> struct action<constraint_not> {
     }
 };
 
+/**
+ * @brief      Parse constraint
+ */
 struct constraint_val
     : pegtl::sor<constraint_expr, constraint_not, constraint_braced> {};
 template <> struct action<constraint_val> {
@@ -380,6 +490,9 @@ template <> struct action<constraint_val> {
     }
 };
 
+/**
+ * @brief      Parse conjunction of constraints
+ */
 struct constraint_and : pegtl::list<constraint_val, andstr, pegtl::space> {};
 template <> struct action<constraint_and> {
     template <typename Input> static void apply(const Input &in, Object &obj) {
@@ -392,6 +505,9 @@ template <> struct action<constraint_and> {
     }
 };
 
+/**
+ * @brief      Parse disjunction of constraints
+ */
 struct constraint_or : pegtl::list<constraint_and, orstr, pegtl::space> {};
 template <> struct action<constraint_or> {
     template <typename Input> static void apply(const Input &in, Object &obj) {
@@ -404,6 +520,9 @@ template <> struct action<constraint_or> {
     }
 };
 
+/**
+ * @brief      Parse weighted constraint
+ */
 struct wconstraint
     : pegtl::seq<pegtl::pad<constraint_or, pegtl::space>,
                  pegtl::pad<TAOCPP_PEGTL_KEYWORD("WEIGHT"), pegtl::space>,
@@ -414,6 +533,9 @@ template <> struct action<wconstraint> {
     }
 };
 
+/**
+ * @brief      Parse constraints from the file, generate error on failure
+ */
 struct grammar
     : pegtl::try_catch<pegtl::must<pegtl::star<wconstraint>, pegtl::eof>> {};
 
