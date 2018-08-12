@@ -12,3 +12,5 @@ script:
     - cd build
     - cmake ..
     - make
+    - make package
+    - sudo dpkg -i *.deb
