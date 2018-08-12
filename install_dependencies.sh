@@ -27,7 +27,7 @@ if [ ! -d build ] ; then
 fi
 cd build
 echo "Building YAML-CPP..."
-cmake -DBUILD_SHARED_LIBS=ON ..
+cmake ..
 make -j4
 cd ../..
 
@@ -50,7 +50,7 @@ if [ ! -d build ] ; then
 fi
 cd build
 echo "Building PEGTL..."
-cmake .. -DBUILD_SHARED_LIBS=ON
+cmake ..
 make -j4
 cd ../..
 echo "All dependencies installed."

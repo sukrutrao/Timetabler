@@ -4,6 +4,7 @@ project(Timetabler)
 
 set(Timetabler_VERSION_MAJOR 0)
 set(Timetabler_VERSION_MINOR 1)
+set(Timetabler_VERSION_PATCH 0)
 set(CMAKE_BUILD_TYPE Release)
 
 set(CMAKE_CXX_FLAGS -Wno-literal-suffix)
@@ -38,3 +39,16 @@ target_link_libraries(timetabler -lopen-wbo -lyaml-cpp)
 # target_link_libraries(tests -lgtest -pthread)
 
 install(TARGETS timetabler DESTINATION bin)
+
+set(CPACK_PACKAGE_VERSION_MAJOR ${Timetabler_VERSION_MAJOR})
+set(CPACK_PACKAGE_VERSION_MINOR ${Timetabler_VERSION_MINOR})
+set(CPACK_PACKAGE_VERSION_PATCH ${Timetabler_VERSION_PATCH})
+
+SET(CPACK_GENERATOR "DEB")
+SET(CPACK_DEBIAN_PACKAGE_DESCRIPTION "Encode timetabling constraints as a SAT formula and solve using a MaxSAT solver to generate a Timetable for IITH")
+SET(CPACK_DEBIAN_PACKAGE_MAINTAINER "Sukrut Rao, Prateek Kumar")
+SET(CPACK_DEBIAN_PACKAGE_SHLIBDEPS ON)
+SET(CPACK_DEBIAN_PACKAGE_HOMEPAGE "https://github.com/GoodDeeds/Timetabler")
+
+
+INCLUDE(CPack)
