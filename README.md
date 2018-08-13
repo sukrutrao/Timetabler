@@ -7,6 +7,10 @@ This project generates a timetable given a set of inputs and constraints. It enc
 
 ## Installation
 
+**For ubuntu users:** Download deb for the latest version of Timetabler from [here](https://github.com/GoodDeeds/Timetabler/releases) and install it.
+
+To build the project from source follow the steps below.
+
 ### Prerequisities
 
 This project requires following tools to build.
@@ -16,18 +20,11 @@ This project requires following tools to build.
 ### Dependencies
 
 The following software are dependencies for this program:
-* **Open WBO 2.0** : 
-This is the MaxSAT solver used to solve the encoded formula. The code can be downloaded from [here](https://github.com/sat-group/open-wbo/tree/f193a3bd802551b13d6424bc1baba6ad35ec6ba6). Setup instructions are provided below. Also see the [project website](http://sat.inesc-id.pt/open-wbo/) for details.
-* **yaml-cpp 0.5.3** : 
-This is used to parse valid field values and weight inputs. Download and install from [here](https://github.com/jbeder/yaml-cpp/releases/tag/yaml-cpp-0.5.3).
-* **CSVparser** : 
-This is used to parse the CSV containing the input data. Download from [here](https://github.com/MyBoon/CSVparser/tree/540e3e2f46b77ea8178f90910a165695cbb6cc12). Setup instructions are provided below.
-* **PEGTL 2.2.0** : 
-This is used to parse custom constraints. Download and install from [here](https://github.com/taocpp/PEGTL/releases/tag/2.2.0).
-* **googletest 1.8.0** : 
-This is required if tests are to be run. Download and install from [here](https://github.com/google/googletest/releases/tag/release-1.8.0).
-
-`g++` with support for C++11, using the `--std=c++11` flag, is required.
+* [**Open WBO 2.0**](https://github.com/GoodDeeds/open-wbo): Slightly modified version of the original [Open-WBO 2.0](https://github.com/sat-group/open-wbo/tree/f193a3bd802551b13d6424bc1baba6ad35ec6ba6).
+* [**yaml-cpp 0.5.3**](https://github.com/jbeder/yaml-cpp/releases/tag/yaml-cpp-0.5.3)
+* [**CSVparser**](https://github.com/MyBoon/CSVparser/tree/540e3e2f46b77ea8178f90910a165695cbb6cc12)
+* [**PEGTL 2.2.0**](https://github.com/taocpp/PEGTL/releases/tag/2.2.0)
+* [**googletest 1.8.0**](https://github.com/google/googletest/releases/tag/release-1.8.0)
 
 ### Setting up the dependencies
 
