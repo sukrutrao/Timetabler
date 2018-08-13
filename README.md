@@ -41,15 +41,15 @@ If the above command fails, you can try installing the individual dependencies m
 
 #### Long method
 
-This section explains the setup of Open WBO 2.0 and CSVparser. Installation instructions of other dependencies can be found with the code.
+This describes the process of setting up each dependency.
 
 ##### Open WBO 2.0 
 
 This needs to be built as a library. The following steps need to be followed:
-* Clone the repository. `$OPENWBO_ROOT` will be used to denote the path where the repository is cloned.
+* Clone the repository. `$OPEN_WBO_PATH` will be used to denote the path where the repository is cloned.
 ```bash
-$ git clone https://github.com/sat-group/open-wbo.git $OPENWBO_ROOT
-$ cd $OPENWBO_ROOT
+$ git clone https://github.com/GoodDeeds/open-wbo.git $OPEN_WBO_PATH
+$ cd $OPEN_WBO_PATH
 ```
 * Build as a static library
 ```bash
@@ -58,11 +58,11 @@ $ LIB=open-wbo make libr
 
 ##### CSVparser
 
-This does not require any setup other than cloning the repository. The path where this is cloned will be referred to as `$CSVPARSER_ROOT`.
+This does not require any setup other than cloning the repository. The path where this is cloned will be referred to as `$CSVPARSER_PATH`.
 
 ##### yaml-cpp
 
-* Download [yaml-cpp-0.5.3](https://github.com/jbeder/yaml-cpp/archive/yaml-cpp-0.5.3.tar.gz) and unpack it. `$YAML_CPP_PATHT` will be used to denote the path where it is unpacked.
+* Download [yaml-cpp-0.5.3](https://github.com/jbeder/yaml-cpp/archive/yaml-cpp-0.5.3.tar.gz) and unpack it. `$YAML_CPP_PATH` will be used to denote the path where it is unpacked.
 * Build the project
 ```bash
 $ cd $YAML_CPP_PATH
@@ -83,6 +83,7 @@ $ make
 ```
 
 ### Building the project
+
 * Clone the repository
 ```
 $ git clone https://github.com/GoodDeeds/Timetabler
@@ -91,7 +92,7 @@ $ cd Timetabler
 * Build the project. Set the cmake variables `OPEN_WBO_PATH`, `YAML_CPP_PATH`, `CSVPARSER_PATH` and `PEGTL_PATH` appropriately.
 ```bash
 $ mkdir build && cd build
-$ cmake -DOPEN_WBO_PATH="" -DYAML_CPP_PATH="" -DCSVPARSER_PATH="" -DCMAKE_PEGTL_PATH="" ..
+$ cmake -DOPEN_WBO_PATH="" -DYAML_CPP_PATH="" -DCSVPARSER_PATH="" -DPEGTL_PATH="" ..
 $ make
 ```
 * Install

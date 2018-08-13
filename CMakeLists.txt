@@ -3,7 +3,7 @@ set(CMAKE_CXX_STANDARD 11)
 project(Timetabler)
 
 set(Timetabler_VERSION_MAJOR 0)
-set(Timetabler_VERSION_MINOR 1)
+set(Timetabler_VERSION_MINOR 2)
 set(Timetabler_VERSION_PATCH 0)
 set(CMAKE_BUILD_TYPE Release)
 
@@ -45,10 +45,13 @@ set(CPACK_PACKAGE_VERSION_MINOR ${Timetabler_VERSION_MINOR})
 set(CPACK_PACKAGE_VERSION_PATCH ${Timetabler_VERSION_PATCH})
 
 SET(CPACK_GENERATOR "DEB")
+SET(CPACK_SOURCE_GENERATOR "TGZ")
 SET(CPACK_DEBIAN_PACKAGE_DESCRIPTION "Encode timetabling constraints as a SAT formula and solve using a MaxSAT solver to generate a Timetable for IITH")
-SET(CPACK_DEBIAN_PACKAGE_MAINTAINER "Sukrut Rao, Prateek Kumar")
+SET(CPACK_DEBIAN_PACKAGE_MAINTAINER "Prateek Kumar <prateek@prateekkumar.in>")
 SET(CPACK_DEBIAN_PACKAGE_SHLIBDEPS ON)
 SET(CPACK_DEBIAN_PACKAGE_HOMEPAGE "https://github.com/GoodDeeds/Timetabler")
-
+set(CPACK_RESOURCE_FILE_LICENSE ${Timetabler_SOURCE_DIR}/LICENSE)
+set(CPACK_RESOURCE_FILE_README ${Timetabler_SOURCE_DIR}/README.md)
+set(CPACK_DEBIAN_RESOURCE_FILE_CHANGELOG ${Timetabler_SOURCE_DIR}/debian/changelog)
 
 INCLUDE(CPack)
