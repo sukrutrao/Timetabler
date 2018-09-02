@@ -17,11 +17,11 @@ LIB=open-wbo make libr
 cd ..
 
 echo "Getting YAML-CPP..."
-if [ ! -d yaml-cpp-yaml-cpp-0.5.3 ] ; then
-  wget https://github.com/jbeder/yaml-cpp/archive/yaml-cpp-0.5.3.tar.gz
-  tar -xf yaml-cpp-0.5.3.tar.gz
+if [ ! -d yaml-cpp-yaml-cpp-0.6.2 ] ; then
+  wget https://github.com/jbeder/yaml-cpp/archive/yaml-cpp-0.6.2.tar.gz
+  tar -xf yaml-cpp-0.6.2.tar.gz
 fi
-cd yaml-cpp-yaml-cpp-0.5.3
+cd yaml-cpp-yaml-cpp-0.6.2
 if [ ! -d build ] ; then
   mkdir build
 fi
