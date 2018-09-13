@@ -171,7 +171,7 @@ Clauses Clauses::operator|(const Clauses &other) {
         xrep.push(~c1);
         vec<Lit> clause;
         clause.push(c1);
-        clause.push(~x);
+        clause.push(~y);
         timeTabler->addToFormula(clause, -1);
         CClause c1rep(~c1);
         for (int j=0; j<other.clauses[i].getLits().size(); j++) {
