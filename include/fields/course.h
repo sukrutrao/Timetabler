@@ -48,17 +48,25 @@ class Course {
      */
     int isMinor;
 
+    int classroom = -1;
+
+    int slot = -1;
+
   public:
     Course(std::string, unsigned, int, int, int);
     Course(std::string, unsigned, int, int, int, std::vector<int>);
     void setPrograms(std::vector<int>);
     void addProgram(int);
+    void addClassroom(int);
+    void addSlot(int);
     bool operator==(const Course &other);
     std::string getName();
     int getInstructor();
     std::vector<int> getPrograms();
     int getSegment();
     int getIsMinor();
+    int getClassroom();
+    int getSlot();
     unsigned getClassSize();
 };
 

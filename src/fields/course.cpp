@@ -63,6 +63,14 @@ void Course::setPrograms(std::vector<int> programs) {
  */
 void Course::addProgram(int programs) { this->programs.push_back(programs); }
 
+void Course::addClassroom(int cr) {
+    this->classroom = cr;
+}
+
+void Course::addSlot(int s) {
+    this->slot = s;
+}
+
 /**
  * @brief      Checks if two Course objects are identical, i.e.,
  *             if they represent the same Course.
@@ -109,6 +117,14 @@ int Course::getSegment() { return segment; }
  * @return     The isMinor index in the list of isMinors
  */
 int Course::getIsMinor() { return isMinor; }
+
+int Course::getClassroom() {
+    return classroom;
+}
+
+int Course::getSlot() {
+    return slot;
+}
 
 /**
  * @brief      Gets the class size of the Course.

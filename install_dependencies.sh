@@ -13,7 +13,7 @@ if [ ! -d open-wbo ] ; then
 fi
 cd open-wbo
 echo "Building Open WBO..."
-LIB=open-wbo make libr
+LIB=open-wbo make libr -j
 cd ..
 
 echo "Getting YAML-CPP..."
@@ -28,7 +28,7 @@ fi
 cd build
 echo "Building YAML-CPP..."
 cmake ..
-make -j4
+make -j
 cd ../..
 
 echo "Getting CSVparser..."
@@ -40,18 +40,18 @@ git checkout 540e3e2
 cd ..
 
 echo "Getting PEGTL..."
-if [ ! -d PEGTL-2.2.0 ] ; then
-  wget https://github.com/taocpp/PEGTL/archive/2.2.0.tar.gz
-  tar -xf 2.2.0.tar.gz
+if [ ! -d PEGTL-2.7.0 ] ; then
+  wget https://github.com/taocpp/PEGTL/archive/2.7.0.tar.gz
+  tar -xf 2.7.0.tar.gz
 fi
-cd PEGTL-2.2.0
+cd PEGTL-2.7.0
 if [ ! -d build ] ; then
   mkdir build
 fi
 cd build
 echo "Building PEGTL..."
 cmake ..
-make -j4
+make -j
 cd ../..
 echo "All dependencies installed."
 cd ..

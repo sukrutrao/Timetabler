@@ -20,6 +20,12 @@ int main(int argc, char const *argv[]) {
     Parser parser(timeTabler);
     parser.parseFields(std::string(argv[1]));
     parser.parseInput(std::string(argv[2]));
+    if (parser.verify()) {
+        std::cout << "Input is valid" << std::endl;
+    } else {
+        std::cout << "Input is invalid" << std::endl;
+        exit(1);
+    }
     parser.addVars();
     ConstraintEncoder encoder(timeTabler);
     ConstraintAdder constraintAdder(&encoder, timeTabler);
