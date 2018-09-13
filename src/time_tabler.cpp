@@ -186,7 +186,7 @@ Var TimeTabler::newVar() {
  *
  * @return     The Lit corresponding to the new Var added to the formula
  */
-Lit TimeTabler::newLiteral(bool sign = false) {
+Lit TimeTabler::newLiteral(bool sign) {
     Lit p = mkLit(formula->nVars(), sign);
     formula->newVar();
     return p;

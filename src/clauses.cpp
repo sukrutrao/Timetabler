@@ -2,6 +2,7 @@
 
 #include "cclause.h"
 #include "core/SolverTypes.h"
+#include "global_vars.h"
 #include <iostream>
 #include <vector>
 
@@ -141,14 +142,49 @@ Clauses Clauses::operator|(const Clauses &other) {
         Clauses result = other;
         return result;
     }
-    std::vector<CClause> resultClauses;
-    resultClauses.clear();
-    for (int i = 0; i < clauses.size(); i++) {
-        for (int j = 0; j < other.clauses.size(); j++) {
-            resultClauses.push_back((clauses[i]) | (other.clauses[j]));
+    Lit x = timeTabler->newLiteral();
+    Lit y = timeTabler->newLiteral();
+    Clauses result(CClause(x) | CClause(y));
+    vec<Lit> xrep;
+    xrep.push(x);
+    vec<Lit> yrep;
+    yrep.push(y);
+    for (int i=0; i<clauses.size(); i++) {
+        Lit c1 = timeTabler->newLiteral();
+        xrep.push(~c1);
+        vec<Lit> clause;
+        clause.push(c1);
+        clause.push(~x);
+        timeTabler->addToFormula(clause, -1);
+        CClause c1rep(~c1);
+        for (int j=0; j<clauses[i].getLits().size(); j++) {
+            c1rep.addLits(clauses[i].getLits()[j]);
+            vec<Lit> clause;
+            clause.push(c1);
+            clause.push(~clauses[i].getLits()[j]);
+            timeTabler->addToFormula(clause, -1);
         }
+        timeTabler->addClauses(c1rep, -1);
     }
-    Clauses result(resultClauses);
+    for (int i=0; i<other.clauses.size(); i++) {
+        Lit c1 = timeTabler->newLiteral();
+        xrep.push(~c1);
+        vec<Lit> clause;
+        clause.push(c1);
+        clause.push(~x);
+        timeTabler->addToFormula(clause, -1);
+        CClause c1rep(~c1);
+        for (int j=0; j<other.clauses[i].getLits().size(); j++) {
+            c1rep.addLits(other.clauses[i].getLits()[j]);
+            vec<Lit> clause;
+            clause.push(c1);
+            clause.push(~other.clauses[i].getLits()[j]);
+            timeTabler->addToFormula(clause, -1);
+        }
+        timeTabler->addClauses(c1rep, -1);
+    }
+    timeTabler->addToFormula(xrep, -1);
+    timeTabler->addToFormula(yrep, -1);
     return result;
 }
 

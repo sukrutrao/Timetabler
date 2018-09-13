@@ -2,10 +2,13 @@
 #include "constraint_encoder.h"
 #include "core/Solver.h"
 #include "custom_parser.h"
-#include "global.h"
 #include "mtl/Vec.h"
 #include "parser.h"
+#include "global.h"
+#include "global_vars.h"
 #include <iostream>
+
+TimeTabler *timeTabler;
 
 int main(int argc, char const *argv[]) {
     if (argc != 5) {
@@ -13,7 +16,7 @@ int main(int argc, char const *argv[]) {
                   << " fields.yml input.csv custom.txt output.csv" << std::endl;
         return 0;
     }
-    TimeTabler *timeTabler = new TimeTabler();
+    timeTabler = new TimeTabler();
     Parser parser(timeTabler);
     parser.parseFields(std::string(argv[1]));
     parser.parseInput(std::string(argv[2]));

@@ -69,7 +69,7 @@ class TimeTabler {
     bool isVarTrue(const Var &);
     SolverStatus solve();
     Var newVar();
-    Lit newLiteral(bool);
+    Lit newLiteral(bool sign = false);
     void printResult(SolverStatus);
     void displayTimeTable();
     void displayUnsatisfiedOutputReasons();
