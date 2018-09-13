@@ -7,7 +7,7 @@
 #include <tao/pegtl.hpp>
 #include <vector>
 
-namespace pegtl = tao::TAOCPP_PEGTL_NAMESPACE;
+namespace pegtl = tao::TAO_PEGTL_NAMESPACE;
 
 template <typename Rule> struct action : pegtl::nothing<Rule> {};
 
@@ -25,12 +25,12 @@ template <> struct action<integer> {
 /**
  * @brief      Parse "IN"
  */
-struct instr : TAOCPP_PEGTL_KEYWORD("IN") {};
+struct instr : TAO_PEGTL_KEYWORD("IN") {};
 
 /**
  * @brief      Parse "NOT": Store that NOT keyword is present in the custom constraint
  */
-struct notstr : TAOCPP_PEGTL_KEYWORD("NOT") {};
+struct notstr : TAO_PEGTL_KEYWORD("NOT") {};
 template <> struct action<notstr> {
     template <typename Input> static void apply(const Input &in, Object &obj) {
         obj.isNot = true;
@@ -40,18 +40,18 @@ template <> struct action<notstr> {
 /**
  * @brief      Parse "NOT"
  */
-struct andstr : TAOCPP_PEGTL_KEYWORD("AND") {};
+struct andstr : TAO_PEGTL_KEYWORD("AND") {};
 
 /**
  * @brief      Parse "OR"
  */
-struct orstr : TAOCPP_PEGTL_KEYWORD("OR") {};
+struct orstr : TAO_PEGTL_KEYWORD("OR") {};
 
 /**
  * @brief      Parse "CLASSROOM": Store the field type to be classroom
  * which will be used while forming the custom consraint
  */
-struct classroomstr : TAOCPP_PEGTL_KEYWORD("CLASSROOM") {};
+struct classroomstr : TAO_PEGTL_KEYWORD("CLASSROOM") {};
 template <> struct action<classroomstr> {
     template <typename Input> static void apply(const Input &in, Object &obj) {
         obj.fieldType = FieldValuesType::CLASSROOM;
@@ -61,7 +61,7 @@ template <> struct action<classroomstr> {
 /**
  * @brief      Parse "SLOT": Similar to classroom
  */
-struct slotstr : TAOCPP_PEGTL_KEYWORD("SLOT") {};
+struct slotstr : TAO_PEGTL_KEYWORD("SLOT") {};
 template <> struct action<slotstr> {
     template <typename Input> static void apply(const Input &in, Object &obj) {
         obj.fieldType = FieldValuesType::SLOT;
@@ -71,7 +71,7 @@ template <> struct action<slotstr> {
 /**
  * @brief      Parse "COURSE": Similar to classroom
  */
-struct coursestr : TAOCPP_PEGTL_KEYWORD("COURSE") {};
+struct coursestr : TAO_PEGTL_KEYWORD("COURSE") {};
 template <> struct action<coursestr> {
     template <typename Input> static void apply(const Input &in, Object &obj) {
         obj.fieldType = FieldValuesType::COURSE;
@@ -81,7 +81,7 @@ template <> struct action<coursestr> {
 /**
  * @brief      Parse "INSTRUCTOR": Similar to classroom
  */
-struct instructorstr : TAOCPP_PEGTL_KEYWORD("INSTRUCTOR") {};
+struct instructorstr : TAO_PEGTL_KEYWORD("INSTRUCTOR") {};
 template <> struct action<instructorstr> {
     template <typename Input> static void apply(const Input &in, Object &obj) {
         obj.fieldType = FieldValuesType::INSTRUCTOR;
@@ -91,7 +91,7 @@ template <> struct action<instructorstr> {
 /**
  * @brief      Parse "SEGMENT": Similar to classroom
  */
-struct segmentstr : TAOCPP_PEGTL_KEYWORD("SEGMENT") {};
+struct segmentstr : TAO_PEGTL_KEYWORD("SEGMENT") {};
 template <> struct action<segmentstr> {
     template <typename Input> static void apply(const Input &in, Object &obj) {
         obj.fieldType = FieldValuesType::SEGMENT;
@@ -101,7 +101,7 @@ template <> struct action<segmentstr> {
 /**
  * @brief      Parse "ISMNOR": Similar to classroom
  */
-struct isminorstr : TAOCPP_PEGTL_KEYWORD("ISMINOR") {};
+struct isminorstr : TAO_PEGTL_KEYWORD("ISMINOR") {};
 template <> struct action<isminorstr> {
     template <typename Input> static void apply(const Input &in, Object &obj) {
         obj.fieldType = FieldValuesType::ISMINOR;
@@ -111,7 +111,7 @@ template <> struct action<isminorstr> {
 /**
  * @brief      Parse "PROGRAM": Similar to classroom
  */
-struct programstr : TAOCPP_PEGTL_KEYWORD("PROGRAM") {};
+struct programstr : TAO_PEGTL_KEYWORD("PROGRAM") {};
 template <> struct action<programstr> {
     template <typename Input> static void apply(const Input &in, Object &obj) {
         obj.fieldType = FieldValuesType::PROGRAM;
@@ -290,7 +290,7 @@ template <> struct action<allvalues> {
 /**
  * @brief      Parse "SAME": Used to specify constraints on courses with same filed values
  */
-struct sameval : pegtl::pad<TAOCPP_PEGTL_KEYWORD("SAME"), pegtl::space> {};
+struct sameval : pegtl::pad<TAO_PEGTL_KEYWORD("SAME"), pegtl::space> {};
 template <> struct action<sameval> {
     template <typename Input> static void apply(const Input &in, Object &obj) {
         if (obj.fieldType == FieldValuesType::CLASSROOM) {
@@ -304,7 +304,7 @@ template <> struct action<sameval> {
 /**
  * @brief      Parse "NOTSAME": TODO
  */
-struct notsameval : pegtl::pad<TAOCPP_PEGTL_KEYWORD("NOTSAME"), pegtl::space> {};
+struct notsameval : pegtl::pad<TAO_PEGTL_KEYWORD("NOTSAME"), pegtl::space> {};
 template <> struct action<notsameval> {
     template <typename Input> static void apply(const Input &in, Object &obj) {
         if (obj.fieldType == FieldValuesType::CLASSROOM) {
@@ -557,7 +557,7 @@ template <> struct action<constraint_or> {
  */
 struct wconstraint
     : pegtl::seq<pegtl::pad<constraint_or, pegtl::space>,
-                 pegtl::pad<TAOCPP_PEGTL_KEYWORD("WEIGHT"), pegtl::space>,
+                 pegtl::pad<TAO_PEGTL_KEYWORD("WEIGHT"), pegtl::space>,
                  pegtl::pad<integer, pegtl::space>> {};
 template <> struct action<wconstraint> {
     template <typename Input> static void apply(const Input &in, Object &obj) {

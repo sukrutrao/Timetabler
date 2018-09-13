@@ -12,7 +12,7 @@ set(CMAKE_CXX_FLAGS -Wno-literal-suffix)
 set(OPEN_WBO_PATH "${Timetabler_SOURCE_DIR}/dependencies/open-wbo" CACHE PATH "Open-WBO path")
 set(YAML_CPP_PATH "${Timetabler_SOURCE_DIR}/dependencies/yaml-cpp-yaml-cpp-0.6.2" CACHE PATH "YAML CPP path")
 set(CSVPARSER_PATH "${Timetabler_SOURCE_DIR}/dependencies/CSVparser" CACHE PATH "CSVParser path")
-set(PEGTL_PATH "${Timetabler_SOURCE_DIR}/dependencies/PEGTL-2.2.0" CACHE PATH "PEGTL path")
+set(PEGTL_PATH "${Timetabler_SOURCE_DIR}/dependencies/PEGTL-2.7.0" CACHE PATH "PEGTL path")
 
 include_directories(include)
 include_directories(${OPEN_WBO_PATH})
