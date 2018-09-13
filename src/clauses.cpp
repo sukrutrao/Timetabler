@@ -26,6 +26,13 @@ Clauses::Clauses(const CClause &clause) {
     clauses.push_back(clause);
 }
 
+Clauses::Clauses(const vec<Lit> &lits) {
+    clauses.clear();
+    for (int i = 0; i < lits.size(); i++) {
+        clauses.push_back(CClause(lits[i]));
+    }
+}
+
 /**
  * @brief      Constructs the Clauses object.
  *

@@ -78,6 +78,8 @@ class TimeTabler {
     void addExistingAssignments();
     void addToFormula(vec<Lit> &, int);
     void displayChangesInGivenAssignment();
+    Clauses generateAtMostKTotalizerEncoding(const std::vector<Var> &,
+                                             int64_t rhs = 1);
 };
 
 #endif
