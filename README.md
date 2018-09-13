@@ -21,10 +21,16 @@ This project requires following tools to build.
 
 The following software are dependencies for this program:
 * [**Open WBO 2.0**](https://github.com/GoodDeeds/open-wbo): Slightly modified version of the original [Open-WBO 2.0](https://github.com/sat-group/open-wbo/tree/f193a3bd802551b13d6424bc1baba6ad35ec6ba6).
-* [**yaml-cpp 0.5.3**](https://github.com/jbeder/yaml-cpp/releases/tag/yaml-cpp-0.5.3)
+* [**yaml-cpp 0.6.2**](https://github.com/jbeder/yaml-cpp/releases/tag/yaml-cpp-0.6.2)
 * [**CSVparser**](https://github.com/MyBoon/CSVparser/tree/540e3e2f46b77ea8178f90910a165695cbb6cc12)
-* [**PEGTL 2.2.0**](https://github.com/taocpp/PEGTL/releases/tag/2.2.0)
-* [**googletest 1.8.0**](https://github.com/google/googletest/releases/tag/release-1.8.0)
+* [**PEGTL 2.7.0**](https://github.com/taocpp/PEGTL/releases/tag/2.7.0)
+
+### Clone the repository
+
+```bash
+$ git clone https://github.com/GoodDeeds/Timetabler
+$ cd Timetabler
+```
 
 ### Setting up the dependencies
 
@@ -59,7 +65,7 @@ This does not require any setup other than cloning the repository. The path wher
 
 ##### yaml-cpp
 
-* Download [yaml-cpp-0.5.3](https://github.com/jbeder/yaml-cpp/archive/yaml-cpp-0.5.3.tar.gz) and unpack it. `$YAML_CPP_PATH` will be used to denote the path where it is unpacked.
+* Download [yaml-cpp-0.6.2](https://github.com/jbeder/yaml-cpp/archive/yaml-cpp-0.6.2.tar.gz) and unpack it. `$YAML_CPP_PATH` will be used to denote the path where it is unpacked.
 * Build the project
 ```bash
 $ cd $YAML_CPP_PATH
@@ -70,7 +76,7 @@ $ make
 
 ##### PEGTL
 
-* Download [PEGTL 2.2.0](https://github.com/taocpp/PEGTL/archive/2.2.0.tar.gz) and unpack it. `$PEGTL_PATH` will be used to denote the path where it is unpacked.
+* Download [PEGTL 2.7.0](https://github.com/taocpp/PEGTL/archive/2.7.0.tar.gz) and unpack it. `$PEGTL_PATH` will be used to denote the path where it is unpacked.
 * Build the project.
 ```bash
 $ cd $PEGTL_PATH
@@ -81,15 +87,10 @@ $ make
 
 ### Building the project
 
-* Clone the repository
-```
-$ git clone https://github.com/GoodDeeds/Timetabler
-$ cd Timetabler
-```
 * Build the project. Set the cmake variables `OPEN_WBO_PATH`, `YAML_CPP_PATH`, `CSVPARSER_PATH` and `PEGTL_PATH` appropriately.
 ```bash
 $ mkdir build && cd build
-$ cmake -DOPEN_WBO_PATH="" -DYAML_CPP_PATH="" -DCSVPARSER_PATH="" -DPEGTL_PATH="" ..
+$ cmake -DOPEN_WBO_PATH="../dependencies/open-wbo" -DYAML_CPP_PATH="../dependencies/yaml-cpp-yaml-cpp-0.6.2" -DCSVPARSER_PATH="../dependencies/CSVparser" -DPEGTL_PATH="../dependencies/PEGTL-2.7.0" ..
 $ make
 ```
 * Install
@@ -123,6 +124,14 @@ This contains some examples of the way field inputs can be given to the solver. 
 This contains some examples of the course data input given to the solver as a CSV file.
 
 For further details and examples, please refer to the [Project Wiki](https://github.com/GoodDeeds/Timetabler/wiki).
+
+## Issues
+
+If you find any bug or issues or you have any feature request, please report them using [GitHub issues](https://github.com/GoodDeeds/Timetabler/issues).
+
+## Contributing
+
+If you want to contribute to this project, send a PR.
 
 ## License
 
