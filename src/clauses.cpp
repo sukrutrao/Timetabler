@@ -168,7 +168,7 @@ Clauses Clauses::operator|(const Clauses &other) {
     }
     for (int i=0; i<other.clauses.size(); i++) {
         Lit c1 = timeTabler->newLiteral();
-        xrep.push(~c1);
+        yrep.push(~c1);
         vec<Lit> clause;
         clause.push(c1);
         clause.push(~y);
