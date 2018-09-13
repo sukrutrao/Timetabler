@@ -30,6 +30,7 @@ class Clauses {
   public:
     Clauses(const std::vector<CClause> &);
     Clauses(const CClause &);
+    Clauses(const vec<Lit> &lits);
     Clauses(const Lit &);
     Clauses(const Var &);
     Clauses();

@@ -1,5 +1,6 @@
 #include "time_tabler.h"
 
+#include "Encoder.h"
 #include "MaxSATFormula.h"
 #include "cclause.h"
 #include "clauses.h"
@@ -173,9 +174,10 @@ bool TimeTabler::isVarTrue(const Var &v) {
  * @return     The new Var added to the formula
  */
 Var TimeTabler::newVar() {
-    Var var = formula->nVars();
-    formula->newVar();
-    return var;
+    // Var var = formula->nVars();
+    // formula->newVar();
+    // return var;
+    solver->newVar();
 }
 
 /**
@@ -186,10 +188,11 @@ Var TimeTabler::newVar() {
  *
  * @return     The Lit corresponding to the new Var added to the formula
  */
-Lit TimeTabler::newLiteral(bool sign) {
-    Lit p = mkLit(formula->nVars(), sign);
-    formula->newVar();
-    return p;
+Lit TimeTabler::newLiteral(bool sign = false) {
+    // Lit p = mkLit(formula->nVars(), sign);
+    // formula->newVar();
+    // return p;
+    solver->newLiteral(sign);
 }
 
 /**
@@ -368,6 +371,18 @@ void TimeTabler::displayUnsatisfiedOutputReasons() {
             }
         }
     }
+}
+
+Clauses TimeTabler::generateAtMostKTotalizerEncoding(
+    const std::vector<Var> &relaxationVars, int64_t rhs) {
+    Encoder encoder(_INCREMENTAL_ITERATIVE_, _CARD_TOTALIZER_);
+    vec<Lit> encodingLits;
+    vec<Lit> encodingAssumptions;
+    for (int i = 0; i < relaxationVars.size(); i++) {
+        encodingLits.push(mkLit(relaxationVars[i], false));
+    }
+    solver->encodeAtMostK(encodingLits, encodingAssumptions, rhs);
+    return Clauses(encodingAssumptions);
 }
 
 /**
