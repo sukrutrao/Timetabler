@@ -76,15 +76,14 @@ std::vector<lbool> TSolver::tSearch() {
     }
 }
 
-void TSolver::encodeAtMostK(vec<Lit> &lits, vec<Lit> &assumptions,
-                            int64_t rhs) {
-    encoder.buildCardinality(solver, lits, rhs);
-    encoder.incUpdateCardinality(solver, lits, rhs, assumptions);
-}
+// void TSolver::encodeAtMostK(vec<Lit> &lits, vec<Lit> &assumptions,
+//                             int64_t rhs) {
+
+// }
 
 Var TSolver::newVar() { return solver->newVar(); }
 
-Lit TSolver::newLiteral(bool sign = false) {
+Lit TSolver::newLiteral(bool sign) {
     Var v = solver->newVar();
     return mkLit(v, sign);
 }

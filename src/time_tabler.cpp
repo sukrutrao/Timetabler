@@ -174,10 +174,10 @@ bool TimeTabler::isVarTrue(const Var &v) {
  * @return     The new Var added to the formula
  */
 Var TimeTabler::newVar() {
-    // Var var = formula->nVars();
-    // formula->newVar();
-    // return var;
-    solver->newVar();
+    Var var = formula->nVars();
+    formula->newVar();
+    return var;
+    // solver->newVar();
 }
 
 /**
@@ -189,10 +189,10 @@ Var TimeTabler::newVar() {
  * @return     The Lit corresponding to the new Var added to the formula
  */
 Lit TimeTabler::newLiteral(bool sign) {
-    // Lit p = mkLit(formula->nVars(), sign);
-    // formula->newVar();
-    // return p;
-    solver->newLiteral(sign);
+    Lit p = mkLit(formula->nVars(), sign);
+    formula->newVar();
+    return p;
+    // solver->newLiteral(sign);
 }
 
 /**
@@ -375,13 +375,14 @@ void TimeTabler::displayUnsatisfiedOutputReasons() {
 
 Clauses TimeTabler::generateAtMostKTotalizerEncoding(
     const std::vector<Var> &relaxationVars, int64_t rhs) {
-    Encoder encoder(_INCREMENTAL_ITERATIVE_, _CARD_TOTALIZER_);
     vec<Lit> encodingLits;
     vec<Lit> encodingAssumptions;
     for (int i = 0; i < relaxationVars.size(); i++) {
         encodingLits.push(mkLit(relaxationVars[i], false));
     }
-    solver->encodeAtMostK(encodingLits, encodingAssumptions, rhs);
+    TTotalizer totalizerEncoder;
+    totalizerEncoder.build(formula, encodingLits, rhs);
+    totalizerEncoder.update(formula, rhs, encodingLits, encodingAssumptions);
     return Clauses(encodingAssumptions);
 }
 

@@ -27,9 +27,10 @@ class TSolver : public OLL {
     TSolver(int, int);
     std::vector<lbool> tSearch();
     void tWeighted();
-    void encodeAtMostK(vec<Lit> &lits, vec<Lit> &assumptions, int64_t rhs = 1);
+    // void encodeAtMostK(vec<Lit> &lits, vec<Lit> &assumptions, int64_t rhs =
+    // 1);
     Var newVar();
-    Lit newLiteral(bool);
+    Lit newLiteral(bool sign = false);
 };
 
 #endif

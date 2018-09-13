@@ -8,6 +8,7 @@
 #include "core/SolverTypes.h"
 #include "data.h"
 #include "mtl/Vec.h"
+#include "totalizer.h"
 #include "tsolver.h"
 #include <vector>
 
