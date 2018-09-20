@@ -14,7 +14,7 @@ fi
 cd open-wbo
 git checkout 12382e6
 echo "Building Open WBO..."
-LIB=open-wbo make libr -j
+LIB=open-wbo make libr
 cd ..
 
 echo "Getting YAML-CPP..."
@@ -29,7 +29,7 @@ fi
 cd build
 echo "Building YAML-CPP..."
 cmake ..
-make -j
+make
 cd ../..
 
 echo "Getting CSVparser..."
@@ -52,7 +52,7 @@ fi
 cd build
 echo "Building PEGTL..."
 cmake ..
-make -j
+make
 cd ../..
 echo "All dependencies installed."
 cd ..
