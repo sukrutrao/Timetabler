@@ -9,9 +9,10 @@ cd dependencies
 
 echo "Getting Open WBO..."
 if [ ! -d open-wbo ] ; then
-  git clone https://github.com/GoodDeeds/open-wbo.git
+  git clone https://github.com/sat-group/open-wbo.git
 fi
 cd open-wbo
+git checkout 12382e6
 echo "Building Open WBO..."
 LIB=open-wbo make libr -j
 cd ..

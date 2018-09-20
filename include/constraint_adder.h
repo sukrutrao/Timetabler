@@ -9,7 +9,7 @@
 #include "global.h"
 class TimeTabler;
 
-using namespace Minisat;
+using namespace Glucose;
 
 /**
  * @brief      Class for constraint adder.

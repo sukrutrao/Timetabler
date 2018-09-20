@@ -5,7 +5,7 @@
 #include <iostream>
 #include <vector>
 
-using namespace Minisat;
+using namespace Glucose;
 
 /**
  * @brief      Constructs the CClause object.

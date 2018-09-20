@@ -9,12 +9,12 @@
 #include <string>
 #include <vector>
 
-using namespace Minisat;
+using namespace Glucose;
 
 namespace Utils {
 
 /**
- * @brief      Converts a std::vector to a Minisat::vec.
+ * @brief      Converts a std::vector to a Glucose::vec.
  *
  * @param[in]  inputs  The input vector
  *
@@ -31,7 +31,7 @@ template <typename T> vec<T> convertVectorToVec(std::vector<T> inputs) {
 }
 
 /**
- * @brief      Converts a Minisat::vec to a std::vector.
+ * @brief      Converts a Glucose::vec to a std::vector.
  *
  * @param[in]  inputs  The input vec
  *
@@ -48,7 +48,7 @@ template <typename T> std::vector<T> convertVecToVector(vec<T> inputs) {
 }
 
 /**
- * @brief      Converts given data and size, a Minisat::vec to a std::vector.
+ * @brief      Converts given data and size, a Glucose::vec to a std::vector.
  *
  * @param      data  The data pointer
  * @param[in]  size  The size

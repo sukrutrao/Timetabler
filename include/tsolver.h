@@ -8,7 +8,7 @@
 #include "mtl/Vec.h"
 #include <vector>
 
-using namespace Minisat;
+using namespace Glucose;
 using namespace openwbo;
 
 /**

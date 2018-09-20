@@ -16,7 +16,7 @@ set(PEGTL_PATH "${Timetabler_SOURCE_DIR}/dependencies/PEGTL-2.7.0" CACHE PATH "P
 
 include_directories(include)
 include_directories(${OPEN_WBO_PATH})
-include_directories(${OPEN_WBO_PATH}/solvers/minisat2.2)
+include_directories(${OPEN_WBO_PATH}/solvers/glucose4.1)
 include_directories(${YAML_CPP_PATH}/include)
 include_directories(${CSVPARSER_PATH})
 include_directories(${PEGTL_PATH}/include)
@@ -27,6 +27,8 @@ list(APPEND SOURCES ${CSVPARSER_PATH}/CSVparser.cpp)
 # file(GLOB_RECURSE TEST_SOURCES "tests/*.cpp")
 # list(APPEND TEST_SOURCES ${SOURCES})
 # list(REMOVE_ITEM TEST_SOURCES "src/main.cpp")
+
+add_definitions(-DNSPACE=Glucose)
 
 add_executable(timetabler ${SOURCES})
 # add_executable(tests ${TEST_SOURCES})
@@ -52,6 +54,5 @@ SET(CPACK_DEBIAN_PACKAGE_SHLIBDEPS ON)
 SET(CPACK_DEBIAN_PACKAGE_HOMEPAGE "https://github.com/GoodDeeds/Timetabler")
 set(CPACK_RESOURCE_FILE_LICENSE ${Timetabler_SOURCE_DIR}/LICENSE)
 set(CPACK_RESOURCE_FILE_README ${Timetabler_SOURCE_DIR}/README.md)
-set(CPACK_DEBIAN_RESOURCE_FILE_CHANGELOG ${Timetabler_SOURCE_DIR}/debian/changelog)
 
 INCLUDE(CPack)

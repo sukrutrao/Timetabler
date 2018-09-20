@@ -13,7 +13,7 @@
 #include <string>
 #include <vector>
 
-using namespace Minisat;
+using namespace Glucose;
 
 /**
  * @brief      Class for data.

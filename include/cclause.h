@@ -7,7 +7,7 @@
 #include <vector>
 class Clauses;
 
-using namespace Minisat;
+using namespace Glucose;
 
 /**
  * @brief      Class for  representing a clause.

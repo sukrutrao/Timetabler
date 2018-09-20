@@ -9,7 +9,7 @@
 #include "time_tabler.h"
 #include <vector>
 
-using namespace Minisat;
+using namespace Glucose;
 
 /**
  * @brief      Class for constraint encoder.
