@@ -7,7 +7,7 @@
 #include <vector>
 class Clauses;
 
-using namespace Glucose;
+using namespace NSPACE;
 
 /**
  * @brief      Class for  representing a clause.

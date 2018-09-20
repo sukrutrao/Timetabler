@@ -11,7 +11,7 @@
 #include "tsolver.h"
 #include <vector>
 
-using namespace Glucose;
+using namespace NSPACE;
 
 /**
  * @brief      Enum to store the solver status

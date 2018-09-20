@@ -12,7 +12,7 @@
 #include <iostream>
 #include <vector>
 
-using namespace Glucose;
+using namespace NSPACE;
 
 /**
  * @brief      Constructs the TimeTabler object.

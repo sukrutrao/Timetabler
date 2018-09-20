@@ -9,12 +9,12 @@
 #include <string>
 #include <vector>
 
-using namespace Glucose;
+using namespace NSPACE;
 
 namespace Utils {
 
 /**
- * @brief      Converts a std::vector to a Glucose::vec.
+ * @brief      Converts a std::vector to a NSPACE::vec.
  *
  * @param[in]  inputs  The input vector
  *
@@ -31,7 +31,7 @@ template <typename T> vec<T> convertVectorToVec(std::vector<T> inputs) {
 }
 
 /**
- * @brief      Converts a Glucose::vec to a std::vector.
+ * @brief      Converts a NSPACE::vec to a std::vector.
  *
  * @param[in]  inputs  The input vec
  *
@@ -48,7 +48,7 @@ template <typename T> std::vector<T> convertVecToVector(vec<T> inputs) {
 }
 
 /**
- * @brief      Converts given data and size, a Glucose::vec to a std::vector.
+ * @brief      Converts given data and size, a NSPACE::vec to a std::vector.
  *
  * @param      data  The data pointer
  * @param[in]  size  The size

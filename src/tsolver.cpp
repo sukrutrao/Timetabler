@@ -36,7 +36,7 @@
 #include "mtl/Vec.h"
 #include "utils.h"
 
-using namespace Glucose;
+using namespace NSPACE;
 using namespace openwbo;
 
 /**

@@ -7,7 +7,7 @@
 #include "time_tabler.h"
 #include <vector>
 
-using namespace Glucose;
+using namespace NSPACE;
 
 class CClause;
 

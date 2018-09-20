@@ -13,7 +13,7 @@
 #include <string>
 #include <vector>
 
-using namespace Glucose;
+using namespace NSPACE;
 
 /**
  * @brief      Class for data.
