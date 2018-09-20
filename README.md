@@ -20,7 +20,7 @@ This project requires following tools to build.
 ### Dependencies
 
 The following software are dependencies for this program:
-* [**Open WBO 2.0**](https://github.com/GoodDeeds/open-wbo): Slightly modified version of the original [Open-WBO 2.0](https://github.com/sat-group/open-wbo/tree/f193a3bd802551b13d6424bc1baba6ad35ec6ba6).
+* [**Open WBO 2.1**](https://github.com/sat-group/open-wbo/commit/12382e61b0230f7406900b365a4fddc73194c970)
 * [**yaml-cpp 0.6.2**](https://github.com/jbeder/yaml-cpp/releases/tag/yaml-cpp-0.6.2)
 * [**CSVparser**](https://github.com/MyBoon/CSVparser/tree/540e3e2f46b77ea8178f90910a165695cbb6cc12)
 * [**PEGTL 2.7.0**](https://github.com/taocpp/PEGTL/releases/tag/2.7.0)
@@ -46,12 +46,12 @@ If the above command fails, you can try installing the individual dependencies m
 
 This describes the process of setting up each dependency.
 
-##### Open WBO 2.0 
+##### Open WBO 2.1
 
 This needs to be built as a library. The following steps need to be followed:
 * Clone the repository. `$OPEN_WBO_PATH` will be used to denote the path where the repository is cloned.
 ```bash
-$ git clone https://github.com/GoodDeeds/open-wbo.git $OPEN_WBO_PATH
+$ git clone https://github.com/sat-group/open-wbo.git $OPEN_WBO_PATH
 $ cd $OPEN_WBO_PATH
 ```
 * Build as a static library
