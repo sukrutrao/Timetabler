@@ -38,7 +38,7 @@ class Global {
     /**
      * The number of predefined clauses in the PredefinedClauses enumerator
      */
-    static const int PREDEFINED_CLAUSES_COUNT = 11;
+    static const int PREDEFINED_CLAUSES_COUNT = 12;
 };
 
 #endif
