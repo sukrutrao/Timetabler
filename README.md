@@ -24,6 +24,7 @@ The following software are dependencies for this program:
 * [**yaml-cpp 0.6.2**](https://github.com/jbeder/yaml-cpp/releases/tag/yaml-cpp-0.6.2)
 * [**CSVparser**](https://github.com/MyBoon/CSVparser/tree/540e3e2f46b77ea8178f90910a165695cbb6cc12)
 * [**PEGTL 2.7.0**](https://github.com/taocpp/PEGTL/releases/tag/2.7.0)
+* [**GoogleTest 1.8.1**](https://github.com/google/googletest/releases/tag/release-1.8.1) (Optional, needed only for testing)
 
 ### Clone the repository
 
@@ -70,7 +71,7 @@ This does not require any setup other than cloning the repository. The path wher
 ```bash
 $ cd $YAML_CPP_PATH
 $ mkdir build && cd build
-$ cmake -DCMAKE_SHARED_LIBS=ON ..
+$ cmake ..
 $ make
 ```
 
@@ -81,7 +82,18 @@ $ make
 ```bash
 $ cd $PEGTL_PATH
 $ mkdir build && cd build
-$ cmake -DCMAKE_SHARED_LIBS=ON ..
+$ cmake ..
+$ make
+```
+
+##### GoogleTest
+
+* Download [GoogleTest 1.8.1](https://github.com/google/googletest/releases/tag/release-1.8.1) and unpack it. `$GTEST_PATH` will be used to denote the path where it is unpacked.
+* Build the project
+```bash
+$ cd $GTEST_PATH
+$ mkdir build && cd build
+$ cmake ..
 $ make
 ```
 
@@ -90,8 +102,13 @@ $ make
 * Build the project. Set the cmake variables `OPEN_WBO_PATH`, `YAML_CPP_PATH`, `CSVPARSER_PATH` and `PEGTL_PATH` appropriately.
 ```bash
 $ mkdir build && cd build
-$ cmake -DOPEN_WBO_PATH="../dependencies/open-wbo" -DYAML_CPP_PATH="../dependencies/yaml-cpp-yaml-cpp-0.6.2" -DCSVPARSER_PATH="../dependencies/CSVparser" -DPEGTL_PATH="../dependencies/PEGTL-2.7.0" ..
-$ make
+$ cmake -DOPEN_WBO_PATH="../dependencies/open-wbo" -DYAML_CPP_PATH="../dependencies/yaml-cpp-yaml-cpp-0.6.2" -DCSVPARSER_PATH="../dependencies/CSVparser" -DPEGTL_PATH="../dependencies/PEGTL-2.7.0" -DGTEST_PATH="../dependencies/googletest-release-1.8.1" ..
+$ make timetabler
+```
+* To run tests
+```bash
+$ make tests # Build tests
+$ make test # Run test
 ```
 * Install
 ```bash
