@@ -346,10 +346,10 @@ struct classroomdecl
 struct slotdecl : pegtl::seq<pegtl::pad<slotstr, pegtl::space>, values> {};
 
 /**
- * @brief      Parse courses
+ * @brief      Parse courses declaration without except keyword
  */
-struct coursedecl : pegtl::seq<pegtl::pad<coursestr, pegtl::space>, values> {};
-template <> struct action<coursedecl> {
+struct coursenoexceptdecl : pegtl::seq<pegtl::pad<coursestr, pegtl::space>, values> {};
+template <> struct action<coursenoexceptdecl> {
     template <typename Input> static void apply(const Input &in, Object &obj) {
         obj.courseExcept = false;
     }
@@ -364,6 +364,11 @@ template <> struct action<courseexceptdecl> {
         obj.courseExcept = true;
     }
 };
+
+/**
+ * @brief      Parse courses
+ */
+struct coursedecl : pegtl::sor<coursenoexceptdecl, courseexceptdecl> {};
 
 /**
  * @brief      Parse single decl in consequent of the constraint
