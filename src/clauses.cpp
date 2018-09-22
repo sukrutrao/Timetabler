@@ -125,13 +125,21 @@ Clauses Clauses::operator&(const CClause &other) {
  * AND (b1 OR b2 OR y1 OR y2)). This function performs this operation and
  * returns a Clauses object with the resultant clauses. Given m clauses in the
  * first operand and n clauses in the second operand, the solution has O(mn)
- * clauses. Using auxiliary variables could have given a O(m+n) equisatisfiable
- * formula. However, as the Clauses object might be further used as an
- * antecedent of an implication, we need that if the resulting clauses of the
- * disjunction are False, the original set of clauses should also have been
- * False, a property which cannot be guaranteed by equisatisfiability alone.
- * Hence, this less efficient method is used for correctness. The resultant
- * Clauses are kept in CNF form.
+ * clauses. Using auxiliary variables gives a O(m+n) equisatisfiable
+ * formula.
+ *
+ * Following is a example with auxiliary variables.
+ * ((a1 | a2 | a3 | a4) & (a5 | a6 | ...) & ...) | ((b1 | b2 | b3 | b4) & (b5 | ...) & ...)
+ * # Add the following as hard clauses
+ * ~x | c1 (c1 is auxiliary variable for (a1 | a2 | a3 | a4))
+ * ...
+ * x | ~c1 | c2 | ...
+ * ~c1 | a1 | a2 | a3 | a4
+ * c1 | ~a1
+ * c1 | ~a2
+ * ...
+ * # Return the following as soft clause
+ * x | y
  *
  * @param      other  The Clauses object to perform the OR operation with
  *
@@ -142,6 +150,7 @@ Clauses Clauses::operator|(const Clauses &other) {
         Clauses result = other;
         return result;
     }
+    // x and y are auxiliary variables for the sets of the clauses that are being disjunctioned
     Lit x = timeTabler->newLiteral();
     Lit y = timeTabler->newLiteral();
     Clauses result(CClause(x) | CClause(y));
@@ -150,6 +159,7 @@ Clauses Clauses::operator|(const Clauses &other) {
     vec<Lit> yrep;
     yrep.push(y);
     for (int i=0; i<clauses.size(); i++) {
+        // c1 is the auxiliary variable for a ith clause
         Lit c1 = timeTabler->newLiteral();
         xrep.push(~c1);
         vec<Lit> clause;
@@ -167,6 +177,7 @@ Clauses Clauses::operator|(const Clauses &other) {
         timeTabler->addClauses(c1rep, -1);
     }
     for (int i=0; i<other.clauses.size(); i++) {
+        // c1 is the auxiliary variable for a ith clause
         Lit c1 = timeTabler->newLiteral();
         yrep.push(~c1);
         vec<Lit> clause;
