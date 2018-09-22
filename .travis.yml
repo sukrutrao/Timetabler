@@ -1,16 +1,19 @@
 language: cpp
 dist: xenial
+cache: ccache
 compiler:
     - g++
 before_install:
     - sudo apt update
-    - sudo apt install wget make
+    - sudo apt install wget make ccache
     - wget https://gitlab.kitware.com/cmake/cmake/-/archive/v3.10.0/cmake-v3.10.0.tar.gz
     - tar -xf cmake-v3.10.0.tar.gz
     - cd cmake-v3.10.0
-    - ./bootstrap && make && sudo make install
+    - ./bootstrap --enable-ccache && make && sudo make install
     - cd ..
 script:
+    - alias cmake=cmake-3.10
+    - cmake --version
     - ./install_dependencies.sh
     - mkdir build
     - cd build
