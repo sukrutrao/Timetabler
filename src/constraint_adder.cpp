@@ -164,6 +164,15 @@ Clauses ConstraintAdder::exactlyOneFieldValuePerCourse(FieldType fieldType) {
     return result;
 }
 
+void ConstraintAdder::addSingleConstraint(PredefinedClauses clauseType,
+                                          const Clauses &clauses) {
+    Clauses hardConsequent =
+        CClause(timeTabler->data.predefinedConstraintVars[clauseType]) >>
+        clauses;
+    timeTabler->addClauses(hardConsequent, -1);
+    timeTabler->addHighLevelConstraintClauses(clauseType);
+}
+
 /**
  * @brief      Adds all the constraints with their respective weights using the
  * TimeTabler object to the solver.
@@ -172,41 +181,32 @@ void ConstraintAdder::addConstraints() {
     std::vector<int> weights = timeTabler->data.predefinedClausesWeights;
 
     // add the constraints to the formula
-    timeTabler->addClauses(
-        instructorSingleCourseAtATime(),
-        weights[PredefinedClauses::instructorSingleCourseAtATime]);
-    timeTabler->addClauses(
-        classroomSingleCourseAtATime(),
-        weights[PredefinedClauses::classroomSingleCourseAtATime]);
-    timeTabler->addClauses(
-        programSingleCoreCourseAtATime(),
-        weights[PredefinedClauses::programSingleCoreCourseAtATime]);
-    timeTabler->addClauses(minorInMinorTime(),
-                           weights[PredefinedClauses::minorInMinorTime]);
-    timeTabler->addClauses(
-        programAtMostOneOfCoreOrElective(),
-        weights[PredefinedClauses::programAtMostOneOfCoreOrElective]);
+    addSingleConstraint(PredefinedClauses::instructorSingleCourseAtATime,
+                        instructorSingleCourseAtATime());
+    addSingleConstraint(PredefinedClauses::classroomSingleCourseAtATime,
+                        classroomSingleCourseAtATime());
+    addSingleConstraint(PredefinedClauses::programSingleCoreCourseAtATime,
+                        programSingleCoreCourseAtATime());
+    addSingleConstraint(PredefinedClauses::minorInMinorTime,
+                        minorInMinorTime());
+    addSingleConstraint(PredefinedClauses::programAtMostOneOfCoreOrElective,
+                        programAtMostOneOfCoreOrElective());
 
-    timeTabler->addClauses(exactlyOneFieldValuePerCourse(FieldType::slot),
-                           weights[PredefinedClauses::exactlyOneSlotPerCourse]);
-    timeTabler->addClauses(
-        exactlyOneFieldValuePerCourse(FieldType::classroom),
-        weights[PredefinedClauses::exactlyOneClassroomPerCourse]);
-    timeTabler->addClauses(
-        exactlyOneFieldValuePerCourse(FieldType::instructor),
-        weights[PredefinedClauses::exactlyOneInstructorPerCourse]);
-    timeTabler->addClauses(
-        exactlyOneFieldValuePerCourse(FieldType::isMinor),
-        weights[PredefinedClauses::exactlyOneIsMinorPerCourse]);
-    timeTabler->addClauses(
-        exactlyOneFieldValuePerCourse(FieldType::segment),
-        weights[PredefinedClauses::exactlyOneSegmentPerCourse]);
+    addSingleConstraint(PredefinedClauses::exactlyOneSlotPerCourse,
+                        exactlyOneFieldValuePerCourse(FieldType::slot));
+    addSingleConstraint(PredefinedClauses::exactlyOneClassroomPerCourse,
+                        exactlyOneFieldValuePerCourse(FieldType::classroom));
+    addSingleConstraint(PredefinedClauses::exactlyOneInstructorPerCourse,
+                        exactlyOneFieldValuePerCourse(FieldType::instructor));
+    addSingleConstraint(PredefinedClauses::exactlyOneIsMinorPerCourse,
+                        exactlyOneFieldValuePerCourse(FieldType::isMinor));
+    addSingleConstraint(PredefinedClauses::exactlyOneSegmentPerCourse,
+                        exactlyOneFieldValuePerCourse(FieldType::segment));
 
-    timeTabler->addClauses(coreInMorningTime(),
-                           weights[PredefinedClauses::coreInMorningTime]);
-    timeTabler->addClauses(
-        electiveInNonMorningTime(),
-        weights[PredefinedClauses::electiveInNonMorningTime]);
+    addSingleConstraint(PredefinedClauses::coreInMorningTime,
+                        coreInMorningTime());
+    addSingleConstraint(PredefinedClauses::electiveInNonMorningTime,
+                        electiveInNonMorningTime());
 }
 
 /*Clauses ConstraintAdder::softConstraints() {

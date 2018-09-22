@@ -26,8 +26,8 @@ TimeTabler::TimeTabler() {
 /**
  * @brief      Adds clauses to the solver with specified weights.
  *
- * A negative weight implies that the clauses are had, and a zero weight implies
- * that the clauses are not added to the solver.
+ * A negative weight implies that the clauses are hard, and a zero weight
+ * implies that the clauses are not added to the solver.
  *
  * @param[in]  clauses  The clauses
  * @param[in]  weight   The weight
@@ -56,6 +56,11 @@ void TimeTabler::addHighLevelClauses() {
             addToFormula(highLevelClause, data.highLevelVarWeights[i]);
         }
     }
+}
+
+void TimeTabler::addHighLevelConstraintClauses(PredefinedClauses clauseType) {
+    Lit l = mkLit(data.predefinedConstraintVars[clauseType], false);
+    addToFormula(l, data.predefinedClausesWeights[clauseType]);
 }
 
 /**
@@ -97,6 +102,12 @@ void TimeTabler::addToFormula(vec<Lit> &input, int weight) {
     } else if (weight > 0) {
         formula->addSoftClause(weight, input);
     }
+}
+
+void TimeTabler::addToFormula(Lit input, int weight) {
+    vec<Lit> inputLits;
+    inputLits.push(input);
+    addToFormula(inputLits, weight);
 }
 
 /**

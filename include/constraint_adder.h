@@ -49,6 +49,7 @@ class ConstraintAdder {
   public:
     ConstraintAdder(ConstraintEncoder *, TimeTabler *);
     void addConstraints();
+    void addSingleConstraint(PredefinedClauses, const Clauses &);
 };
 
 #endif

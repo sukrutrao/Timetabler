@@ -259,31 +259,55 @@ bool Parser::verify() {
     for (auto course1 : timeTabler->data.courses) {
         if (course1.getIsMinor() && course1.getSlot() != -1) {
             if (timeTabler->data.slots[course1.getSlot()].isMinorSlot()) {
-                std::cout << course1.getName() << " which is minor course is scheduled in non minor slot." << std::endl;
+                std::cout
+                    << course1.getName()
+                    << " which is minor course is scheduled in non minor slot."
+                    << std::endl;
                 result = false;
             }
         }
         for (auto course2 : timeTabler->data.courses) {
-            if (course1.getName() == course2.getName()) continue;
-            bool segementIntersecting = timeTabler->data.segments[course1.getSegment()].isIntersecting(timeTabler->data.segments[course2.getSegment()]);
-            bool classroomSame = (course1.getClassroom() != -1 && course1.getClassroom() == course2.getClassroom());
-            bool slotSame = (course1.getSlot() != -1 && course1.getSlot() == course2.getSlot());
-            bool slotIntersecting = (course1.getSlot() != -1 && course2.getSlot() != -1) ? (timeTabler->data.slots[course1.getSlot()].isIntersecting(timeTabler->data.slots[course2.getSlot()])) : false;
+            if (course1.getName() == course2.getName())
+                continue;
+            bool segementIntersecting =
+                timeTabler->data.segments[course1.getSegment()].isIntersecting(
+                    timeTabler->data.segments[course2.getSegment()]);
+            bool classroomSame =
+                (course1.getClassroom() != -1 &&
+                 course1.getClassroom() == course2.getClassroom());
+            bool slotSame = (course1.getSlot() != -1 &&
+                             course1.getSlot() == course2.getSlot());
+            bool slotIntersecting =
+                (course1.getSlot() != -1 && course2.getSlot() != -1)
+                    ? (timeTabler->data.slots[course1.getSlot()].isIntersecting(
+                          timeTabler->data.slots[course2.getSlot()]))
+                    : false;
             if (segementIntersecting && slotIntersecting) {
                 if (course1.getInstructor() == course2.getInstructor()) {
-                    std::cout << course1.getName() << " and " << course2.getName() << " having same instructor clash." << std::endl;
+                    std::cout << course1.getName() << " and "
+                              << course2.getName()
+                              << " having same instructor clash." << std::endl;
                     result = false;
                 }
                 if (classroomSame) {
-                    std::cout << course1.getName() << " and " << course2.getName() << " having same classroom clash." << std::endl;
+                    std::cout << course1.getName() << " and "
+                              << course2.getName()
+                              << " having same classroom clash." << std::endl;
                     result = false;
                 }
                 for (auto program1 : course1.getPrograms()) {
                     for (auto program2 : course2.getPrograms()) {
                         if (program1 == program2) {
-                            if (timeTabler->data.programs[program1].isCoreProgram() && timeTabler->data.programs[program2].isCoreProgram()) {
-                                std::cout << course1.getName() << " and " << course2.getName()
-                                << " which have common core program " << timeTabler->data.programs[program1].getName() << " clash." << std::endl;
+                            if (timeTabler->data.programs[program1]
+                                    .isCoreProgram() &&
+                                timeTabler->data.programs[program2]
+                                    .isCoreProgram()) {
+                                std::cout << course1.getName() << " and "
+                                          << course2.getName()
+                                          << " which have common core program "
+                                          << timeTabler->data.programs[program1]
+                                                 .getName()
+                                          << " clash." << std::endl;
                                 result = false;
                             }
                         }
@@ -335,5 +359,10 @@ void Parser::addVars() {
             highLevelCourseVars.push_back(v);
         }
         timeTabler->data.highLevelVars.push_back(highLevelCourseVars);
+    }
+
+    for (unsigned i = 0; i < Global::PREDEFINED_CLAUSES_COUNT; i++) {
+        Var v = timeTabler->newVar();
+        timeTabler->data.predefinedConstraintVars.push_back(v);
     }
 }

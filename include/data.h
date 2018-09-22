@@ -78,6 +78,8 @@ class Data {
      * can make the necessary changes.
      */
     std::vector<std::vector<Var>> highLevelVars;
+    std::vector<Var> predefinedConstraintVars;
+    std::vector<Var> customConstraintVars;
     /**
      * Stores the existing assignments for every Course and
      * FieldType as given in the input. This is of the form

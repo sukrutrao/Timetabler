@@ -74,9 +74,11 @@ class TimeTabler {
     void displayTimeTable();
     void displayUnsatisfiedOutputReasons();
     void addHighLevelClauses();
+    void addHighLevelConstraintClauses(PredefinedClauses);
     void writeOutput(std::string);
     void addExistingAssignments();
     void addToFormula(vec<Lit> &, int);
+    void addToFormula(Lit, int);
     void displayChangesInGivenAssignment();
 };
 
