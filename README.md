@@ -14,7 +14,7 @@ To build the project from source follow the steps below.
 ### Prerequisities
 
 This project requires following tools to build.
-* `cmake`
+* `cmake` (version 3.10 or higher)
 * `g++` or any other C++ compiler with C++11 support
 
 ### Dependencies
