@@ -30,6 +30,7 @@ struct Object {
     bool slotSame;
     bool classNotSame;
     bool slotNotSame;
+    bool courseExcept;
     int integer;
     TimeTabler *timeTabler;
     ConstraintAdder *constraintAdder;

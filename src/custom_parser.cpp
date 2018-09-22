@@ -6,6 +6,7 @@
 #include <string>
 #include <tao/pegtl.hpp>
 #include <vector>
+#include <algorithm>
 
 namespace pegtl = tao::TAO_PEGTL_NAMESPACE;
 
@@ -46,6 +47,11 @@ struct andstr : TAO_PEGTL_KEYWORD("AND") {};
  * @brief      Parse "OR"
  */
 struct orstr : TAO_PEGTL_KEYWORD("OR") {};
+
+/**
+ * @brief      Parse "EXCEPT"
+ */
+struct exceptstr : TAO_PEGTL_KEYWORD("EXCEPT") {};
 
 /**
  * @brief      Parse "CLASSROOM": Store the field type to be classroom
@@ -288,7 +294,7 @@ template <> struct action<allvalues> {
 };
 
 /**
- * @brief      Parse "SAME": Used to specify constraints on courses with same filed values
+ * @brief      Parse "SAME": Used to specify constraints on courses with same field values
  */
 struct sameval : pegtl::pad<TAO_PEGTL_KEYWORD("SAME"), pegtl::space> {};
 template <> struct action<sameval> {
@@ -302,7 +308,7 @@ template <> struct action<sameval> {
 };
 
 /**
- * @brief      Parse "NOTSAME": TODO
+ * @brief      Parse "NOTSAME": Used to specify constraints on courses with different field values
  */
 struct notsameval : pegtl::pad<TAO_PEGTL_KEYWORD("NOTSAME"), pegtl::space> {};
 template <> struct action<notsameval> {
@@ -343,6 +349,21 @@ struct slotdecl : pegtl::seq<pegtl::pad<slotstr, pegtl::space>, values> {};
  * @brief      Parse courses
  */
 struct coursedecl : pegtl::seq<pegtl::pad<coursestr, pegtl::space>, values> {};
+template <> struct action<coursedecl> {
+    template <typename Input> static void apply(const Input &in, Object &obj) {
+        obj.courseExcept = false;
+    }
+};
+
+/**
+ * @brief      Parse courses declaration with except keyword
+ */
+struct courseexceptdecl : pegtl::seq<pegtl::pad<coursestr, pegtl::space>, pegtl::pad<exceptstr, pegtl::space>, values> {};
+template <> struct action<courseexceptdecl> {
+    template <typename Input> static void apply(const Input &in, Object &obj) {
+        obj.courseExcept = true;
+    }
+};
 
 /**
  * @brief      Parse single decl in consequent of the constraint
@@ -465,6 +486,15 @@ struct constraint_expr : pegtl::seq<coursedecl, fielddecls, pegtl::opt<notstr>,
 template <> struct action<constraint_expr> {
     template <typename Input> static void apply(const Input &in, Object &obj) {
         Clauses clauses;
+        if (obj.courseExcept) {
+            std::vector<int> courseVals;
+            for (int i=0; i<obj.timeTabler->data.courses.size(); i++) {
+                if (std::find(obj.courseValues.begin(), obj.courseValues.end(), i) == obj.courseValues.end()) {
+                    courseVals.push_back(i);
+                }
+            }
+            obj.courseValues = courseVals;
+        }
         for (int i = 0; i < obj.courseValues.size(); i++) {
             int course = obj.courseValues[i];
             Clauses ante, cons, clause;
