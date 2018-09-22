@@ -4,7 +4,12 @@ compiler:
     - g++
 before_install:
     - sudo apt update
-    - sudo apt install cmake
+    - sudo apt install wget make
+    - wget https://gitlab.kitware.com/cmake/cmake/-/archive/v3.10.0/cmake-v3.10.0.tar.gz
+    - tar -xf cmake-v3.10.0.tar.gz
+    - cd cmake-v3.10.0
+    - ./bootstrap && make && sudo make install
+    - cd ..
 script:
     - ./install_dependencies.sh
     - mkdir build
