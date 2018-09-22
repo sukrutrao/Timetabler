@@ -54,6 +54,22 @@ echo "Building PEGTL..."
 cmake ..
 make
 cd ../..
+
+echo "Getting GoogleTest..."
+if [ ! -d googletest-release-1.8.1 ] ; then
+  wget https://github.com/google/googletest/archive/release-1.8.1.tar.gz
+  tar -xf release-1.8.1.tar.gz
+fi
+cd googletest-release-1.8.1
+if [ ! -d build ] ; then
+  mkdir build
+fi
+cd build
+echo "Building GooglTest..."
+cmake ..
+make
+cd ../..
+
 echo "All dependencies installed."
 cd ..
 
