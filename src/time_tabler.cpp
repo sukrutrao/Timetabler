@@ -384,6 +384,20 @@ void TimeTabler::displayUnsatisfiedOutputReasons() {
             }
         }
     }
+    for (int i = 0; i < data.predefinedConstraintVars.size(); i++) {
+        if (!isVarTrue(data.predefinedConstraintVars[i])) {
+            std::cout << "Predefined Constraint : "
+                      << Utils::getPredefinedConstraintName(
+                             PredefinedClauses(i))
+                      << " could not be satisfied" << std::endl;
+        }
+    }
+    for (int i = 0; i < data.customConstraintVars.size(); i++) {
+        if (!isVarTrue(data.customConstraintVars[i])) {
+            std::cout << "Custom Constraint : " << i + 1
+                      << " could not be satisfied" << std::endl;
+        }
+    }
 }
 
 /**
