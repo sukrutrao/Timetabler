@@ -63,6 +63,11 @@ void TimeTabler::addHighLevelConstraintClauses(PredefinedClauses clauseType) {
     addToFormula(l, data.predefinedClausesWeights[clauseType]);
 }
 
+void TimeTabler::addHighLevelCustomConstraintClauses(int index, int weight) {
+    Lit l = mkLit(data.customConstraintVars[index], false);
+    addToFormula(l, weight);
+}
+
 /**
  * @brief      Adds unit clauses corresponding to existing assignments given in
  * the input to the solver.

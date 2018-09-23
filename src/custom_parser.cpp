@@ -28,7 +28,8 @@ template <> struct action<integer> {
 struct instr : TAO_PEGTL_KEYWORD("IN") {};
 
 /**
- * @brief      Parse "NOT": Store that NOT keyword is present in the custom constraint
+ * @brief      Parse "NOT": Store that NOT keyword is present in the custom
+ * constraint
  */
 struct notstr : TAO_PEGTL_KEYWORD("NOT") {};
 template <> struct action<notstr> {
@@ -119,8 +120,8 @@ template <> struct action<programstr> {
 };
 
 /**
- * @brief      Constraint is on one of the instructor, segment, isminor, program.
- * isNot, classSame, slotSame, classNotSame, slotNotSame are reset.
+ * @brief      Constraint is on one of the instructor, segment, isminor,
+ * program. isNot, classSame, slotSame, classNotSame, slotNotSame are reset.
  */
 struct fieldtype
     : pegtl::sor<instructorstr, segmentstr, isminorstr, programstr> {};
@@ -288,7 +289,8 @@ template <> struct action<allvalues> {
 };
 
 /**
- * @brief      Parse "SAME": Used to specify constraints on courses with same filed values
+ * @brief      Parse "SAME": Used to specify constraints on courses with same
+ * filed values
  */
 struct sameval : pegtl::pad<TAO_PEGTL_KEYWORD("SAME"), pegtl::space> {};
 template <> struct action<sameval> {
@@ -561,7 +563,14 @@ struct wconstraint
                  pegtl::pad<integer, pegtl::space>> {};
 template <> struct action<wconstraint> {
     template <typename Input> static void apply(const Input &in, Object &obj) {
-        obj.timeTabler->addClauses(obj.constraint, obj.integer);
+        obj.timeTabler->data.customConstraintVars.push_back(
+            obj.timeTabler->newVar());
+        int index = obj.timeTabler->data.customConstraintVars.size() - 1;
+        Clauses hardConsequent =
+            CClause(obj.timeTabler->data.customConstraintVars[index]) >>
+            obj.constraint;
+        obj.timeTabler->addClauses(hardConsequent, -1);
+        obj.timeTabler->addHighLevelCustomConstraintClauses(index, obj.integer);
     }
 };
 

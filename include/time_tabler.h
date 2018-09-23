@@ -75,6 +75,7 @@ class TimeTabler {
     void displayUnsatisfiedOutputReasons();
     void addHighLevelClauses();
     void addHighLevelConstraintClauses(PredefinedClauses);
+    void addHighLevelCustomConstraintClauses(int, int);
     void writeOutput(std::string);
     void addExistingAssignments();
     void addToFormula(vec<Lit> &, int);
