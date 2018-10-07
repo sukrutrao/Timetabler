@@ -12,33 +12,33 @@ enum FieldType { instructor, segment, isMinor, program, classroom, slot };
  * @brief      Enum that represents all the predefined constraints.
  */
 enum PredefinedClauses {
-    instructorSingleCourseAtATime,
-    classroomSingleCourseAtATime,
-    programSingleCoreCourseAtATime,
-    minorInMinorTime,
-    exactlyOneSlotPerCourse,
-    exactlyOneInstructorPerCourse,
-    exactlyOneSegmentPerCourse,
-    exactlyOneIsMinorPerCourse,
-    exactlyOneClassroomPerCourse,
-    coreInMorningTime,
-    electiveInNonMorningTime,
-    programAtMostOneOfCoreOrElective
+  instructorSingleCourseAtATime,
+  classroomSingleCourseAtATime,
+  programSingleCoreCourseAtATime,
+  minorInMinorTime,
+  exactlyOneSlotPerCourse,
+  exactlyOneInstructorPerCourse,
+  exactlyOneSegmentPerCourse,
+  exactlyOneIsMinorPerCourse,
+  exactlyOneClassroomPerCourse,
+  coreInMorningTime,
+  electiveInNonMorningTime,
+  programAtMostOneOfCoreOrElective
 };
 
 /**
  * @brief      Class for global values.
  */
 class Global {
-  public:
-    /**
-     * The number of field types in the FieldType enumerator
-     */
-    static const int FIELD_COUNT = 6;
-    /**
-     * The number of predefined clauses in the PredefinedClauses enumerator
-     */
-    static const int PREDEFINED_CLAUSES_COUNT = 12;
+ public:
+  /**
+   * The number of field types in the FieldType enumerator
+   */
+  static const int FIELD_COUNT = 6;
+  /**
+   * The number of predefined clauses in the PredefinedClauses enumerator
+   */
+  static const int PREDEFINED_CLAUSES_COUNT = 12;
 };
 
 #endif

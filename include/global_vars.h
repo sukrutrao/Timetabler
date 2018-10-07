@@ -3,6 +3,6 @@
 
 #include "time_tabler.h"
 
-extern TimeTabler *timeTabler;
+extern Timetabler *timetabler;
 
 #endif

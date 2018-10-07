@@ -1,26 +1,29 @@
 #include "custom_parser.h"
-#include "clauses.h"
-#include "global.h"
+#include <algorithm>
 #include <cstdlib>
 #include <iostream>
 #include <string>
 #include <tao/pegtl.hpp>
 #include <vector>
-#include <algorithm>
+#include "clauses.h"
+#include "global.h"
 
 namespace pegtl = tao::TAO_PEGTL_NAMESPACE;
 
-template <typename Rule> struct action : pegtl::nothing<Rule> {};
+template <typename Rule>
+struct action : pegtl::nothing<Rule> {};
 
 /**
  * @brief      Parse integer: Store the integer in the object
  */
 struct integer
     : pegtl::seq<pegtl::opt<pegtl::one<'-'>>, pegtl::plus<pegtl::digit>> {};
-template <> struct action<integer> {
-    template <typename Input> static void apply(const Input &in, Object &obj) {
-        obj.integer = std::stoi(in.string());
-    }
+template <>
+struct action<integer> {
+  template <typename Input>
+  static void apply(const Input &in, Object &obj) {
+    obj.integer = std::stoi(in.string());
+  }
 };
 
 /**
@@ -29,13 +32,16 @@ template <> struct action<integer> {
 struct instr : TAO_PEGTL_KEYWORD("IN") {};
 
 /**
- * @brief      Parse "NOT": Store that NOT keyword is present in the custom constraint
+ * @brief      Parse "NOT": Store that NOT keyword is present in the custom
+ * constraint
  */
 struct notstr : TAO_PEGTL_KEYWORD("NOT") {};
-template <> struct action<notstr> {
-    template <typename Input> static void apply(const Input &in, Object &obj) {
-        obj.isNot = true;
-    }
+template <>
+struct action<notstr> {
+  template <typename Input>
+  static void apply(const Input &in, Object &obj) {
+    obj.isNot = true;
+  }
 };
 
 /**
@@ -58,86 +64,102 @@ struct exceptstr : TAO_PEGTL_KEYWORD("EXCEPT") {};
  * which will be used while forming the custom consraint
  */
 struct classroomstr : TAO_PEGTL_KEYWORD("CLASSROOM") {};
-template <> struct action<classroomstr> {
-    template <typename Input> static void apply(const Input &in, Object &obj) {
-        obj.fieldType = FieldValuesType::CLASSROOM;
-    }
+template <>
+struct action<classroomstr> {
+  template <typename Input>
+  static void apply(const Input &in, Object &obj) {
+    obj.fieldType = FieldValuesType::CLASSROOM;
+  }
 };
 
 /**
  * @brief      Parse "SLOT": Similar to classroom
  */
 struct slotstr : TAO_PEGTL_KEYWORD("SLOT") {};
-template <> struct action<slotstr> {
-    template <typename Input> static void apply(const Input &in, Object &obj) {
-        obj.fieldType = FieldValuesType::SLOT;
-    }
+template <>
+struct action<slotstr> {
+  template <typename Input>
+  static void apply(const Input &in, Object &obj) {
+    obj.fieldType = FieldValuesType::SLOT;
+  }
 };
 
 /**
  * @brief      Parse "COURSE": Similar to classroom
  */
 struct coursestr : TAO_PEGTL_KEYWORD("COURSE") {};
-template <> struct action<coursestr> {
-    template <typename Input> static void apply(const Input &in, Object &obj) {
-        obj.fieldType = FieldValuesType::COURSE;
-    }
+template <>
+struct action<coursestr> {
+  template <typename Input>
+  static void apply(const Input &in, Object &obj) {
+    obj.fieldType = FieldValuesType::COURSE;
+  }
 };
 
 /**
  * @brief      Parse "INSTRUCTOR": Similar to classroom
  */
 struct instructorstr : TAO_PEGTL_KEYWORD("INSTRUCTOR") {};
-template <> struct action<instructorstr> {
-    template <typename Input> static void apply(const Input &in, Object &obj) {
-        obj.fieldType = FieldValuesType::INSTRUCTOR;
-    }
+template <>
+struct action<instructorstr> {
+  template <typename Input>
+  static void apply(const Input &in, Object &obj) {
+    obj.fieldType = FieldValuesType::INSTRUCTOR;
+  }
 };
 
 /**
  * @brief      Parse "SEGMENT": Similar to classroom
  */
 struct segmentstr : TAO_PEGTL_KEYWORD("SEGMENT") {};
-template <> struct action<segmentstr> {
-    template <typename Input> static void apply(const Input &in, Object &obj) {
-        obj.fieldType = FieldValuesType::SEGMENT;
-    }
+template <>
+struct action<segmentstr> {
+  template <typename Input>
+  static void apply(const Input &in, Object &obj) {
+    obj.fieldType = FieldValuesType::SEGMENT;
+  }
 };
 
 /**
  * @brief      Parse "ISMNOR": Similar to classroom
  */
 struct isminorstr : TAO_PEGTL_KEYWORD("ISMINOR") {};
-template <> struct action<isminorstr> {
-    template <typename Input> static void apply(const Input &in, Object &obj) {
-        obj.fieldType = FieldValuesType::ISMINOR;
-    }
+template <>
+struct action<isminorstr> {
+  template <typename Input>
+  static void apply(const Input &in, Object &obj) {
+    obj.fieldType = FieldValuesType::ISMINOR;
+  }
 };
 
 /**
  * @brief      Parse "PROGRAM": Similar to classroom
  */
 struct programstr : TAO_PEGTL_KEYWORD("PROGRAM") {};
-template <> struct action<programstr> {
-    template <typename Input> static void apply(const Input &in, Object &obj) {
-        obj.fieldType = FieldValuesType::PROGRAM;
-    }
+template <>
+struct action<programstr> {
+  template <typename Input>
+  static void apply(const Input &in, Object &obj) {
+    obj.fieldType = FieldValuesType::PROGRAM;
+  }
 };
 
 /**
- * @brief      Constraint is on one of the instructor, segment, isminor, program.
- * isNot, classSame, slotSame, classNotSame, slotNotSame are reset.
+ * @brief      Constraint is on one of the instructor, segment, isminor,
+ * program. isNot, classSame, slotSame, classNotSame, slotNotSame are reset.
  */
 struct fieldtype
     : pegtl::sor<instructorstr, segmentstr, isminorstr, programstr> {};
-template <> struct action<fieldtype> {
-    template <typename Input> static void apply(const Input &in, Object &obj) {
-        obj.isNot = false;
-        obj.classSame = false;
-        obj.slotSame = false;
-        obj.classNotSame = false;
-        obj.slotNotSame = false;
-    }
+template <>
+struct action<fieldtype> {
+  template <typename Input>
+  static void apply(const Input &in, Object &obj) {
+    obj.isNot = false;
+    obj.classSame = false;
+    obj.slotSame = false;
+    obj.classNotSame = false;
+    obj.slotNotSame = false;
+  }
 };
 
 /**
@@ -147,178 +169,181 @@ struct value
     : pegtl::plus<pegtl::sor<pegtl::range<'a', 'z'>, pegtl::range<'A', 'Z'>,
                              pegtl::digit, pegtl::one<'.'>, pegtl::one<'-'>,
                              pegtl::one<'@'>, pegtl::space>> {};
-template <> struct action<value> {
-    template <typename Input> static void apply(const Input &in, Object &obj) {
-        std::string val = in.string();
-        bool found = false;
-        if (obj.fieldType == FieldValuesType::INSTRUCTOR) {
-            for (int i = 0; i < obj.timeTabler->data.instructors.size(); i++) {
-                if (obj.timeTabler->data.instructors[i].getName() == val) {
-                    found = true;
-                    obj.instructorValues.push_back(i);
-                    break;
-                }
-            }
-            if (!found) {
-                std::cout << "Instructor " << val << " does not exist."
-                          << std::endl;
-                exit(1);
-            }
-            found = false;
-        } else if (obj.fieldType == FieldValuesType::COURSE) {
-            for (int i = 0; i < obj.timeTabler->data.courses.size(); i++) {
-                std::cout << obj.timeTabler->data.courses[i].getName()
-                          << std::endl;
-                if (obj.timeTabler->data.courses[i].getName() == val) {
-                    found = true;
-                    obj.courseValues.push_back(i);
-                    break;
-                }
-            }
-            if (!found) {
-                std::cout << "Course " << val << " does not exist."
-                          << std::endl;
-                exit(1);
-            }
-            found = false;
-        } else if (obj.fieldType == FieldValuesType::SEGMENT) {
-            for (int i = 0; i < obj.timeTabler->data.segments.size(); i++) {
-                if (obj.timeTabler->data.segments[i].getName() == val) {
-                    found = true;
-                    obj.segmentValues.push_back(i);
-                    break;
-                }
-            }
-            if (!found) {
-                std::cout << "Segment " << val << " does not exist."
-                          << std::endl;
-                exit(1);
-            }
-            found = false;
-        } else if (obj.fieldType == FieldValuesType::PROGRAM) {
-            for (int i = 0; i < obj.timeTabler->data.programs.size(); i++) {
-                if (obj.timeTabler->data.programs[i].getNameWithType() == val) {
-                    found = true;
-                    obj.programValues.push_back(i);
-                    break;
-                }
-            }
-            if (!found) {
-                std::cout << "Program " << val << " does not exist."
-                          << std::endl;
-                exit(1);
-            }
-            found = false;
-        } else if (obj.fieldType == FieldValuesType::ISMINOR) {
-            for (int i = 0; i < obj.timeTabler->data.isMinors.size(); i++) {
-                if (obj.timeTabler->data.isMinors[i].getName() == val) {
-                    found = true;
-                    obj.isMinorValues.push_back(i);
-                    break;
-                }
-            }
-            if (!found) {
-                std::cout << "IsMinor " << val << " does not exist."
-                          << std::endl;
-                exit(1);
-            }
-            found = false;
-        } else if (obj.fieldType == FieldValuesType::CLASSROOM) {
-            for (int i = 0; i < obj.timeTabler->data.classrooms.size(); i++) {
-                if (obj.timeTabler->data.classrooms[i].getName() == val) {
-                    found = true;
-                    obj.classValues.push_back(i);
-                    break;
-                }
-            }
-            if (!found) {
-                std::cout << "Classroom " << val << " does not exist."
-                          << std::endl;
-                exit(1);
-            }
-            found = false;
-        } else if (obj.fieldType == FieldValuesType::SLOT) {
-            for (int i = 0; i < obj.timeTabler->data.slots.size(); i++) {
-                if (obj.timeTabler->data.slots[i].getName() == val) {
-                    found = true;
-                    obj.slotValues.push_back(i);
-                    break;
-                }
-            }
-            if (!found) {
-                std::cout << "Slot " << val << " does not exist." << std::endl;
-                exit(1);
-            }
-            found = false;
+template <>
+struct action<value> {
+  template <typename Input>
+  static void apply(const Input &in, Object &obj) {
+    std::string val = in.string();
+    bool found = false;
+    if (obj.fieldType == FieldValuesType::INSTRUCTOR) {
+      for (int i = 0; i < obj.timetabler->data.instructors.size(); i++) {
+        if (obj.timetabler->data.instructors[i].getName() == val) {
+          found = true;
+          obj.instructorValues.push_back(i);
+          break;
         }
+      }
+      if (!found) {
+        std::cout << "Instructor " << val << " does not exist." << std::endl;
+        exit(1);
+      }
+      found = false;
+    } else if (obj.fieldType == FieldValuesType::COURSE) {
+      for (int i = 0; i < obj.timetabler->data.courses.size(); i++) {
+        std::cout << obj.timetabler->data.courses[i].getName() << std::endl;
+        if (obj.timetabler->data.courses[i].getName() == val) {
+          found = true;
+          obj.courseValues.push_back(i);
+          break;
+        }
+      }
+      if (!found) {
+        std::cout << "Course " << val << " does not exist." << std::endl;
+        exit(1);
+      }
+      found = false;
+    } else if (obj.fieldType == FieldValuesType::SEGMENT) {
+      for (int i = 0; i < obj.timetabler->data.segments.size(); i++) {
+        if (obj.timetabler->data.segments[i].getName() == val) {
+          found = true;
+          obj.segmentValues.push_back(i);
+          break;
+        }
+      }
+      if (!found) {
+        std::cout << "Segment " << val << " does not exist." << std::endl;
+        exit(1);
+      }
+      found = false;
+    } else if (obj.fieldType == FieldValuesType::PROGRAM) {
+      for (int i = 0; i < obj.timetabler->data.programs.size(); i++) {
+        if (obj.timetabler->data.programs[i].getNameWithType() == val) {
+          found = true;
+          obj.programValues.push_back(i);
+          break;
+        }
+      }
+      if (!found) {
+        std::cout << "Program " << val << " does not exist." << std::endl;
+        exit(1);
+      }
+      found = false;
+    } else if (obj.fieldType == FieldValuesType::ISMINOR) {
+      for (int i = 0; i < obj.timetabler->data.isMinors.size(); i++) {
+        if (obj.timetabler->data.isMinors[i].getName() == val) {
+          found = true;
+          obj.isMinorValues.push_back(i);
+          break;
+        }
+      }
+      if (!found) {
+        std::cout << "IsMinor " << val << " does not exist." << std::endl;
+        exit(1);
+      }
+      found = false;
+    } else if (obj.fieldType == FieldValuesType::CLASSROOM) {
+      for (int i = 0; i < obj.timetabler->data.classrooms.size(); i++) {
+        if (obj.timetabler->data.classrooms[i].getName() == val) {
+          found = true;
+          obj.classValues.push_back(i);
+          break;
+        }
+      }
+      if (!found) {
+        std::cout << "Classroom " << val << " does not exist." << std::endl;
+        exit(1);
+      }
+      found = false;
+    } else if (obj.fieldType == FieldValuesType::SLOT) {
+      for (int i = 0; i < obj.timetabler->data.slots.size(); i++) {
+        if (obj.timetabler->data.slots[i].getName() == val) {
+          found = true;
+          obj.slotValues.push_back(i);
+          break;
+        }
+      }
+      if (!found) {
+        std::cout << "Slot " << val << " does not exist." << std::endl;
+        exit(1);
+      }
+      found = false;
     }
+  }
 };
 
 /**
  * @brief      Parse * as all values of the specified field
  */
 struct allvalues : pegtl::pad<pegtl::one<'*'>, pegtl::space> {};
-template <> struct action<allvalues> {
-    template <typename Input> static void apply(const Input &in, Object &obj) {
-        std::string val = in.string();
-        if (obj.fieldType == FieldValuesType::INSTRUCTOR) {
-            for (int i = 0; i < obj.timeTabler->data.instructors.size(); i++) {
-                obj.instructorValues.push_back(i);
-            }
-        } else if (obj.fieldType == FieldValuesType::COURSE) {
-            for (int i = 0; i < obj.timeTabler->data.courses.size(); i++) {
-                obj.courseValues.push_back(i);
-            }
-        } else if (obj.fieldType == FieldValuesType::SEGMENT) {
-            for (int i = 0; i < obj.timeTabler->data.segments.size(); i++) {
-                obj.segmentValues.push_back(i);
-            }
-        } else if (obj.fieldType == FieldValuesType::PROGRAM) {
-            for (int i = 0; i < obj.timeTabler->data.programs.size(); i++) {
-                obj.programValues.push_back(i);
-            }
-        } else if (obj.fieldType == FieldValuesType::ISMINOR) {
-            for (int i = 0; i < obj.timeTabler->data.isMinors.size(); i++) {
-                obj.isMinorValues.push_back(i);
-            }
-        } else if (obj.fieldType == FieldValuesType::CLASSROOM) {
-            for (int i = 0; i < obj.timeTabler->data.classrooms.size(); i++) {
-                obj.classValues.push_back(i);
-            }
-        } else if (obj.fieldType == FieldValuesType::SLOT) {
-            for (int i = 0; i < obj.timeTabler->data.slots.size(); i++) {
-                obj.slotValues.push_back(i);
-            }
-        }
+template <>
+struct action<allvalues> {
+  template <typename Input>
+  static void apply(const Input &in, Object &obj) {
+    std::string val = in.string();
+    if (obj.fieldType == FieldValuesType::INSTRUCTOR) {
+      for (int i = 0; i < obj.timetabler->data.instructors.size(); i++) {
+        obj.instructorValues.push_back(i);
+      }
+    } else if (obj.fieldType == FieldValuesType::COURSE) {
+      for (int i = 0; i < obj.timetabler->data.courses.size(); i++) {
+        obj.courseValues.push_back(i);
+      }
+    } else if (obj.fieldType == FieldValuesType::SEGMENT) {
+      for (int i = 0; i < obj.timetabler->data.segments.size(); i++) {
+        obj.segmentValues.push_back(i);
+      }
+    } else if (obj.fieldType == FieldValuesType::PROGRAM) {
+      for (int i = 0; i < obj.timetabler->data.programs.size(); i++) {
+        obj.programValues.push_back(i);
+      }
+    } else if (obj.fieldType == FieldValuesType::ISMINOR) {
+      for (int i = 0; i < obj.timetabler->data.isMinors.size(); i++) {
+        obj.isMinorValues.push_back(i);
+      }
+    } else if (obj.fieldType == FieldValuesType::CLASSROOM) {
+      for (int i = 0; i < obj.timetabler->data.classrooms.size(); i++) {
+        obj.classValues.push_back(i);
+      }
+    } else if (obj.fieldType == FieldValuesType::SLOT) {
+      for (int i = 0; i < obj.timetabler->data.slots.size(); i++) {
+        obj.slotValues.push_back(i);
+      }
     }
+  }
 };
 
 /**
- * @brief      Parse "SAME": Used to specify constraints on courses with same field values
+ * @brief      Parse "SAME": Used to specify constraints on courses with same
+ * field values
  */
 struct sameval : pegtl::pad<TAO_PEGTL_KEYWORD("SAME"), pegtl::space> {};
-template <> struct action<sameval> {
-    template <typename Input> static void apply(const Input &in, Object &obj) {
-        if (obj.fieldType == FieldValuesType::CLASSROOM) {
-            obj.classSame = true;
-        } else if (obj.fieldType == FieldValuesType::SLOT) {
-            obj.slotSame = true;
-        }
+template <>
+struct action<sameval> {
+  template <typename Input>
+  static void apply(const Input &in, Object &obj) {
+    if (obj.fieldType == FieldValuesType::CLASSROOM) {
+      obj.classSame = true;
+    } else if (obj.fieldType == FieldValuesType::SLOT) {
+      obj.slotSame = true;
     }
+  }
 };
 
 /**
- * @brief      Parse "NOTSAME": Used to specify constraints on courses with different field values
+ * @brief      Parse "NOTSAME": Used to specify constraints on courses with
+ * different field values
  */
 struct notsameval : pegtl::pad<TAO_PEGTL_KEYWORD("NOTSAME"), pegtl::space> {};
-template <> struct action<notsameval> {
-    template <typename Input> static void apply(const Input &in, Object &obj) {
-        if (obj.fieldType == FieldValuesType::CLASSROOM) {
-            obj.classNotSame = true;
-        } else if (obj.fieldType == FieldValuesType::SLOT) {
-            obj.slotNotSame = true;
-        }
+template <>
+struct action<notsameval> {
+  template <typename Input>
+  static void apply(const Input &in, Object &obj) {
+    if (obj.fieldType == FieldValuesType::CLASSROOM) {
+      obj.classNotSame = true;
+    } else if (obj.fieldType == FieldValuesType::SLOT) {
+      obj.slotNotSame = true;
     }
+  }
 };
 
 /**
@@ -348,21 +373,28 @@ struct slotdecl : pegtl::seq<pegtl::pad<slotstr, pegtl::space>, values> {};
 /**
  * @brief      Parse courses declaration without except keyword
  */
-struct coursenoexceptdecl : pegtl::seq<pegtl::pad<coursestr, pegtl::space>, values> {};
-template <> struct action<coursenoexceptdecl> {
-    template <typename Input> static void apply(const Input &in, Object &obj) {
-        obj.courseExcept = false;
-    }
+struct coursenoexceptdecl
+    : pegtl::seq<pegtl::pad<coursestr, pegtl::space>, values> {};
+template <>
+struct action<coursenoexceptdecl> {
+  template <typename Input>
+  static void apply(const Input &in, Object &obj) {
+    obj.courseExcept = false;
+  }
 };
 
 /**
  * @brief      Parse courses declaration with except keyword
  */
-struct courseexceptdecl : pegtl::seq<pegtl::pad<coursestr, pegtl::space>, pegtl::pad<exceptstr, pegtl::space>, values> {};
-template <> struct action<courseexceptdecl> {
-    template <typename Input> static void apply(const Input &in, Object &obj) {
-        obj.courseExcept = true;
-    }
+struct courseexceptdecl
+    : pegtl::seq<pegtl::pad<coursestr, pegtl::space>,
+                 pegtl::pad<exceptstr, pegtl::space>, values> {};
+template <>
+struct action<courseexceptdecl> {
+  template <typename Input>
+  static void apply(const Input &in, Object &obj) {
+    obj.courseExcept = true;
+  }
 };
 
 /**
@@ -399,28 +431,28 @@ struct fielddecls : pegtl::opt<pegtl::list<fielddecl, andstr, pegtl::space>> {};
  * @return     Clauses corresponding to the antecedent
  */
 Clauses makeAntecedent(Object &obj, int course) {
-    Clauses ante, clause;
-    if (obj.instructorValues.size() > 0) {
-        clause = obj.constraintEncoder->hasFieldTypeListedValues(
-            course, FieldType::instructor, obj.instructorValues);
-        ante = ante & clause;
-    }
-    if (obj.programValues.size() > 0) {
-        clause = obj.constraintEncoder->hasFieldTypeListedValues(
-            course, FieldType::program, obj.programValues);
-        ante = ante & clause;
-    }
-    if (obj.segmentValues.size() > 0) {
-        clause = obj.constraintEncoder->hasFieldTypeListedValues(
-            course, FieldType::segment, obj.segmentValues);
-        ante = ante & clause;
-    }
-    if (obj.isMinorValues.size() > 0) {
-        clause = obj.constraintEncoder->hasFieldTypeListedValues(
-            course, FieldType::isMinor, obj.isMinorValues);
-        ante = ante & clause;
-    }
-    return ante;
+  Clauses ante, clause;
+  if (obj.instructorValues.size() > 0) {
+    clause = obj.constraintEncoder->hasFieldTypeListedValues(
+        course, FieldType::instructor, obj.instructorValues);
+    ante = ante & clause;
+  }
+  if (obj.programValues.size() > 0) {
+    clause = obj.constraintEncoder->hasFieldTypeListedValues(
+        course, FieldType::program, obj.programValues);
+    ante = ante & clause;
+  }
+  if (obj.segmentValues.size() > 0) {
+    clause = obj.constraintEncoder->hasFieldTypeListedValues(
+        course, FieldType::segment, obj.segmentValues);
+    ante = ante & clause;
+  }
+  if (obj.isMinorValues.size() > 0) {
+    clause = obj.constraintEncoder->hasFieldTypeListedValues(
+        course, FieldType::isMinor, obj.isMinorValues);
+    ante = ante & clause;
+  }
+  return ante;
 }
 
 /**
@@ -433,54 +465,54 @@ Clauses makeAntecedent(Object &obj, int course) {
  * @return     Clauses corresponding to the consequent
  */
 Clauses makeConsequent(Object &obj, int course, int i) {
-    Clauses cons, clause;
-    if (obj.classSame) {
-        for (int j = i + 1; j < obj.courseValues.size(); j++) {
-            Clauses a = makeAntecedent(obj, obj.courseValues[j]);
-            Clauses b = obj.constraintEncoder->hasSameFieldTypeAndValue(
-                course, obj.courseValues[j], FieldType::classroom);
-            a = a >> b;
-            cons = cons & a;
-        }
+  Clauses cons, clause;
+  if (obj.classSame) {
+    for (int j = i + 1; j < obj.courseValues.size(); j++) {
+      Clauses a = makeAntecedent(obj, obj.courseValues[j]);
+      Clauses b = obj.constraintEncoder->hasSameFieldTypeAndValue(
+          course, obj.courseValues[j], FieldType::classroom);
+      a = a >> b;
+      cons = cons & a;
     }
-    if (obj.classNotSame) {
-        for (int j = i + 1; j < obj.courseValues.size(); j++) {
-            Clauses a = makeAntecedent(obj, obj.courseValues[j]);
-            Clauses b = obj.constraintEncoder->hasSameFieldTypeAndValue(
-                course, obj.courseValues[j], FieldType::classroom);
-            a = a >> (~b);
-            cons = cons & a;
-        }
+  }
+  if (obj.classNotSame) {
+    for (int j = i + 1; j < obj.courseValues.size(); j++) {
+      Clauses a = makeAntecedent(obj, obj.courseValues[j]);
+      Clauses b = obj.constraintEncoder->hasSameFieldTypeAndValue(
+          course, obj.courseValues[j], FieldType::classroom);
+      a = a >> (~b);
+      cons = cons & a;
     }
-    if (obj.slotSame) {
-        for (int j = i + 1; j < obj.courseValues.size(); j++) {
-            Clauses a = makeAntecedent(obj, obj.courseValues[j]);
-            Clauses b = obj.constraintEncoder->hasSameFieldTypeAndValue(
-                course, obj.courseValues[j], FieldType::slot);
-            a = a >> b;
-            cons = cons & a;
-        }
+  }
+  if (obj.slotSame) {
+    for (int j = i + 1; j < obj.courseValues.size(); j++) {
+      Clauses a = makeAntecedent(obj, obj.courseValues[j]);
+      Clauses b = obj.constraintEncoder->hasSameFieldTypeAndValue(
+          course, obj.courseValues[j], FieldType::slot);
+      a = a >> b;
+      cons = cons & a;
     }
-    if (obj.slotNotSame) {
-        for (int j = i + 1; j < obj.courseValues.size(); j++) {
-            Clauses a = makeAntecedent(obj, obj.courseValues[j]);
-            Clauses b = obj.constraintEncoder->hasSameFieldTypeAndValue(
-                course, obj.courseValues[j], FieldType::slot);
-            a = a >> (~b);
-            cons = cons & a;
-        }
+  }
+  if (obj.slotNotSame) {
+    for (int j = i + 1; j < obj.courseValues.size(); j++) {
+      Clauses a = makeAntecedent(obj, obj.courseValues[j]);
+      Clauses b = obj.constraintEncoder->hasSameFieldTypeAndValue(
+          course, obj.courseValues[j], FieldType::slot);
+      a = a >> (~b);
+      cons = cons & a;
     }
-    if (obj.classValues.size() > 0) {
-        clause = obj.constraintEncoder->hasFieldTypeListedValues(
-            course, FieldType::classroom, obj.classValues);
-        cons = cons & clause;
-    }
-    if (obj.slotValues.size() > 0) {
-        clause = obj.constraintEncoder->hasFieldTypeListedValues(
-            course, FieldType::slot, obj.slotValues);
-        cons = cons & clause;
-    }
-    return cons;
+  }
+  if (obj.classValues.size() > 0) {
+    clause = obj.constraintEncoder->hasFieldTypeListedValues(
+        course, FieldType::classroom, obj.classValues);
+    cons = cons & clause;
+  }
+  if (obj.slotValues.size() > 0) {
+    clause = obj.constraintEncoder->hasFieldTypeListedValues(
+        course, FieldType::slot, obj.slotValues);
+    cons = cons & clause;
+  }
+  return cons;
 }
 
 /**
@@ -488,36 +520,39 @@ Clauses makeConsequent(Object &obj, int course, int i) {
  */
 struct constraint_expr : pegtl::seq<coursedecl, fielddecls, pegtl::opt<notstr>,
                                     pegtl::pad<instr, pegtl::space>, decls> {};
-template <> struct action<constraint_expr> {
-    template <typename Input> static void apply(const Input &in, Object &obj) {
-        Clauses clauses;
-        if (obj.courseExcept) {
-            std::vector<int> courseVals;
-            for (int i=0; i<obj.timeTabler->data.courses.size(); i++) {
-                if (std::find(obj.courseValues.begin(), obj.courseValues.end(), i) == obj.courseValues.end()) {
-                    courseVals.push_back(i);
-                }
-            }
-            obj.courseValues = courseVals;
+template <>
+struct action<constraint_expr> {
+  template <typename Input>
+  static void apply(const Input &in, Object &obj) {
+    Clauses clauses;
+    if (obj.courseExcept) {
+      std::vector<int> courseVals;
+      for (int i = 0; i < obj.timetabler->data.courses.size(); i++) {
+        if (std::find(obj.courseValues.begin(), obj.courseValues.end(), i) ==
+            obj.courseValues.end()) {
+          courseVals.push_back(i);
         }
-        for (int i = 0; i < obj.courseValues.size(); i++) {
-            int course = obj.courseValues[i];
-            Clauses ante, cons, clause;
-            ante = makeAntecedent(obj, course);
-            cons = makeConsequent(obj, course, i);
-            if (obj.isNot) {
-                cons = ~cons;
-            }
-            clause = ante >> cons;
-            clauses = clauses & clause;
-        }
-        obj.constraint = clauses;
-        obj.courseValues.clear();
-        obj.instructorValues.clear();
-        obj.isMinorValues.clear();
-        obj.programValues.clear();
-        obj.segmentValues.clear();
+      }
+      obj.courseValues = courseVals;
     }
+    for (int i = 0; i < obj.courseValues.size(); i++) {
+      int course = obj.courseValues[i];
+      Clauses ante, cons, clause;
+      ante = makeAntecedent(obj, course);
+      cons = makeConsequent(obj, course, i);
+      if (obj.isNot) {
+        cons = ~cons;
+      }
+      clause = ante >> cons;
+      clauses = clauses & clause;
+    }
+    obj.constraint = clauses;
+    obj.courseValues.clear();
+    obj.instructorValues.clear();
+    obj.isMinorValues.clear();
+    obj.programValues.clear();
+    obj.segmentValues.clear();
+  }
 };
 
 struct constraint_or;
@@ -535,11 +570,13 @@ struct constraint_braced
  */
 struct constraint_not
     : pegtl::seq<pegtl::pad<notstr, pegtl::space>, constraint_braced> {};
-template <> struct action<constraint_not> {
-    template <typename Input> static void apply(const Input &in, Object &obj) {
-        Clauses clauses = obj.constraint;
-        obj.constraint = ~clauses;
-    }
+template <>
+struct action<constraint_not> {
+  template <typename Input>
+  static void apply(const Input &in, Object &obj) {
+    Clauses clauses = obj.constraint;
+    obj.constraint = ~clauses;
+  }
 };
 
 /**
@@ -548,10 +585,12 @@ template <> struct action<constraint_not> {
  */
 struct constraint_val
     : pegtl::sor<constraint_expr, constraint_not, constraint_braced> {};
-template <> struct action<constraint_val> {
-    template <typename Input> static void apply(const Input &in, Object &obj) {
-        obj.constraintVals.push_back(obj.constraint);
-    }
+template <>
+struct action<constraint_val> {
+  template <typename Input>
+  static void apply(const Input &in, Object &obj) {
+    obj.constraintVals.push_back(obj.constraint);
+  }
 };
 
 /**
@@ -559,15 +598,17 @@ template <> struct action<constraint_val> {
  * Add all the constraints to obj.constraintAdds
  */
 struct constraint_and : pegtl::list<constraint_val, andstr, pegtl::space> {};
-template <> struct action<constraint_and> {
-    template <typename Input> static void apply(const Input &in, Object &obj) {
-        Clauses clauses = obj.constraintVals[0];
-        for (unsigned i = 1; i < obj.constraintVals.size(); i++) {
-            clauses = clauses & obj.constraintVals[i];
-        }
-        obj.constraintVals.clear();
-        obj.constraintAnds.push_back(clauses);
+template <>
+struct action<constraint_and> {
+  template <typename Input>
+  static void apply(const Input &in, Object &obj) {
+    Clauses clauses = obj.constraintVals[0];
+    for (unsigned i = 1; i < obj.constraintVals.size(); i++) {
+      clauses = clauses & obj.constraintVals[i];
     }
+    obj.constraintVals.clear();
+    obj.constraintAnds.push_back(clauses);
+  }
 };
 
 /**
@@ -575,15 +616,17 @@ template <> struct action<constraint_and> {
  * The combined clauses for all the constraints are stored in obj.constraint
  */
 struct constraint_or : pegtl::list<constraint_and, orstr, pegtl::space> {};
-template <> struct action<constraint_or> {
-    template <typename Input> static void apply(const Input &in, Object &obj) {
-        Clauses clauses = obj.constraintAnds[0];
-        for (unsigned i = 1; i < obj.constraintAnds.size(); i++) {
-            clauses = clauses | obj.constraintAnds[i];
-        }
-        obj.constraintAnds.clear();
-        obj.constraint = clauses;
+template <>
+struct action<constraint_or> {
+  template <typename Input>
+  static void apply(const Input &in, Object &obj) {
+    Clauses clauses = obj.constraintAnds[0];
+    for (unsigned i = 1; i < obj.constraintAnds.size(); i++) {
+      clauses = clauses | obj.constraintAnds[i];
     }
+    obj.constraintAnds.clear();
+    obj.constraint = clauses;
+  }
 };
 
 /**
@@ -594,10 +637,12 @@ struct wconstraint
     : pegtl::seq<pegtl::pad<constraint_or, pegtl::space>,
                  pegtl::pad<TAO_PEGTL_KEYWORD("WEIGHT"), pegtl::space>,
                  pegtl::pad<integer, pegtl::space>> {};
-template <> struct action<wconstraint> {
-    template <typename Input> static void apply(const Input &in, Object &obj) {
-        obj.timeTabler->addClauses(obj.constraint, obj.integer);
-    }
+template <>
+struct action<wconstraint> {
+  template <typename Input>
+  static void apply(const Input &in, Object &obj) {
+    obj.timetabler->addClauses(obj.constraint, obj.integer);
+  }
 };
 
 /**
@@ -606,21 +651,22 @@ template <> struct action<wconstraint> {
 struct grammar
     : pegtl::try_catch<pegtl::must<pegtl::star<wconstraint>, pegtl::eof>> {};
 
-template <typename Rule> struct control : pegtl::normal<Rule> {
-    template <typename Input, typename... States>
-    static void raise(const Input &in, States &&...) {
-        std::cout << in.position() << " Error parsing custom constraints"
-                  << std::endl;
-        exit(1);
-    }
+template <typename Rule>
+struct control : pegtl::normal<Rule> {
+  template <typename Input, typename... States>
+  static void raise(const Input &in, States &&...) {
+    std::cout << in.position() << " Error parsing custom constraints"
+              << std::endl;
+    exit(1);
+  }
 };
 
 void parseCustomConstraints(std::string file,
                             ConstraintEncoder *constraintEncoder,
-                            TimeTabler *timeTabler) {
-    Object obj;
-    obj.constraintEncoder = constraintEncoder;
-    obj.timeTabler = timeTabler;
-    pegtl::file_input<> in(file);
-    pegtl::parse<grammar, action, control>(in, obj);
+                            Timetabler *timetabler) {
+  Object obj;
+  obj.constraintEncoder = constraintEncoder;
+  obj.timetabler = timetabler;
+  pegtl::file_input<> in(file);
+  pegtl::parse<grammar, action, control>(in, obj);
 }
