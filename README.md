@@ -1,7 +1,7 @@
 # Timetabler
 
-[![Build Status](https://travis-ci.com/GoodDeeds/Timetabler.svg?branch=development)](https://travis-ci.com/GoodDeeds/Timetabler)
-[![Documentation Status](https://readthedocs.org/projects/timetabler/badge/?version=development)](https://timetabler.readthedocs.io/en/development/?badge=development)
+[![Build Status](https://travis-ci.com/GoodDeeds/Timetabler.svg?branch=master)](https://travis-ci.com/GoodDeeds/Timetabler)
+[![Documentation Status](https://readthedocs.org/projects/timetabler/badge/?version=master)](https://timetabler.readthedocs.io/en/development/?badge=development)
 
 This project generates a timetable given a set of inputs and constraints. It encodes constraints of the timetabling problem as a SAT formula in the Conjunctive Normal Form, and then calls a MaxSAT solver to solve the problem.
 
@@ -148,7 +148,7 @@ If you find any bug or issues or you have any feature request, please report the
 
 ## Contributing
 
-If you want to contribute to this project, send a PR.
+If you want to contribute to this project, please send a [Pull Request](https://github.com/GoodDeeds/Timetabler/compare).
 
 ## License
 
