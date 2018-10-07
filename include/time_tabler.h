@@ -3,32 +3,32 @@
 #ifndef TIME_TABLER_H
 #define TIME_TABLER_H
 
+#include <vector>
 #include "MaxSATFormula.h"
 #include "cclause.h"
 #include "core/SolverTypes.h"
 #include "data.h"
 #include "mtl/Vec.h"
 #include "tsolver.h"
-#include <vector>
 
-using namespace Minisat;
+using namespace NSPACE;
 
 /**
  * @brief      Enum to store the solver status
  */
 enum SolverStatus {
-    /**
-     * A timetable could be generated with the given constraints
-     */
-    Solved,
-    /**
-     * Some high level constraints could not be satisfied
-     */
-    HighLevelFailed,
-    /**
-     * Some hard clauses could not be satisfied
-     */
-    Unsolved
+  /**
+   * A timetable could be generated with the given constraints
+   */
+  Solved,
+  /**
+   * Some high level constraints could not be satisfied
+   */
+  HighLevelFailed,
+  /**
+   * Some hard clauses could not be satisfied
+   */
+  Unsolved
 };
 
 /**
@@ -41,43 +41,43 @@ enum SolverStatus {
  * and creating new literals or variables in the solver when
  * requested and returning them.
  */
-class TimeTabler {
-  private:
-    /**
-     * A pointer to the MaxSAT solver object
-     */
-    TSolver *solver;
-    /**
-     * A pointer to the MaxSAT formula object
-     */
-    MaxSATFormula *formula;
-    /**
-     * Stores the values of each solver variable to be checked after solving
-     */
-    std::vector<lbool> model;
+class Timetabler {
+ private:
+  /**
+   * A pointer to the MaxSAT solver object
+   */
+  TSolver *solver;
+  /**
+   * A pointer to the MaxSAT formula object
+   */
+  MaxSATFormula *formula;
+  /**
+   * Stores the values of each solver variable to be checked after solving
+   */
+  std::vector<lbool> model;
 
-  public:
-    /**
-     * Stores all the field and input data obtained by the parser
-     */
-    Data data;
-    TimeTabler();
-    ~TimeTabler();
-    void addClauses(const std::vector<CClause> &, int);
-    void addClauses(const Clauses &, int);
-    bool checkAllTrue(const std::vector<Var> &);
-    bool isVarTrue(const Var &);
-    SolverStatus solve();
-    Var newVar();
-    Lit newLiteral(bool);
-    void printResult(SolverStatus);
-    void displayTimeTable();
-    void displayUnsatisfiedOutputReasons();
-    void addHighLevelClauses();
-    void writeOutput(std::string);
-    void addExistingAssignments();
-    void addToFormula(vec<Lit> &, int);
-    void displayChangesInGivenAssignment();
+ public:
+  /**
+   * Stores all the field and input data obtained by the parser
+   */
+  Data data;
+  Timetabler();
+  ~Timetabler();
+  void addClauses(const std::vector<CClause> &, int);
+  void addClauses(const Clauses &, int);
+  bool checkAllTrue(const std::vector<Var> &);
+  bool isVarTrue(const Var &);
+  SolverStatus solve();
+  Var newVar();
+  Lit newLiteral(bool sign = false);
+  void printResult(SolverStatus);
+  void displayTimeTable();
+  void displayUnsatisfiedOutputReasons();
+  void addHighLevelClauses();
+  void writeOutput(std::string);
+  void addExistingAssignments();
+  void addToFormula(vec<Lit> &, int);
+  void displayChangesInGivenAssignment();
 };
 
 #endif

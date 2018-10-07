@@ -1,15 +1,21 @@
 language: cpp
 dist: xenial
+cache: ccache
 compiler:
     - g++
 before_install:
     - sudo apt update
-    - sudo apt install cmake
+    - sudo apt install wget make ccache
+    - wget https://cmake.org/files/v3.11/cmake-3.11.1-Linux-x86_64.sh
+    - sudo sh cmake-3.11.1-Linux-x86_64.sh --prefix=/usr/local --skip-license --exclude-directory
 script:
+    - export PATH=/usr/local/bin:$PATH
+    - cmake --version
     - ./install_dependencies.sh
     - mkdir build
     - cd build
     - cmake ..
     - make
+    - make test
     - make package
     - sudo dpkg -i *.deb

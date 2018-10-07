@@ -1,3 +1,12 @@
+weights: # Assignment, high level
+  instructor: [-1, 1]
+  segment: [-1, 1]
+  is_minor: [-1, 1]
+  program: -1
+  classroom: [1, 1]
+  slot: [1, 1]
+
+
 instructors:
   - A
   - B
@@ -10,7 +19,7 @@ classrooms:
 
 segments:
   start: 1
-  end: 2
+  end: 6
 
 slots:
   - name: A

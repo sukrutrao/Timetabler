@@ -7,9 +7,9 @@
 #include "constraint_encoder.h"
 #include "core/SolverTypes.h"
 #include "global.h"
-class TimeTabler;
+class Timetabler;
 
-using namespace Minisat;
+using namespace NSPACE;
 
 /**
  * @brief      Class for constraint adder.
@@ -21,34 +21,34 @@ using namespace Minisat;
  * ConstraintEncoder to get Clauses corresponding to lower level constraints for
  * a given course, which are then joined together using the defined operations.
  * It also contains functions to add these predefined constraints with their
- * prescribed weights to the TimeTabler, which then adds it to the solver.
+ * prescribed weights to the Timetabler, which then adds it to the solver.
  */
 class ConstraintAdder {
-  private:
-    /**
-     * A pointer to the ConstraintEncoder object used for getting constraints
-     * for a given course
-     */
-    ConstraintEncoder *encoder;
-    /**
-     * A pointer to a TimeTabler object to access data, variables, and add
-     * constraints to the solver
-     */
-    TimeTabler *timeTabler;
-    Clauses fieldSingleValueAtATime(FieldType);
-    Clauses exactlyOneFieldValuePerCourse(FieldType);
-    Clauses instructorSingleCourseAtATime();
-    Clauses classroomSingleCourseAtATime();
-    Clauses programSingleCoreCourseAtATime();
-    Clauses minorInMinorTime();
-    Clauses coreInMorningTime();
-    Clauses electiveInNonMorningTime();
-    Clauses existingAssignmentClauses();
-    Clauses programAtMostOneOfCoreOrElective();
+ private:
+  /**
+   * A pointer to the ConstraintEncoder object used for getting constraints
+   * for a given course
+   */
+  ConstraintEncoder *encoder;
+  /**
+   * A pointer to a Timetabler object to access data, variables, and add
+   * constraints to the solver
+   */
+  Timetabler *timetabler;
+  Clauses fieldSingleValueAtATime(FieldType);
+  Clauses exactlyOneFieldValuePerCourse(FieldType);
+  Clauses instructorSingleCourseAtATime();
+  Clauses classroomSingleCourseAtATime();
+  Clauses programSingleCoreCourseAtATime();
+  Clauses minorInMinorTime();
+  Clauses coreInMorningTime();
+  Clauses electiveInNonMorningTime();
+  Clauses existingAssignmentClauses();
+  Clauses programAtMostOneOfCoreOrElective();
 
-  public:
-    ConstraintAdder(ConstraintEncoder *, TimeTabler *);
-    void addConstraints();
+ public:
+  ConstraintAdder(ConstraintEncoder *, Timetabler *);
+  void addConstraints();
 };
 
 #endif
