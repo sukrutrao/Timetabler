@@ -1,4 +1,3 @@
-#include <iostream>
 #include "constraint_adder.h"
 #include "constraint_encoder.h"
 #include "core/Solver.h"
@@ -7,6 +6,7 @@
 #include "global_vars.h"
 #include "mtl/Vec.h"
 #include "parser.h"
+#include <iostream>
 
 Timetabler *timetabler;
 
@@ -35,7 +35,8 @@ int main(int argc, char const *argv[]) {
   timetabler->addExistingAssignments();
   SolverStatus solverStatus = timetabler->solve();
   timetabler->printResult(solverStatus);
-  if (solverStatus == SolverStatus::Solved) {
+  if (solverStatus == SolverStatus::Solved ||
+      solverStatus == SolverStatus::HighLevelFailed) {
     timetabler->writeOutput(std::string(argv[4]));
   }
   delete timetabler;
