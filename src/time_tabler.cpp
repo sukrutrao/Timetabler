@@ -1,9 +1,5 @@
 #include "time_tabler.h"
 
-#include <cstdlib>
-#include <fstream>
-#include <iostream>
-#include <vector>
 #include "MaxSATFormula.h"
 #include "cclause.h"
 #include "clauses.h"
@@ -11,6 +7,10 @@
 #include "mtl/Vec.h"
 #include "tsolver.h"
 #include "utils.h"
+#include <cstdlib>
+#include <fstream>
+#include <iostream>
+#include <vector>
 
 using namespace NSPACE;
 
@@ -375,18 +375,19 @@ void Timetabler::displayUnsatisfiedOutputReasons() {
         std::cout << " could not be satisfied" << std::endl;
       }
     }
-    for (int i = 0; i < data.predefinedConstraintVars.size(); i++) {
-      if (!isVarTrue(data.predefinedConstraintVars[i])) {
-        std::cout << "Predefined Constraint : "
-                  << Utils::getPredefinedConstraintName(PredefinedClauses(i))
-                  << " could not be satisfied" << std::endl;
-      }
+  }
+  for (int i = 0; i < data.predefinedConstraintVars.size(); i++) {
+    if (!isVarTrue(data.predefinedConstraintVars[i]) &&
+        data.predefinedClausesWeights[i] != 0) {
+      std::cout << "Predefined Constraint : "
+                << Utils::getPredefinedConstraintName(PredefinedClauses(i))
+                << " could not be satisfied" << std::endl;
     }
-    for (int i = 0; i < data.customConstraintVars.size(); i++) {
-      if (!isVarTrue(data.customConstraintVars[i])) {
-        std::cout << "Custom Constraint : " << i + 1
-                  << " could not be satisfied" << std::endl;
-      }
+  }
+  for (int i = 0; i < data.customConstraintVars.size(); i++) {
+    if (!isVarTrue(data.customConstraintVars[i])) {
+      std::cout << "Custom Constraint : " << i + 1 << " could not be satisfied"
+                << std::endl;
     }
   }
 }
