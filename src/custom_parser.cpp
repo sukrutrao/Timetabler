@@ -190,7 +190,6 @@ struct action<value> {
       found = false;
     } else if (obj.fieldType == FieldValuesType::COURSE) {
       for (int i = 0; i < obj.timetabler->data.courses.size(); i++) {
-        std::cout << obj.timetabler->data.courses[i].getName() << std::endl;
         if (obj.timetabler->data.courses[i].getName() == val) {
           found = true;
           obj.courseValues.push_back(i);
@@ -552,6 +551,8 @@ struct action<constraint_expr> {
     obj.isMinorValues.clear();
     obj.programValues.clear();
     obj.segmentValues.clear();
+    obj.classValues.clear();
+    obj.slotValues.clear();
   }
 };
 
