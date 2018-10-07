@@ -338,6 +338,7 @@ void Parser::addVars() {
       Var v = timetabler->newVar();
       highLevelCourseVars.push_back(v);
     }
+    timetabler->data.highLevelVars.push_back(highLevelCourseVars);
     for (unsigned i = 0; i < Global::PREDEFINED_CLAUSES_COUNT; i++) {
       Var v = timetabler->newVar();
       timetabler->data.predefinedConstraintVars.push_back(v);
