@@ -148,7 +148,7 @@ If you find any bug or issues or you have any feature request, please report the
 
 ## Contributing
 
-If you want to contribute to this project, send a PR.
+If you want to contribute to this project, please send a [Pull Request](https://github.com/GoodDeeds/Timetabler/compare).
 
 ## License
 
