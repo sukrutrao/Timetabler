@@ -1,10 +1,10 @@
 #include "clauses.h"
 
+#include <iostream>
+#include <vector>
 #include "cclause.h"
 #include "core/SolverTypes.h"
 #include "global_vars.h"
-#include <iostream>
-#include <vector>
 
 using namespace NSPACE;
 
@@ -14,7 +14,7 @@ using namespace NSPACE;
  * @param[in]  clauses  The clauses in the set of clauses
  */
 Clauses::Clauses(const std::vector<CClause> &clauses) {
-    this->clauses = clauses;
+  this->clauses = clauses;
 }
 
 /**
@@ -23,8 +23,8 @@ Clauses::Clauses(const std::vector<CClause> &clauses) {
  * @param[in]  clause  A single clause that forms the set of clauses
  */
 Clauses::Clauses(const CClause &clause) {
-    clauses.clear();
-    clauses.push_back(clause);
+  clauses.clear();
+  clauses.push_back(clause);
 }
 
 /**
@@ -34,9 +34,9 @@ Clauses::Clauses(const CClause &clause) {
  *                   to a unit clause and forms the set of clauses
  */
 Clauses::Clauses(const Lit &lit) {
-    clauses.clear();
-    CClause clause(lit);
-    clauses.push_back(clause);
+  clauses.clear();
+  CClause clause(lit);
+  clauses.push_back(clause);
 }
 
 /**
@@ -48,9 +48,9 @@ Clauses::Clauses(const Lit &lit) {
  *                   the set of clauses
  */
 Clauses::Clauses(const Var &var) {
-    clauses.clear();
-    CClause clause(var);
-    clauses.push_back(clause);
+  clauses.clear();
+  CClause clause(var);
+  clauses.push_back(clause);
 }
 
 /**
@@ -68,17 +68,17 @@ Clauses::Clauses() { clauses.clear(); }
  * @return     The result of the negation operation on the set of clauses
  */
 Clauses Clauses::operator~() {
-    if (clauses.size() == 0) {
-        CClause clause;
-        return Clauses(clause);
-    }
-    Clauses negationClause(~(clauses[0]));
-    for (int i = 1; i < clauses.size(); i++) {
-        std::vector<CClause> negationClauseVector = ~(clauses[i]);
-        Clauses negationThisClause(negationClauseVector);
-        negationClause = (negationClause | negationThisClause);
-    }
-    return negationClause;
+  if (clauses.size() == 0) {
+    CClause clause;
+    return Clauses(clause);
+  }
+  Clauses negationClause(~(clauses[0]));
+  for (int i = 1; i < clauses.size(); i++) {
+    std::vector<CClause> negationClauseVector = ~(clauses[i]);
+    Clauses negationThisClause(negationClauseVector);
+    negationClause = (negationClause | negationThisClause);
+  }
+  return negationClause;
 }
 
 /**
@@ -95,12 +95,12 @@ Clauses Clauses::operator~() {
  * @return     A Clauses object with the result of the AND operation
  */
 Clauses Clauses::operator&(const Clauses &other) {
-    std::vector<CClause> thisClauses = clauses;
-    std::vector<CClause> otherClauses = other.clauses;
-    thisClauses.insert(std::end(thisClauses), std::begin(otherClauses),
-                       std::end(otherClauses));
-    Clauses result(thisClauses);
-    return result;
+  std::vector<CClause> thisClauses = clauses;
+  std::vector<CClause> otherClauses = other.clauses;
+  thisClauses.insert(std::end(thisClauses), std::begin(otherClauses),
+                     std::end(otherClauses));
+  Clauses result(thisClauses);
+  return result;
 }
 
 /**
@@ -112,8 +112,8 @@ Clauses Clauses::operator&(const Clauses &other) {
  * @return     A Clauses object with the result of the AND operation
  */
 Clauses Clauses::operator&(const CClause &other) {
-    Clauses otherClauses(other);
-    return operator&(otherClauses);
+  Clauses otherClauses(other);
+  return operator&(otherClauses);
 }
 
 /**
@@ -129,9 +129,9 @@ Clauses Clauses::operator&(const CClause &other) {
  * formula.
  *
  * Following is a example with auxiliary variables.
- * ((a1 | a2 | a3 | a4) & (a5 | a6 | ...) & ...) | ((b1 | b2 | b3 | b4) & (b5 | ...) & ...)
- * # Add the following as hard clauses
- * ~x | c1 (c1 is auxiliary variable for (a1 | a2 | a3 | a4))
+ * ((a1 | a2 | a3 | a4) & (a5 | a6 | ...) & ...) | ((b1 | b2 | b3 | b4) & (b5 |
+ * ...) & ...) # Add the following as hard clauses ~x | c1 (c1 is auxiliary
+ * variable for (a1 | a2 | a3 | a4))
  * ...
  * x | ~c1 | c2 | ...
  * ~c1 | a1 | a2 | a3 | a4
@@ -146,57 +146,58 @@ Clauses Clauses::operator&(const CClause &other) {
  * @return     A Clauses object with the result of the OR operation
  */
 Clauses Clauses::operator|(const Clauses &other) {
-    if (other.getClauses().size() == 0) {
-        Clauses result = other;
-        return result;
-    }
-    // x and y are auxiliary variables for the sets of the clauses that are being disjunctioned
-    Lit x = timeTabler->newLiteral();
-    Lit y = timeTabler->newLiteral();
-    Clauses result(CClause(x) | CClause(y));
-    vec<Lit> xrep;
-    xrep.push(x);
-    vec<Lit> yrep;
-    yrep.push(y);
-    for (int i=0; i<clauses.size(); i++) {
-        // c1 is the auxiliary variable for a ith clause
-        Lit c1 = timeTabler->newLiteral();
-        xrep.push(~c1);
-        vec<Lit> clause;
-        clause.push(c1);
-        clause.push(~x);
-        timeTabler->addToFormula(clause, -1);
-        CClause c1rep(~c1);
-        for (int j=0; j<clauses[i].getLits().size(); j++) {
-            c1rep.addLits(clauses[i].getLits()[j]);
-            vec<Lit> clause;
-            clause.push(c1);
-            clause.push(~clauses[i].getLits()[j]);
-            timeTabler->addToFormula(clause, -1);
-        }
-        timeTabler->addClauses(c1rep, -1);
-    }
-    for (int i=0; i<other.clauses.size(); i++) {
-        // c1 is the auxiliary variable for a ith clause
-        Lit c1 = timeTabler->newLiteral();
-        yrep.push(~c1);
-        vec<Lit> clause;
-        clause.push(c1);
-        clause.push(~y);
-        timeTabler->addToFormula(clause, -1);
-        CClause c1rep(~c1);
-        for (int j=0; j<other.clauses[i].getLits().size(); j++) {
-            c1rep.addLits(other.clauses[i].getLits()[j]);
-            vec<Lit> clause;
-            clause.push(c1);
-            clause.push(~other.clauses[i].getLits()[j]);
-            timeTabler->addToFormula(clause, -1);
-        }
-        timeTabler->addClauses(c1rep, -1);
-    }
-    timeTabler->addToFormula(xrep, -1);
-    timeTabler->addToFormula(yrep, -1);
+  if (other.getClauses().size() == 0) {
+    Clauses result = other;
     return result;
+  }
+  // x and y are auxiliary variables for the sets of the clauses that are being
+  // disjunctioned
+  Lit x = timetabler->newLiteral();
+  Lit y = timetabler->newLiteral();
+  Clauses result(CClause(x) | CClause(y));
+  vec<Lit> xrep;
+  xrep.push(x);
+  vec<Lit> yrep;
+  yrep.push(y);
+  for (int i = 0; i < clauses.size(); i++) {
+    // c1 is the auxiliary variable for a ith clause
+    Lit c1 = timetabler->newLiteral();
+    xrep.push(~c1);
+    vec<Lit> clause;
+    clause.push(c1);
+    clause.push(~x);
+    timetabler->addToFormula(clause, -1);
+    CClause c1rep(~c1);
+    for (int j = 0; j < clauses[i].getLits().size(); j++) {
+      c1rep.addLits(clauses[i].getLits()[j]);
+      vec<Lit> clause;
+      clause.push(c1);
+      clause.push(~clauses[i].getLits()[j]);
+      timetabler->addToFormula(clause, -1);
+    }
+    timetabler->addClauses(c1rep, -1);
+  }
+  for (int i = 0; i < other.clauses.size(); i++) {
+    // c1 is the auxiliary variable for a ith clause
+    Lit c1 = timetabler->newLiteral();
+    yrep.push(~c1);
+    vec<Lit> clause;
+    clause.push(c1);
+    clause.push(~y);
+    timetabler->addToFormula(clause, -1);
+    CClause c1rep(~c1);
+    for (int j = 0; j < other.clauses[i].getLits().size(); j++) {
+      c1rep.addLits(other.clauses[i].getLits()[j]);
+      vec<Lit> clause;
+      clause.push(c1);
+      clause.push(~other.clauses[i].getLits()[j]);
+      timetabler->addToFormula(clause, -1);
+    }
+    timetabler->addClauses(c1rep, -1);
+  }
+  timetabler->addToFormula(xrep, -1);
+  timetabler->addToFormula(yrep, -1);
+  return result;
 }
 
 /**
@@ -208,8 +209,8 @@ Clauses Clauses::operator|(const Clauses &other) {
  * @return     A Clauses object with the result of the OR operation
  */
 Clauses Clauses::operator|(const CClause &other) {
-    Clauses otherClauses(other);
-    return operator|(otherClauses);
+  Clauses otherClauses(other);
+  return operator|(otherClauses);
 }
 
 /**
@@ -224,8 +225,8 @@ Clauses Clauses::operator|(const CClause &other) {
  * @return     A Clauses object with the result of the implication operation
  */
 Clauses Clauses::operator>>(const Clauses &other) {
-    Clauses negateThis = operator~();
-    return (negateThis | other);
+  Clauses negateThis = operator~();
+  return (negateThis | other);
 }
 
 /**
@@ -241,7 +242,7 @@ void Clauses::addClauses(const CClause &other) { clauses.push_back(other); }
  * @param[in]  other  The CClause vector to append
  */
 void Clauses::addClauses(const std::vector<CClause> &other) {
-    clauses.insert(std::end(clauses), std::begin(other), std::end(other));
+  clauses.insert(std::end(clauses), std::begin(other), std::end(other));
 }
 
 /**
@@ -250,8 +251,8 @@ void Clauses::addClauses(const std::vector<CClause> &other) {
  * @param[in]  other  The Clauses object whose clauses are to be added
  */
 void Clauses::addClauses(const Clauses &other) {
-    std::vector<CClause> otherClauses = other.getClauses();
-    addClauses(otherClauses);
+  std::vector<CClause> otherClauses = other.getClauses();
+  addClauses(otherClauses);
 }
 
 /**
@@ -265,10 +266,10 @@ std::vector<CClause> Clauses::getClauses() const { return clauses; }
  * @brief      Displays the clauses in this object.
  */
 void Clauses::print() {
-    for (CClause c : clauses) {
-        c.printClause();
-    }
-    std::cout << std::endl;
+  for (CClause c : clauses) {
+    c.printClause();
+  }
+  std::cout << std::endl;
 }
 
 /**

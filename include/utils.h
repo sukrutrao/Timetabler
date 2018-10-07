@@ -3,11 +3,11 @@
 #ifndef UTILS_H
 #define UTILS_H
 
+#include <string>
+#include <vector>
 #include "data.h"
 #include "global.h"
 #include "mtl/Vec.h"
-#include <string>
-#include <vector>
 
 using namespace NSPACE;
 
@@ -22,12 +22,13 @@ namespace Utils {
  *
  * @return     The resultant vec
  */
-template <typename T> vec<T> convertVectorToVec(std::vector<T> inputs) {
-    vec<T> result(inputs.size());
-    for (int i = 0; i < inputs.size(); i++) {
-        result[i] = inputs[i];
-    }
-    return result;
+template <typename T>
+vec<T> convertVectorToVec(std::vector<T> inputs) {
+  vec<T> result(inputs.size());
+  for (int i = 0; i < inputs.size(); i++) {
+    result[i] = inputs[i];
+  }
+  return result;
 }
 
 /**
@@ -39,12 +40,13 @@ template <typename T> vec<T> convertVectorToVec(std::vector<T> inputs) {
  *
  * @return     The resultant vector
  */
-template <typename T> std::vector<T> convertVecToVector(vec<T> inputs) {
-    std::vector<T> result(inputs.size());
-    for (int i = 0; i < inputs.size(); i++) {
-        result[i] = inputs[i];
-    }
-    return result;
+template <typename T>
+std::vector<T> convertVecToVector(vec<T> inputs) {
+  std::vector<T> result(inputs.size());
+  for (int i = 0; i < inputs.size(); i++) {
+    result[i] = inputs[i];
+  }
+  return result;
 }
 
 /**
@@ -57,12 +59,13 @@ template <typename T> std::vector<T> convertVecToVector(vec<T> inputs) {
  *
  * @return     The resultant vector
  */
-template <typename T> std::vector<T> convertVecDataToVector(T *data, int size) {
-    std::vector<T> result(size);
-    for (int i = 0; i < size; i++) {
-        result[i] = data[i];
-    }
-    return result;
+template <typename T>
+std::vector<T> convertVecDataToVector(T *data, int size) {
+  std::vector<T> result(size);
+  for (int i = 0; i < size; i++) {
+    result[i] = data[i];
+  }
+  return result;
 }
 
 /**
@@ -78,12 +81,12 @@ template <typename T> std::vector<T> convertVecDataToVector(T *data, int size) {
  */
 template <typename T>
 std::vector<T> flattenVector(std::vector<std::vector<T>> inputs) {
-    std::vector<T> result;
-    result.clear();
-    for (int i = 0; i < inputs.size(); i++) {
-        result.insert(result.end(), inputs[i].begin(), inputs[i].end());
-    }
-    return result;
+  std::vector<T> result;
+  result.clear();
+  for (int i = 0; i < inputs.size(); i++) {
+    result.insert(result.end(), inputs[i].begin(), inputs[i].end());
+  }
+  return result;
 }
 
 /**
@@ -99,13 +102,13 @@ std::vector<T> flattenVector(std::vector<std::vector<T>> inputs) {
  */
 template <typename T>
 std::vector<T> flattenVector(std::vector<std::vector<std::vector<T>>> inputs) {
-    std::vector<T> result;
-    result.clear();
-    for (int i = 0; i < inputs.size(); i++) {
-        std::vector<T> nextInsert = flattenVector<T>(inputs[i]);
-        result.insert(result.end(), nextInsert.begin(), nextInsert.end());
-    }
-    return result;
+  std::vector<T> result;
+  result.clear();
+  for (int i = 0; i < inputs.size(); i++) {
+    std::vector<T> nextInsert = flattenVector<T>(inputs[i]);
+    result.insert(result.end(), nextInsert.begin(), nextInsert.end());
+  }
+  return result;
 }
 
 std::string getFieldTypeName(FieldType fieldType);
@@ -113,6 +116,6 @@ std::string getPredefinedConstraintName(PredefinedClauses clauseType);
 
 std::string getFieldName(FieldType fieldType, int index, Data &data);
 
-} // namespace Utils
+}  // namespace Utils
 
 #endif

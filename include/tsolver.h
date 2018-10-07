@@ -3,10 +3,10 @@
 #ifndef TSOLVER_H
 #define TSOLVER_H
 
+#include <vector>
 #include "MaxSAT.h"
 #include "algorithms/Alg_OLL.h"
 #include "mtl/Vec.h"
-#include <vector>
 
 using namespace NSPACE;
 using namespace openwbo;
@@ -23,10 +23,10 @@ using namespace openwbo;
  * terminates, it simply returns.
  */
 class TSolver : public OLL {
-  public:
-    TSolver(int, int);
-    std::vector<lbool> tSearch();
-    void tWeighted();
+ public:
+  TSolver(int, int);
+  std::vector<lbool> tSearch();
+  void tWeighted();
 };
 
 #endif

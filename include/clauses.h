@@ -3,9 +3,9 @@
 #ifndef CLAUSES_H
 #define CLAUSES_H
 
+#include <vector>
 #include "cclause.h"
 #include "time_tabler.h"
-#include <vector>
 
 using namespace NSPACE;
 
@@ -21,30 +21,30 @@ class CClause;
  * are always maintained in the CNF form.
  */
 class Clauses {
-  private:
-    /**
-     * The clauses, each a CClause member object, in this set of Clauses
-     */
-    std::vector<CClause> clauses;
+ private:
+  /**
+   * The clauses, each a CClause member object, in this set of Clauses
+   */
+  std::vector<CClause> clauses;
 
-  public:
-    Clauses(const std::vector<CClause> &);
-    Clauses(const CClause &);
-    Clauses(const Lit &);
-    Clauses(const Var &);
-    Clauses();
-    Clauses operator~();
-    Clauses operator&(const Clauses &);
-    Clauses operator&(const CClause &);
-    Clauses operator|(const Clauses &);
-    Clauses operator|(const CClause &);
-    Clauses operator>>(const Clauses &);
-    void addClauses(const CClause &);
-    void addClauses(const std::vector<CClause> &);
-    void addClauses(const Clauses &);
-    std::vector<CClause> getClauses() const;
-    void print();
-    void clear();
+ public:
+  Clauses(const std::vector<CClause> &);
+  Clauses(const CClause &);
+  Clauses(const Lit &);
+  Clauses(const Var &);
+  Clauses();
+  Clauses operator~();
+  Clauses operator&(const Clauses &);
+  Clauses operator&(const CClause &);
+  Clauses operator|(const Clauses &);
+  Clauses operator|(const CClause &);
+  Clauses operator>>(const Clauses &);
+  void addClauses(const CClause &);
+  void addClauses(const std::vector<CClause> &);
+  void addClauses(const Clauses &);
+  std::vector<CClause> getClauses() const;
+  void print();
+  void clear();
 };
 
 #endif
