@@ -22,16 +22,18 @@ weights: # Assignment, high level
 
 predefined_weights:
   - clause: 0
-    weight: -1
-  - clause: 3
-    weight: 1
+    weight: 0
 
 instructors:
-  - Dr. Saurabh Joshi
-  - Dr. Ramakrishna Upadrasta
+  - A
+  - B
 
 classrooms:
-  - number: 414
+  - number: CL1
+    size: 50
+  - number: CL2
+    size: 50
+  - number: CL3
     size: 50
 
 segments:
@@ -49,9 +51,21 @@ slots:
         start: 14:30
         end: 16:00
   - name: B
-    is_minor: true
+    is_minor: false
     time_periods:
       - day: Tuesday
+        start: 10:00
+        end: 11:00
+  - name: C
+    is_minor: false
+    time_periods:
+      - day: Thursday
+        start: 10:00
+        end: 11:00
+  - name: D
+    is_minor: false
+    time_periods:
+      - day: Friday
         start: 10:00
         end: 11:00
 
