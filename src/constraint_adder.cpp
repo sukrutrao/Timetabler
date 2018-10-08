@@ -1,13 +1,13 @@
 #include "constraint_adder.h"
 
-#include <iostream>
-#include <vector>
 #include "clauses.h"
 #include "constraint_encoder.h"
 #include "core/SolverTypes.h"
 #include "global.h"
 #include "time_tabler.h"
 #include "utils.h"
+#include <iostream>
+#include <vector>
 
 using namespace NSPACE;
 
@@ -164,6 +164,13 @@ Clauses ConstraintAdder::exactlyOneFieldValuePerCourse(FieldType fieldType) {
   return result;
 }
 
+/**
+ * @brief      Adds a single predefined constraint to the solver.
+ *
+ * @param[in]  clauseType  The PredefinedClauses member denoting the constraint
+ * type
+ * @param[in]  clauses     The clauses to be added
+ */
 void ConstraintAdder::addSingleConstraint(PredefinedClauses clauseType,
                                           const Clauses &clauses) {
   Clauses hardConsequent =
