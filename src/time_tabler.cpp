@@ -1,9 +1,5 @@
 #include "time_tabler.h"
 
-#include <cstdlib>
-#include <fstream>
-#include <iostream>
-#include <vector>
 #include "MaxSATFormula.h"
 #include "cclause.h"
 #include "clauses.h"
@@ -11,6 +7,10 @@
 #include "mtl/Vec.h"
 #include "tsolver.h"
 #include "utils.h"
+#include <cstdlib>
+#include <fstream>
+#include <iostream>
+#include <vector>
 
 using namespace NSPACE;
 
@@ -305,21 +305,24 @@ void Timetabler::writeOutput(std::string fileName) {
     for (int j = 0; j < data.fieldValueVars[i][FieldType::instructor].size();
          j++) {
       if (isVarTrue(data.fieldValueVars[i][FieldType::instructor][j])) {
-        fileObject << data.instructors[j].getName() << ",";
+        fileObject << data.instructors[j].getName();
       }
     }
+    fileObject << ",";
     for (int j = 0; j < data.fieldValueVars[i][FieldType::segment].size();
          j++) {
       if (isVarTrue(data.fieldValueVars[i][FieldType::segment][j])) {
-        fileObject << data.segments[j].getName() << ",";
+        fileObject << data.segments[j].getName();
       }
     }
+    fileObject << ",";
     for (int j = 0; j < data.fieldValueVars[i][FieldType::isMinor].size();
          j++) {
       if (isVarTrue(data.fieldValueVars[i][FieldType::isMinor][j])) {
-        fileObject << data.isMinors[j].getName() << ",";
+        fileObject << data.isMinors[j].getName();
       }
     }
+    fileObject << ",";
     for (int j = 0; j < data.fieldValueVars[i][FieldType::program].size();
          j += 2) {
       if (isVarTrue(data.fieldValueVars[i][FieldType::program][j])) {
@@ -333,9 +336,10 @@ void Timetabler::writeOutput(std::string fileName) {
     for (int j = 0; j < data.fieldValueVars[i][FieldType::classroom].size();
          j++) {
       if (isVarTrue(data.fieldValueVars[i][FieldType::classroom][j])) {
-        fileObject << data.classrooms[j].getName() << ",";
+        fileObject << data.classrooms[j].getName();
       }
     }
+    fileObject << ",";
     for (int j = 0; j < data.fieldValueVars[i][FieldType::slot].size(); j++) {
       if (isVarTrue(data.fieldValueVars[i][FieldType::slot][j])) {
         fileObject << data.slots[j].getName();
