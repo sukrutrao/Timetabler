@@ -139,7 +139,9 @@ SolverStatus Timetabler::solve() {
   if (model.size() == 0) {
     return SolverStatus::Unsolved;
   }
-  if (checkAllTrue(Utils::flattenVector<Var>(data.highLevelVars))) {
+  if (checkAllTrue(Utils::flattenVector<Var>(data.highLevelVars)) &&
+      checkAllTrue(data.predefinedConstraintVars) &&
+      checkAllTrue(data.customConstraintVars)) {
     return SolverStatus::Solved;
   }
   return SolverStatus::HighLevelFailed;
@@ -219,6 +221,7 @@ void Timetabler::printResult(SolverStatus status) {
   } else if (status == SolverStatus::HighLevelFailed) {
     std::cout << "Some high level clauses were not satisfied" << std::endl;
     displayUnsatisfiedOutputReasons();
+    displayChangesInGivenAssignment();
   } else {
     std::cout << "Not Solved" << std::endl;
   }
