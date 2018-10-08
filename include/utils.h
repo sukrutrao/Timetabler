@@ -112,6 +112,7 @@ std::vector<T> flattenVector(std::vector<std::vector<std::vector<T>>> inputs) {
 }
 
 std::string getFieldTypeName(FieldType fieldType);
+std::string getPredefinedConstraintName(PredefinedClauses clauseType);
 
 std::string getFieldName(FieldType fieldType, int index, Data &data);
 

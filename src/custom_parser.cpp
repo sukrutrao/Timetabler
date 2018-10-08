@@ -649,7 +649,14 @@ template <>
 struct action<wconstraint> {
   template <typename Input>
   static void apply(const Input &in, Object &obj) {
-    obj.timetabler->addClauses(obj.constraint, obj.integer);
+    obj.timetabler->data.customConstraintVars.push_back(
+        obj.timetabler->newVar());
+    int index = obj.timetabler->data.customConstraintVars.size() - 1;
+    Clauses hardConsequent =
+        CClause(obj.timetabler->data.customConstraintVars[index]) >>
+        obj.constraint;
+    obj.timetabler->addClauses(hardConsequent, -1);
+    obj.timetabler->addHighLevelCustomConstraintClauses(index, obj.integer);
   }
 };
 

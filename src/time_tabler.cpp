@@ -26,8 +26,8 @@ Timetabler::Timetabler() {
 /**
  * @brief      Adds clauses to the solver with specified weights.
  *
- * A negative weight implies that the clauses are had, and a zero weight implies
- * that the clauses are not added to the solver.
+ * A negative weight implies that the clauses are hard, and a zero weight
+ * implies that the clauses are not added to the solver.
  *
  * @param[in]  clauses  The clauses
  * @param[in]  weight   The weight
@@ -56,6 +56,16 @@ void Timetabler::addHighLevelClauses() {
       addToFormula(highLevelClause, data.highLevelVarWeights[i]);
     }
   }
+}
+
+void Timetabler::addHighLevelConstraintClauses(PredefinedClauses clauseType) {
+  Lit l = mkLit(data.predefinedConstraintVars[clauseType], false);
+  addToFormula(l, data.predefinedClausesWeights[clauseType]);
+}
+
+void Timetabler::addHighLevelCustomConstraintClauses(int index, int weight) {
+  Lit l = mkLit(data.customConstraintVars[index], false);
+  addToFormula(l, weight);
 }
 
 /**
@@ -97,6 +107,12 @@ void Timetabler::addToFormula(vec<Lit> &input, int weight) {
   } else if (weight > 0) {
     formula->addSoftClause(weight, input);
   }
+}
+
+void Timetabler::addToFormula(Lit input, int weight) {
+  vec<Lit> inputLits;
+  inputLits.push(input);
+  addToFormula(inputLits, weight);
 }
 
 /**
@@ -362,6 +378,20 @@ void Timetabler::displayUnsatisfiedOutputReasons() {
         std::cout << " of Course : " << data.courses[i].getName();
         std::cout << " could not be satisfied" << std::endl;
       }
+    }
+  }
+  for (int i = 0; i < data.predefinedConstraintVars.size(); i++) {
+    if (!isVarTrue(data.predefinedConstraintVars[i]) &&
+        data.predefinedClausesWeights[i] != 0) {
+      std::cout << "Predefined Constraint : "
+                << Utils::getPredefinedConstraintName(PredefinedClauses(i))
+                << " could not be satisfied" << std::endl;
+    }
+  }
+  for (int i = 0; i < data.customConstraintVars.size(); i++) {
+    if (!isVarTrue(data.customConstraintVars[i])) {
+      std::cout << "Custom Constraint : " << i + 1 << " could not be satisfied"
+                << std::endl;
     }
   }
 }

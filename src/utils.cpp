@@ -24,6 +24,31 @@ std::string getFieldTypeName(FieldType fieldType) {
   return "Invalid Type";
 }
 
+std::string getPredefinedConstraintName(PredefinedClauses clauseType) {
+  if (clauseType == instructorSingleCourseAtATime)
+    return "instructorSingleCourseAtATime";
+  if (clauseType == classroomSingleCourseAtATime)
+    return "classroomSingleCourseAtATime";
+  if (clauseType == programSingleCoreCourseAtATime)
+    return "programSingleCoreCourseAtATime";
+  if (clauseType == minorInMinorTime) return "minorInMinorTime";
+  if (clauseType == exactlyOneSlotPerCourse) return "exactlyOneSlotPerCourse";
+  if (clauseType == exactlyOneInstructorPerCourse)
+    return "exactlyOneInstructorPerCourse";
+  if (clauseType == exactlyOneSegmentPerCourse)
+    return "exactlyOneSegmentPerCourse";
+  if (clauseType == exactlyOneIsMinorPerCourse)
+    return "exactlyOneIsMinorPerCourse";
+  if (clauseType == exactlyOneClassroomPerCourse)
+    return "exactlyOneClassroomPerCourse";
+  if (clauseType == coreInMorningTime) return "coreInMorningTime";
+  if (clauseType == electiveInNonMorningTime) return "electiveInNonMorningTime";
+  if (clauseType == programAtMostOneOfCoreOrElective)
+    return "programAtMostOneOfCoreOrElective";
+  assert(false && "Invalid predefined constraint type!");
+  return "Invalid Type";
+}
+
 /**
  * @brief      Gets the field name in the Data of a given FieldType at a
  *             given index
