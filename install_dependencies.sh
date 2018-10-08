@@ -55,6 +55,7 @@ cmake ..
 make
 cd ../..
 
+if [ "$1" = "--enable-tests" ]; then
 echo "Getting GoogleTest..."
 if [ ! -d googletest-release-1.8.1 ] ; then
   wget https://github.com/google/googletest/archive/release-1.8.1.tar.gz
@@ -69,6 +70,7 @@ echo "Building GooglTest..."
 cmake ..
 make
 cd ../..
+fi
 
 echo "All dependencies installed."
 cd ..

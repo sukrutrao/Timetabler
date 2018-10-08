@@ -11,7 +11,7 @@ before_install:
 script:
     - export PATH=/usr/local/bin:$PATH
     - cmake --version
-    - ./install_dependencies.sh
+    - ./install_dependencies.sh --enable-tests
     - mkdir build
     - cd build
     - cmake ..
