@@ -58,11 +58,31 @@ void Timetabler::addHighLevelClauses() {
   }
 }
 
+/**
+ * @brief      Adds high level clauses for predefined constraints.
+ *
+ * For each predefined constraint C, a variable x is created, and a hard clause
+ * x->C is added to the solver. A unit clause with x is added as a soft clause
+ * with weight as specified for the constraint.
+ *
+ * @param[in]  clauseType  The clause type
+ */
 void Timetabler::addHighLevelConstraintClauses(PredefinedClauses clauseType) {
   Lit l = mkLit(data.predefinedConstraintVars[clauseType], false);
   addToFormula(l, data.predefinedClausesWeights[clauseType]);
 }
 
+/**
+ * @brief      Adds high level custom constraint clauses.
+ *
+ * For each custom constraint C, a variable x is created, and a hard clause x->C
+ * is added to the solver. A unit clause with x is added as a soft clause with
+ * weight as specified for the constraint.
+ *
+ *
+ * @param[in]  index   The index of the custom constraint variable
+ * @param[in]  weight  The weight of the custom constraint
+ */
 void Timetabler::addHighLevelCustomConstraintClauses(int index, int weight) {
   Lit l = mkLit(data.customConstraintVars[index], false);
   addToFormula(l, weight);
@@ -109,6 +129,12 @@ void Timetabler::addToFormula(vec<Lit> &input, int weight) {
   }
 }
 
+/**
+ * @brief      Add single literal to the formula.
+ *
+ * @param[in]  input   The input
+ * @param[in]  weight  The weight
+ */
 void Timetabler::addToFormula(Lit input, int weight) {
   vec<Lit> inputLits;
   inputLits.push(input);
