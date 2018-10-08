@@ -145,6 +145,16 @@ struct action<programstr> {
 };
 
 /**
+ * @brief      Parse "UNBUNDLE"
+ */
+struct unbundlestr : TAO_PEGTL_KEYWORD("UNBUNDLE") {};
+
+/**
+ * @brief      Parse "WEIGHT"
+ */
+struct weightstr : TAO_PEGTL_KEYWORD("WEIGHT") {};
+
+/**
  * @brief      Constraint is on one of the instructor, segment, isminor,
  * program. isNot, classSame, slotSame, classNotSame, slotNotSame are reset.
  */
@@ -638,13 +648,64 @@ struct action<constraint_or> {
 };
 
 /**
+ * @brief      Parse a constraint with unbundle keyword
+ */
+struct constraint_unbundle
+    : pegtl::seq<coursedecl, pegtl::pad<unbundlestr, pegtl::space>, fielddecls,
+                 pegtl::opt<notstr>, pegtl::pad<instr, pegtl::space>, decl,
+                 pegtl::pad<weightstr, pegtl::space>,
+                 pegtl::pad<integer, pegtl::space>> {};
+template <>
+struct action<constraint_unbundle> {
+  template <typename Input>
+  static void apply(const Input &in, Object &obj) {
+    std::cout << "UNBUNDLED" << std::endl;
+    if (obj.courseExcept) {
+      std::vector<int> courseVals;
+      for (int i = 0; i < obj.timetabler->data.courses.size(); i++) {
+        if (std::find(obj.courseValues.begin(), obj.courseValues.end(), i) ==
+            obj.courseValues.end()) {
+          courseVals.push_back(i);
+        }
+      }
+      obj.courseValues = courseVals;
+    }
+    for (int i = 0; i < obj.courseValues.size(); i++) {
+      int course = obj.courseValues[i];
+      Clauses ante, cons, clause;
+      ante = makeAntecedent(obj, course);
+      cons = makeConsequent(obj, course, i);
+      if (obj.isNot) {
+        cons = ~cons;
+      }
+      clause = ante >> cons;
+      obj.constraint = clause;
+      obj.timetabler->data.customConstraintVars.push_back(
+          obj.timetabler->newVar());
+      int index = obj.timetabler->data.customConstraintVars.size() - 1;
+      Clauses hardConsequent =
+          CClause(obj.timetabler->data.customConstraintVars[index]) >>
+          obj.constraint;
+      obj.timetabler->addClauses(hardConsequent, -1);
+      obj.timetabler->addHighLevelCustomConstraintClauses(index, obj.integer);
+    }
+    obj.courseValues.clear();
+    obj.instructorValues.clear();
+    obj.isMinorValues.clear();
+    obj.programValues.clear();
+    obj.segmentValues.clear();
+    obj.classValues.clear();
+    obj.slotValues.clear();
+  }
+};
+
+/**
  * @brief      Parse weighted constraint
  * Add the clauses corresponding to the constraint along with its weight
  */
-struct wconstraint
-    : pegtl::seq<pegtl::pad<constraint_or, pegtl::space>,
-                 pegtl::pad<TAO_PEGTL_KEYWORD("WEIGHT"), pegtl::space>,
-                 pegtl::pad<integer, pegtl::space>> {};
+struct wconstraint : pegtl::seq<pegtl::pad<constraint_or, pegtl::space>,
+                                pegtl::pad<weightstr, pegtl::space>,
+                                pegtl::pad<integer, pegtl::space>> {};
 template <>
 struct action<wconstraint> {
   template <typename Input>
@@ -664,7 +725,9 @@ struct action<wconstraint> {
  * @brief      Parse constraints from the file, generate error on failure
  */
 struct grammar
-    : pegtl::try_catch<pegtl::must<pegtl::star<wconstraint>, pegtl::eof>> {};
+    : pegtl::try_catch<
+          pegtl::must<pegtl::star<pegtl::sor<wconstraint, constraint_unbundle>>,
+                      pegtl::eof>> {};
 
 template <typename Rule>
 struct control : pegtl::normal<Rule> {
