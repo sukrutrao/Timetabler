@@ -400,6 +400,13 @@ struct action<courseexceptdecl> {
  * @brief      Parse courses
  */
 struct coursedecl : pegtl::sor<coursenoexceptdecl, courseexceptdecl> {};
+template <>
+struct action<coursedecl> {
+  template <typename Input>
+  static void apply(const Input &in, Object &obj) {
+    obj.isNot = false;
+  }
+};
 
 /**
  * @brief      Parse single decl in consequent of the constraint
