@@ -48,7 +48,7 @@ $ ./install_dependencies.sh
 
 If building with tests, use instead
 ```bash
-$ ./install_dependencies.sh --include-test
+$ ./install_dependencies.sh --enable-tests
 ```
 
 If the above command fails, you can try installing the individual dependencies manually by following the instructions below.
@@ -126,7 +126,7 @@ $ make timetabler
 * To run tests
 ```bash
 $ make tests # Build tests
-$ make test # Run test
+$ make test # Run tests
 ```
 * Install
 ```bash
