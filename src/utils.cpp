@@ -41,29 +41,29 @@ std::string getFieldTypeName(FieldType fieldType) {
  * @return     The predefined constraint name.
  */
 std::string getPredefinedConstraintName(PredefinedClauses clauseType) {
-  if (clauseType == instructorSingleCourseAtATime)
+  if (clauseType == PredefinedClauses::instructorSingleCourseAtATime)
     return "instructorSingleCourseAtATime";
-  if (clauseType == classroomSingleCourseAtATime)
+  if (clauseType == PredefinedClauses::classroomSingleCourseAtATime)
     return "classroomSingleCourseAtATime";
-  if (clauseType == programSingleCoreCourseAtATime)
+  if (clauseType == PredefinedClauses::programSingleCoreCourseAtATime)
     return "programSingleCoreCourseAtATime";
-  if (clauseType == minorInMinorTime)
+  if (clauseType == PredefinedClauses::minorInMinorTime)
     return "minorInMinorTime";
-  if (clauseType == exactlyOneSlotPerCourse)
+  if (clauseType == PredefinedClauses::exactlyOneSlotPerCourse)
     return "exactlyOneSlotPerCourse";
-  if (clauseType == exactlyOneInstructorPerCourse)
+  if (clauseType == PredefinedClauses::exactlyOneInstructorPerCourse)
     return "exactlyOneInstructorPerCourse";
-  if (clauseType == exactlyOneSegmentPerCourse)
+  if (clauseType == PredefinedClauses::exactlyOneSegmentPerCourse)
     return "exactlyOneSegmentPerCourse";
-  if (clauseType == exactlyOneIsMinorPerCourse)
+  if (clauseType == PredefinedClauses::exactlyOneIsMinorPerCourse)
     return "exactlyOneIsMinorPerCourse";
-  if (clauseType == exactlyOneClassroomPerCourse)
+  if (clauseType == PredefinedClauses::exactlyOneClassroomPerCourse)
     return "exactlyOneClassroomPerCourse";
-  if (clauseType == coreInMorningTime)
+  if (clauseType == PredefinedClauses::coreInMorningTime)
     return "coreInMorningTime";
-  if (clauseType == electiveInNonMorningTime)
+  if (clauseType == PredefinedClauses::electiveInNonMorningTime)
     return "electiveInNonMorningTime";
-  if (clauseType == programAtMostOneOfCoreOrElective)
+  if (clauseType == PredefinedClauses::programAtMostOneOfCoreOrElective)
     return "programAtMostOneOfCoreOrElective";
   assert(false && "Invalid predefined constraint type!");
   return "Invalid Type";
