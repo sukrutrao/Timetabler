@@ -3,7 +3,7 @@ set(CMAKE_CXX_STANDARD 11)
 project(Timetabler)
 
 set(Timetabler_VERSION_MAJOR 0)
-set(Timetabler_VERSION_MINOR 2)
+set(Timetabler_VERSION_MINOR 3)
 set(Timetabler_VERSION_PATCH 0)
 set(CMAKE_BUILD_TYPE Release)
 
