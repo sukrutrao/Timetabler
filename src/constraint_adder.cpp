@@ -40,8 +40,8 @@ Clauses ConstraintAdder::fieldSingleValueAtATime(FieldType fieldType) {
   Clauses result;
   result.clear();
   std::vector<Course> courses = timetabler->data.courses;
-  for (int i = 0; i < courses.size(); i++) {
-    for (int j = i + 1; j < courses.size(); j++) {
+  for (unsigned i = 0; i < courses.size(); i++) {
+    for (unsigned j = i + 1; j < courses.size(); j++) {
       /*
        * For every pair of courses, either the field value of the
        * FieldType is different or their times do not intersect
@@ -94,8 +94,8 @@ Clauses ConstraintAdder::programSingleCoreCourseAtATime() {
   Clauses result;
   result.clear();
   std::vector<Course> courses = timetabler->data.courses;
-  for (int i = 0; i < courses.size(); i++) {
-    for (int j = i + 1; j < courses.size(); j++) {
+  for (unsigned i = 0; i < courses.size(); i++) {
+    for (unsigned j = i + 1; j < courses.size(); j++) {
       /*
        * For every pair of courses, either there is no Program for which
        * they are both core or their times do not intersect
@@ -120,7 +120,7 @@ Clauses ConstraintAdder::minorInMinorTime() {
   Clauses result;
   result.clear();
   std::vector<Course> courses = timetabler->data.courses;
-  for (int i = 0; i < courses.size(); i++) {
+  for (unsigned i = 0; i < courses.size(); i++) {
     /*
      * a minor course must be in a minor Slot.
      * a non-minor course must not be in a minor Slot.
@@ -151,7 +151,7 @@ Clauses ConstraintAdder::exactlyOneFieldValuePerCourse(FieldType fieldType) {
   Clauses result;
   result.clear();
   std::vector<Course> courses = timetabler->data.courses;
-  for (int i = 0; i < courses.size(); i++) {
+  for (unsigned i = 0; i < courses.size(); i++) {
     // exactly one field value must be true
     Clauses exactlyOneFieldValue =
         encoder->hasExactlyOneFieldValueTrue(i, fieldType);
@@ -228,7 +228,7 @@ Clauses ConstraintAdder::coreInMorningTime() {
   Clauses result;
   result.clear();
   std::vector<Course> courses = timetabler->data.courses;
-  for (int i = 0; i < courses.size(); i++) {
+  for (unsigned i = 0; i < courses.size(); i++) {
     Clauses coreCourse = encoder->isCoreCourse(i);
     Clauses morningTime = encoder->courseInMorningTime(i);
     result.addClauses(coreCourse >> morningTime);
@@ -247,7 +247,7 @@ Clauses ConstraintAdder::electiveInNonMorningTime() {
   Clauses result;
   result.clear();
   std::vector<Course> courses = timetabler->data.courses;
-  for (int i = 0; i < courses.size(); i++) {
+  for (unsigned i = 0; i < courses.size(); i++) {
     Clauses coreCourse = encoder->isElectiveCourse(i);
     Clauses morningTime = encoder->courseInMorningTime(i);
     result.addClauses(coreCourse >> (~morningTime));
@@ -268,7 +268,7 @@ Clauses ConstraintAdder::programAtMostOneOfCoreOrElective() {
   Clauses result;
   result.clear();
   std::vector<Course> courses = timetabler->data.courses;
-  for (int i = 0; i < courses.size(); i++) {
+  for (unsigned i = 0; i < courses.size(); i++) {
     result.addClauses(encoder->programAtMostOneOfCoreOrElective(i));
   }
   return result;

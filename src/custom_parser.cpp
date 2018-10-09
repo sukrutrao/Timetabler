@@ -186,7 +186,7 @@ struct action<value> {
     std::string val = in.string();
     bool found = false;
     if (obj.fieldType == FieldValuesType::INSTRUCTOR) {
-      for (int i = 0; i < obj.timetabler->data.instructors.size(); i++) {
+      for (unsigned i = 0; i < obj.timetabler->data.instructors.size(); i++) {
         if (obj.timetabler->data.instructors[i].getName() == val) {
           found = true;
           obj.instructorValues.push_back(i);
@@ -199,7 +199,7 @@ struct action<value> {
       }
       found = false;
     } else if (obj.fieldType == FieldValuesType::COURSE) {
-      for (int i = 0; i < obj.timetabler->data.courses.size(); i++) {
+      for (unsigned i = 0; i < obj.timetabler->data.courses.size(); i++) {
         if (obj.timetabler->data.courses[i].getName() == val) {
           found = true;
           obj.courseValues.push_back(i);
@@ -212,7 +212,7 @@ struct action<value> {
       }
       found = false;
     } else if (obj.fieldType == FieldValuesType::SEGMENT) {
-      for (int i = 0; i < obj.timetabler->data.segments.size(); i++) {
+      for (unsigned i = 0; i < obj.timetabler->data.segments.size(); i++) {
         if (obj.timetabler->data.segments[i].getName() == val) {
           found = true;
           obj.segmentValues.push_back(i);
@@ -225,7 +225,7 @@ struct action<value> {
       }
       found = false;
     } else if (obj.fieldType == FieldValuesType::PROGRAM) {
-      for (int i = 0; i < obj.timetabler->data.programs.size(); i++) {
+      for (unsigned i = 0; i < obj.timetabler->data.programs.size(); i++) {
         if (obj.timetabler->data.programs[i].getNameWithType() == val) {
           found = true;
           obj.programValues.push_back(i);
@@ -238,7 +238,7 @@ struct action<value> {
       }
       found = false;
     } else if (obj.fieldType == FieldValuesType::ISMINOR) {
-      for (int i = 0; i < obj.timetabler->data.isMinors.size(); i++) {
+      for (unsigned i = 0; i < obj.timetabler->data.isMinors.size(); i++) {
         if (obj.timetabler->data.isMinors[i].getName() == val) {
           found = true;
           obj.isMinorValues.push_back(i);
@@ -251,7 +251,7 @@ struct action<value> {
       }
       found = false;
     } else if (obj.fieldType == FieldValuesType::CLASSROOM) {
-      for (int i = 0; i < obj.timetabler->data.classrooms.size(); i++) {
+      for (unsigned i = 0; i < obj.timetabler->data.classrooms.size(); i++) {
         if (obj.timetabler->data.classrooms[i].getName() == val) {
           found = true;
           obj.classValues.push_back(i);
@@ -264,7 +264,7 @@ struct action<value> {
       }
       found = false;
     } else if (obj.fieldType == FieldValuesType::SLOT) {
-      for (int i = 0; i < obj.timetabler->data.slots.size(); i++) {
+      for (unsigned i = 0; i < obj.timetabler->data.slots.size(); i++) {
         if (obj.timetabler->data.slots[i].getName() == val) {
           found = true;
           obj.slotValues.push_back(i);
@@ -290,31 +290,31 @@ struct action<allvalues> {
   static void apply(const Input &in, Object &obj) {
     std::string val = in.string();
     if (obj.fieldType == FieldValuesType::INSTRUCTOR) {
-      for (int i = 0; i < obj.timetabler->data.instructors.size(); i++) {
+      for (unsigned i = 0; i < obj.timetabler->data.instructors.size(); i++) {
         obj.instructorValues.push_back(i);
       }
     } else if (obj.fieldType == FieldValuesType::COURSE) {
-      for (int i = 0; i < obj.timetabler->data.courses.size(); i++) {
+      for (unsigned i = 0; i < obj.timetabler->data.courses.size(); i++) {
         obj.courseValues.push_back(i);
       }
     } else if (obj.fieldType == FieldValuesType::SEGMENT) {
-      for (int i = 0; i < obj.timetabler->data.segments.size(); i++) {
+      for (unsigned i = 0; i < obj.timetabler->data.segments.size(); i++) {
         obj.segmentValues.push_back(i);
       }
     } else if (obj.fieldType == FieldValuesType::PROGRAM) {
-      for (int i = 0; i < obj.timetabler->data.programs.size(); i++) {
+      for (unsigned i = 0; i < obj.timetabler->data.programs.size(); i++) {
         obj.programValues.push_back(i);
       }
     } else if (obj.fieldType == FieldValuesType::ISMINOR) {
-      for (int i = 0; i < obj.timetabler->data.isMinors.size(); i++) {
+      for (unsigned i = 0; i < obj.timetabler->data.isMinors.size(); i++) {
         obj.isMinorValues.push_back(i);
       }
     } else if (obj.fieldType == FieldValuesType::CLASSROOM) {
-      for (int i = 0; i < obj.timetabler->data.classrooms.size(); i++) {
+      for (unsigned i = 0; i < obj.timetabler->data.classrooms.size(); i++) {
         obj.classValues.push_back(i);
       }
     } else if (obj.fieldType == FieldValuesType::SLOT) {
-      for (int i = 0; i < obj.timetabler->data.slots.size(); i++) {
+      for (unsigned i = 0; i < obj.timetabler->data.slots.size(); i++) {
         obj.slotValues.push_back(i);
       }
     }
@@ -483,7 +483,7 @@ Clauses makeAntecedent(Object &obj, int course) {
 Clauses makeConsequent(Object &obj, int course, int i) {
   Clauses cons, clause;
   if (obj.classSame) {
-    for (int j = i + 1; j < obj.courseValues.size(); j++) {
+    for (unsigned j = i + 1; j < obj.courseValues.size(); j++) {
       Clauses a = makeAntecedent(obj, obj.courseValues[j]);
       Clauses b = obj.constraintEncoder->hasSameFieldTypeAndValue(
           course, obj.courseValues[j], FieldType::classroom);
@@ -492,7 +492,7 @@ Clauses makeConsequent(Object &obj, int course, int i) {
     }
   }
   if (obj.classNotSame) {
-    for (int j = i + 1; j < obj.courseValues.size(); j++) {
+    for (unsigned j = i + 1; j < obj.courseValues.size(); j++) {
       Clauses a = makeAntecedent(obj, obj.courseValues[j]);
       Clauses b = obj.constraintEncoder->hasSameFieldTypeAndValue(
           course, obj.courseValues[j], FieldType::classroom);
@@ -501,7 +501,7 @@ Clauses makeConsequent(Object &obj, int course, int i) {
     }
   }
   if (obj.slotSame) {
-    for (int j = i + 1; j < obj.courseValues.size(); j++) {
+    for (unsigned j = i + 1; j < obj.courseValues.size(); j++) {
       Clauses a = makeAntecedent(obj, obj.courseValues[j]);
       Clauses b = obj.constraintEncoder->hasSameFieldTypeAndValue(
           course, obj.courseValues[j], FieldType::slot);
@@ -510,7 +510,7 @@ Clauses makeConsequent(Object &obj, int course, int i) {
     }
   }
   if (obj.slotNotSame) {
-    for (int j = i + 1; j < obj.courseValues.size(); j++) {
+    for (unsigned j = i + 1; j < obj.courseValues.size(); j++) {
       Clauses a = makeAntecedent(obj, obj.courseValues[j]);
       Clauses b = obj.constraintEncoder->hasSameFieldTypeAndValue(
           course, obj.courseValues[j], FieldType::slot);
@@ -543,7 +543,7 @@ struct action<constraint_expr> {
     Clauses clauses;
     if (obj.courseExcept) {
       std::vector<int> courseVals;
-      for (int i = 0; i < obj.timetabler->data.courses.size(); i++) {
+      for (unsigned i = 0; i < obj.timetabler->data.courses.size(); i++) {
         if (std::find(obj.courseValues.begin(), obj.courseValues.end(), i) ==
             obj.courseValues.end()) {
           courseVals.push_back(i);
@@ -551,7 +551,7 @@ struct action<constraint_expr> {
       }
       obj.courseValues = courseVals;
     }
-    for (int i = 0; i < obj.courseValues.size(); i++) {
+    for (unsigned i = 0; i < obj.courseValues.size(); i++) {
       int course = obj.courseValues[i];
       Clauses ante, cons, clause;
       ante = makeAntecedent(obj, course);
@@ -661,7 +661,7 @@ struct action<constraint_unbundle> {
   static void apply(const Input &in, Object &obj) {
     if (obj.courseExcept) {
       std::vector<int> courseVals;
-      for (int i = 0; i < obj.timetabler->data.courses.size(); i++) {
+      for (unsigned i = 0; i < obj.timetabler->data.courses.size(); i++) {
         if (std::find(obj.courseValues.begin(), obj.courseValues.end(), i) ==
             obj.courseValues.end()) {
           courseVals.push_back(i);
@@ -669,7 +669,7 @@ struct action<constraint_unbundle> {
       }
       obj.courseValues = courseVals;
     }
-    for (int i = 0; i < obj.courseValues.size(); i++) {
+    for (unsigned i = 0; i < obj.courseValues.size(); i++) {
       int course = obj.courseValues[i];
       Clauses ante, cons, clause;
       ante = makeAntecedent(obj, course);

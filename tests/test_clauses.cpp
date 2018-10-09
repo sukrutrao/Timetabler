@@ -42,9 +42,9 @@ void TestClauses::SetUp() {
 void TestClauses::printClause(Clauses input) {
   std::cout << "Start printing " << std::endl;
   std::vector<CClause> clauses = input.getClauses();
-  for (int i = 0; i < clauses.size(); i++) {
+  for (unsigned i = 0; i < clauses.size(); i++) {
     std::vector<Lit> lits = clauses[i].getLits();
-    for (int j = 0; j < lits.size(); j++) {
+    for (unsigned j = 0; j < lits.size(); j++) {
       if (sign(lits[j])) {
         std::cout << "-";
       }
@@ -162,7 +162,7 @@ TEST_F(TestClauses, IMPLIESTestNormal) {
   Clauses result = clauseG1 >> clauseG2;
   Clauses otherWay = (~clauseG1) | clauseG2;
   ASSERT_EQ(result.getClauses().size(), otherWay.getClauses().size());
-  for (int i = 0; i < result.getClauses().size(); i++) {
+  for (unsigned i = 0; i < result.getClauses().size(); i++) {
     ASSERT_EQ(result.getClauses()[i].getLits().size(),
               otherWay.getClauses()[i].getLits().size());
   }

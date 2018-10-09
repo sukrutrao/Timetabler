@@ -205,8 +205,8 @@ bool Slot::operator==(const Slot &other) { return (this->name == other.name); }
  * @return     True if intersecting, False otherwise.
  */
 bool Slot::isIntersecting(Slot &other) {
-  for (int i = 0; i < slotElements.size(); i++) {
-    for (int j = 0; j < other.slotElements.size(); j++) {
+  for (unsigned i = 0; i < slotElements.size(); i++) {
+    for (unsigned j = 0; j < other.slotElements.size(); j++) {
       if (slotElements[i].isIntersecting(other.slotElements[j])) {
         return true;
       }
@@ -263,7 +263,7 @@ std::string Slot::getName() { return name; }
  * @return     True if morning slot, False otherwise.
  */
 bool Slot::isMorningSlot() {
-  for (int i = 0; i < slotElements.size(); i++) {
+  for (unsigned i = 0; i < slotElements.size(); i++) {
     if (!slotElements[i].isMorningSlotElement()) {
       return false;
     }

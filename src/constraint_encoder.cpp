@@ -38,7 +38,7 @@ ConstraintEncoder::ConstraintEncoder(Timetabler *timetabler) {
 Clauses ConstraintEncoder::hasSameFieldTypeAndValue(int course1, int course2,
                                                     FieldType fieldType) {
   Clauses result;
-  for (int i = 0; i < vars[course1][fieldType].size(); i++) {
+  for (unsigned i = 0; i < vars[course1][fieldType].size(); i++) {
     CClause field1, field2;
     field1.createLitAndAdd(vars[course1][fieldType][i]);
     field2.createLitAndAdd(vars[course2][fieldType][i]);
@@ -69,7 +69,7 @@ Clauses ConstraintEncoder::hasSameFieldTypeNotSameValue(int course1,
                                                         int course2,
                                                         FieldType fieldType) {
   Clauses result;
-  for (int i = 0; i < vars[course1][fieldType].size(); i++) {
+  for (unsigned i = 0; i < vars[course1][fieldType].size(); i++) {
     CClause resultClause;
     resultClause.addLits(~mkLit(vars[course1][fieldType][i], false));
     resultClause.addLits(~mkLit(vars[course2][fieldType][i], false));
@@ -89,7 +89,7 @@ Clauses ConstraintEncoder::hasSameFieldTypeNotSameValue(int course1,
  */
 Clauses ConstraintEncoder::hasCommonProgram(int course1, int course2) {
   Clauses result;
-  for (int i = 0; i < vars[course1][FieldType::program].size(); i++) {
+  for (unsigned i = 0; i < vars[course1][FieldType::program].size(); i++) {
     if (timetabler->data.programs[i].isCoreProgram()) {
       CClause field1, field2;
       field1.createLitAndAdd(vars[course1][FieldType::program][i]);
@@ -118,7 +118,7 @@ Clauses ConstraintEncoder::hasCommonProgram(int course1, int course2) {
  */
 Clauses ConstraintEncoder::hasNoCommonCoreProgram(int course1, int course2) {
   Clauses result;
-  for (int i = 0; i < vars[course1][FieldType::program].size(); i++) {
+  for (unsigned i = 0; i < vars[course1][FieldType::program].size(); i++) {
     if (timetabler->data.programs[i].isCoreProgram()) {
       CClause resultClause;
       resultClause.addLits(~mkLit(vars[course1][FieldType::program][i], false));
@@ -166,10 +166,10 @@ Clauses ConstraintEncoder::notIntersectingTimeField(int course1, int course2,
   assert(vars[course1][fieldType].size() == vars[course2][fieldType].size());
   assert(course1 != course2);
   Clauses result;
-  for (int i = 0; i < vars[course1][fieldType].size(); i++) {
+  for (unsigned i = 0; i < vars[course1][fieldType].size(); i++) {
     Clauses hasFieldValue1(vars[course1][fieldType][i]);
     Clauses notIntersecting1;
-    for (int j = 0; j < vars[course1][fieldType].size(); j++) {
+    for (unsigned j = 0; j < vars[course1][fieldType].size(); j++) {
       if ((fieldType == FieldType::segment &&
            timetabler->data.segments[i].isIntersecting(
                timetabler->data.segments[j])) ||
@@ -216,7 +216,7 @@ Clauses ConstraintEncoder::hasAtLeastOneFieldValueTrue(int course,
                                                        FieldType fieldType) {
   std::vector<Var> varsToUse = getAllowedVars(course, fieldType);
   CClause resultClause;
-  for (int i = 0; i < varsToUse.size(); i++) {
+  for (unsigned i = 0; i < varsToUse.size(); i++) {
     resultClause.createLitAndAdd(varsToUse[i]);
   }
   Clauses result(resultClause);
@@ -243,8 +243,8 @@ Clauses ConstraintEncoder::hasAtMostOneFieldValueTrue(int course,
                                                       FieldType fieldType) {
   std::vector<Var> varsToUse = getAllowedVars(course, fieldType);
   Clauses result;
-  for (int i = 0; i < vars[course][fieldType].size(); i++) {
-    for (int j = i + 1; j < vars[course][fieldType].size(); j++) {
+  for (unsigned i = 0; i < vars[course][fieldType].size(); i++) {
+    for (unsigned j = i + 1; j < vars[course][fieldType].size(); j++) {
       Clauses first(vars[course][fieldType][i]);
       Clauses second(vars[course][fieldType][j]);
       Clauses negSecond = ~second;
@@ -275,7 +275,7 @@ std::vector<Var> ConstraintEncoder::getAllowedVars(int course,
   if (fieldType != FieldType::classroom) {
     varsToUse = vars[course][fieldType];
   } else {
-    for (int i = 0; i < vars[course][fieldType].size(); i++) {
+    for (unsigned i = 0; i < vars[course][fieldType].size(); i++) {
       if (timetabler->data.courses[course].getClassSize() <=
           timetabler->data.classrooms[i].getSize()) {
         varsToUse.push_back(vars[course][fieldType][i]);
@@ -308,7 +308,7 @@ Clauses ConstraintEncoder::isMinorCourse(int course) {
  */
 Clauses ConstraintEncoder::slotInMinorTime(int course) {
   CClause resultClause;
-  for (int i = 0; i < vars[course][FieldType::slot].size(); i++) {
+  for (unsigned i = 0; i < vars[course][FieldType::slot].size(); i++) {
     if (timetabler->data.slots[i].isMinorSlot()) {
       resultClause.createLitAndAdd(vars[course][FieldType::slot][i]);
     }
@@ -326,7 +326,7 @@ Clauses ConstraintEncoder::slotInMinorTime(int course) {
  */
 Clauses ConstraintEncoder::isCoreCourse(int course) {
   CClause resultClause;
-  for (int i = 0; i < vars[course][FieldType::program].size(); i++) {
+  for (unsigned i = 0; i < vars[course][FieldType::program].size(); i++) {
     if (timetabler->data.programs[i].isCoreProgram()) {
       resultClause.createLitAndAdd(vars[course][FieldType::program][i]);
     }
@@ -344,7 +344,7 @@ Clauses ConstraintEncoder::isCoreCourse(int course) {
  */
 Clauses ConstraintEncoder::isElectiveCourse(int course) {
   CClause resultClause;
-  for (int i = 0; i < vars[course][FieldType::program].size(); i++) {
+  for (unsigned i = 0; i < vars[course][FieldType::program].size(); i++) {
     if (!(timetabler->data.programs[i].isCoreProgram())) {
       resultClause.createLitAndAdd(vars[course][FieldType::program][i]);
     }
@@ -363,7 +363,7 @@ Clauses ConstraintEncoder::isElectiveCourse(int course) {
  */
 Clauses ConstraintEncoder::courseInMorningTime(int course) {
   CClause resultClause;
-  for (int i = 0; i < vars[course][FieldType::slot].size(); i++) {
+  for (unsigned i = 0; i < vars[course][FieldType::slot].size(); i++) {
     if (timetabler->data.slots[i].isMorningSlot()) {
       resultClause.createLitAndAdd(vars[course][FieldType::slot][i]);
     }
@@ -383,7 +383,7 @@ Clauses ConstraintEncoder::courseInMorningTime(int course) {
  */
 Clauses ConstraintEncoder::programAtMostOneOfCoreOrElective(int course) {
   Clauses result;
-  for (int i = 0; i < vars[course][FieldType::program].size(); i += 2) {
+  for (unsigned i = 0; i < vars[course][FieldType::program].size(); i += 2) {
     CClause resultClause;
     resultClause.addLits(~mkLit(vars[course][FieldType::program][i], false));
     resultClause.addLits(
@@ -409,7 +409,7 @@ Clauses ConstraintEncoder::programAtMostOneOfCoreOrElective(int course) {
 Clauses ConstraintEncoder::hasFieldTypeListedValues(
     int course, FieldType fieldType, std::vector<int> indexList) {
   CClause resultClause;
-  for (int i = 0; i < indexList.size(); i++) {
+  for (unsigned i = 0; i < indexList.size(); i++) {
     resultClause.createLitAndAdd(vars[course][fieldType][indexList[i]]);
   }
   Clauses result(resultClause);

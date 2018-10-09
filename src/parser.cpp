@@ -261,8 +261,9 @@ bool Parser::verify() {
               timetabler->data.segments[course2.getSegment()]);
       bool classroomSame = (course1.getClassroom() != -1 &&
                             course1.getClassroom() == course2.getClassroom());
-      bool slotSame =
-          (course1.getSlot() != -1 && course1.getSlot() == course2.getSlot());
+      // bool slotSame =
+      //     (course1.getSlot() != -1 && course1.getSlot() ==
+      //     course2.getSlot());
       bool slotIntersecting =
           (course1.getSlot() != -1 && course2.getSlot() != -1)
               ? (timetabler->data.slots[course1.getSlot()].isIntersecting(
