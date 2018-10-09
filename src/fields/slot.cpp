@@ -1,10 +1,10 @@
 #include "fields/slot.h"
 
-#include "fields/is_minor.h"
-#include "global.h"
 #include <iostream>
 #include <string>
 #include <vector>
+#include "fields/is_minor.h"
+#include "global.h"
 
 /**
  * @brief      Constructs the Time object.
@@ -13,8 +13,8 @@
  * @param[in]  minutes  The minutes
  */
 Time::Time(unsigned hours, unsigned minutes) {
-    this->hours = hours;
-    this->minutes = minutes;
+  this->hours = hours;
+  this->minutes = minutes;
 }
 
 /**
@@ -24,8 +24,8 @@ Time::Time(unsigned hours, unsigned minutes) {
  *                   A valid input would be "12:30".
  */
 Time::Time(std::string time) {
-    this->hours = std::stoul(time.substr(0, 2));
-    this->minutes = std::stoul(time.substr(3, 5));
+  this->hours = std::stoul(time.substr(0, 2));
+  this->minutes = std::stoul(time.substr(3, 5));
 }
 
 /**
@@ -36,9 +36,9 @@ Time::Time(std::string time) {
  * @return     this Time object
  */
 Time &Time::operator=(const Time &other) {
-    this->hours = other.hours;
-    this->minutes = other.minutes;
-    return *this;
+  this->hours = other.hours;
+  this->minutes = other.minutes;
+  return *this;
 }
 
 /**
@@ -50,7 +50,7 @@ Time &Time::operator=(const Time &other) {
  * @return     True if identical, False otherwise
  */
 bool Time::operator==(const Time &other) {
-    return (this->hours == other.hours) && (this->minutes == other.minutes);
+  return (this->hours == other.hours) && (this->minutes == other.minutes);
 }
 
 /**
@@ -62,11 +62,11 @@ bool Time::operator==(const Time &other) {
  * object, and False otherwise
  */
 bool Time::operator<(const Time &other) {
-    if (this->hours == other.hours) {
-        return this->minutes < other.minutes;
-    } else {
-        return this->hours < other.hours;
-    }
+  if (this->hours == other.hours) {
+    return this->minutes < other.minutes;
+  } else {
+    return this->hours < other.hours;
+  }
 }
 
 /**
@@ -78,7 +78,7 @@ bool Time::operator<(const Time &other) {
  *             otherwise
  */
 bool Time::operator<=(const Time &other) {
-    return (*this < other) || (*this == other);
+  return (*this < other) || (*this == other);
 }
 
 /**
@@ -109,7 +109,7 @@ bool Time::operator>(const Time &other) { return !(*this <= other); }
  * @return     The time string.
  */
 std::string Time::getTimeString() {
-    return std::to_string(hours) + ":" + std::to_string(minutes);
+  return std::to_string(hours) + ":" + std::to_string(minutes);
 }
 
 /**
@@ -121,10 +121,10 @@ std::string Time::getTimeString() {
  * @return     True if morning time, False otherwise.
  */
 bool Time::isMorningTime() {
-    if (hours >= 0 && hours < 13) {
-        return true;
-    }
-    return false;
+  if (hours >= 0 && hours < 13) {
+    return true;
+  }
+  return false;
 }
 
 /**
@@ -136,7 +136,7 @@ bool Time::isMorningTime() {
  */
 SlotElement::SlotElement(Time &startTime, Time &endTime, Day day)
     : startTime(startTime), endTime(endTime) {
-    this->day = day;
+  this->day = day;
 }
 
 /**
@@ -150,15 +150,15 @@ SlotElement::SlotElement(Time &startTime, Time &endTime, Day day)
  * @return     True if intersecting, False otherwise.
  */
 bool SlotElement::isIntersecting(SlotElement &other) {
-    if (this->day != other.day) {
-        return false;
-    }
-    if (this->startTime < other.startTime) {
-        return !(this->endTime <= other.startTime);
-    } else if (this->startTime > other.startTime) {
-        return !(this->startTime >= other.endTime);
-    }
-    return true;
+  if (this->day != other.day) {
+    return false;
+  }
+  if (this->startTime < other.startTime) {
+    return !(this->endTime <= other.startTime);
+  } else if (this->startTime > other.startTime) {
+    return !(this->startTime >= other.endTime);
+  }
+  return true;
 }
 
 /**
@@ -180,8 +180,8 @@ bool SlotElement::isMorningSlotElement() { return startTime.isMorningTime(); }
 Slot::Slot(std::string name, IsMinor isMinor,
            std::vector<SlotElement> slotElements)
     : isMinor(isMinor) {
-    this->name = name;
-    this->slotElements = slotElements;
+  this->name = name;
+  this->slotElements = slotElements;
 }
 
 /**
@@ -205,14 +205,14 @@ bool Slot::operator==(const Slot &other) { return (this->name == other.name); }
  * @return     True if intersecting, False otherwise.
  */
 bool Slot::isIntersecting(Slot &other) {
-    for (int i = 0; i < slotElements.size(); i++) {
-        for (int j = 0; j < other.slotElements.size(); j++) {
-            if (slotElements[i].isIntersecting(other.slotElements[j])) {
-                return true;
-            }
-        }
+  for (int i = 0; i < slotElements.size(); i++) {
+    for (int j = 0; j < other.slotElements.size(); j++) {
+      if (slotElements[i].isIntersecting(other.slotElements[j])) {
+        return true;
+      }
     }
-    return false;
+  }
+  return false;
 }
 
 /**
@@ -221,7 +221,7 @@ bool Slot::isIntersecting(Slot &other) {
  * @param[in]  slotElement  The slot element to be added.
  */
 void Slot::addSlotElements(SlotElement slotElement) {
-    slotElements.push_back(slotElement);
+  slotElements.push_back(slotElement);
 }
 
 /**
@@ -237,7 +237,7 @@ FieldType Slot::getType() { return FieldType::slot; }
  * @return     True if minor slot, False otherwise.
  */
 bool Slot::isMinorSlot() {
-    return isMinor.getMinorType() == MinorType::isMinorCourse;
+  return isMinor.getMinorType() == MinorType::isMinorCourse;
 }
 
 /**
@@ -263,10 +263,10 @@ std::string Slot::getName() { return name; }
  * @return     True if morning slot, False otherwise.
  */
 bool Slot::isMorningSlot() {
-    for (int i = 0; i < slotElements.size(); i++) {
-        if (!slotElements[i].isMorningSlotElement()) {
-            return false;
-        }
+  for (int i = 0; i < slotElements.size(); i++) {
+    if (!slotElements[i].isMorningSlotElement()) {
+      return false;
     }
-    return true;
+  }
+  return true;
 }

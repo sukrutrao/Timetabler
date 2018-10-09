@@ -1,7 +1,7 @@
 #include "fields/program.h"
 
-#include "global.h"
 #include <string>
+#include "global.h"
 
 /**
  * @brief      Constructs the Program object.
@@ -11,8 +11,8 @@
  * @param[in]  courseType  The course type, which could be core or elective
  */
 Program::Program(std::string name, CourseType courseType) {
-    this->name = name;
-    this->courseType = courseType;
+  this->name = name;
+  this->courseType = courseType;
 }
 
 /**
@@ -24,8 +24,7 @@ Program::Program(std::string name, CourseType courseType) {
  * @return     True if identical, False otherwise
  */
 bool Program::operator==(const Program &other) {
-    return ((this->name == other.name) &&
-            (this->courseType == other.courseType));
+  return ((this->name == other.name) && (this->courseType == other.courseType));
 }
 
 /**
@@ -63,10 +62,10 @@ std::string Program::getTypeName() { return "Program"; }
  *             if the type is elective
  */
 std::string Program::getCourseTypeName() {
-    if (courseType == CourseType::core) {
-        return "Core";
-    }
-    return "Elective";
+  if (courseType == CourseType::core) {
+    return "Core";
+  }
+  return "Elective";
 }
 
 /**
@@ -76,5 +75,5 @@ std::string Program::getCourseTypeName() {
  * @return     The name with type
  */
 std::string Program::getNameWithType() {
-    return name + " " + getCourseTypeName();
+  return name + " " + getCourseTypeName();
 }

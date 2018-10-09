@@ -1,7 +1,7 @@
 #include "fields/classroom.h"
 
-#include "global.h"
 #include <string>
+#include "global.h"
 
 /**
  * @brief      Constructs the object.
@@ -10,8 +10,8 @@
  * @param[in]  size    The number of students the Classroom can hold
  */
 Classroom::Classroom(std::string number, unsigned size) {
-    this->number = number;
-    this->size = size;
+  this->number = number;
+  this->size = size;
 }
 
 /**
@@ -24,7 +24,7 @@ Classroom::Classroom(std::string number, unsigned size) {
  * @return     Returns true if equal, false otherwise
  */
 bool Classroom::operator==(const Classroom &other) {
-    return (this->number == other.number);
+  return (this->number == other.number);
 }
 
 /**
@@ -36,7 +36,7 @@ bool Classroom::operator==(const Classroom &other) {
  * @return     Returns true if less, false othewise
  */
 bool Classroom::sizeLessThan(const Classroom &other) {
-    return (this->size < other.size);
+  return (this->size < other.size);
 }
 
 /**

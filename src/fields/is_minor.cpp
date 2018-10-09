@@ -1,7 +1,7 @@
 #include "fields/is_minor.h"
 
-#include "global.h"
 #include <string>
+#include "global.h"
 
 /**
  * @brief      Constructs the IsMinor object.
@@ -16,11 +16,11 @@ IsMinor::IsMinor(MinorType minorType) { this->minorType = minorType; }
  * @param[in]  isMinor  Indicates if the Course is a minor course
  */
 IsMinor::IsMinor(bool isMinor) {
-    if (isMinor) {
-        this->minorType = MinorType::isMinorCourse;
-    } else {
-        this->minorType = MinorType::isNotMinorCourse;
-    }
+  if (isMinor) {
+    this->minorType = MinorType::isMinorCourse;
+  } else {
+    this->minorType = MinorType::isNotMinorCourse;
+  }
 }
 
 /**
@@ -50,8 +50,8 @@ std::string IsMinor::getTypeName() { return "Minor Type"; }
  * @return     "Yes" if it is a minor course, "No" if not
  */
 std::string IsMinor::getName() {
-    if (minorType == MinorType::isMinorCourse) {
-        return "Yes";
-    }
-    return "No";
+  if (minorType == MinorType::isMinorCourse) {
+    return "Yes";
+  }
+  return "No";
 }
