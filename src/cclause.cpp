@@ -52,7 +52,7 @@ CClause::CClause() { lits.clear(); }
 std::vector<CClause> CClause::operator~() {
   std::vector<CClause> result;
   result.clear();
-  for (int i = 0; i < lits.size(); i++) {
+  for (unsigned i = 0; i < lits.size(); i++) {
     CClause unitClause(~(lits[i]));
     result.push_back(unitClause);
   }
@@ -120,8 +120,8 @@ CClause CClause::operator|(const CClause &other) {
   thisLits.erase(std::unique(thisLits.begin(), thisLits.end()), thisLits.end());
   bool existBothPolarities = false;
   int indexLitBothPolarities = -1;
-  for (int i = 0; i < thisLits.size(); i++) {
-    for (int j = i + 1; j < thisLits.size(); j++) {
+  for (unsigned i = 0; i < thisLits.size(); i++) {
+    for (unsigned j = i + 1; j < thisLits.size(); j++) {
       // if any two literals are such that they are x and ~x
       if (var(thisLits[i]) == var(thisLits[j])) {
         existBothPolarities = true;
@@ -178,7 +178,7 @@ std::vector<CClause> CClause::operator>>(const CClause &other) {
   std::vector<CClause> lhs = ~(*this);
   std::vector<CClause> result;
   result.clear();
-  for (int i = 0; i < lhs.size(); i++) {
+  for (unsigned i = 0; i < lhs.size(); i++) {
     CClause thisClause = lhs[i] | other;
     result.push_back(thisClause);
   }

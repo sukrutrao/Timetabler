@@ -33,10 +33,10 @@ Timetabler::Timetabler() {
  * @param[in]  weight   The weight
  */
 void Timetabler::addClauses(const std::vector<CClause> &clauses, int weight) {
-  for (int i = 0; i < clauses.size(); i++) {
+  for (unsigned i = 0; i < clauses.size(); i++) {
     vec<Lit> clauseVec;
     std::vector<Lit> clauseVector = clauses[i].getLits();
-    for (int j = 0; j < clauseVector.size(); j++) {
+    for (unsigned j = 0; j < clauseVector.size(); j++) {
       clauseVec.push(clauseVector[j]);
     }
     addToFormula(clauseVec, weight);
@@ -48,8 +48,8 @@ void Timetabler::addClauses(const std::vector<CClause> &clauses, int weight) {
  * solver.
  */
 void Timetabler::addHighLevelClauses() {
-  for (int i = 0; i < Global::FIELD_COUNT; i++) {
-    for (int j = 0; j < data.highLevelVars.size(); j++) {
+  for (unsigned i = 0; i < Global::FIELD_COUNT; i++) {
+    for (unsigned j = 0; j < data.highLevelVars.size(); j++) {
       vec<Lit> highLevelClause;
       highLevelClause.clear();
       highLevelClause.push(mkLit(data.highLevelVars[j][i], false));
@@ -93,9 +93,9 @@ void Timetabler::addHighLevelCustomConstraintClauses(int index, int weight) {
  * the input to the solver.
  */
 void Timetabler::addExistingAssignments() {
-  for (int i = 0; i < data.existingAssignmentVars.size(); i++) {
-    for (int j = 0; j < data.existingAssignmentVars[i].size(); j++) {
-      for (int k = 0; k < data.existingAssignmentVars[i][j].size(); k++) {
+  for (unsigned i = 0; i < data.existingAssignmentVars.size(); i++) {
+    for (unsigned j = 0; j < data.existingAssignmentVars[i].size(); j++) {
+      for (unsigned k = 0; k < data.existingAssignmentVars[i][j].size(); k++) {
         if (data.existingAssignmentVars[i][j][k] == l_Undef) {
           continue;
         }
@@ -185,7 +185,7 @@ bool Timetabler::checkAllTrue(const std::vector<Var> &inputs) {
   if (model.size() == 0) {
     return false;
   }
-  for (int i = 0; i < inputs.size(); i++) {
+  for (unsigned i = 0; i < inputs.size(); i++) {
     if (model[inputs[i]] == l_False) {
       return false;
     }
@@ -258,9 +258,9 @@ void Timetabler::printResult(SolverStatus status) {
  * assignment given by the user as input by the solver
  */
 void Timetabler::displayChangesInGivenAssignment() {
-  for (int i = 0; i < data.existingAssignmentVars.size(); i++) {
-    for (int j = 0; j < data.existingAssignmentVars[i].size(); j++) {
-      for (int k = 0; k < data.existingAssignmentVars[i][j].size(); k++) {
+  for (unsigned i = 0; i < data.existingAssignmentVars.size(); i++) {
+    for (unsigned j = 0; j < data.existingAssignmentVars[i].size(); j++) {
+      for (unsigned k = 0; k < data.existingAssignmentVars[i][j].size(); k++) {
         if (data.existingAssignmentVars[i][j][k] == l_True &&
             model[data.fieldValueVars[i][j][k]] == l_False) {
           std::cout << "Value of field "
@@ -287,40 +287,41 @@ void Timetabler::displayChangesInGivenAssignment() {
  * @brief      Displays the generated time table.
  */
 void Timetabler::displayTimeTable() {
-  for (int i = 0; i < data.courses.size(); i++) {
+  for (unsigned i = 0; i < data.courses.size(); i++) {
     std::cout << "Course : " << data.courses[i].getName() << std::endl;
-    for (int j = 0; j < data.fieldValueVars[i][FieldType::slot].size(); j++) {
+    for (unsigned j = 0; j < data.fieldValueVars[i][FieldType::slot].size();
+         j++) {
       if (isVarTrue(data.fieldValueVars[i][FieldType::slot][j])) {
         std::cout << "Slot : " << data.slots[j].getName() << std::endl;
       }
     }
-    for (int j = 0; j < data.fieldValueVars[i][FieldType::instructor].size();
-         j++) {
+    for (unsigned j = 0;
+         j < data.fieldValueVars[i][FieldType::instructor].size(); j++) {
       if (isVarTrue(data.fieldValueVars[i][FieldType::instructor][j])) {
         std::cout << "Instructor : " << data.instructors[j].getName()
                   << std::endl;
       }
     }
-    for (int j = 0; j < data.fieldValueVars[i][FieldType::classroom].size();
-         j++) {
+    for (unsigned j = 0;
+         j < data.fieldValueVars[i][FieldType::classroom].size(); j++) {
       if (isVarTrue(data.fieldValueVars[i][FieldType::classroom][j])) {
         std::cout << "Classroom : " << data.classrooms[j].getName()
                   << std::endl;
       }
     }
-    for (int j = 0; j < data.fieldValueVars[i][FieldType::segment].size();
+    for (unsigned j = 0; j < data.fieldValueVars[i][FieldType::segment].size();
          j++) {
       if (isVarTrue(data.fieldValueVars[i][FieldType::segment][j])) {
         std::cout << "Segment : " << data.segments[j].getName() << std::endl;
       }
     }
-    for (int j = 0; j < data.fieldValueVars[i][FieldType::isMinor].size();
+    for (unsigned j = 0; j < data.fieldValueVars[i][FieldType::isMinor].size();
          j++) {
       if (isVarTrue(data.fieldValueVars[i][FieldType::isMinor][j])) {
         std::cout << "Is Minor : " << data.isMinors[j].getName() << std::endl;
       }
     }
-    for (int j = 0; j < data.fieldValueVars[i][FieldType::program].size();
+    for (unsigned j = 0; j < data.fieldValueVars[i][FieldType::program].size();
          j++) {
       if (isVarTrue(data.fieldValueVars[i][FieldType::program][j])) {
         std::cout << "Program : " << data.programs[j].getNameWithType()
@@ -340,35 +341,35 @@ void Timetabler::writeOutput(std::string fileName) {
   std::ofstream fileObject;
   fileObject.open(fileName);
   fileObject << "name,class_size,instructor,segment,is_minor,";
-  for (int i = 0; i < data.programs.size(); i += 2) {
+  for (unsigned i = 0; i < data.programs.size(); i += 2) {
     fileObject << data.programs[i].getName() << ",";
   }
   fileObject << "classroom,slot" << std::endl;
-  for (int i = 0; i < data.courses.size(); i++) {
+  for (unsigned i = 0; i < data.courses.size(); i++) {
     fileObject << data.courses[i].getName() << ","
                << data.courses[i].getClassSize() << ",";
-    for (int j = 0; j < data.fieldValueVars[i][FieldType::instructor].size();
-         j++) {
+    for (unsigned j = 0;
+         j < data.fieldValueVars[i][FieldType::instructor].size(); j++) {
       if (isVarTrue(data.fieldValueVars[i][FieldType::instructor][j])) {
         fileObject << data.instructors[j].getName();
       }
     }
     fileObject << ",";
-    for (int j = 0; j < data.fieldValueVars[i][FieldType::segment].size();
+    for (unsigned j = 0; j < data.fieldValueVars[i][FieldType::segment].size();
          j++) {
       if (isVarTrue(data.fieldValueVars[i][FieldType::segment][j])) {
         fileObject << data.segments[j].getName();
       }
     }
     fileObject << ",";
-    for (int j = 0; j < data.fieldValueVars[i][FieldType::isMinor].size();
+    for (unsigned j = 0; j < data.fieldValueVars[i][FieldType::isMinor].size();
          j++) {
       if (isVarTrue(data.fieldValueVars[i][FieldType::isMinor][j])) {
         fileObject << data.isMinors[j].getName();
       }
     }
     fileObject << ",";
-    for (int j = 0; j < data.fieldValueVars[i][FieldType::program].size();
+    for (unsigned j = 0; j < data.fieldValueVars[i][FieldType::program].size();
          j += 2) {
       if (isVarTrue(data.fieldValueVars[i][FieldType::program][j])) {
         fileObject << data.programs[j].getCourseTypeName() << ",";
@@ -378,14 +379,15 @@ void Timetabler::writeOutput(std::string fileName) {
         fileObject << "No,";
       }
     }
-    for (int j = 0; j < data.fieldValueVars[i][FieldType::classroom].size();
-         j++) {
+    for (unsigned j = 0;
+         j < data.fieldValueVars[i][FieldType::classroom].size(); j++) {
       if (isVarTrue(data.fieldValueVars[i][FieldType::classroom][j])) {
         fileObject << data.classrooms[j].getName();
       }
     }
     fileObject << ",";
-    for (int j = 0; j < data.fieldValueVars[i][FieldType::slot].size(); j++) {
+    for (unsigned j = 0; j < data.fieldValueVars[i][FieldType::slot].size();
+         j++) {
       if (isVarTrue(data.fieldValueVars[i][FieldType::slot][j])) {
         fileObject << data.slots[j].getName();
       }
@@ -400,8 +402,8 @@ void Timetabler::writeOutput(std::string fileName) {
  *             satisfied, if applicable.
  */
 void Timetabler::displayUnsatisfiedOutputReasons() {
-  for (int i = 0; i < data.highLevelVars.size(); i++) {
-    for (int j = 0; j < data.highLevelVars[i].size(); j++) {
+  for (unsigned i = 0; i < data.highLevelVars.size(); i++) {
+    for (unsigned j = 0; j < data.highLevelVars[i].size(); j++) {
       if (!isVarTrue(data.highLevelVars[i][j])) {
         std::cout << "Field : " << Utils::getFieldTypeName(FieldType(j));
         std::cout << " of Course : " << data.courses[i].getName();
@@ -409,7 +411,7 @@ void Timetabler::displayUnsatisfiedOutputReasons() {
       }
     }
   }
-  for (int i = 0; i < data.predefinedConstraintVars.size(); i++) {
+  for (unsigned i = 0; i < data.predefinedConstraintVars.size(); i++) {
     if (!isVarTrue(data.predefinedConstraintVars[i]) &&
         data.predefinedClausesWeights[i] != 0) {
       std::cout << "Predefined Constraint : "
@@ -417,7 +419,7 @@ void Timetabler::displayUnsatisfiedOutputReasons() {
                 << " could not be satisfied" << std::endl;
     }
   }
-  for (int i = 0; i < data.customConstraintVars.size(); i++) {
+  for (unsigned i = 0; i < data.customConstraintVars.size(); i++) {
     if (!isVarTrue(data.customConstraintVars[i])) {
       std::cout << "Custom Constraint : " << i + 1 << " could not be satisfied"
                 << std::endl;

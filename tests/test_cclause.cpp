@@ -31,7 +31,7 @@ void TestCClause::SetUp() {
 void TestCClause::printClause(CClause input) {
   std::cout << "Start printing " << std::endl;
   std::vector<Lit> lits = input.getLits();
-  for (int j = 0; j < lits.size(); j++) {
+  for (unsigned j = 0; j < lits.size(); j++) {
     if (sign(lits[j])) {
       std::cout << "-";
     }

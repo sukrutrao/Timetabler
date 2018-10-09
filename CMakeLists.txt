@@ -7,7 +7,8 @@ set(Timetabler_VERSION_MINOR 3)
 set(Timetabler_VERSION_PATCH 0)
 set(CMAKE_BUILD_TYPE Release)
 
-set(CMAKE_CXX_FLAGS -Wno-literal-suffix)
+# set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wno-parentheses -Wno-misleading-indentation")
 
 set(OPEN_WBO_PATH "${Timetabler_SOURCE_DIR}/dependencies/open-wbo" CACHE PATH "Open-WBO path")
 set(YAML_CPP_PATH "${Timetabler_SOURCE_DIR}/dependencies/yaml-cpp-yaml-cpp-0.6.2" CACHE PATH "YAML CPP path")

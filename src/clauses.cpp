@@ -73,7 +73,7 @@ Clauses Clauses::operator~() {
     return Clauses(clause);
   }
   Clauses negationClause(~(clauses[0]));
-  for (int i = 1; i < clauses.size(); i++) {
+  for (unsigned i = 1; i < clauses.size(); i++) {
     std::vector<CClause> negationClauseVector = ~(clauses[i]);
     Clauses negationThisClause(negationClauseVector);
     negationClause = (negationClause | negationThisClause);
@@ -159,7 +159,7 @@ Clauses Clauses::operator|(const Clauses &other) {
   xrep.push(x);
   vec<Lit> yrep;
   yrep.push(y);
-  for (int i = 0; i < clauses.size(); i++) {
+  for (unsigned i = 0; i < clauses.size(); i++) {
     // c1 is the auxiliary variable for a ith clause
     Lit c1 = timetabler->newLiteral();
     xrep.push(~c1);
@@ -168,7 +168,7 @@ Clauses Clauses::operator|(const Clauses &other) {
     clause.push(~x);
     timetabler->addToFormula(clause, -1);
     CClause c1rep(~c1);
-    for (int j = 0; j < clauses[i].getLits().size(); j++) {
+    for (unsigned j = 0; j < clauses[i].getLits().size(); j++) {
       c1rep.addLits(clauses[i].getLits()[j]);
       vec<Lit> clause;
       clause.push(c1);
@@ -177,7 +177,7 @@ Clauses Clauses::operator|(const Clauses &other) {
     }
     timetabler->addClauses(c1rep, -1);
   }
-  for (int i = 0; i < other.clauses.size(); i++) {
+  for (unsigned i = 0; i < other.clauses.size(); i++) {
     // c1 is the auxiliary variable for a ith clause
     Lit c1 = timetabler->newLiteral();
     yrep.push(~c1);
@@ -186,7 +186,7 @@ Clauses Clauses::operator|(const Clauses &other) {
     clause.push(~y);
     timetabler->addToFormula(clause, -1);
     CClause c1rep(~c1);
-    for (int j = 0; j < other.clauses[i].getLits().size(); j++) {
+    for (unsigned j = 0; j < other.clauses[i].getLits().size(); j++) {
       c1rep.addLits(other.clauses[i].getLits()[j]);
       vec<Lit> clause;
       clause.push(c1);
