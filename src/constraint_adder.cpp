@@ -1,13 +1,13 @@
 #include "constraint_adder.h"
 
+#include <iostream>
+#include <vector>
 #include "clauses.h"
 #include "constraint_encoder.h"
 #include "core/SolverTypes.h"
 #include "global.h"
 #include "time_tabler.h"
 #include "utils.h"
-#include <iostream>
-#include <vector>
 
 using namespace NSPACE;
 

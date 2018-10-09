@@ -1,3 +1,4 @@
+#include <iostream>
 #include "constraint_adder.h"
 #include "constraint_encoder.h"
 #include "core/Solver.h"
@@ -6,7 +7,6 @@
 #include "global_vars.h"
 #include "mtl/Vec.h"
 #include "parser.h"
-#include <iostream>
 
 Timetabler *timetabler;
 

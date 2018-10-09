@@ -1,5 +1,9 @@
 #include "time_tabler.h"
 
+#include <cstdlib>
+#include <fstream>
+#include <iostream>
+#include <vector>
 #include "MaxSATFormula.h"
 #include "cclause.h"
 #include "clauses.h"
@@ -7,10 +11,6 @@
 #include "mtl/Vec.h"
 #include "tsolver.h"
 #include "utils.h"
-#include <cstdlib>
-#include <fstream>
-#include <iostream>
-#include <vector>
 
 using namespace NSPACE;
 

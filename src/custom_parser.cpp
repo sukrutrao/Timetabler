@@ -1,24 +1,27 @@
 #include "custom_parser.h"
-#include "clauses.h"
-#include "global.h"
 #include <algorithm>
 #include <cstdlib>
 #include <iostream>
 #include <string>
 #include <tao/pegtl.hpp>
 #include <vector>
+#include "clauses.h"
+#include "global.h"
 
 namespace pegtl = tao::TAO_PEGTL_NAMESPACE;
 
-template <typename Rule> struct action : pegtl::nothing<Rule> {};
+template <typename Rule>
+struct action : pegtl::nothing<Rule> {};
 
 /**
  * @brief      Parse integer: Store the integer in the object
  */
 struct integer
     : pegtl::seq<pegtl::opt<pegtl::one<'-'>>, pegtl::plus<pegtl::digit>> {};
-template <> struct action<integer> {
-  template <typename Input> static void apply(const Input &in, Object &obj) {
+template <>
+struct action<integer> {
+  template <typename Input>
+  static void apply(const Input &in, Object &obj) {
     obj.integer = std::stoi(in.string());
   }
 };
@@ -33,8 +36,10 @@ struct instr : TAO_PEGTL_KEYWORD("IN") {};
  * constraint
  */
 struct notstr : TAO_PEGTL_KEYWORD("NOT") {};
-template <> struct action<notstr> {
-  template <typename Input> static void apply(const Input &in, Object &obj) {
+template <>
+struct action<notstr> {
+  template <typename Input>
+  static void apply(const Input &in, Object &obj) {
     obj.isNot = true;
   }
 };
@@ -59,8 +64,10 @@ struct exceptstr : TAO_PEGTL_KEYWORD("EXCEPT") {};
  * which will be used while forming the custom consraint
  */
 struct classroomstr : TAO_PEGTL_KEYWORD("CLASSROOM") {};
-template <> struct action<classroomstr> {
-  template <typename Input> static void apply(const Input &in, Object &obj) {
+template <>
+struct action<classroomstr> {
+  template <typename Input>
+  static void apply(const Input &in, Object &obj) {
     obj.fieldType = FieldValuesType::CLASSROOM;
   }
 };
@@ -69,8 +76,10 @@ template <> struct action<classroomstr> {
  * @brief      Parse "SLOT": Similar to classroom
  */
 struct slotstr : TAO_PEGTL_KEYWORD("SLOT") {};
-template <> struct action<slotstr> {
-  template <typename Input> static void apply(const Input &in, Object &obj) {
+template <>
+struct action<slotstr> {
+  template <typename Input>
+  static void apply(const Input &in, Object &obj) {
     obj.fieldType = FieldValuesType::SLOT;
   }
 };
@@ -79,8 +88,10 @@ template <> struct action<slotstr> {
  * @brief      Parse "COURSE": Similar to classroom
  */
 struct coursestr : TAO_PEGTL_KEYWORD("COURSE") {};
-template <> struct action<coursestr> {
-  template <typename Input> static void apply(const Input &in, Object &obj) {
+template <>
+struct action<coursestr> {
+  template <typename Input>
+  static void apply(const Input &in, Object &obj) {
     obj.fieldType = FieldValuesType::COURSE;
   }
 };
@@ -89,8 +100,10 @@ template <> struct action<coursestr> {
  * @brief      Parse "INSTRUCTOR": Similar to classroom
  */
 struct instructorstr : TAO_PEGTL_KEYWORD("INSTRUCTOR") {};
-template <> struct action<instructorstr> {
-  template <typename Input> static void apply(const Input &in, Object &obj) {
+template <>
+struct action<instructorstr> {
+  template <typename Input>
+  static void apply(const Input &in, Object &obj) {
     obj.fieldType = FieldValuesType::INSTRUCTOR;
   }
 };
@@ -99,8 +112,10 @@ template <> struct action<instructorstr> {
  * @brief      Parse "SEGMENT": Similar to classroom
  */
 struct segmentstr : TAO_PEGTL_KEYWORD("SEGMENT") {};
-template <> struct action<segmentstr> {
-  template <typename Input> static void apply(const Input &in, Object &obj) {
+template <>
+struct action<segmentstr> {
+  template <typename Input>
+  static void apply(const Input &in, Object &obj) {
     obj.fieldType = FieldValuesType::SEGMENT;
   }
 };
@@ -109,8 +124,10 @@ template <> struct action<segmentstr> {
  * @brief      Parse "ISMNOR": Similar to classroom
  */
 struct isminorstr : TAO_PEGTL_KEYWORD("ISMINOR") {};
-template <> struct action<isminorstr> {
-  template <typename Input> static void apply(const Input &in, Object &obj) {
+template <>
+struct action<isminorstr> {
+  template <typename Input>
+  static void apply(const Input &in, Object &obj) {
     obj.fieldType = FieldValuesType::ISMINOR;
   }
 };
@@ -119,8 +136,10 @@ template <> struct action<isminorstr> {
  * @brief      Parse "PROGRAM": Similar to classroom
  */
 struct programstr : TAO_PEGTL_KEYWORD("PROGRAM") {};
-template <> struct action<programstr> {
-  template <typename Input> static void apply(const Input &in, Object &obj) {
+template <>
+struct action<programstr> {
+  template <typename Input>
+  static void apply(const Input &in, Object &obj) {
     obj.fieldType = FieldValuesType::PROGRAM;
   }
 };
@@ -141,8 +160,10 @@ struct weightstr : TAO_PEGTL_KEYWORD("WEIGHT") {};
  */
 struct fieldtype
     : pegtl::sor<instructorstr, segmentstr, isminorstr, programstr> {};
-template <> struct action<fieldtype> {
-  template <typename Input> static void apply(const Input &in, Object &obj) {
+template <>
+struct action<fieldtype> {
+  template <typename Input>
+  static void apply(const Input &in, Object &obj) {
     obj.isNot = false;
     obj.classSame = false;
     obj.slotSame = false;
@@ -158,8 +179,10 @@ struct value
     : pegtl::plus<pegtl::sor<pegtl::range<'a', 'z'>, pegtl::range<'A', 'Z'>,
                              pegtl::digit, pegtl::one<'.'>, pegtl::one<'-'>,
                              pegtl::one<'@'>, pegtl::space>> {};
-template <> struct action<value> {
-  template <typename Input> static void apply(const Input &in, Object &obj) {
+template <>
+struct action<value> {
+  template <typename Input>
+  static void apply(const Input &in, Object &obj) {
     std::string val = in.string();
     bool found = false;
     if (obj.fieldType == FieldValuesType::INSTRUCTOR) {
@@ -261,8 +284,10 @@ template <> struct action<value> {
  * @brief      Parse * as all values of the specified field
  */
 struct allvalues : pegtl::pad<pegtl::one<'*'>, pegtl::space> {};
-template <> struct action<allvalues> {
-  template <typename Input> static void apply(const Input &in, Object &obj) {
+template <>
+struct action<allvalues> {
+  template <typename Input>
+  static void apply(const Input &in, Object &obj) {
     std::string val = in.string();
     if (obj.fieldType == FieldValuesType::INSTRUCTOR) {
       for (int i = 0; i < obj.timetabler->data.instructors.size(); i++) {
@@ -301,8 +326,10 @@ template <> struct action<allvalues> {
  * field values
  */
 struct sameval : pegtl::pad<TAO_PEGTL_KEYWORD("SAME"), pegtl::space> {};
-template <> struct action<sameval> {
-  template <typename Input> static void apply(const Input &in, Object &obj) {
+template <>
+struct action<sameval> {
+  template <typename Input>
+  static void apply(const Input &in, Object &obj) {
     if (obj.fieldType == FieldValuesType::CLASSROOM) {
       obj.classSame = true;
     } else if (obj.fieldType == FieldValuesType::SLOT) {
@@ -316,8 +343,10 @@ template <> struct action<sameval> {
  * different field values
  */
 struct notsameval : pegtl::pad<TAO_PEGTL_KEYWORD("NOTSAME"), pegtl::space> {};
-template <> struct action<notsameval> {
-  template <typename Input> static void apply(const Input &in, Object &obj) {
+template <>
+struct action<notsameval> {
+  template <typename Input>
+  static void apply(const Input &in, Object &obj) {
     if (obj.fieldType == FieldValuesType::CLASSROOM) {
       obj.classNotSame = true;
     } else if (obj.fieldType == FieldValuesType::SLOT) {
@@ -355,8 +384,10 @@ struct slotdecl : pegtl::seq<pegtl::pad<slotstr, pegtl::space>, values> {};
  */
 struct coursenoexceptdecl
     : pegtl::seq<pegtl::pad<coursestr, pegtl::space>, values> {};
-template <> struct action<coursenoexceptdecl> {
-  template <typename Input> static void apply(const Input &in, Object &obj) {
+template <>
+struct action<coursenoexceptdecl> {
+  template <typename Input>
+  static void apply(const Input &in, Object &obj) {
     obj.courseExcept = false;
   }
 };
@@ -367,8 +398,10 @@ template <> struct action<coursenoexceptdecl> {
 struct courseexceptdecl
     : pegtl::seq<pegtl::pad<coursestr, pegtl::space>,
                  pegtl::pad<exceptstr, pegtl::space>, values> {};
-template <> struct action<courseexceptdecl> {
-  template <typename Input> static void apply(const Input &in, Object &obj) {
+template <>
+struct action<courseexceptdecl> {
+  template <typename Input>
+  static void apply(const Input &in, Object &obj) {
     obj.courseExcept = true;
   }
 };
@@ -377,8 +410,10 @@ template <> struct action<courseexceptdecl> {
  * @brief      Parse courses
  */
 struct coursedecl : pegtl::sor<coursenoexceptdecl, courseexceptdecl> {};
-template <> struct action<coursedecl> {
-  template <typename Input> static void apply(const Input &in, Object &obj) {
+template <>
+struct action<coursedecl> {
+  template <typename Input>
+  static void apply(const Input &in, Object &obj) {
     obj.isNot = false;
   }
 };
@@ -501,8 +536,10 @@ Clauses makeConsequent(Object &obj, int course, int i) {
  */
 struct constraint_expr : pegtl::seq<coursedecl, fielddecls, pegtl::opt<notstr>,
                                     pegtl::pad<instr, pegtl::space>, decls> {};
-template <> struct action<constraint_expr> {
-  template <typename Input> static void apply(const Input &in, Object &obj) {
+template <>
+struct action<constraint_expr> {
+  template <typename Input>
+  static void apply(const Input &in, Object &obj) {
     Clauses clauses;
     if (obj.courseExcept) {
       std::vector<int> courseVals;
@@ -551,8 +588,10 @@ struct constraint_braced
  */
 struct constraint_not
     : pegtl::seq<pegtl::pad<notstr, pegtl::space>, constraint_braced> {};
-template <> struct action<constraint_not> {
-  template <typename Input> static void apply(const Input &in, Object &obj) {
+template <>
+struct action<constraint_not> {
+  template <typename Input>
+  static void apply(const Input &in, Object &obj) {
     Clauses clauses = obj.constraint;
     obj.constraint = ~clauses;
   }
@@ -564,8 +603,10 @@ template <> struct action<constraint_not> {
  */
 struct constraint_val
     : pegtl::sor<constraint_expr, constraint_not, constraint_braced> {};
-template <> struct action<constraint_val> {
-  template <typename Input> static void apply(const Input &in, Object &obj) {
+template <>
+struct action<constraint_val> {
+  template <typename Input>
+  static void apply(const Input &in, Object &obj) {
     obj.constraintVals.push_back(obj.constraint);
   }
 };
@@ -575,8 +616,10 @@ template <> struct action<constraint_val> {
  * Add all the constraints to obj.constraintAdds
  */
 struct constraint_and : pegtl::list<constraint_val, andstr, pegtl::space> {};
-template <> struct action<constraint_and> {
-  template <typename Input> static void apply(const Input &in, Object &obj) {
+template <>
+struct action<constraint_and> {
+  template <typename Input>
+  static void apply(const Input &in, Object &obj) {
     Clauses clauses = obj.constraintVals[0];
     for (unsigned i = 1; i < obj.constraintVals.size(); i++) {
       clauses = clauses & obj.constraintVals[i];
@@ -591,8 +634,10 @@ template <> struct action<constraint_and> {
  * The combined clauses for all the constraints are stored in obj.constraint
  */
 struct constraint_or : pegtl::list<constraint_and, orstr, pegtl::space> {};
-template <> struct action<constraint_or> {
-  template <typename Input> static void apply(const Input &in, Object &obj) {
+template <>
+struct action<constraint_or> {
+  template <typename Input>
+  static void apply(const Input &in, Object &obj) {
     Clauses clauses = obj.constraintAnds[0];
     for (unsigned i = 1; i < obj.constraintAnds.size(); i++) {
       clauses = clauses | obj.constraintAnds[i];
@@ -610,8 +655,10 @@ struct constraint_unbundle
                  pegtl::opt<notstr>, pegtl::pad<instr, pegtl::space>, decl,
                  pegtl::pad<weightstr, pegtl::space>,
                  pegtl::pad<integer, pegtl::space>> {};
-template <> struct action<constraint_unbundle> {
-  template <typename Input> static void apply(const Input &in, Object &obj) {
+template <>
+struct action<constraint_unbundle> {
+  template <typename Input>
+  static void apply(const Input &in, Object &obj) {
     if (obj.courseExcept) {
       std::vector<int> courseVals;
       for (int i = 0; i < obj.timetabler->data.courses.size(); i++) {
@@ -658,8 +705,10 @@ template <> struct action<constraint_unbundle> {
 struct wconstraint : pegtl::seq<pegtl::pad<constraint_or, pegtl::space>,
                                 pegtl::pad<weightstr, pegtl::space>,
                                 pegtl::pad<integer, pegtl::space>> {};
-template <> struct action<wconstraint> {
-  template <typename Input> static void apply(const Input &in, Object &obj) {
+template <>
+struct action<wconstraint> {
+  template <typename Input>
+  static void apply(const Input &in, Object &obj) {
     obj.timetabler->data.customConstraintVars.push_back(
         obj.timetabler->newVar());
     int index = obj.timetabler->data.customConstraintVars.size() - 1;
@@ -679,7 +728,8 @@ struct grammar
           pegtl::must<pegtl::star<pegtl::sor<wconstraint, constraint_unbundle>>,
                       pegtl::eof>> {};
 
-template <typename Rule> struct control : pegtl::normal<Rule> {
+template <typename Rule>
+struct control : pegtl::normal<Rule> {
   template <typename Input, typename... States>
   static void raise(const Input &in, States &&...) {
     std::cout << in.position() << " Error parsing custom constraints"
