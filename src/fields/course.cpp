@@ -1,11 +1,11 @@
 #include "fields/course.h"
 
+#include <string>
+#include <vector>
 #include "fields/instructor.h"
 #include "fields/is_minor.h"
 #include "fields/program.h"
 #include "fields/segment.h"
-#include <string>
-#include <vector>
 
 /**
  * @brief      Constructs the Course object.
@@ -18,11 +18,11 @@
  */
 Course::Course(std::string name, unsigned classSize, int instructor,
                int segment, int isMinor) {
-    this->name = name;
-    this->classSize = classSize;
-    this->instructor = instructor;
-    this->segment = segment;
-    this->isMinor = isMinor;
+  this->name = name;
+  this->classSize = classSize;
+  this->instructor = instructor;
+  this->segment = segment;
+  this->isMinor = isMinor;
 }
 
 /**
@@ -38,12 +38,12 @@ Course::Course(std::string name, unsigned classSize, int instructor,
  */
 Course::Course(std::string name, unsigned classSize, int instructor,
                int segment, int isMinor, std::vector<int> programs) {
-    this->name = name;
-    this->classSize = classSize;
-    this->instructor = instructor;
-    this->segment = segment;
-    this->isMinor = isMinor;
-    this->programs = programs;
+  this->name = name;
+  this->classSize = classSize;
+  this->instructor = instructor;
+  this->segment = segment;
+  this->isMinor = isMinor;
+  this->programs = programs;
 }
 
 /**
@@ -53,7 +53,7 @@ Course::Course(std::string name, unsigned classSize, int instructor,
  * applicable
  */
 void Course::setPrograms(std::vector<int> programs) {
-    this->programs = programs;
+  this->programs = programs;
 }
 
 /**
@@ -63,13 +63,9 @@ void Course::setPrograms(std::vector<int> programs) {
  */
 void Course::addProgram(int programs) { this->programs.push_back(programs); }
 
-void Course::addClassroom(int cr) {
-    this->classroom = cr;
-}
+void Course::addClassroom(int cr) { this->classroom = cr; }
 
-void Course::addSlot(int s) {
-    this->slot = s;
-}
+void Course::addSlot(int s) { this->slot = s; }
 
 /**
  * @brief      Checks if two Course objects are identical, i.e.,
@@ -80,7 +76,7 @@ void Course::addSlot(int s) {
  * @return     true if identical, false otherwise
  */
 bool Course::operator==(const Course &other) {
-    return (this->name == other.name);
+  return (this->name == other.name);
 }
 
 /**
@@ -118,13 +114,9 @@ int Course::getSegment() { return segment; }
  */
 int Course::getIsMinor() { return isMinor; }
 
-int Course::getClassroom() {
-    return classroom;
-}
+int Course::getClassroom() { return classroom; }
 
-int Course::getSlot() {
-    return slot;
-}
+int Course::getSlot() { return slot; }
 
 /**
  * @brief      Gets the class size of the Course.

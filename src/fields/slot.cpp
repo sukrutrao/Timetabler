@@ -1,10 +1,10 @@
 #include "fields/slot.h"
 
-#include "fields/is_minor.h"
-#include "global.h"
 #include <iostream>
 #include <string>
 #include <vector>
+#include "fields/is_minor.h"
+#include "global.h"
 
 /**
  * @brief      Constructs the Time object.
