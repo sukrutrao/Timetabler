@@ -1,5 +1,6 @@
 #include "parser.h"
 
+#include "glog/logging.h"
 #include <cstdlib>
 #include <iostream>
 
@@ -109,13 +110,20 @@ void Parser::parseFields(std::string file) {
  * represented
  */
 Day Parser::getDayFromString(std::string day) {
-  if (day == "Monday") return Day::Monday;
-  if (day == "Tuesday") return Day::Tuesday;
-  if (day == "Wednesday") return Day::Wednesday;
-  if (day == "Thursday") return Day::Thursday;
-  if (day == "Friday") return Day::Friday;
-  if (day == "Saturday") return Day::Saturday;
-  if (day == "Sunday") return Day::Sunday;
+  if (day == "Monday")
+    return Day::Monday;
+  if (day == "Tuesday")
+    return Day::Tuesday;
+  if (day == "Wednesday")
+    return Day::Wednesday;
+  if (day == "Thursday")
+    return Day::Thursday;
+  if (day == "Friday")
+    return Day::Friday;
+  if (day == "Saturday")
+    return Day::Saturday;
+  if (day == "Sunday")
+    return Day::Sunday;
   assert(false && "Incorrect day");
   return Day::Monday;
 }
@@ -146,7 +154,7 @@ void Parser::parseInput(std::string file) {
       assignmentsThisCourse[FieldType::instructor].push_back(l_False);
     }
     if (instructor == -1) {
-      std::cout << "Input contains invalid Instructor name" << std::endl;
+      LOG(ERROR) << "Input contains invalid Instructor name";
       exit(1);
     }
     std::string segmentStr = parser[i]["segment"];
@@ -160,7 +168,7 @@ void Parser::parseInput(std::string file) {
       assignmentsThisCourse[FieldType::segment].push_back(l_False);
     }
     if (segment == -1) {
-      std::cout << "Input contains invalid Segment name" << std::endl;
+      LOG(ERROR) << "Input contains invalid Segment name";
       exit(1);
     }
     std::string isMinorStr = parser[i]["is_minor"];
@@ -172,9 +180,8 @@ void Parser::parseInput(std::string file) {
       isMinor = 1;
       assignmentsThisCourse[FieldType::isMinor].push_back(l_False);
     } else {
-      std::cout << "Input contains invalid IsMinor value (should be "
-                   "'Yes' or 'No')"
-                << std::endl;
+      LOG(ERROR) << "Input contains invalid IsMinor value (should be "
+                    "'Yes' or 'No')";
       exit(1);
     }
     Course course(name, classSize, instructor, segment, isMinor);
@@ -193,9 +200,8 @@ void Parser::parseInput(std::string file) {
         assignmentsThisCourse[FieldType::program].push_back(l_False);
         assignmentsThisCourse[FieldType::program].push_back(l_False);
       } else {
-        std::cout << "Input contains invalid Program type (should be "
-                     "'Core', 'Elective', or 'No')"
-                  << std::endl;
+        LOG(ERROR) << "Input contains invalid Program type (should be "
+                      "'Core', 'Elective', or 'No')";
         exit(1);
       }
     }
@@ -219,7 +225,7 @@ void Parser::parseInput(std::string file) {
         assignmentsThisCourse[FieldType::classroom][j] = l_False;
       }
       if (!foundClassroom) {
-        std::cout << "Input contains invalid Classroom name" << std::endl;
+        LOG(ERROR) << "Input contains invalid Classroom name";
         exit(1);
       }
     }
@@ -234,7 +240,7 @@ void Parser::parseInput(std::string file) {
         assignmentsThisCourse[FieldType::slot][j] = l_False;
       }
       if (!foundSlot) {
-        std::cout << "Input contains invalid Slot name" << std::endl;
+        LOG(ERROR) << "Input contains invalid Slot name";
         exit(1);
       }
     }
@@ -248,14 +254,14 @@ bool Parser::verify() {
   for (auto course1 : timetabler->data.courses) {
     if (course1.getIsMinor() && course1.getSlot() != -1) {
       if (timetabler->data.slots[course1.getSlot()].isMinorSlot()) {
-        std::cout << course1.getName()
-                  << " which is minor course is scheduled in non minor slot."
-                  << std::endl;
+        LOG(ERROR) << course1.getName()
+                   << " which is minor course is scheduled in non minor slot.";
         result = false;
       }
     }
     for (auto course2 : timetabler->data.courses) {
-      if (course1.getName() == course2.getName()) continue;
+      if (course1.getName() == course2.getName())
+        continue;
       bool segementIntersecting =
           timetabler->data.segments[course1.getSegment()].isIntersecting(
               timetabler->data.segments[course2.getSegment()]);
@@ -271,13 +277,13 @@ bool Parser::verify() {
               : false;
       if (segementIntersecting && slotIntersecting) {
         if (course1.getInstructor() == course2.getInstructor()) {
-          std::cout << course1.getName() << " and " << course2.getName()
-                    << " having same instructor clash." << std::endl;
+          LOG(ERROR) << course1.getName() << " and " << course2.getName()
+                     << " having same instructor clash.";
           result = false;
         }
         if (classroomSame) {
-          std::cout << course1.getName() << " and " << course2.getName()
-                    << " having same classroom clash." << std::endl;
+          LOG(ERROR) << course1.getName() << " and " << course2.getName()
+                     << " having same classroom clash.";
           result = false;
         }
         for (auto program1 : course1.getPrograms()) {
@@ -285,10 +291,10 @@ bool Parser::verify() {
             if (program1 == program2) {
               if (timetabler->data.programs[program1].isCoreProgram() &&
                   timetabler->data.programs[program2].isCoreProgram()) {
-                std::cout << course1.getName() << " and " << course2.getName()
-                          << " which have common core program "
-                          << timetabler->data.programs[program1].getName()
-                          << " clash." << std::endl;
+                LOG(ERROR) << course1.getName() << " and " << course2.getName()
+                           << " which have common core program "
+                           << timetabler->data.programs[program1].getName()
+                           << " clash.";
                 result = false;
               }
             }

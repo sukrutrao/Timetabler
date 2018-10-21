@@ -1,9 +1,10 @@
 #include "cclause.h"
 
-#include <iostream>
-#include <vector>
 #include "clauses.h"
 #include "core/SolverTypes.h"
+#include "glog/logging.h"
+#include <iostream>
+#include <vector>
 
 using namespace NSPACE;
 
@@ -294,9 +295,8 @@ std::vector<Lit> CClause::getLits() const { return lits; }
  */
 void CClause::printClause() {
   for (Lit lit : lits) {
-    std::cout << (sign(lit) ? "-" : " ") << var(lit) << " ";
+    LOG(INFO) << (sign(lit) ? "-" : " ") << var(lit) << " ";
   }
-  std::cout << std::endl;
 }
 
 /**
