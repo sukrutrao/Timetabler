@@ -1,9 +1,5 @@
 #include "time_tabler.h"
 
-#include <cstdlib>
-#include <fstream>
-#include <iostream>
-#include <vector>
 #include "MaxSATFormula.h"
 #include "cclause.h"
 #include "clauses.h"
@@ -11,6 +7,10 @@
 #include "mtl/Vec.h"
 #include "tsolver.h"
 #include "utils.h"
+#include <cstdlib>
+#include <fstream>
+#include <iostream>
+#include <vector>
 
 using namespace NSPACE;
 
@@ -69,7 +69,15 @@ void Timetabler::addHighLevelClauses() {
  */
 void Timetabler::addHighLevelConstraintClauses(PredefinedClauses clauseType) {
   Lit l = mkLit(data.predefinedConstraintVars[clauseType], false);
-  addToFormula(l, data.predefinedClausesWeights[clauseType]);
+  if (data.predefinedClausesWeights[clauseType] != 0) {
+    std::cout << "Yes " << Utils::getPredefinedConstraintName(clauseType)
+              << std::endl;
+    addToFormula(l, data.predefinedClausesWeights[clauseType]);
+  } else {
+    std::cout << "No " << Utils::getPredefinedConstraintName(clauseType)
+              << std::endl;
+    addToFormula(l, 1);
+  }
 }
 
 /**
@@ -163,6 +171,7 @@ SolverStatus Timetabler::solve() {
   solver->loadFormula(formula);
   model = solver->tSearch();
   if (model.size() == 0) {
+    std::cout << "Size 0" << std::endl;
     return SolverStatus::Unsolved;
   }
   if (checkAllTrue(Utils::flattenVector<Var>(data.highLevelVars)) &&

@@ -1,13 +1,13 @@
 #include "constraint_adder.h"
 
-#include <iostream>
-#include <vector>
 #include "clauses.h"
 #include "constraint_encoder.h"
 #include "core/SolverTypes.h"
 #include "global.h"
 #include "time_tabler.h"
 #include "utils.h"
+#include <iostream>
+#include <vector>
 
 using namespace NSPACE;
 
@@ -173,9 +173,13 @@ Clauses ConstraintAdder::exactlyOneFieldValuePerCourse(FieldType fieldType) {
  */
 void ConstraintAdder::addSingleConstraint(PredefinedClauses clauseType,
                                           const Clauses &clauses) {
-  Clauses hardConsequent =
-      CClause(timetabler->data.predefinedConstraintVars[clauseType]) >> clauses;
-  timetabler->addClauses(hardConsequent, -1);
+  if (timetabler->data.predefinedClausesWeights[clauseType] != 0) {
+    std::cout << Utils::getPredefinedConstraintName(clauseType) << std::endl;
+    Clauses hardConsequent =
+        CClause(timetabler->data.predefinedConstraintVars[clauseType]) >>
+        clauses;
+    timetabler->addClauses(hardConsequent, -1);
+  }
   timetabler->addHighLevelConstraintClauses(clauseType);
 }
 
