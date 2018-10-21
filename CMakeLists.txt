@@ -52,11 +52,11 @@ if (${ENABLE_TESTS})
 	add_executable(tests ${TEST_SOURCES})
 endif ()
 
-target_link_libraries(timetabler -L${OPEN_WBO_PATH} -L${YAML_CPP_PATH}/build -L${GLOG_PATH})
+target_link_libraries(timetabler -L${OPEN_WBO_PATH} -L${YAML_CPP_PATH}/build -L${GLOG_PATH}/install/lib)
 target_link_libraries(timetabler -lopen-wbo -lyaml-cpp -lglog)
 
 if (${ENABLE_TESTS})
-	target_link_libraries(tests -L${OPEN_WBO_PATH} -L${YAML_CPP_PATH}/build -L${GLOG_PATH} -L${GTEST_PATH}/build/googlemock/gtest)
+	target_link_libraries(tests -L${OPEN_WBO_PATH} -L${YAML_CPP_PATH}/build -L${GLOG_PATH}/install/lib -L${GTEST_PATH}/build/googlemock/gtest)
 	target_link_libraries(tests -lopen-wbo -lyaml-cpp -lglog -lgtest -pthread)
 endif ()
 

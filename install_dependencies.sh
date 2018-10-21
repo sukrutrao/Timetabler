@@ -61,8 +61,10 @@ if [ ! -d glog-0.3.5 ] ; then
   tar -xf v0.3.5.tar.gz
 fi
 cd glog-0.3.5
-./configure
+./configure --prefix=${PWD}/install
 make
+mkdir install
+make install
 cd ..
 
 if [ "$1" = "--enable-tests" ]; then
