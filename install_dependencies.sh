@@ -55,6 +55,16 @@ cmake ..
 make
 cd ../..
 
+echo "Getting glog..."
+if [ ! -d glog-0.3.5 ] ; then
+  wget https://github.com/google/glog/archive/v0.3.5.tar.gz
+  tar -xf v0.3.5.tar.gz
+fi
+cd glog-0.3.5
+./configure
+make
+cd ..
+
 if [ "$1" = "--enable-tests" ]; then
 echo "Getting GoogleTest..."
 if [ ! -d googletest-release-1.8.1 ] ; then
