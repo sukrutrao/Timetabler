@@ -1,8 +1,8 @@
 #include "parser.h"
 
-#include "glog/logging.h"
 #include <cstdlib>
 #include <iostream>
+#include "glog/logging.h"
 
 /**
  * @brief      Constructs the Parser object.
@@ -110,20 +110,13 @@ void Parser::parseFields(std::string file) {
  * represented
  */
 Day Parser::getDayFromString(std::string day) {
-  if (day == "Monday")
-    return Day::Monday;
-  if (day == "Tuesday")
-    return Day::Tuesday;
-  if (day == "Wednesday")
-    return Day::Wednesday;
-  if (day == "Thursday")
-    return Day::Thursday;
-  if (day == "Friday")
-    return Day::Friday;
-  if (day == "Saturday")
-    return Day::Saturday;
-  if (day == "Sunday")
-    return Day::Sunday;
+  if (day == "Monday") return Day::Monday;
+  if (day == "Tuesday") return Day::Tuesday;
+  if (day == "Wednesday") return Day::Wednesday;
+  if (day == "Thursday") return Day::Thursday;
+  if (day == "Friday") return Day::Friday;
+  if (day == "Saturday") return Day::Saturday;
+  if (day == "Sunday") return Day::Sunday;
   assert(false && "Incorrect day");
   return Day::Monday;
 }
@@ -260,8 +253,7 @@ bool Parser::verify() {
       }
     }
     for (auto course2 : timetabler->data.courses) {
-      if (course1.getName() == course2.getName())
-        continue;
+      if (course1.getName() == course2.getName()) continue;
       bool segementIntersecting =
           timetabler->data.segments[course1.getSegment()].isIntersecting(
               timetabler->data.segments[course2.getSegment()]);

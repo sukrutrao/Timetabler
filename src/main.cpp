@@ -1,3 +1,4 @@
+#include <iostream>
 #include "constraint_adder.h"
 #include "constraint_encoder.h"
 #include "core/Solver.h"
@@ -7,7 +8,6 @@
 #include "glog/logging.h"
 #include "mtl/Vec.h"
 #include "parser.h"
-#include <iostream>
 
 Timetabler *timetabler;
 
@@ -28,8 +28,7 @@ int main(int argc, char const *argv[]) {
     LOG(INFO) << "Input is valid";
   } else {
     LOG(ERROR) << "Input is invalid";
-    delete timetabler;
-    exit(1);
+    return 1;
   }
   parser.addVars();
   ConstraintEncoder encoder(timetabler);

@@ -1,11 +1,11 @@
 #include "clauses.h"
 
+#include <iostream>
+#include <vector>
 #include "cclause.h"
 #include "core/SolverTypes.h"
 #include "global_vars.h"
 #include "glog/logging.h"
-#include <iostream>
-#include <vector>
 
 using namespace NSPACE;
 
