@@ -3,10 +3,10 @@ matrix:
     include:
         - dist: xenial
         - dist: trusty
-        - os: osx
 cache: ccache
 compiler:
     - g++
+    - clang++
 before_install:
     - sudo apt update
     - sudo apt install wget make ccache
