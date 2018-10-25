@@ -1,5 +1,9 @@
 language: cpp
-dist: xenial
+matrix:
+    include:
+        - dist: xenial
+        - dist: trusty
+        - os: osx
 cache: ccache
 compiler:
     - g++
