@@ -70,10 +70,9 @@ void Timetabler::addHighLevelClauses() {
 void Timetabler::addHighLevelConstraintClauses(PredefinedClauses clauseType) {
   Lit l = mkLit(data.predefinedConstraintVars[clauseType], false);
   if (data.predefinedClausesWeights[clauseType] != 0) {
-    // std::cout << "CTB: " << clauseType << std::endl;
-    // std::cout << "Yes " << Utils::getPredefinedConstraintName(clauseType)
-    //           << std::endl;
-    // std::cout << "CTA: " << clauseType << std::endl;
+    // std::cout << "CTB: " << clauseType;
+    std::cout << "Yes " << Utils::getPredefinedConstraintName(clauseType);
+    std::cout << "CTA: " << clauseType;
     addToFormula(l, data.predefinedClausesWeights[clauseType]);
   } else {
     // std::cout << "No " << Utils::getPredefinedConstraintName(clauseType)

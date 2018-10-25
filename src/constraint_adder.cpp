@@ -174,7 +174,6 @@ Clauses ConstraintAdder::exactlyOneFieldValuePerCourse(FieldType fieldType) {
 void ConstraintAdder::addSingleConstraint(PredefinedClauses clauseType,
                                           const Clauses &clauses) {
   if (timetabler->data.predefinedClausesWeights[clauseType] != 0) {
-    // std::cout << Utils::getPredefinedConstraintName(clauseType) << std::endl;
     Clauses hardConsequent =
         CClause(timetabler->data.predefinedConstraintVars[clauseType]) >>
         clauses;
