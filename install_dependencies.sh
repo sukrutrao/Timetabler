@@ -61,9 +61,9 @@ if [ ! -d glog-0.3.5 ] ; then
   tar -xf v0.3.5.tar.gz
 fi
 cd glog-0.3.5
-./configure --prefix=${PWD}/install
+./configure --prefix=${PWD}/install --enable-static --enable-shared=no
 make
-mkdir install
+mkdir -p install
 make install
 cd ..
 
