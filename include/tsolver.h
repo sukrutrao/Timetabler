@@ -24,7 +24,7 @@ using namespace openwbo;
  */
 class TSolver : public OLL {
  public:
-  TSolver(int, int);
+  TSolver(int verb = _VERBOSITY_MINIMAL_, int enc = _CARD_TOTALIZER_);
   std::vector<lbool> tSearch();
   void tWeighted();
 };

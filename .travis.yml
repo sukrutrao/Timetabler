@@ -1,13 +1,11 @@
 language: cpp
 matrix:
     include:
-        - dist: xenial
+        - name: 'xenial g++'
+          dist: xenial
           compiler: g++
-        - dist: xenial
-          compiler: clang++
-        - dist: trusty
-          compiler: g++
-        - dist: trusty
+        - name: 'xenial clang++'
+          dist: xenial
           compiler: clang++
 cache: ccache
 before_install:
