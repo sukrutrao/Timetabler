@@ -2,11 +2,14 @@ language: cpp
 matrix:
     include:
         - dist: xenial
+          compiler: g++
+        - dist: xenial
+          compiler: clang++
         - dist: trusty
+          compiler: g++
+        - dist: trusty
+          compiler: clang++
 cache: ccache
-compiler:
-    - g++
-    - clang++
 before_install:
     - sudo apt update
     - sudo apt install wget make ccache
