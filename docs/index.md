@@ -148,7 +148,7 @@ A detailed explanation on each file can be found in the [Project Wiki](https://g
 
 ## Examples of Configuration files
 
-Examples for configuration files can be found [here](https://github.com/GoodDeeds/blob/master/examples). This contains some examples for the field information, the input, and custom constraints to be added to the solver.
+Examples for configuration files can be found [here](https://github.com/GoodDeeds/Timetabler/blob/master/examples). This contains some examples for the field information, the input, and custom constraints to be added to the solver.
 
 For further details and examples, please refer to the [Project Wiki](https://github.com/GoodDeeds/Timetabler/wiki).
 
@@ -164,4 +164,4 @@ To contribute to this project, please send a [pull request](https://github.com/G
 
 ## License
 
-This software is provided under the [MIT License](https://github.com/GoodDeeds/blob/master/LICENSE).
+This software is provided under the [MIT License](https://github.com/GoodDeeds/Timetabler/blob/master/LICENSE).
