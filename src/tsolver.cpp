@@ -45,8 +45,7 @@ using namespace openwbo;
  * @param[in]  verb  The verbosity value to be given to the OLL object
  * @param[in]  enc   The encoding value to be given to the OLL object
  */
-TSolver::TSolver(int verb = _VERBOSITY_MINIMAL_, int enc = _CARD_TOTALIZER_)
-    : OLL(verb, enc) {}
+TSolver::TSolver(int verb, int enc) : OLL(verb, enc) {}
 
 /**
  * @brief      Solves the MaxSAT problem by calling the solver
