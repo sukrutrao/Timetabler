@@ -2,6 +2,9 @@
 
 [![Build Status](https://travis-ci.com/GoodDeeds/Timetabler.svg?branch=master)](https://travis-ci.com/GoodDeeds/Timetabler)
 [![Documentation Status](https://readthedocs.org/projects/timetabler/badge/?version=master)](https://timetabler.readthedocs.io/en/development/?badge=master)
+[![GitHub](https://img.shields.io/github/license/GoodDeeds/Timetabler.svg)](LICENSE)
+[![GitHub release](https://img.shields.io/github/release/GoodDeeds/Timetabler.svg)](https://github.com/GoodDeeds/Timetabler/releases/tag/v0.3.0)
+[![Github commits (since latest release)](https://img.shields.io/github/commits-since/GoodDeeds/Timetabler/latest.svg)](https://github.com/GoodDeeds/Timetabler/compare/v0.3.0...master)
 
 This project generates a timetable given a set of inputs and constraints. It encodes constraints of the timetabling problem as a SAT formula in the Conjunctive Normal Form, and then calls a MaxSAT solver to solve the problem.
 
@@ -148,7 +151,7 @@ A detailed explanation on each file can be found in the [Project Wiki](https://g
 
 ## Examples of Configuration files
 
-Examples for configuration files can be found [here](examples). This contains some examples for the field information, the input, and custom constraints to be added to the solver.
+Examples for configuration files can be found [here](https://github.com/GoodDeeds/Timetabler/blob/master/examples). This contains some examples for the field information, the input, and custom constraints to be added to the solver.
 
 For further details and examples, please refer to the [Project Wiki](https://github.com/GoodDeeds/Timetabler/wiki).
 
@@ -164,4 +167,4 @@ To contribute to this project, please send a [pull request](https://github.com/G
 
 ## License
 
-This software is provided under the [MIT License](LICENSE).
+This software is provided under the [MIT License](https://github.com/GoodDeeds/Timetabler/blob/master/LICENSE).
