@@ -3,12 +3,12 @@
 #ifndef TSOLVER_H
 #define TSOLVER_H
 
+#include <vector>
 #include "MaxSAT.h"
 #include "algorithms/Alg_OLL.h"
 #include "mtl/Vec.h"
-#include <vector>
 
-using namespace Minisat;
+using namespace NSPACE;
 using namespace openwbo;
 
 /**

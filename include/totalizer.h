@@ -34,7 +34,7 @@
 #include "mtl/Vec.h"
 
 using namespace openwbo;
-using namespace Minisat;
+using namespace NSPACE;
 
 class TTotalizer {
 

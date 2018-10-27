@@ -1,7 +1,7 @@
 #include "fields/instructor.h"
 
-#include "global.h"
 #include <string>
+#include "global.h"
 
 /**
  * @brief      Constructs the Instructor object.
@@ -20,7 +20,7 @@ Instructor::Instructor(std::string name) { this->name = name; }
  * @return     true if identical, false otherwise
  */
 bool Instructor::operator==(const Instructor &other) {
-    return (this->name == other.name);
+  return (this->name == other.name);
 }
 
 /**

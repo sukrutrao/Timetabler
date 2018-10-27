@@ -1,0 +1,5 @@
+name,class_size,instructor,segment,is_minor,B.Tech.1,B.Tech.2,B.Tech.3,B.Tech.4,M.Tech.,classroom,slot
+C1,30,B,16,No,No,No,Elective,No,Core,CL2,B
+C2,50,A,14,No,Core,Elective,No,No,No,CL3,B
+C3,50,B,14,No,Core,Elective,No,No,No,CL3,D
+C4,50,B,16,No,Core,Elective,No,No,No,CL1,A

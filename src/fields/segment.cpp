@@ -1,9 +1,9 @@
 #include "fields/segment.h"
 
-#include "global.h"
 #include <cassert>
 #include <iostream>
 #include <string>
+#include "global.h"
 
 /**
  * @brief      Constructs the Segment object.
@@ -12,9 +12,9 @@
  * @param[in]  endSegment    The end segment
  */
 Segment::Segment(int startSegment, int endSegment) {
-    assert((startSegment <= endSegment) && "Start Segment after End Segment!");
-    this->startSegment = startSegment;
-    this->endSegment = endSegment;
+  assert((startSegment <= endSegment) && "Start Segment after End Segment!");
+  this->startSegment = startSegment;
+  this->endSegment = endSegment;
 }
 
 /**
@@ -26,8 +26,8 @@ Segment::Segment(int startSegment, int endSegment) {
  * @return     True if identical, False otherwise
  */
 bool Segment::operator==(const Segment &other) {
-    return ((this->startSegment == other.startSegment) &&
-            (this->endSegment == other.endSegment));
+  return ((this->startSegment == other.startSegment) &&
+          (this->endSegment == other.endSegment));
 }
 
 /**
@@ -50,12 +50,12 @@ int Segment::length() { return (endSegment - startSegment + 1); }
  * @return     True if intersecting, False otherwise.
  */
 bool Segment::isIntersecting(const Segment &other) {
-    if (this->startSegment < other.startSegment) {
-        return !(this->endSegment < other.startSegment);
-    } else if (this->startSegment > other.startSegment) {
-        return !(this->startSegment > other.endSegment);
-    }
-    return true;
+  if (this->startSegment < other.startSegment) {
+    return !(this->endSegment < other.startSegment);
+  } else if (this->startSegment > other.startSegment) {
+    return !(this->startSegment > other.endSegment);
+  }
+  return true;
 }
 
 /**
@@ -73,7 +73,7 @@ FieldType Segment::getType() { return FieldType::segment; }
  * @return     The name
  */
 std::string Segment::getName() {
-    return std::to_string(startSegment) + std::to_string(endSegment);
+  return std::to_string(startSegment) + std::to_string(endSegment);
 }
 
 /**

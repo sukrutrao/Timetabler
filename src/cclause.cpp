@@ -1,11 +1,11 @@
 #include "cclause.h"
 
-#include "clauses.h"
-#include "core/SolverTypes.h"
 #include <iostream>
 #include <vector>
+#include "clauses.h"
+#include "core/SolverTypes.h"
 
-using namespace Minisat;
+using namespace NSPACE;
 
 /**
  * @brief      Constructs the CClause object.
@@ -20,8 +20,8 @@ CClause::CClause(const std::vector<Lit> &lits) { this->lits = lits; }
  * @param[in]  lit   A literal, which creates a unit clause
  */
 CClause::CClause(const Lit &lit) {
-    lits.clear();
-    lits.push_back(lit);
+  lits.clear();
+  lits.push_back(lit);
 }
 
 /**
@@ -31,8 +31,8 @@ CClause::CClause(const Lit &lit) {
  *                   positive polarity and added to create a unit clause
  */
 CClause::CClause(const Var &var) {
-    lits.clear();
-    lits.push_back(mkLit(var, false));
+  lits.clear();
+  lits.push_back(mkLit(var, false));
 }
 
 /**
@@ -50,13 +50,13 @@ CClause::CClause() { lits.clear(); }
  * @return     The negation of the clause
  */
 std::vector<CClause> CClause::operator~() {
-    std::vector<CClause> result;
-    result.clear();
-    for (int i = 0; i < lits.size(); i++) {
-        CClause unitClause(~(lits[i]));
-        result.push_back(unitClause);
-    }
-    return result;
+  std::vector<CClause> result;
+  result.clear();
+  for (unsigned i = 0; i < lits.size(); i++) {
+    CClause unitClause(~(lits[i]));
+    result.push_back(unitClause);
+  }
+  return result;
 }
 
 /**
@@ -72,11 +72,11 @@ std::vector<CClause> CClause::operator~() {
  *             the AND operation
  */
 std::vector<CClause> CClause::operator&(const CClause &other) {
-    std::vector<CClause> result;
-    result.clear();
-    result.push_back(*this);
-    result.push_back(other);
-    return result;
+  std::vector<CClause> result;
+  result.clear();
+  result.push_back(*this);
+  result.push_back(other);
+  return result;
 }
 
 /**
@@ -92,9 +92,9 @@ std::vector<CClause> CClause::operator&(const CClause &other) {
  * @return     A Clauses object with the result of performing the AND operation
  */
 Clauses CClause::operator&(const Clauses &other) {
-    Clauses result(other.getClauses());
-    result.addClauses(*this);
-    return result;
+  Clauses result(other.getClauses());
+  result.addClauses(*this);
+  return result;
 }
 
 /**
@@ -110,39 +110,38 @@ Clauses CClause::operator&(const Clauses &other) {
  * @return     The clause with the result on performing the OR operation
  */
 CClause CClause::operator|(const CClause &other) {
-    std::vector<Lit> thisLits = this->lits;
-    std::vector<Lit> otherLits = other.getLits();
-    // appending the literals
-    thisLits.insert(std::end(thisLits), std::begin(otherLits),
-                    std::end(otherLits));
-    std::sort(thisLits.begin(), thisLits.end());
-    // removing duplicates
-    thisLits.erase(std::unique(thisLits.begin(), thisLits.end()),
-                   thisLits.end());
-    bool existBothPolarities = false;
-    int indexLitBothPolarities = -1;
-    for (int i = 0; i < thisLits.size(); i++) {
-        for (int j = i + 1; j < thisLits.size(); j++) {
-            // if any two literals are such that they are x and ~x
-            if (var(thisLits[i]) == var(thisLits[j])) {
-                existBothPolarities = true;
-                indexLitBothPolarities = i;
-                break;
-            }
-        }
-        if (existBothPolarities) {
-            break;
-        }
+  std::vector<Lit> thisLits = this->lits;
+  std::vector<Lit> otherLits = other.getLits();
+  // appending the literals
+  thisLits.insert(std::end(thisLits), std::begin(otherLits),
+                  std::end(otherLits));
+  std::sort(thisLits.begin(), thisLits.end());
+  // removing duplicates
+  thisLits.erase(std::unique(thisLits.begin(), thisLits.end()), thisLits.end());
+  bool existBothPolarities = false;
+  int indexLitBothPolarities = -1;
+  for (unsigned i = 0; i < thisLits.size(); i++) {
+    for (unsigned j = i + 1; j < thisLits.size(); j++) {
+      // if any two literals are such that they are x and ~x
+      if (var(thisLits[i]) == var(thisLits[j])) {
+        existBothPolarities = true;
+        indexLitBothPolarities = i;
+        break;
+      }
     }
-    // replace the entire clause with x AND ~x, as it is true anyway
     if (existBothPolarities) {
-        CClause result;
-        result.addLits(thisLits[indexLitBothPolarities]);
-        result.addLits(~thisLits[indexLitBothPolarities]);
-        return result;
+      break;
     }
-    CClause result(thisLits);
+  }
+  // replace the entire clause with x AND ~x, as it is true anyway
+  if (existBothPolarities) {
+    CClause result;
+    result.addLits(thisLits[indexLitBothPolarities]);
+    result.addLits(~thisLits[indexLitBothPolarities]);
     return result;
+  }
+  CClause result(thisLits);
+  return result;
 }
 
 /**
@@ -158,8 +157,8 @@ CClause CClause::operator|(const CClause &other) {
  * @return     A Clauses with the result of performing the AND operation
  */
 Clauses CClause::operator|(const Clauses &other) {
-    Clauses thisLHS(*this);
-    return (thisLHS | other);
+  Clauses thisLHS(*this);
+  return (thisLHS | other);
 }
 
 /**
@@ -176,14 +175,14 @@ Clauses CClause::operator|(const Clauses &other) {
  * @return     A vector of clauses as a result of the implication
  */
 std::vector<CClause> CClause::operator>>(const CClause &other) {
-    std::vector<CClause> lhs = ~(*this);
-    std::vector<CClause> result;
-    result.clear();
-    for (int i = 0; i < lhs.size(); i++) {
-        CClause thisClause = lhs[i] | other;
-        result.push_back(thisClause);
-    }
-    return result;
+  std::vector<CClause> lhs = ~(*this);
+  std::vector<CClause> result;
+  result.clear();
+  for (unsigned i = 0; i < lhs.size(); i++) {
+    CClause thisClause = lhs[i] | other;
+    result.push_back(thisClause);
+  }
+  return result;
 }
 
 /**
@@ -198,8 +197,8 @@ std::vector<CClause> CClause::operator>>(const CClause &other) {
  * @return     A Clauses object as a result of the implication
  */
 Clauses CClause::operator>>(const Clauses &other) {
-    Clauses thisLHS(~(*this));
-    return (thisLHS | other);
+  Clauses thisLHS(~(*this));
+  return (thisLHS | other);
 }
 
 /**
@@ -211,7 +210,7 @@ Clauses CClause::operator>>(const Clauses &other) {
  * @param[in]  var1  The variable to be added
  */
 void CClause::createLitAndAdd(const Var &var1) {
-    lits.push_back(mkLit(var1, false));
+  lits.push_back(mkLit(var1, false));
 }
 
 /**
@@ -223,8 +222,8 @@ void CClause::createLitAndAdd(const Var &var1) {
  * @param[in]  var2  The second Var
  */
 void CClause::createLitAndAdd(const Var &var1, const Var &var2) {
-    lits.push_back(mkLit(var1, false));
-    lits.push_back(mkLit(var2, false));
+  lits.push_back(mkLit(var1, false));
+  lits.push_back(mkLit(var2, false));
 }
 
 /**
@@ -238,9 +237,9 @@ void CClause::createLitAndAdd(const Var &var1, const Var &var2) {
  */
 void CClause::createLitAndAdd(const Var &var1, const Var &var2,
                               const Var &var3) {
-    lits.push_back(mkLit(var1, false));
-    lits.push_back(mkLit(var2, false));
-    lits.push_back(mkLit(var3, false));
+  lits.push_back(mkLit(var1, false));
+  lits.push_back(mkLit(var2, false));
+  lits.push_back(mkLit(var3, false));
 }
 
 /**
@@ -257,8 +256,8 @@ void CClause::addLits(const Lit &lit1) { lits.push_back(lit1); }
  * @param[in]  lit2  The second Lit
  */
 void CClause::addLits(const Lit &lit1, const Lit &lit2) {
-    lits.push_back(lit1);
-    lits.push_back(lit2);
+  lits.push_back(lit1);
+  lits.push_back(lit2);
 }
 
 /**
@@ -269,9 +268,9 @@ void CClause::addLits(const Lit &lit1, const Lit &lit2) {
  * @param[in]  lit3  The third Lit
  */
 void CClause::addLits(const Lit &lit1, const Lit &lit2, const Lit &lit3) {
-    lits.push_back(lit1);
-    lits.push_back(lit2);
-    lits.push_back(lit3);
+  lits.push_back(lit1);
+  lits.push_back(lit2);
+  lits.push_back(lit3);
 }
 
 /**
@@ -280,7 +279,7 @@ void CClause::addLits(const Lit &lit1, const Lit &lit2, const Lit &lit3) {
  * @param[in]  otherLits  The vector of Lits to be added
  */
 void CClause::addLits(const std::vector<Lit> &otherLits) {
-    lits.insert(std::end(lits), std::begin(otherLits), std::end(otherLits));
+  lits.insert(std::end(lits), std::begin(otherLits), std::end(otherLits));
 }
 
 /**
@@ -294,10 +293,10 @@ std::vector<Lit> CClause::getLits() const { return lits; }
  * @brief      Displays the clause.
  */
 void CClause::printClause() {
-    for (Lit lit : lits) {
-        std::cout << (sign(lit) ? "-" : " ") << var(lit) << " ";
-    }
-    std::cout << std::endl;
+  for (Lit lit : lits) {
+    std::cout << (sign(lit) ? "-" : " ") << var(lit) << " ";
+  }
+  std::cout << std::endl;
 }
 
 /**

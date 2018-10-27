@@ -27,7 +27,7 @@
 
 #include "totalizer.h"
 
-using namespace Minisat;
+using namespace NSPACE;
 using namespace openwbo;
 
 void TTotalizer::addUnitClause(MaxSATFormula *formula, Lit a) {
