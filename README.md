@@ -155,6 +155,12 @@ Examples for configuration files can be found [here](https://github.com/GoodDeed
 
 For further details and examples, please refer to the [Project Wiki](https://github.com/GoodDeeds/Timetabler/wiki).
 
+## Documentation
+
+The project web page is [gooddeeds.github.io/Timetabler](https://gooddeeds.github.io/Timetabler).
+
+Code documentation for this project can be found on [Read the Docs](https://timetabler.readthedocs.io/).
+
 ## Issues
 
 If you have any queries, suggestions, or feature requests, or would like to report any bugs or issues, please [open an issue on GitHub](https://github.com/GoodDeeds/Timetabler/issues/new).
