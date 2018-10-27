@@ -23,7 +23,7 @@ This project requires following tools to build.
 ### Dependencies
 
 The following software are dependencies for this program:
-* [**Open WBO 2.1**](https://github.com/sat-group/open-wbo/commit/12382e61b0230f7406900b365a4fddc73194c970)
+* [**Open WBO 2.1**](https://github.com/sat-group/open-wbo/tree/12382e61b0230f7406900b365a4fddc73194c970)
 * [**yaml-cpp 0.6.2**](https://github.com/jbeder/yaml-cpp/releases/tag/yaml-cpp-0.6.2)
 * [**CSVparser**](https://github.com/MyBoon/CSVparser/tree/540e3e2f46b77ea8178f90910a165695cbb6cc12)
 * [**PEGTL 2.7.0**](https://github.com/taocpp/PEGTL/releases/tag/2.7.0)
