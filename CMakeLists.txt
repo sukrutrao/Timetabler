@@ -9,12 +9,14 @@ set(CMAKE_BUILD_TYPE Release)
 
 set(CMAKE_CXX_FLAGS -Wno-literal-suffix)
 
-set(OPEN_WBO_PATH "${Timetabler_SOURCE_DIR}/dependencies/open-wbo" CACHE PATH "Open-WBO path")
-set(YAML_CPP_PATH "${Timetabler_SOURCE_DIR}/dependencies/yaml-cpp-yaml-cpp-0.6.2" CACHE PATH "YAML CPP path")
-set(CSVPARSER_PATH "${Timetabler_SOURCE_DIR}/dependencies/CSVparser" CACHE PATH "CSVParser path")
-set(PEGTL_PATH "${Timetabler_SOURCE_DIR}/dependencies/PEGTL-2.7.0" CACHE PATH "PEGTL path")
+set(OPEN_WBO_PATH "${CMAKE_SOURCE_DIR}/dependencies/open-wbo" CACHE PATH "Open-WBO path")
+set(YAML_CPP_PATH "${CMAKE_SOURCE_DIR}/dependencies/yaml-cpp-yaml-cpp-0.6.2" CACHE PATH "YAML CPP path")
+set(CSVPARSER_PATH "${CMAKE_SOURCE_DIR}/dependencies/CSVparser" CACHE PATH "CSVParser path")
+set(PEGTL_PATH "${CMAKE_SOURCE_DIR}/dependencies/PEGTL-2.7.0" CACHE PATH "PEGTL path")
 set(ENABLE_TESTS "OFF" CACHE BOOL "Enable Google tests")
-set(GTEST_PATH "${Timetabler_SOURCE_DIR}/dependencies/googletest-release-1.8.1" CACHE PATH "GTest path")
+set(GTEST_PATH "${CMAKE_SOURCE_DIR}/dependencies/googletest-release-1.8.1" CACHE PATH "GTest path")
+
+message("${OPEN_WBO_PATH}")
 
 if (EXISTS ${GTEST_PATH})
 	set(ENABLE_TESTS "ON")
@@ -39,7 +41,7 @@ if (${ENABLE_TESTS})
 
 	file(GLOB_RECURSE TEST_SOURCES "tests/*.cpp")
 	list(APPEND TEST_SOURCES ${SOURCES})
-	get_filename_component(full_path_main_cpp ${Timetabler_SOURCE_DIR}/src/main.cpp ABSOLUTE)
+	get_filename_component(full_path_main_cpp ${CMAKE_SOURCE_DIR}/src/main.cpp ABSOLUTE)
 	list(REMOVE_ITEM TEST_SOURCES "${full_path_main_cpp}")
 endif ()
 
@@ -73,7 +75,7 @@ SET(CPACK_DEBIAN_PACKAGE_DESCRIPTION "Encode timetabling constraints as a SAT fo
 SET(CPACK_DEBIAN_PACKAGE_MAINTAINER "Prateek Kumar <prateek@prateekkumar.in>")
 SET(CPACK_DEBIAN_PACKAGE_SHLIBDEPS ON)
 SET(CPACK_DEBIAN_PACKAGE_HOMEPAGE "https://github.com/GoodDeeds/Timetabler")
-set(CPACK_RESOURCE_FILE_LICENSE ${Timetabler_SOURCE_DIR}/LICENSE)
-set(CPACK_RESOURCE_FILE_README ${Timetabler_SOURCE_DIR}/README.md)
+set(CPACK_RESOURCE_FILE_LICENSE ${CMAKE_SOURCE_DIR}/LICENSE)
+set(CPACK_RESOURCE_FILE_README ${CMAKE_SOURCE_DIR}/README.md)
 
 INCLUDE(CPack)

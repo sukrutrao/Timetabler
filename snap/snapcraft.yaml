@@ -1,13 +1,14 @@
 name: timetabler
-version: "0.3.0-dev"
-summary: Timetabler
+version: "0.3.0"
+summary: Timetable scheduling software using MaxSAT solver.
 description: |
   A highly customizable timetabling software for educational institutions
   that encodes timetabling constraints as a SAT formula and solves them
   using a MaxSAT solver.
-
-grade: devel
-confinement: devmode
+type: app
+# Set grade to devel in other commits and stable in release commits
+grade: stable
+confinement: strict
 
 apps:
   timetabler:
@@ -16,3 +17,9 @@ apps:
 parts:
   timetabler:
     plugin: cmake
+    prepare: bash ../src/install_dependencies.sh
+    configflags:
+      - -DOPEN_WBO_PATH=dependencies/open-wbo
+      - -DYAML_CPP_PATH=dependencies/yaml-cpp-yaml-cpp-0.6.2
+      - -DCSVPARSER_PATH=dependencies/CSVparser
+      - -DPEGTL_PATH=dependencies/PEGTL-2.7.0
