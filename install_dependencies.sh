@@ -7,11 +7,11 @@ CSVPARSER_COMMIT=540e3e2
 PEGTL_VERSION=2.7.0
 GTEST_VERSION=1.8.1
 
-OPTIONS=`getopt -o p --long enable-tests,parallel -- "$@"`
-[ $? -eq 0 ] || {
+OPTIONS=`getopt -o p --long enable-tests,parallel --name "install_dependencies.sh" -- "$@"`
+if [ $? -ne 0 ] ; then
   echo "Invalid arguments"
   exit 1
-}
+fi
 eval set -- "$OPTIONS"
 
 PARALLEL=""
