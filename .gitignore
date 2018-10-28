@@ -37,3 +37,11 @@
 # Object files, dependencies, and Executables 
 build
 dependencies
+
+*.swp
+
+# Snap
+*.snap
+parts
+prime
+stage
