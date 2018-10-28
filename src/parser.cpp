@@ -248,12 +248,19 @@ bool Parser::verify() {
   for (auto course1 : timetabler->data.courses) {
     if (course1.getIsMinor() && course1.getSlot() != -1) {
       if (timetabler->data.slots[course1.getSlot()].isMinorSlot()) {
-        std::cout << course1.getName()
-                  << " which is minor course is scheduled in non minor slot."
-                  << std::endl;
-        result = false;
+        if (timetabler->data.predefinedClausesWeights
+                [PredefinedClauses::minorInMinorTime] != 0) {
+          std::cout << course1.getName()
+                    << " which is minor course is scheduled in non minor slot."
+                    << std::endl;
+        }
+        if (timetabler->data.predefinedClausesWeights
+                [PredefinedClauses::minorInMinorTime] == -1) {
+          result = false;
+        }
       }
     }
+
     for (auto course2 : timetabler->data.courses) {
       if (course1.getName() == course2.getName()) continue;
       bool segementIntersecting =
@@ -271,25 +278,47 @@ bool Parser::verify() {
               : false;
       if (segementIntersecting && slotIntersecting) {
         if (course1.getInstructor() == course2.getInstructor()) {
-          std::cout << course1.getName() << " and " << course2.getName()
-                    << " having same instructor clash." << std::endl;
-          result = false;
+          if (timetabler->data.predefinedClausesWeights
+                  [PredefinedClauses::instructorSingleCourseAtATime] != 0) {
+            std::cout << course1.getName() << " and " << course2.getName()
+                      << " having same instructor clash." << std::endl;
+          }
+          if (timetabler->data.predefinedClausesWeights
+                  [PredefinedClauses::instructorSingleCourseAtATime] == -1) {
+            result = false;
+          }
         }
+
         if (classroomSame) {
-          std::cout << course1.getName() << " and " << course2.getName()
-                    << " having same classroom clash." << std::endl;
-          result = false;
+          if (timetabler->data.predefinedClausesWeights
+                  [PredefinedClauses::classroomSingleCourseAtATime] != 0) {
+            std::cout << course1.getName() << " and " << course2.getName()
+                      << " having same classroom clash." << std::endl;
+          }
+          if (timetabler->data.predefinedClausesWeights
+                  [PredefinedClauses::classroomSingleCourseAtATime] == -1) {
+            result = false;
+          }
         }
+
         for (auto program1 : course1.getPrograms()) {
           for (auto program2 : course2.getPrograms()) {
             if (program1 == program2) {
               if (timetabler->data.programs[program1].isCoreProgram() &&
                   timetabler->data.programs[program2].isCoreProgram()) {
-                std::cout << course1.getName() << " and " << course2.getName()
-                          << " which have common core program "
-                          << timetabler->data.programs[program1].getName()
-                          << " clash." << std::endl;
-                result = false;
+                if (timetabler->data.predefinedClausesWeights
+                        [PredefinedClauses::programSingleCoreCourseAtATime] !=
+                    0) {
+                  std::cout << course1.getName() << " and " << course2.getName()
+                            << " which have common core program "
+                            << timetabler->data.programs[program1].getName()
+                            << " clash." << std::endl;
+                }
+                if (timetabler->data.predefinedClausesWeights
+                        [PredefinedClauses::programSingleCoreCourseAtATime] ==
+                    -1) {
+                  result = false;
+                }
               }
             }
           }
