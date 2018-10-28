@@ -1,8 +1,8 @@
 # Timetabler
 
 [![Build Status](https://travis-ci.com/GoodDeeds/Timetabler.svg?branch=master)](https://travis-ci.com/GoodDeeds/Timetabler)
-[![Documentation Status](https://readthedocs.org/projects/timetabler/badge/?version=master)](https://timetabler.readthedocs.io/en/development/?badge=master)
-[![GitHub](https://img.shields.io/github/license/GoodDeeds/Timetabler.svg)](LICENSE)
+[![Documentation Status](https://readthedocs.org/projects/timetabler/badge/?version=master)](https://timetabler.readthedocs.io/en/master/)
+[![GitHub](https://img.shields.io/github/license/GoodDeeds/Timetabler.svg)](https://github.com/GoodDeeds/Timetabler/blob/master/LICENSE)
 [![GitHub release](https://img.shields.io/github/release/GoodDeeds/Timetabler.svg)](https://github.com/GoodDeeds/Timetabler/releases/tag/v0.3.0)
 [![Github commits (since latest release)](https://img.shields.io/github/commits-since/GoodDeeds/Timetabler/latest.svg)](https://github.com/GoodDeeds/Timetabler/compare/v0.3.0...master)
 
