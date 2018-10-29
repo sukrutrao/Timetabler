@@ -16,8 +16,6 @@ set(PEGTL_PATH "${CMAKE_SOURCE_DIR}/dependencies/PEGTL-2.7.0" CACHE PATH "PEGTL 
 set(ENABLE_TESTS "OFF" CACHE BOOL "Enable Google tests")
 set(GTEST_PATH "${CMAKE_SOURCE_DIR}/dependencies/googletest-release-1.8.1" CACHE PATH "GTest path")
 
-message("${OPEN_WBO_PATH}")
-
 if (EXISTS ${GTEST_PATH})
 	set(ENABLE_TESTS "ON")
 endif ()
@@ -71,7 +69,7 @@ set(CPACK_PACKAGE_VERSION_PATCH ${Timetabler_VERSION_PATCH})
 
 SET(CPACK_GENERATOR "DEB")
 SET(CPACK_SOURCE_GENERATOR "TGZ")
-SET(CPACK_DEBIAN_PACKAGE_DESCRIPTION "Encodes timetabling constraints as a SAT formula and solves using a MaxSAT solver to generate timetables for educational institutions")
+SET(CPACK_DEBIAN_PACKAGE_DESCRIPTION "A highly customizable timetabling software for educational institutions that encodes timetabling constraints as a SAT formula and solves them using a MaxSAT solver")
 SET(CPACK_DEBIAN_PACKAGE_MAINTAINER "Prateek Kumar <prateek@prateekkumar.in>")
 SET(CPACK_DEBIAN_PACKAGE_SHLIBDEPS ON)
 SET(CPACK_DEBIAN_PACKAGE_HOMEPAGE "https://github.com/GoodDeeds/Timetabler")
