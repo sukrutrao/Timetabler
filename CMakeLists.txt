@@ -16,8 +16,6 @@ set(PEGTL_PATH "${CMAKE_SOURCE_DIR}/dependencies/PEGTL-2.7.0" CACHE PATH "PEGTL 
 set(ENABLE_TESTS "OFF" CACHE BOOL "Enable Google tests")
 set(GTEST_PATH "${CMAKE_SOURCE_DIR}/dependencies/googletest-release-1.8.1" CACHE PATH "GTest path")
 
-message("${OPEN_WBO_PATH}")
-
 if (EXISTS ${GTEST_PATH})
 	set(ENABLE_TESTS "ON")
 endif ()
