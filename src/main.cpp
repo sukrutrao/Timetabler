@@ -1,4 +1,5 @@
 #include <getopt.h>
+#include <iomanip>
 #include <iostream>
 #include "constraint_adder.h"
 #include "constraint_encoder.h"
@@ -19,18 +20,18 @@ void display_meta() {
 }
 
 const struct option long_options[] = {{"help", no_argument, 0, 'h'},
-                                      {"input", required_argument, 0, 'i'},
                                       {"fields", required_argument, 0, 'f'},
+                                      {"input", required_argument, 0, 'i'},
                                       {"custom", required_argument, 0, 'c'},
                                       {"output", required_argument, 0, 'o'},
                                       {"version", no_argument, 0, 'v'},
                                       {0, 0, 0, 0}};
 
 const std::string option_desc[] = {"display this help",
-                                   "Input file",
-                                   "Fields file",
-                                   "Custom file",
-                                   "Output file",
+                                   "fields yaml file",
+                                   "input csv file",
+                                   "custom constraints file",
+                                   "output csv file",
                                    "display version",
                                    ""};
 
@@ -46,8 +47,9 @@ void display_help() {
   std::cout << "Options:\n";
   for (int i = 0; long_options[i].name != 0; i++) {
     if (long_options[i].val)
-      std::cout << '-' << char(long_options[i].val) << "\t";
-    std::cout << "--" << long_options[i].name << "\t" << option_desc[i] << "\n";
+      std::cout << '-' << char(long_options[i].val) << ", ";
+    std::cout << std::left << "--" << std::setw(8) << long_options[i].name
+              << "\t" << option_desc[i] << "\n";
   }
 }
 
