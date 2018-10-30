@@ -9,10 +9,12 @@
 #include "global_vars.h"
 #include "mtl/Vec.h"
 #include "parser.h"
+#include "version.h"
 
 void display_meta() {
   std::cout << "Timetabler\n"
-               "Version: 0.3.0+git\n\n"
+               "Version: " __VERSION__
+               "+git\n\n"
                "A highly customizable timetabling software for educational "
                "institutions that encodes timetabling constraints as a SAT "
                "formula and solves them using a MaxSAT solver."
@@ -38,8 +40,8 @@ const std::string option_desc[] = {"display this help",
 void display_help(std::string exec = "timetabler") {
   display_meta();
   std::cout << "\nUsage:\n";
-  std::cout << " " << exec <<
-               " -i|--input <input_file>"
+  std::cout << " " << exec
+            << " -i|--input <input_file>"
                " -f|--fields <fields_file>"
                " [-c|--custom <custom_constraints_file>]"
                " -o|--output <output_file>"
