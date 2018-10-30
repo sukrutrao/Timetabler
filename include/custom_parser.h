@@ -48,6 +48,8 @@ struct Object {
   Clauses constraint;
   std::vector<Clauses> constraintAnds;
   std::vector<Clauses> constraintVals;
+
+  Object();
 };
 
 /**

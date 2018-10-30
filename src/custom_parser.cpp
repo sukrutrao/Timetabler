@@ -747,3 +747,14 @@ void parseCustomConstraints(std::string file,
   pegtl::file_input<> in(file);
   pegtl::parse<grammar, action, control>(in, obj);
 }
+
+/**
+ * @brief      Initialize object members
+ */
+Object::Object() {
+  isNot = false;
+  classSame = false;
+  slotSame = false;
+  classNotSame = false;
+  slotNotSame = false;
+}
