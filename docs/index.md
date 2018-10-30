@@ -33,6 +33,13 @@ where
 
 A detailed explanation on each file can be found [here](docs/files).
 
+{% if page.index %}
+## Documentation
+{% for doc in site.docs %}
+1. [{{doc.title}}]({{doc.url|prepend:site.baseurl}})
+{% endfor %}
+{% endif %}
+
 ## Video tutorial
 
 **TODO**

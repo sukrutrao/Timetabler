@@ -3,7 +3,7 @@ layout: default
 title: Default constraints
 ---
 
-# Default Constraints Implemented in the Timetabler
+# Default constraints implemented in the Timetabler
 
 This page describes the default constraints implemented in the Timetabler. Broadly, there are three types of constraints:
 
