@@ -72,7 +72,6 @@ if [ ! -d PEGTL-$PEGTL_VERSION ] ; then
   tar -xf pegtl.tar.gz
   rm pegtl.tar.gz
 fi
-cd ..
 
 if [ "$ENABLE_TESTS" = "1" ]; then
 echo "Getting GoogleTest..."
