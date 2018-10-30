@@ -1,10 +1,9 @@
 cmake_minimum_required(VERSION 3.10)
 set(CMAKE_CXX_STANDARD 11)
-project(Timetabler)
+project(Timetabler LANGUAGES CXX)
 
-set(Timetabler_VERSION_MAJOR 0)
-set(Timetabler_VERSION_MINOR 3)
-set(Timetabler_VERSION_PATCH 0)
+include(TimetablerVersion.cmake)
+
 set(CMAKE_BUILD_TYPE Release)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wno-parentheses -Wno-misleading-indentation")
@@ -63,9 +62,7 @@ if (${ENABLE_TESTS})
 	gtest_discover_tests(tests)
 endif ()
 
-set(CPACK_PACKAGE_VERSION_MAJOR ${Timetabler_VERSION_MAJOR})
-set(CPACK_PACKAGE_VERSION_MINOR ${Timetabler_VERSION_MINOR})
-set(CPACK_PACKAGE_VERSION_PATCH ${Timetabler_VERSION_PATCH})
+set(CPACK_PACKAGE_VERSION ${Timetabler_VERSION})
 
 SET(CPACK_GENERATOR "DEB")
 SET(CPACK_SOURCE_GENERATOR "TGZ")
