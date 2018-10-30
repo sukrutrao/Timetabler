@@ -55,7 +55,8 @@ void display_help() {
 
 void display_error(std::string err) {
   std::cout << err << std::endl;
-  std::cout << "Use --help flag for supported options." << std::endl;
+  std::cout << "Use --help option to know about supported options."
+            << std::endl;
   exit(1);
 }
 
@@ -98,20 +99,13 @@ int main(int argc, char *const *argv) {
     }
   }
 
-  if (input_file == "") {
-    display_error("Input file is required.");
-  }
-
-  if (fields_file == "") {
-    display_error("Fields file is required.");
-  }
-
-  if (output_file == "") {
-    display_error("Output file is required.");
-  }
-
   if (optind < argc) {
     display_error("Unrecognised argument: " + std::string(argv[optind]));
+  }
+
+  if (input_file == "" || fields_file == "" || output_file == "") {
+    display_error(
+        "Fields filename, input filename and output filename are required.");
   }
 
   timetabler = new Timetabler();
