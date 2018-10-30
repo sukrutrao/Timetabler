@@ -40,7 +40,7 @@ void display_help() {
   std::cout << " timetabler"
                " -i|--input <input_file>"
                " -f|--fields <fields_file>"
-               " -c|--custom <custom_constraints_file>"
+               " [-c|--custom <custom_constraints_file>]"
                " -o|--output <output_file>"
                "\n\n";
   std::cout << "Options:\n";
@@ -104,10 +104,6 @@ int main(int argc, char *const *argv) {
     display_error("Fields file is required.");
   }
 
-  if (custom_file == "") {
-    display_error("Custom constraints file is required.");
-  }
-
   if (output_file == "") {
     display_error("Output file is required.");
   }
@@ -130,7 +126,9 @@ int main(int argc, char *const *argv) {
   ConstraintEncoder encoder(timetabler);
   ConstraintAdder constraintAdder(&encoder, timetabler);
   constraintAdder.addConstraints();
-  parseCustomConstraints(custom_file, &encoder, timetabler);
+  if (custom_file != "") {
+    parseCustomConstraints(custom_file, &encoder, timetabler);
+  }
   timetabler->addHighLevelClauses();
   timetabler->addExistingAssignments();
   SolverStatus solverStatus = timetabler->solve();
