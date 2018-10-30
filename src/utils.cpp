@@ -1,6 +1,5 @@
 #include "utils.h"
 
-#include <iostream>
 #include "data.h"
 
 namespace Utils {
@@ -36,8 +35,6 @@ std::string getFieldTypeName(FieldType fieldType) {
  * @return     The predefined constraint name.
  */
 std::string getPredefinedConstraintName(const PredefinedClauses clauseType) {
-  // std::cout << "I am called.\n";
-  return "NAME";
   if (clauseType == PredefinedClauses::instructorSingleCourseAtATime)
     return "instructorSingleCourseAtATime";
   if (clauseType == PredefinedClauses::classroomSingleCourseAtATime)
