@@ -48,8 +48,43 @@
       </div>
     </nav>
 
+{% capture the_collection %}{{ page.collection }}{% endcapture %}
+{% if page.collection %}
+  {% assign document = site[the_collection] %}
+{% endif %}
+
+{% for links in document  %}
+  {% if links.title == page.title %}
+    {% unless forloop.first %}
+      {% assign prevurl = prev.url %}
+    {% endunless %}
+    {% unless forloop.last %}
+      {% assign next = document[forloop.index] %}
+      {% assign nexturl = next.url %}
+    {% endunless %}
+  {% endif %}
+  {% assign prev = links %}
+{% endfor %}
+
     <main id="content" class="main-content" role="main">
       {{ content }}
+
+      {% if page.collection %}
+      <nav>
+        <ul class="pagination justify-content-center">
+		    {% if prevurl %}
+          <li class="page-item"><a class="page-link" href="{{prevurl|prepend:site.baseurl}}">Previous</a></li>
+        {% else %}
+          <li class="page-item disabled"><a href="#" class="page-link">Previous</a></li>
+        {% endif %}
+        {% if nexturl %}
+          <li class="page-item"><a class="page-link" href="{{nexturl|prepend:site.baseurl}}">Next</a></li>
+        {% else %}
+          <li class="page-item disabled"><a href="#" class="page-link">Next</a></li>
+        {% endif %}
+        </ul>
+      </nav>
+      {% endif %}
 
       <footer class="site-footer">
         {% if site.github.is_project_page %}
