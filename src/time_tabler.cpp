@@ -89,7 +89,11 @@ void Timetabler::addHighLevelConstraintClauses(PredefinedClauses clauseType) {
  */
 void Timetabler::addHighLevelCustomConstraintClauses(int index, int weight) {
   Lit l = mkLit(data.customConstraintVars[index], false);
-  addToFormula(l, weight);
+  if (weight != 0) {
+    addToFormula(l, weight);
+  } else {
+    addToFormula(l, 1);
+  }
 }
 
 /**
