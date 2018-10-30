@@ -35,10 +35,10 @@ const std::string option_desc[] = {"display this help",
                                    "display version",
                                    ""};
 
-void display_help() {
+void display_help(std::string exec = "timetabler") {
   display_meta();
   std::cout << "\nUsage:\n";
-  std::cout << " timetabler"
+  std::cout << " " << exec <<
                " -i|--input <input_file>"
                " -f|--fields <fields_file>"
                " [-c|--custom <custom_constraints_file>]"
@@ -75,7 +75,7 @@ int main(int argc, char *const *argv) {
       case 0:
         break;
       case 'h':
-        display_help();
+        display_help(std::string(argv[0]));
         exit(0);
       case 'v':
         display_meta();
