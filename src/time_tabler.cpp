@@ -72,7 +72,7 @@ void Timetabler::addHighLevelConstraintClauses(PredefinedClauses clauseType) {
   if (data.predefinedClausesWeights[clauseType] != 0) {
     addToFormula(l, data.predefinedClausesWeights[clauseType]);
   } else {
-    addToFormula(l, 1);
+    addToFormula(l, -1);
   }
 }
 
@@ -92,7 +92,7 @@ void Timetabler::addHighLevelCustomConstraintClauses(int index, int weight) {
   if (weight != 0) {
     addToFormula(l, weight);
   } else {
-    addToFormula(l, 1);
+    addToFormula(l, -1);
   }
 }
 
