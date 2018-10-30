@@ -13,8 +13,8 @@
 
 void display_meta() {
   std::cout << "Timetabler\n"
-               "Version: " __VERSION__
-               "+git\n\n"
+               "Version: " __TIMETABLER_VERSION__
+               "\n\n"
                "A highly customizable timetabling software for educational "
                "institutions that encodes timetabling constraints as a SAT "
                "formula and solves them using a MaxSAT solver."
