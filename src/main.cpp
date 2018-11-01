@@ -11,14 +11,14 @@
 #include "parser.h"
 #include "version.h"
 
-void display_meta() {
-  std::cout << "Timetabler\n"
-               "Version: " __TIMETABLER_VERSION__
-               "\n\n"
-               "A highly customizable timetabling software for educational "
-               "institutions that encodes timetabling constraints as a SAT "
-               "formula and solves them using a MaxSAT solver."
-            << std::endl;
+void display_meta(bool display_desc = false) {
+  std::cout << "Timetabler version " __TIMETABLER_VERSION__ << std::endl;
+  if (display_desc)
+    std::cout << "\n"
+              << "A highly customizable timetabling software for educational\n"
+                 "institutions that encodes timetabling constraints as a SAT\n"
+                 "formula and solves them using a MaxSAT solver."
+              << std::endl;
 }
 
 const struct option long_options[] = {{"help", no_argument, 0, 'h'},
@@ -38,7 +38,7 @@ const std::string option_desc[] = {"display this help",
                                    ""};
 
 void display_help(std::string exec = "timetabler") {
-  display_meta();
+  display_meta(true);
   std::cout << "\nUsage:\n";
   std::cout << " " << exec
             << " -i|--input <input_file>"
