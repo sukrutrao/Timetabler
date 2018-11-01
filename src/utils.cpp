@@ -34,7 +34,7 @@ std::string getFieldTypeName(FieldType fieldType) {
  *
  * @return     The predefined constraint name.
  */
-std::string getPredefinedConstraintName(PredefinedClauses clauseType) {
+std::string getPredefinedConstraintName(const PredefinedClauses clauseType) {
   if (clauseType == PredefinedClauses::instructorSingleCourseAtATime)
     return "instructorSingleCourseAtATime";
   if (clauseType == PredefinedClauses::classroomSingleCourseAtATime)

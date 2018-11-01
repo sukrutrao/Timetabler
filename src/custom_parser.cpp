@@ -682,10 +682,12 @@ struct action<constraint_unbundle> {
       obj.timetabler->data.customConstraintVars.push_back(
           obj.timetabler->newVar());
       int index = obj.timetabler->data.customConstraintVars.size() - 1;
-      Clauses hardConsequent =
-          CClause(obj.timetabler->data.customConstraintVars[index]) >>
-          obj.constraint;
-      obj.timetabler->addClauses(hardConsequent, -1);
+      if (obj.integer != 0) {
+        Clauses hardConsequent =
+            CClause(obj.timetabler->data.customConstraintVars[index]) >>
+            obj.constraint;
+        obj.timetabler->addClauses(hardConsequent, -1);
+      }
       obj.timetabler->addHighLevelCustomConstraintClauses(index, obj.integer);
     }
     obj.courseValues.clear();
@@ -712,10 +714,12 @@ struct action<wconstraint> {
     obj.timetabler->data.customConstraintVars.push_back(
         obj.timetabler->newVar());
     int index = obj.timetabler->data.customConstraintVars.size() - 1;
-    Clauses hardConsequent =
-        CClause(obj.timetabler->data.customConstraintVars[index]) >>
-        obj.constraint;
-    obj.timetabler->addClauses(hardConsequent, -1);
+    if (obj.integer != 0) {
+      Clauses hardConsequent =
+          CClause(obj.timetabler->data.customConstraintVars[index]) >>
+          obj.constraint;
+      obj.timetabler->addClauses(hardConsequent, -1);
+    }
     obj.timetabler->addHighLevelCustomConstraintClauses(index, obj.integer);
   }
 };
