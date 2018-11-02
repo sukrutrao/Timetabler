@@ -3,7 +3,7 @@
 #include "cclause.h"
 #include "clauses.h"
 #include "global.h"
-#include "time_tabler.h"
+#include "timetabler.h"
 
 class TestClauses : public ::testing::Test {
  public:

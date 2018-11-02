@@ -1,7 +1,7 @@
 /** @file */
 
-#ifndef TIME_TABLER_H
-#define TIME_TABLER_H
+#ifndef TIMETABLER_H
+#define TIMETABLER_H
 
 #include <vector>
 #include "MaxSATFormula.h"

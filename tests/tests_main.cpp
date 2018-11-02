@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 #include "global.h"
-#include "time_tabler.h"
+#include "timetabler.h"
 
 Timetabler *timetabler;
 

@@ -6,7 +6,7 @@
 #include "constraint_encoder.h"
 #include "core/SolverTypes.h"
 #include "global.h"
-#include "time_tabler.h"
+#include "timetabler.h"
 #include "utils.h"
 
 using namespace NSPACE;
