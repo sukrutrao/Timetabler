@@ -93,9 +93,13 @@ std::string getFieldName(FieldType fieldType, int index, Data &data) {
 Log::Log(Severity severity) { this->severity = severity; }
 
 Log::~Log() {
+  if (severity == Severity::EMPTY) {
+    std::cout << ss.str() << std::endl;
+    return;
+  }
   std::cout << "\033[" << getSeverityCode(severity) << "m";
   std::cout << std::setw(10) << std::left
-            << "[" + getSeverityName(severity) + "]";
+            << "[" + getSeverityIdentifier(severity) + "]";
   std::cout << ss.str() << std::endl;
   std::cout << "\033[" << 0 << "m";
   if (severity == Severity::ERROR) {
@@ -104,6 +108,7 @@ Log::~Log() {
 }
 
 int Log::getSeverityCode(Severity severity) {
+  if (severity == Severity::EMPTY) return 0;
   if (severity == Severity::INFO)
     return 0;
   else if (severity == Severity::WARNING)
@@ -114,7 +119,8 @@ int Log::getSeverityCode(Severity severity) {
   return -1;
 }
 
-std::string Log::getSeverityName(Severity severity) {
+std::string Log::getSeverityIdentifier(Severity severity) {
+  if (severity == Severity::EMPTY) return "";
   if (severity == Severity::INFO)
     return "INFO";
   else if (severity == Severity::WARNING)
