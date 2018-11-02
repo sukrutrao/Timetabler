@@ -1,7 +1,7 @@
 #ifndef GLOBAL_VARS_H
 #define GLOBAL_VARS_H
 
-#include "time_tabler.h"
+#include "timetabler.h"
 
 extern Timetabler *timetabler;
 

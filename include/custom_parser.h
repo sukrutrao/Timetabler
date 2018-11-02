@@ -6,7 +6,7 @@
 #include <string>
 #include <vector>
 #include "constraint_adder.h"
-#include "time_tabler.h"
+#include "timetabler.h"
 
 /**
  * @brief      Class for field values types.

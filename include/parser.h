@@ -7,7 +7,7 @@
 #include <string>
 #include "CSVparser.hpp"
 #include "data.h"
-#include "time_tabler.h"
+#include "timetabler.h"
 
 /**
  * @brief      Class for parser.

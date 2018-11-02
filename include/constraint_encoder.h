@@ -7,7 +7,7 @@
 #include "clauses.h"
 #include "core/SolverTypes.h"
 #include "global.h"
-#include "time_tabler.h"
+#include "timetabler.h"
 
 using namespace NSPACE;
 
