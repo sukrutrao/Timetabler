@@ -1,5 +1,6 @@
 #include "utils.h"
 
+#include <iostream>
 #include "data.h"
 
 namespace Utils {
@@ -87,3 +88,13 @@ std::string getFieldName(FieldType fieldType, int index, Data &data) {
 }
 
 }  // namespace Utils
+
+Log::Log() {}
+
+Log::~Log() { std::cout << ss.str() << std::endl; }
+
+template <class T>
+Log &Log::operator<<(const T &input) {
+  ss << input;
+  return *this;
+}

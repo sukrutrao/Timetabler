@@ -3,6 +3,7 @@
 #ifndef UTILS_H
 #define UTILS_H
 
+#include <sstream>
 #include <string>
 #include <vector>
 #include "data.h"
@@ -117,5 +118,22 @@ std::string getPredefinedConstraintName(const PredefinedClauses clauseType);
 std::string getFieldName(FieldType fieldType, int index, Data &data);
 
 }  // namespace Utils
+
+// Reference: https://stackoverflow.com/a/2179782/, Evan Terran
+// (https://stackoverflow.com/users/13430/evan-teran), CC-BY-SA 3.0
+
+/**
+ * @brief      Perform logging
+ */
+class Log {
+ public:
+  Log();
+  ~Log();
+  template <class T>
+  Log &operator<<(const T &input);
+
+ private:
+  std::ostringstream ss;
+};
 
 #endif
