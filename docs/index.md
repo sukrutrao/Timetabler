@@ -1,10 +1,7 @@
 # Timetabler
 
 [![Build Status](https://travis-ci.com/GoodDeeds/Timetabler.svg?branch=master)](https://travis-ci.com/GoodDeeds/Timetabler)
-[![Documentation Status](https://readthedocs.org/projects/timetabler/badge/?version=master)](https://timetabler.readthedocs.io/en/master/)
-[![GitHub](https://img.shields.io/github/license/GoodDeeds/Timetabler.svg)](https://github.com/GoodDeeds/Timetabler/blob/master/LICENSE)
-[![GitHub release](https://img.shields.io/github/release/GoodDeeds/Timetabler.svg)](https://github.com/GoodDeeds/Timetabler/releases/tag/v0.3.0)
-[![Github commits (since latest release)](https://img.shields.io/github/commits-since/GoodDeeds/Timetabler/latest.svg)](https://github.com/GoodDeeds/Timetabler/compare/v0.3.0...master)
+[![Documentation Status](https://readthedocs.org/projects/timetabler/badge/?version=master)](https://timetabler.readthedocs.io/en/development/?badge=master)
 
 This project generates a timetable given a set of inputs and constraints. It encodes constraints of the timetabling problem as a SAT formula in the Conjunctive Normal Form, and then calls a MaxSAT solver to solve the problem.
 
@@ -23,7 +20,7 @@ This project requires following tools to build.
 ### Dependencies
 
 The following software are dependencies for this program:
-* [**Open WBO 2.1**](https://github.com/sat-group/open-wbo/tree/12382e61b0230f7406900b365a4fddc73194c970)
+* [**Open WBO 2.1**](https://github.com/sat-group/open-wbo/commit/12382e61b0230f7406900b365a4fddc73194c970)
 * [**yaml-cpp 0.6.2**](https://github.com/jbeder/yaml-cpp/releases/tag/yaml-cpp-0.6.2)
 * [**CSVparser**](https://github.com/MyBoon/CSVparser/tree/540e3e2f46b77ea8178f90910a165695cbb6cc12)
 * [**PEGTL 2.7.0**](https://github.com/taocpp/PEGTL/releases/tag/2.7.0)
@@ -154,12 +151,6 @@ A detailed explanation on each file can be found in the [Project Wiki](https://g
 Examples for configuration files can be found [here](https://github.com/GoodDeeds/Timetabler/blob/master/examples). This contains some examples for the field information, the input, and custom constraints to be added to the solver.
 
 For further details and examples, please refer to the [Project Wiki](https://github.com/GoodDeeds/Timetabler/wiki).
-
-## Documentation
-
-The project web page is [gooddeeds.github.io/Timetabler](https://gooddeeds.github.io/Timetabler).
-
-Code documentation for this project can be found on [Read the Docs](https://timetabler.readthedocs.io/).
 
 ## Issues
 

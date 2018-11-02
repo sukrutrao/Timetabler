@@ -70,7 +70,11 @@ void Timetabler::addHighLevelClauses() {
  */
 void Timetabler::addHighLevelConstraintClauses(PredefinedClauses clauseType) {
   Lit l = mkLit(data.predefinedConstraintVars[clauseType], false);
-  addToFormula(l, data.predefinedClausesWeights[clauseType]);
+  if (data.predefinedClausesWeights[clauseType] != 0) {
+    addToFormula(l, data.predefinedClausesWeights[clauseType]);
+  } else {
+    addToFormula(l, -1);
+  }
 }
 
 /**
@@ -86,7 +90,11 @@ void Timetabler::addHighLevelConstraintClauses(PredefinedClauses clauseType) {
  */
 void Timetabler::addHighLevelCustomConstraintClauses(int index, int weight) {
   Lit l = mkLit(data.customConstraintVars[index], false);
-  addToFormula(l, weight);
+  if (weight != 0) {
+    addToFormula(l, weight);
+  } else {
+    addToFormula(l, -1);
+  }
 }
 
 /**
