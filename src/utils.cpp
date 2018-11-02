@@ -1,5 +1,6 @@
 #include "utils.h"
 
+#include <iomanip>
 #include <iostream>
 #include "data.h"
 
@@ -89,12 +90,37 @@ std::string getFieldName(FieldType fieldType, int index, Data &data) {
 
 }  // namespace Utils
 
-Log::Log() {}
+Log::Log(Severity severity) { this->severity = severity; }
 
-Log::~Log() { std::cout << ss.str() << std::endl; }
+Log::~Log() {
+  std::cout << "\033[" << getSeverityCode(severity) << "m";
+  std::cout << std::setw(10) << std::left
+            << "[" + getSeverityName(severity) + "]";
+  std::cout << ss.str() << std::endl;
+  std::cout << "\033[" << 0 << "m";
+  if (severity == Severity::ERROR) {
+    exit(1);
+  }
+}
 
-template <class T>
-Log &Log::operator<<(const T &input) {
-  ss << input;
-  return *this;
+int Log::getSeverityCode(Severity severity) {
+  if (severity == Severity::INFO)
+    return 0;
+  else if (severity == Severity::WARNING)
+    return 33;
+  else if (severity == Severity::ERROR)
+    return 31;
+  assert(false && "Severity code not defined!");
+  return -1;
+}
+
+std::string Log::getSeverityName(Severity severity) {
+  if (severity == Severity::INFO)
+    return "INFO";
+  else if (severity == Severity::WARNING)
+    return "WARNING";
+  else if (severity == Severity::ERROR)
+    return "ERROR";
+  assert(false && "Severity name not defined!");
+  return "Invalid Type";
 }

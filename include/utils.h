@@ -119,6 +119,8 @@ std::string getFieldName(FieldType fieldType, int index, Data &data);
 
 }  // namespace Utils
 
+enum class Severity { INFO, WARNING, ERROR };
+
 // Reference: https://stackoverflow.com/a/2179782/, Evan Terran
 // (https://stackoverflow.com/users/13430/evan-teran), CC-BY-SA 3.0
 
@@ -127,13 +129,19 @@ std::string getFieldName(FieldType fieldType, int index, Data &data);
  */
 class Log {
  public:
-  Log();
+  Log(Severity severity = Severity::INFO);
   ~Log();
   template <class T>
-  Log &operator<<(const T &input);
+  Log &operator<<(const T &input) {
+    ss << input;
+    return *this;
+  }
 
  private:
   std::ostringstream ss;
+  Severity severity;
+  int getSeverityCode(Severity);
+  std::string getSeverityName(Severity);
 };
 
 #endif
