@@ -137,9 +137,10 @@ $ make install
 ```
 
 ## Running the Timetabler
+
 To execute the program, use
 ```bash
-$ timetabler fields.yml input.csv custom.txt output.csv
+$ timetabler -f fields.yml -i input.csv -c custom.txt -o output.csv
 ```
 where
 * `fields.yml` is the path to the file containing the list of values a field can take and the weights for the constraints. This includes list of instructors, available classrooms, weights of clauses, etc.
@@ -148,6 +149,11 @@ where
 * `output.csv` is the path to the file to which the output must be written to.
 
 A detailed explanation on each file can be found in the [Project Wiki](https://github.com/GoodDeeds/Timetabler/wiki).
+
+For more options, see help
+```bash
+$ timetabler -h
+```
 
 ## Examples of Configuration files
 
