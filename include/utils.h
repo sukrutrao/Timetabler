@@ -130,7 +130,7 @@ enum DisplayColour { NORMAL = 0, RED = 31, YELLOW = 33 };
 class Log {
  public:
   Log(Severity severity = Severity::EMPTY, bool isDebug = false,
-      int lineWidth = 0);
+      int lineWidth = 0, int indentWidth = 0);
   ~Log();
   template <class T>
   Log &operator<<(const T &input) {
@@ -145,9 +145,11 @@ class Log {
   Severity severity;
   bool isDebug;
   int lineWidth;
+  int indentWidth;
   const int metaWidth;
   int getSeverityCode();
   std::string getSeverityIdentifier();
+  std::string applyIndent(std::string, int);
   void displayOutput(std::ostream &out = std::cout);
   std::string formatString(std::string);
 };

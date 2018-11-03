@@ -89,10 +89,12 @@ std::string getFieldName(FieldType fieldType, int index, Data &data) {
   return "Invalid Type";
 }
 
-Log::Log(Severity severity, bool isDebug, int lineWidth) : metaWidth(10) {
+Log::Log(Severity severity, bool isDebug, int lineWidth, int indentWidth)
+    : metaWidth(10) {
   this->severity = severity;
   this->isDebug = isDebug;
-  this->lineWidth = lineWidth;
+  this->lineWidth = lineWidth - indentWidth;
+  this->indentWidth = indentWidth;
   if (severity != Severity::EMPTY) {
     this->lineWidth -= metaWidth;
   }
@@ -135,13 +137,13 @@ std::string Log::getSeverityIdentifier() {
 void Log::displayOutput(std::ostream &out) {
   if (static_cast<int>(severity) <= verbosity) {
     if (severity == Severity::EMPTY) {
-      out << formatString(ss.str());
+      out << std::string(indentWidth, ' ') << formatString(ss.str());
       return;
     }
     out << "\033[" << getSeverityCode() << "m";
     out << std::setw(metaWidth) << std::left
         << "[" + getSeverityIdentifier() + "]";
-    out << formatString(ss.str()) << std::endl;
+    out << std::string(indentWidth, ' ') << formatString(ss.str()) << std::endl;
     out << "\033[" << 0 << "m";
     if (severity == Severity::ERROR) {
       exit(1);
@@ -165,16 +167,35 @@ std::string Log::formatString(std::string str) {
     }
     if (lastSpacePosition > 0) {
       str[lastSpacePosition] = '\n';
-      strPos = lastSpacePosition + 1;
+      if (indentWidth > 0) {
+        str = applyIndent(str, lastSpacePosition);
+        strPos = lastSpacePosition + indentWidth + 1;
+      } else {
+        strPos = lastSpacePosition + 1;
+      }
     } else {
       while (strPos < str.size() && !std::isspace(str[strPos])) strPos++;
       if (strPos < str.size()) {
         str[strPos] = '\n';
+        if (indentWidth > 0) {
+          str = applyIndent(str, strPos);
+          strPos = strPos + indentWidth;
+        }
         strPos++;
       }
     }
   }
   return str;
+}
+
+std::string Log::applyIndent(std::string str, int position) {
+  int indentToApply = indentWidth;
+  if (severity != Severity::EMPTY) {
+    indentToApply += metaWidth;
+  }
+  std::string strAfterThisPos = str.substr(position + 1);
+  std::string strBeforeThisPos = str.substr(0, position + 1);
+  return strBeforeThisPos + std::string(indentToApply, ' ') + strAfterThisPos;
 }
 
 void Log::setVerbosity(int verb) { verbosity = verb; }
