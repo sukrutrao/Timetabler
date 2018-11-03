@@ -118,7 +118,7 @@ std::string getPredefinedConstraintName(const PredefinedClauses clauseType);
 
 std::string getFieldName(FieldType fieldType, int index, Data &data);
 
-enum class Severity { EMPTY, INFO, WARNING, ERROR };
+enum class Severity { EMPTY, ERROR, WARNING, INFO };
 
 // Reference: https://stackoverflow.com/a/2179782/, Evan Terran
 // (https://stackoverflow.com/users/13430/evan-teran), CC-BY-SA 3.0
@@ -135,13 +135,15 @@ class Log {
     ss << input;
     return *this;
   }
+  static void setVerbosity(int verb);
 
  private:
+  static int verbosity;
   std::ostringstream ss;
   Severity severity;
   bool isDebug;
-  int getSeverityCode(Severity);
-  std::string getSeverityIdentifier(Severity);
+  int getSeverityCode();
+  std::string getSeverityIdentifier();
   void displayOutput(std::ostream &out = std::cout);
 };
 

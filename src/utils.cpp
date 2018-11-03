@@ -103,7 +103,7 @@ Log::~Log() {
   }
 }
 
-int Log::getSeverityCode(Severity severity) {
+int Log::getSeverityCode() {
   if (severity == Severity::EMPTY) return 0;
   if (severity == Severity::INFO)
     return 0;
@@ -115,7 +115,7 @@ int Log::getSeverityCode(Severity severity) {
   return -1;
 }
 
-std::string Log::getSeverityIdentifier(Severity severity) {
+std::string Log::getSeverityIdentifier() {
   if (severity == Severity::EMPTY) return "";
   if (severity == Severity::INFO)
     return "INFO";
@@ -128,18 +128,23 @@ std::string Log::getSeverityIdentifier(Severity severity) {
 }
 
 void Log::displayOutput(std::ostream &out) {
-  if (severity == Severity::EMPTY) {
+  if (static_cast<int>(severity) <= verbosity) {
+    if (severity == Severity::EMPTY) {
+      out << ss.str() << std::endl;
+      return;
+    }
+    out << "\033[" << getSeverityCode() << "m";
+    out << std::setw(10) << std::left << "[" + getSeverityIdentifier() + "]";
     out << ss.str() << std::endl;
-    return;
-  }
-  out << "\033[" << getSeverityCode(severity) << "m";
-  out << std::setw(10) << std::left
-      << "[" + getSeverityIdentifier(severity) + "]";
-  out << ss.str() << std::endl;
-  out << "\033[" << 0 << "m";
-  if (severity == Severity::ERROR) {
-    exit(1);
+    out << "\033[" << 0 << "m";
+    if (severity == Severity::ERROR) {
+      exit(1);
+    }
   }
 }
+
+void Log::setVerbosity(int verb) { verbosity = verb; }
+
+int Log::verbosity = 3;
 
 }  // namespace Utils
