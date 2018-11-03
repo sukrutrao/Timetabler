@@ -88,20 +88,18 @@ std::string getFieldName(FieldType fieldType, int index, Data &data) {
   return "Invalid Type";
 }
 
-Log::Log(Severity severity) { this->severity = severity; }
+Log::Log(Severity severity, bool isDebug) {
+  this->severity = severity;
+  this->isDebug = isDebug;
+}
 
 Log::~Log() {
-  if (severity == Severity::EMPTY) {
-    std::cout << ss.str() << std::endl;
-    return;
-  }
-  std::cout << "\033[" << getSeverityCode(severity) << "m";
-  std::cout << std::setw(10) << std::left
-            << "[" + getSeverityIdentifier(severity) + "]";
-  std::cout << ss.str() << std::endl;
-  std::cout << "\033[" << 0 << "m";
-  if (severity == Severity::ERROR) {
-    exit(1);
+  if (isDebug) {
+#ifdef DEBUG
+    displayOutput(std::cerr);
+#endif
+  } else {
+    displayOutput(std::cout);
   }
 }
 
@@ -127,6 +125,21 @@ std::string Log::getSeverityIdentifier(Severity severity) {
     return "ERROR";
   assert(false && "Severity name not defined!");
   return "Invalid Type";
+}
+
+void Log::displayOutput(std::ostream &out) {
+  if (severity == Severity::EMPTY) {
+    out << ss.str() << std::endl;
+    return;
+  }
+  out << "\033[" << getSeverityCode(severity) << "m";
+  out << std::setw(10) << std::left
+      << "[" + getSeverityIdentifier(severity) + "]";
+  out << ss.str() << std::endl;
+  out << "\033[" << 0 << "m";
+  if (severity == Severity::ERROR) {
+    exit(1);
+  }
 }
 
 }  // namespace Utils

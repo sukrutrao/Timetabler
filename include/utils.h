@@ -3,6 +3,7 @@
 #ifndef UTILS_H
 #define UTILS_H
 
+#include <iostream>
 #include <sstream>
 #include <string>
 #include <vector>
@@ -127,7 +128,7 @@ enum class Severity { EMPTY, INFO, WARNING, ERROR };
  */
 class Log {
  public:
-  Log(Severity severity = Severity::EMPTY);
+  Log(Severity severity = Severity::EMPTY, bool isDebug = false);
   ~Log();
   template <class T>
   Log &operator<<(const T &input) {
@@ -138,8 +139,10 @@ class Log {
  private:
   std::ostringstream ss;
   Severity severity;
+  bool isDebug;
   int getSeverityCode(Severity);
   std::string getSeverityIdentifier(Severity);
+  void displayOutput(std::ostream &out = std::cout);
 };
 
 }  // namespace Utils
