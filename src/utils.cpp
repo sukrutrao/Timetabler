@@ -135,7 +135,7 @@ std::string Log::getSeverityIdentifier() {
 void Log::displayOutput(std::ostream &out) {
   if (static_cast<int>(severity) <= verbosity) {
     if (severity == Severity::EMPTY) {
-      out << formatString(ss.str()) << std::endl;
+      out << formatString(ss.str());
       return;
     }
     out << "\033[" << getSeverityCode() << "m";
