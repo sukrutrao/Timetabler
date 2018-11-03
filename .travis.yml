@@ -26,6 +26,6 @@ script:
     - sudo dpkg -i *.deb
 deploy:
     provider: snap
-    snap: timetabler
+    snap: timetabler_*.snap
     channel: edge
     skip_cleanup: true
