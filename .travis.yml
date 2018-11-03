@@ -15,7 +15,6 @@ before_install:
     - sudo sh cmake-3.11.1-Linux-x86_64.sh --prefix=/usr/local --skip-license --exclude-directory
 script:
     - export PATH=/usr/local/bin:$PATH
-    - cmake --version
     - ./install_dependencies.sh --enable-tests
     - mkdir build
     - cd build
@@ -24,6 +23,8 @@ script:
     - make test
     - make package
     - sudo dpkg -i *.deb
+    - cd ..
+    - snapcraft
 deploy:
     provider: snap
     snap: timetabler_*.snap
