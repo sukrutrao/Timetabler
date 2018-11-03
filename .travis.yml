@@ -1,12 +1,8 @@
 language: cpp
-matrix:
-    include:
-        - name: 'xenial g++'
-          dist: xenial
-          compiler: g++
-        - name: 'xenial clang++'
-          dist: xenial
-          compiler: clang++
+dist: xenial
+compiler:
+    - g++
+    - clang++
 cache: ccache
 before_install:
     - sudo apt update
@@ -25,9 +21,13 @@ script:
     - make package
     - sudo dpkg -i *.deb
     - cd ..
-    - snapcraft
-deploy:
-    provider: snap
-    snap: timetabler_*.snap
-    channel: edge
-    skip_cleanup: true
+jobs:
+    include:
+        - stage: deploy
+          compiler: g++
+          before_deploy: snapcraft
+          deploy:
+              provider: snap
+              snap: timetabler_*.snap
+              channel: edge
+              skip_cleanup: true
