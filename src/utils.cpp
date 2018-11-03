@@ -1,5 +1,6 @@
 #include "utils.h"
 
+#include <cctype>
 #include <iomanip>
 #include <iostream>
 #include "data.h"
@@ -88,9 +89,13 @@ std::string getFieldName(FieldType fieldType, int index, Data &data) {
   return "Invalid Type";
 }
 
-Log::Log(Severity severity, bool isDebug) {
+Log::Log(Severity severity, bool isDebug, int lineWidth) {
   this->severity = severity;
   this->isDebug = isDebug;
+  this->lineWidth = lineWidth;
+  if (severity != Severity::EMPTY) {
+    this->lineWidth -= 10;
+  }
 }
 
 Log::~Log() {
@@ -130,17 +135,44 @@ std::string Log::getSeverityIdentifier() {
 void Log::displayOutput(std::ostream &out) {
   if (static_cast<int>(severity) <= verbosity) {
     if (severity == Severity::EMPTY) {
-      out << ss.str() << std::endl;
+      out << formatString(ss.str()) << std::endl;
       return;
     }
     out << "\033[" << getSeverityCode() << "m";
     out << std::setw(10) << std::left << "[" + getSeverityIdentifier() + "]";
-    out << ss.str() << std::endl;
+    out << formatString(ss.str()) << std::endl;
     out << "\033[" << 0 << "m";
     if (severity == Severity::ERROR) {
       exit(1);
     }
   }
+}
+
+std::string Log::formatString(std::string str) {
+  if (lineWidth <= 0) {
+    return str;
+  }
+  int lastSpacePosition;
+  unsigned strPos = 0;
+  while (strPos < str.size()) {
+    lastSpacePosition = -1;
+    for (int i = 0; i < lineWidth; i++, strPos++) {
+      if (std::isspace(str[strPos])) {
+        lastSpacePosition = i;
+      }
+    }
+    if (lastSpacePosition > 0) {
+      str[lastSpacePosition] = '\n';
+      strPos = lastSpacePosition + 1;
+    } else {
+      while (strPos < str.size() && !std::isspace(str[strPos])) strPos++;
+      if (strPos < str.size()) {
+        str[strPos] = '\n';
+        strPos++;
+      }
+    }
+  }
+  return str;
 }
 
 void Log::setVerbosity(int verb) { verbosity = verb; }

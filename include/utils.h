@@ -128,7 +128,8 @@ enum class Severity { EMPTY, ERROR, WARNING, INFO };
  */
 class Log {
  public:
-  Log(Severity severity = Severity::EMPTY, bool isDebug = false);
+  Log(Severity severity = Severity::EMPTY, bool isDebug = false,
+      int lineWidth = 0);
   ~Log();
   template <class T>
   Log &operator<<(const T &input) {
@@ -142,14 +143,18 @@ class Log {
   std::ostringstream ss;
   Severity severity;
   bool isDebug;
+  int lineWidth;
   int getSeverityCode();
   std::string getSeverityIdentifier();
   void displayOutput(std::ostream &out = std::cout);
+  std::string formatString(std::string);
 };
 
 }  // namespace Utils
 
 #define LOG(x) Utils::Log(Utils::Severity::x)
 #define LOG_DEBUG(x) Utils::Log(Utils::Severity::x, true)
+#define LOG_FIXED(x) Utils::Log(Utils::Severity::x, false, 80)
+#define LOG_FIXED_DEBUG(x) Utils::Log(Utils::Severity::x, true, 80)
 
 #endif
