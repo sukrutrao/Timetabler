@@ -24,3 +24,8 @@ script:
     - make test
     - make package
     - sudo dpkg -i *.deb
+deploy:
+    provider: snap
+    snap: timetabler
+    channel: edge
+    skip_cleanup: true

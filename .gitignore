@@ -42,6 +42,7 @@ dependencies
 
 # Snap
 *.snap
+*.xdelta*
 parts
 prime
 stage
