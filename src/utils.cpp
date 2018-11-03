@@ -89,12 +89,12 @@ std::string getFieldName(FieldType fieldType, int index, Data &data) {
   return "Invalid Type";
 }
 
-Log::Log(Severity severity, bool isDebug, int lineWidth) {
+Log::Log(Severity severity, bool isDebug, int lineWidth) : metaWidth(10) {
   this->severity = severity;
   this->isDebug = isDebug;
   this->lineWidth = lineWidth;
   if (severity != Severity::EMPTY) {
-    this->lineWidth -= 10;
+    this->lineWidth -= metaWidth;
   }
 }
 
@@ -109,13 +109,13 @@ Log::~Log() {
 }
 
 int Log::getSeverityCode() {
-  if (severity == Severity::EMPTY) return 0;
+  if (severity == Severity::EMPTY) return DisplayColour::NORMAL;
   if (severity == Severity::INFO)
-    return 0;
+    return DisplayColour::NORMAL;
   else if (severity == Severity::WARNING)
-    return 33;
+    return DisplayColour::YELLOW;
   else if (severity == Severity::ERROR)
-    return 31;
+    return DisplayColour::RED;
   assert(false && "Severity code not defined!");
   return -1;
 }
@@ -139,7 +139,8 @@ void Log::displayOutput(std::ostream &out) {
       return;
     }
     out << "\033[" << getSeverityCode() << "m";
-    out << std::setw(10) << std::left << "[" + getSeverityIdentifier() + "]";
+    out << std::setw(metaWidth) << std::left
+        << "[" + getSeverityIdentifier() + "]";
     out << formatString(ss.str()) << std::endl;
     out << "\033[" << 0 << "m";
     if (severity == Severity::ERROR) {

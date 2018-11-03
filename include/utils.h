@@ -119,6 +119,7 @@ std::string getPredefinedConstraintName(const PredefinedClauses clauseType);
 std::string getFieldName(FieldType fieldType, int index, Data &data);
 
 enum class Severity { EMPTY, ERROR, WARNING, INFO };
+enum DisplayColour { NORMAL = 0, RED = 31, YELLOW = 33 };
 
 // Reference: https://stackoverflow.com/a/2179782/, Evan Terran
 // (https://stackoverflow.com/users/13430/evan-teran), CC-BY-SA 3.0
@@ -144,6 +145,7 @@ class Log {
   Severity severity;
   bool isDebug;
   int lineWidth;
+  const int metaWidth;
   int getSeverityCode();
   std::string getSeverityIdentifier();
   void displayOutput(std::ostream &out = std::cout);
