@@ -89,6 +89,14 @@ std::string getFieldName(FieldType fieldType, int index, Data &data) {
   return "Invalid Type";
 }
 
+/**
+ * @brief      Constructor for the Logger.
+ *
+ * @param[in]  severity     The severity level to log with
+ * @param[in]  isDebug      Indicates if in debug mode
+ * @param[in]  lineWidth    The width to fix per line, 0 for no limit
+ * @param[in]  indentWidth  The width by which output is to be indented
+ */
 Log::Log(Severity severity, bool isDebug, int lineWidth, int indentWidth)
     : metaWidth(10) {
   this->severity = severity;
@@ -100,6 +108,9 @@ Log::Log(Severity severity, bool isDebug, int lineWidth, int indentWidth)
   }
 }
 
+/**
+ * @brief      Displays output and destroys object.
+ */
 Log::~Log() {
   if (isDebug) {
 #ifdef DEBUG
@@ -110,6 +121,12 @@ Log::~Log() {
   }
 }
 
+/**
+ * @brief      Gets the colour for the severity level as a member of the
+ * DisplayColour enum.
+ *
+ * @return     The colour corresponding to the severity level
+ */
 int Log::getSeverityCode() {
   if (severity == Severity::EMPTY) return DisplayColour::NORMAL;
   if (severity == Severity::INFO)
@@ -122,6 +139,12 @@ int Log::getSeverityCode() {
   return -1;
 }
 
+/**
+ * @brief      Gets the name of the severity level ("INFO" for Severity::INFO,
+ * and so on).
+ *
+ * @return     The name of the severity level as a string
+ */
 std::string Log::getSeverityIdentifier() {
   if (severity == Severity::EMPTY) return "";
   if (severity == Severity::INFO)
@@ -134,6 +157,12 @@ std::string Log::getSeverityIdentifier() {
   return "Invalid Type";
 }
 
+/**
+ * @brief      Displays the output to a specified output stream (such as
+ * std::cout).
+ *
+ * @param      out   The output stream to send the output to
+ */
 void Log::displayOutput(std::ostream &out) {
   if (static_cast<int>(severity) <= verbosity) {
     if (severity == Severity::EMPTY) {
@@ -151,6 +180,14 @@ void Log::displayOutput(std::ostream &out) {
   }
 }
 
+/**
+ * @brief      Formats a string according to the parameters specified. Handles
+ * transformations to conform with fixed line width and fixed indent width.
+ *
+ * @param[in]  str   The string to format
+ *
+ * @return     The formatted string
+ */
 std::string Log::formatString(std::string str) {
   if (lineWidth <= 0) {
     return str;
@@ -188,6 +225,15 @@ std::string Log::formatString(std::string str) {
   return str;
 }
 
+/**
+ * @brief      Adds spaces to a string at a given position based on the indent
+ * width specified.
+ *
+ * @param[in]  str       The string to format
+ * @param[in]  position  The position to add spaces to
+ *
+ * @return     The formatted string
+ */
 std::string Log::applyIndent(std::string str, int position) {
   int indentToApply = indentWidth;
   if (severity != Severity::EMPTY) {
@@ -198,6 +244,13 @@ std::string Log::applyIndent(std::string str, int position) {
   return strBeforeThisPos + std::string(indentToApply, ' ') + strAfterThisPos;
 }
 
+/**
+ * @brief      Sets the verbosity level for logging. (0 - EMPTY, 1 - ERROR, 2 -
+ * WARNING, 3 - INFO). All messages of levels in and below the current verbosity
+ * level are displayed in the output.
+ *
+ * @param[in]  verb  The verbosity level
+ */
 void Log::setVerbosity(int verb) { verbosity = verb; }
 
 int Log::verbosity = 3;
