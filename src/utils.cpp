@@ -155,10 +155,11 @@ std::string Log::formatString(std::string str) {
   int lastSpacePosition;
   unsigned strPos = 0;
   while (strPos < str.size()) {
+    if (static_cast<int>(str.size() - strPos) <= lineWidth) break;
     lastSpacePosition = -1;
-    for (int i = 0; i < lineWidth; i++, strPos++) {
+    for (int i = 0; i < lineWidth && strPos < str.size(); i++, strPos++) {
       if (std::isspace(str[strPos])) {
-        lastSpacePosition = i;
+        lastSpacePosition = strPos;
       }
     }
     if (lastSpacePosition > 0) {
