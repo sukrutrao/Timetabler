@@ -24,6 +24,7 @@ script:
 jobs:
     include:
         - stage: deploy
+          if: branch=master
           compiler: g++
           script: skip
           before_deploy:
