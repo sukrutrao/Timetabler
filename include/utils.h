@@ -147,4 +147,7 @@ class Log {
 
 }  // namespace Utils
 
+#define LOG(x) Utils::Log(Utils::Severity::x)
+#define LOG_DEBUG(x) Utils::Log(Utils::Severity::x, true)
+
 #endif
