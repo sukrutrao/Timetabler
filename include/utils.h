@@ -157,4 +157,9 @@ class Log {
 #define LOG_FIXED(x) Utils::Log(Utils::Severity::x, false, 80)
 #define LOG_FIXED_DEBUG(x) Utils::Log(Utils::Severity::x, true, 80)
 
+#define DISPLAY() LOG(EMPTY)
+#define DISPLAY_DEBUG() LOG_DEBUG(EMPTY)
+#define DISPLAY_FIXED() LOG_FIXED(EMPTY)
+#define DISPLAY_FIXED_DEBUG() LOG_FIXED_DEBUG(EMPTY)
+
 #endif
