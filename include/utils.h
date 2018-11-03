@@ -117,8 +117,6 @@ std::string getPredefinedConstraintName(const PredefinedClauses clauseType);
 
 std::string getFieldName(FieldType fieldType, int index, Data &data);
 
-}  // namespace Utils
-
 enum class Severity { EMPTY, INFO, WARNING, ERROR };
 
 // Reference: https://stackoverflow.com/a/2179782/, Evan Terran
@@ -143,5 +141,7 @@ class Log {
   int getSeverityCode(Severity);
   std::string getSeverityIdentifier(Severity);
 };
+
+}  // namespace Utils
 
 #endif

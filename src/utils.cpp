@@ -88,8 +88,6 @@ std::string getFieldName(FieldType fieldType, int index, Data &data) {
   return "Invalid Type";
 }
 
-}  // namespace Utils
-
 Log::Log(Severity severity) { this->severity = severity; }
 
 Log::~Log() {
@@ -130,3 +128,5 @@ std::string Log::getSeverityIdentifier(Severity severity) {
   assert(false && "Severity name not defined!");
   return "Invalid Type";
 }
+
+}  // namespace Utils
