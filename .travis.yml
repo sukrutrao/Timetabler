@@ -25,7 +25,10 @@ jobs:
     include:
         - stage: deploy
           compiler: g++
-          before_deploy: snapcraft
+          script: skip
+          before_deploy:
+              - export PATH=/usr/local/bin:$PATH
+              - snapcraft
           deploy:
               provider: snap
               snap: timetabler_*.snap
