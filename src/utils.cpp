@@ -98,7 +98,7 @@ std::string getFieldName(FieldType fieldType, int index, Data &data) {
  * @param[in]  indentWidth  The width by which output is to be indented
  */
 Log::Log(Severity severity, bool isDebug, int lineWidth, int indentWidth)
-    : metaWidth(10) {
+    : metaWidth(18) {
   this->severity = severity;
   this->isDebug = isDebug;
   this->lineWidth = lineWidth - indentWidth;
@@ -113,8 +113,7 @@ Log::Log(Severity severity, bool isDebug, int lineWidth, int indentWidth)
  */
 Log::~Log() {
   if (isDebug) {
-#ifdef DEBUG
-    std::cerr << "[DEBUG]";
+#ifdef TIMETABLERDEBUG
     displayOutput(std::cerr);
 #endif
   } else {
@@ -171,8 +170,9 @@ void Log::displayOutput(std::ostream &out) {
       return;
     }
     out << "\033[" << getSeverityCode() << "m";
-    out << std::setw(metaWidth) << std::left
-        << "[" + getSeverityIdentifier() + "]";
+    std::string label = "[" + getSeverityIdentifier() + "]";
+    if (isDebug) label += "[DEBUG]";
+    out << std::setw(metaWidth) << std::left << label;
     out << std::string(indentWidth, ' ') << formatString(ss.str()) << std::endl;
     out << "\033[" << 0 << "m";
     if (severity == Severity::ERROR) {
