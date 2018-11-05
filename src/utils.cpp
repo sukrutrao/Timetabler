@@ -114,6 +114,7 @@ Log::Log(Severity severity, bool isDebug, int lineWidth, int indentWidth)
 Log::~Log() {
   if (isDebug) {
 #ifdef DEBUG
+    std::cerr << "[DEBUG]";
     displayOutput(std::cerr);
 #endif
   } else {

@@ -166,4 +166,6 @@ class Log {
 #define DISPLAY_FIXED() LOG_FIXED(EMPTY)
 #define DISPLAY_FIXED_DEBUG() LOG_FIXED_DEBUG(EMPTY)
 
+#define DEBUG() LOG_DEBUG(INFO)
+
 #endif
