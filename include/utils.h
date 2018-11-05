@@ -118,7 +118,14 @@ std::string getPredefinedConstraintName(const PredefinedClauses clauseType);
 
 std::string getFieldName(FieldType fieldType, int index, Data &data);
 
-enum class Severity { EMPTY, ERROR, WARNING, INFO };
+/**
+ * @brief      Specify severity levels for logging
+ */
+enum class Severity { EMPTY = 0, ERROR = 1, WARNING = 2, INFO = 3 };
+
+/**
+ * @brief      Define values for colours in ASCII, to be used when logging
+ */
 enum DisplayColour { NORMAL = 0, RED = 31, YELLOW = 33 };
 
 // Reference: https://stackoverflow.com/a/2179782/, Evan Terran
@@ -156,6 +163,7 @@ class Log {
 
 }  // namespace Utils
 
+// Define shorthands for logging
 #define LOG(x) Utils::Log(Utils::Severity::x)
 #define LOG_DEBUG(x) Utils::Log(Utils::Severity::x, true)
 #define LOG_FIXED(x) Utils::Log(Utils::Severity::x, false, 80)
