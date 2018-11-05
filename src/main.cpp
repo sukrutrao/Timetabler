@@ -126,10 +126,9 @@ int main(int argc, char *const *argv) {
   parser.parseFields(fields_file);
   parser.parseInput(input_file);
   if (parser.verify()) {
-    std::cout << "Input is valid" << std::endl;
+    LOG(INFO) << "Input is valid";
   } else {
-    std::cout << "Input is invalid" << std::endl;
-    exit(1);
+    LOG(ERROR) << "Input is invalid";
   }
   parser.addVars();
   ConstraintEncoder encoder(timetabler);

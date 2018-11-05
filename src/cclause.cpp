@@ -4,6 +4,7 @@
 #include <vector>
 #include "clauses.h"
 #include "core/SolverTypes.h"
+#include "utils.h"
 
 using namespace NSPACE;
 
@@ -294,9 +295,9 @@ std::vector<Lit> CClause::getLits() const { return lits; }
  */
 void CClause::printClause() {
   for (Lit lit : lits) {
-    std::cout << (sign(lit) ? "-" : " ") << var(lit) << " ";
+    LOG(EMPTY) << (sign(lit) ? "-" : " ") << var(lit) << " ";
   }
-  std::cout << std::endl;
+  LOG(EMPTY) << "\n";
 }
 
 /**

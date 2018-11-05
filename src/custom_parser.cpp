@@ -7,6 +7,7 @@
 #include <vector>
 #include "clauses.h"
 #include "global.h"
+#include "utils.h"
 
 namespace pegtl = tao::TAO_PEGTL_NAMESPACE;
 
