@@ -41,8 +41,8 @@ class ConstraintAdder {
   Clauses classroomSingleCourseAtATime();
   Clauses programSingleCoreCourseAtATime();
   Clauses minorInMinorTime();
-  Clauses coreInMorningTime();
-  Clauses electiveInNonMorningTime();
+  std::vector<Clauses> coreInMorningTime();
+  std::vector<Clauses> electiveInNonMorningTime();
   Clauses existingAssignmentClauses();
   Clauses programAtMostOneOfCoreOrElective();
 

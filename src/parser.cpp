@@ -165,10 +165,10 @@ void Parser::parseInput(std::string file) {
     }
     std::string isMinorStr = parser[i]["is_minor"];
     int isMinor;
-    if (isMinorStr == "Yes") {
+    if (isMinorStr == "Yes" || isMinorStr == "Y") {
       isMinor = 0;
       assignmentsThisCourse[FieldType::isMinor].push_back(l_True);
-    } else if (isMinorStr == "No") {
+    } else if (isMinorStr == "No" || isMinorStr == "N" || isMinorStr == "") {
       isMinor = 1;
       assignmentsThisCourse[FieldType::isMinor].push_back(l_False);
     } else {
@@ -189,7 +189,7 @@ void Parser::parseInput(std::string file) {
         course.addProgram(j + 1);
         assignmentsThisCourse[FieldType::program].push_back(l_False);
         assignmentsThisCourse[FieldType::program].push_back(l_True);
-      } else if (parser[i][s] == "No") {
+      } else if (parser[i][s] == "No" || parser[i][s] == "") {
         assignmentsThisCourse[FieldType::program].push_back(l_False);
         assignmentsThisCourse[FieldType::program].push_back(l_False);
       } else {

@@ -3,6 +3,7 @@
 #ifndef DATA_H
 #define DATA_H
 
+#include <map>
 #include <string>
 #include <vector>
 #include "core/Solver.h"
@@ -115,6 +116,8 @@ class Data {
    * or to disable certain constraints.
    */
   std::vector<int> predefinedClausesWeights;
+
+  std::map<int, unsigned> customMap;
   Data();
 };
 

@@ -178,7 +178,8 @@ struct action<fieldtype> {
 struct value
     : pegtl::plus<pegtl::sor<pegtl::range<'a', 'z'>, pegtl::range<'A', 'Z'>,
                              pegtl::digit, pegtl::one<'.'>, pegtl::one<'-'>,
-                             pegtl::one<'@'>, pegtl::space>> {};
+                             pegtl::one<'@'>, pegtl::one<'<'>, pegtl::one<'>'>,
+                             pegtl::space>> {};
 template <>
 struct action<value> {
   template <typename Input>
@@ -688,6 +689,7 @@ struct action<constraint_unbundle> {
             obj.constraint;
         obj.timetabler->addClauses(hardConsequent, -1);
       }
+      obj.timetabler->data.customMap[index] = course;
       obj.timetabler->addHighLevelCustomConstraintClauses(index, obj.integer);
     }
     obj.courseValues.clear();
@@ -697,6 +699,11 @@ struct action<constraint_unbundle> {
     obj.segmentValues.clear();
     obj.classValues.clear();
     obj.slotValues.clear();
+    obj.isNot = false;
+    obj.classSame = false;
+    obj.slotSame = false;
+    obj.classNotSame = false;
+    obj.slotNotSame = false;
   }
 };
 

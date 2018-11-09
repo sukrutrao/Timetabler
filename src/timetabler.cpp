@@ -429,8 +429,9 @@ void Timetabler::displayUnsatisfiedOutputReasons() {
   }
   for (unsigned i = 0; i < data.customConstraintVars.size(); i++) {
     if (!isVarTrue(data.customConstraintVars[i])) {
-      std::cout << "Custom Constraint : " << i + 1 << " could not be satisfied"
-                << std::endl;
+      std::cout << "Custom Constraint : " << i + 1 << " "
+                << data.courses[data.customMap[i + 1]].getName()
+                << " could not be satisfied" << std::endl;
     }
   }
 }

@@ -209,11 +209,14 @@ void ConstraintAdder::addConstraints() {
                       exactlyOneFieldValuePerCourse(FieldType::isMinor));
   addSingleConstraint(PredefinedClauses::exactlyOneSegmentPerCourse,
                       exactlyOneFieldValuePerCourse(FieldType::segment));
-
-  addSingleConstraint(PredefinedClauses::coreInMorningTime,
-                      coreInMorningTime());
-  addSingleConstraint(PredefinedClauses::electiveInNonMorningTime,
-                      electiveInNonMorningTime());
+  auto a = coreInMorningTime();
+  for (auto &v : a) {
+    addSingleConstraint(PredefinedClauses::coreInMorningTime, v);
+  }
+  auto b = electiveInNonMorningTime();
+  for (auto &v : b) {
+    addSingleConstraint(PredefinedClauses::electiveInNonMorningTime, v);
+  }
 }
 
 /*Clauses ConstraintAdder::softConstraints() {
@@ -227,14 +230,14 @@ void ConstraintAdder::addConstraints() {
  *
  * @return     A Clauses object describing the constraint
  */
-Clauses ConstraintAdder::coreInMorningTime() {
-  Clauses result;
-  result.clear();
+std::vector<Clauses> ConstraintAdder::coreInMorningTime() {
   std::vector<Course> courses = timetabler->data.courses;
+  std::vector<Clauses> result(courses.size());
   for (unsigned i = 0; i < courses.size(); i++) {
+    result[i].clear();
     Clauses coreCourse = encoder->isCoreCourse(i);
     Clauses morningTime = encoder->courseInMorningTime(i);
-    result.addClauses(coreCourse >> morningTime);
+    result[i].addClauses(coreCourse >> morningTime);
   }
   return result;
 }
@@ -246,14 +249,14 @@ Clauses ConstraintAdder::coreInMorningTime() {
  *
  * @return     A Clauses object describing the constraint
  */
-Clauses ConstraintAdder::electiveInNonMorningTime() {
-  Clauses result;
-  result.clear();
+std::vector<Clauses> ConstraintAdder::electiveInNonMorningTime() {
   std::vector<Course> courses = timetabler->data.courses;
+  std::vector<Clauses> result(courses.size());
   for (unsigned i = 0; i < courses.size(); i++) {
+    result[i].clear();
     Clauses coreCourse = encoder->isElectiveCourse(i);
     Clauses morningTime = encoder->courseInMorningTime(i);
-    result.addClauses(coreCourse >> (~morningTime));
+    result[i].addClauses(coreCourse >> (~morningTime));
   }
   return result;
 }

@@ -126,6 +126,7 @@ int main(int argc, char *const *argv) {
   constraintAdder.addConstraints();
   if (custom_file != "") {
     parseCustomConstraints(custom_file, &encoder, timetabler);
+    std::cout << "Custom constraints parsed." << std::endl;
   }
   timetabler->addHighLevelClauses();
   timetabler->addExistingAssignments();
