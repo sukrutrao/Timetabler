@@ -7,6 +7,7 @@
 #include <vector>
 #include "clauses.h"
 #include "global.h"
+#include "utils.h"
 
 namespace pegtl = tao::TAO_PEGTL_NAMESPACE;
 
@@ -194,8 +195,7 @@ struct action<value> {
         }
       }
       if (!found) {
-        std::cout << "Instructor " << val << " does not exist." << std::endl;
-        exit(1);
+        LOG(ERROR) << "Instructor " << val << " does not exist.";
       }
       found = false;
     } else if (obj.fieldType == FieldValuesType::COURSE) {
@@ -207,8 +207,7 @@ struct action<value> {
         }
       }
       if (!found) {
-        std::cout << "Course " << val << " does not exist." << std::endl;
-        exit(1);
+        LOG(ERROR) << "Course " << val << " does not exist.";
       }
       found = false;
     } else if (obj.fieldType == FieldValuesType::SEGMENT) {
@@ -220,8 +219,7 @@ struct action<value> {
         }
       }
       if (!found) {
-        std::cout << "Segment " << val << " does not exist." << std::endl;
-        exit(1);
+        LOG(ERROR) << "Segment " << val << " does not exist.";
       }
       found = false;
     } else if (obj.fieldType == FieldValuesType::PROGRAM) {
@@ -233,8 +231,7 @@ struct action<value> {
         }
       }
       if (!found) {
-        std::cout << "Program " << val << " does not exist." << std::endl;
-        exit(1);
+        LOG(ERROR) << "Program " << val << " does not exist.";
       }
       found = false;
     } else if (obj.fieldType == FieldValuesType::ISMINOR) {
@@ -246,8 +243,7 @@ struct action<value> {
         }
       }
       if (!found) {
-        std::cout << "IsMinor " << val << " does not exist." << std::endl;
-        exit(1);
+        LOG(ERROR) << "IsMinor " << val << " does not exist.";
       }
       found = false;
     } else if (obj.fieldType == FieldValuesType::CLASSROOM) {
@@ -259,8 +255,7 @@ struct action<value> {
         }
       }
       if (!found) {
-        std::cout << "Classroom " << val << " does not exist." << std::endl;
-        exit(1);
+        LOG(ERROR) << "Classroom " << val << " does not exist.";
       }
       found = false;
     } else if (obj.fieldType == FieldValuesType::SLOT) {
@@ -272,8 +267,7 @@ struct action<value> {
         }
       }
       if (!found) {
-        std::cout << "Slot " << val << " does not exist." << std::endl;
-        exit(1);
+        LOG(ERROR) << "Slot " << val << " does not exist.";
       }
       found = false;
     }
@@ -736,9 +730,7 @@ template <typename Rule>
 struct control : pegtl::normal<Rule> {
   template <typename Input, typename... States>
   static void raise(const Input &in, States &&...) {
-    std::cout << in.position() << " Error parsing custom constraints"
-              << std::endl;
-    exit(1);
+    LOG(ERROR) << in.position() << " Error parsing custom constraints";
   }
 };
 
