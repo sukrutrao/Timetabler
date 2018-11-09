@@ -153,7 +153,7 @@ class Log {
   bool isDebug;
   int lineWidth;
   int indentWidth;
-  const int metaWidth;
+  int metaWidth;
   int getSeverityCode();
   std::string getSeverityIdentifier();
   std::string applyIndent(std::string, int);

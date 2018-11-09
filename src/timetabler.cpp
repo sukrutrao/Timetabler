@@ -256,6 +256,7 @@ void Timetabler::printResult(SolverStatus status) {
     LOG(WARNING) << "Some high level clauses were not satisfied";
     displayUnsatisfiedOutputReasons();
     displayChangesInGivenAssignment();
+    displayTimeTable();
   } else {
     LOG(WARNING) << "Not Solved";
   }

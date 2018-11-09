@@ -97,14 +97,17 @@ std::string getFieldName(FieldType fieldType, int index, Data &data) {
  * @param[in]  lineWidth    The width to fix per line, 0 for no limit
  * @param[in]  indentWidth  The width by which output is to be indented
  */
-Log::Log(Severity severity, bool isDebug, int lineWidth, int indentWidth)
-    : metaWidth(18) {
+Log::Log(Severity severity, bool isDebug, int lineWidth, int indentWidth) {
   this->severity = severity;
   this->isDebug = isDebug;
   this->lineWidth = lineWidth - indentWidth;
   this->indentWidth = indentWidth;
+  this->metaWidth = 10;
+#ifdef TIMETABLERDEBUG
+  this->metaWidth += 8;
+#endif
   if (severity != Severity::EMPTY) {
-    this->lineWidth -= metaWidth;
+    this->lineWidth -= this->metaWidth;
   }
 }
 
