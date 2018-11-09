@@ -297,7 +297,7 @@ void CClause::printClause() {
   for (Lit lit : lits) {
     LOG_DEBUG(INFO) << (sign(lit) ? "-" : " ") << var(lit) << " ";
   }
-  LOG_DEBUG(INFO);
+  LOG_DEBUG(INFO) << "";
 }
 
 /**

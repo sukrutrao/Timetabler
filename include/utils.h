@@ -121,7 +121,7 @@ std::string getFieldName(FieldType fieldType, int index, Data &data);
 /**
  * @brief      Specify severity levels for logging
  */
-enum class Severity { EMPTY = 0, ERROR = 1, WARNING = 2, INFO = 3 };
+enum Severity { EMPTY = 0, ERROR = 1, WARNING = 2, INFO = 3 };
 
 /**
  * @brief      Define values for colours in ASCII, to be used when logging
@@ -164,10 +164,10 @@ class Log {
 }  // namespace Utils
 
 // Define shorthands for logging
-#define LOG(x) Utils::Log(Utils::Severity::x)
-#define LOG_DEBUG(x) Utils::Log(Utils::Severity::x, true)
-#define LOG_FIXED(x) Utils::Log(Utils::Severity::x, false, 80)
-#define LOG_FIXED_DEBUG(x) Utils::Log(Utils::Severity::x, true, 80)
+#define LOG(x) Utils::Log(Utils::x)
+#define LOG_DEBUG(x) Utils::Log(Utils::x, true)
+#define LOG_FIXED(x) Utils::Log(Utils::x, false, 80)
+#define LOG_FIXED_DEBUG(x) Utils::Log(Utils::x, true, 80)
 
 #define DISPLAY() LOG(EMPTY)
 #define DISPLAY_DEBUG() LOG_DEBUG(EMPTY)
