@@ -270,7 +270,7 @@ void Clauses::print() {
   for (CClause c : clauses) {
     c.printClause();
   }
-  LOG(EMPTY) << "\n";
+  LOG_DEBUG(INFO);
 }
 
 /**

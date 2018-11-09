@@ -332,7 +332,7 @@ void Timetabler::displayTimeTable() {
         LOG(INFO) << "Program : " << data.programs[j].getNameWithType();
       }
     }
-    LOG(INFO) << "\n";
+    LOG(INFO);
   }
 }
 

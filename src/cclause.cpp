@@ -295,9 +295,9 @@ std::vector<Lit> CClause::getLits() const { return lits; }
  */
 void CClause::printClause() {
   for (Lit lit : lits) {
-    LOG(EMPTY) << (sign(lit) ? "-" : " ") << var(lit) << " ";
+    LOG_DEBUG(INFO) << (sign(lit) ? "-" : " ") << var(lit) << " ";
   }
-  LOG(EMPTY) << "\n";
+  LOG_DEBUG(INFO);
 }
 
 /**
