@@ -1,6 +1,7 @@
 #include <getopt.h>
 #include <iomanip>
 #include <iostream>
+#include <string>
 #include "constraint_adder.h"
 #include "constraint_encoder.h"
 #include "core/Solver.h"
@@ -9,6 +10,7 @@
 #include "global_vars.h"
 #include "mtl/Vec.h"
 #include "parser.h"
+#include "utils.h"
 #include "version.h"
 
 void display_meta(bool display_desc = false) {
@@ -26,6 +28,7 @@ const struct option long_options[] = {{"help", no_argument, 0, 'h'},
                                       {"input", required_argument, 0, 'i'},
                                       {"custom", required_argument, 0, 'c'},
                                       {"output", required_argument, 0, 'o'},
+                                      {"verbosity", required_argument, 0, 'b'},
                                       {"version", no_argument, 0, 'v'},
                                       {0, 0, 0, 0}};
 
@@ -34,6 +37,7 @@ const std::string option_desc[] = {"display this help",
                                    "input csv file",
                                    "custom constraints file",
                                    "output csv file",
+                                   "specify verbosity level (0-3)"
                                    "display version",
                                    ""};
 
@@ -66,10 +70,12 @@ Timetabler *timetabler;
 
 int main(int argc, char *const *argv) {
   std::string input_file, fields_file, custom_file, output_file;
+  unsigned verbosity = 3;
 
   while (1) {
     int option_index = 0;
-    int c = getopt_long(argc, argv, "hi:f:c:o:v", long_options, &option_index);
+    int c =
+        getopt_long(argc, argv, "hi:f:c:o:b:v", long_options, &option_index);
 
     if (c == -1) break;
 
@@ -94,12 +100,17 @@ int main(int argc, char *const *argv) {
       case 'o':
         output_file = std::string(optarg);
         break;
+      case 'b':
+        verbosity = std::stoi(optarg);
+        break;
       case '?':
         break;
       default:
         display_error("Unrecognised argument: " + std::to_string(c));
     }
   }
+
+  Utils::Log::setVerbosity(verbosity);
 
   if (optind < argc) {
     display_error("Unrecognised argument: " + std::string(argv[optind]));
@@ -115,10 +126,9 @@ int main(int argc, char *const *argv) {
   parser.parseFields(fields_file);
   parser.parseInput(input_file);
   if (parser.verify()) {
-    std::cout << "Input is valid" << std::endl;
+    LOG(INFO) << "Input is valid";
   } else {
-    std::cout << "Input is invalid" << std::endl;
-    exit(1);
+    LOG(ERROR) << "Input is invalid";
   }
   parser.addVars();
   ConstraintEncoder encoder(timetabler);
