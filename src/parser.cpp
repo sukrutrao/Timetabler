@@ -2,6 +2,7 @@
 
 #include <cstdlib>
 #include <iostream>
+#include "utils.h"
 
 /**
  * @brief      Constructs the Parser object.
@@ -146,8 +147,7 @@ void Parser::parseInput(std::string file) {
       assignmentsThisCourse[FieldType::instructor].push_back(l_False);
     }
     if (instructor == -1) {
-      std::cout << "Input contains invalid Instructor name" << std::endl;
-      exit(1);
+      LOG(ERROR) << "Input contains invalid Instructor name";
     }
     std::string segmentStr = parser[i]["segment"];
     int segment = -1;
@@ -160,8 +160,7 @@ void Parser::parseInput(std::string file) {
       assignmentsThisCourse[FieldType::segment].push_back(l_False);
     }
     if (segment == -1) {
-      std::cout << "Input contains invalid Segment name" << std::endl;
-      exit(1);
+      LOG(ERROR) << "Input contains invalid Segment name";
     }
     std::string isMinorStr = parser[i]["is_minor"];
     int isMinor;
@@ -172,10 +171,8 @@ void Parser::parseInput(std::string file) {
       isMinor = 1;
       assignmentsThisCourse[FieldType::isMinor].push_back(l_False);
     } else {
-      std::cout << "Input contains invalid IsMinor value (should be "
-                   "'Yes' or 'No')"
-                << std::endl;
-      exit(1);
+      LOG(ERROR) << "Input contains invalid IsMinor value (should be "
+                    "'Yes' or 'No')";
     }
     Course course(name, classSize, instructor, segment, isMinor);
 
@@ -193,10 +190,8 @@ void Parser::parseInput(std::string file) {
         assignmentsThisCourse[FieldType::program].push_back(l_False);
         assignmentsThisCourse[FieldType::program].push_back(l_False);
       } else {
-        std::cout << "Input contains invalid Program type (should be "
-                     "'Core', 'Elective', or 'No')"
-                  << std::endl;
-        exit(1);
+        LOG(ERROR) << "Input contains invalid Program type (should be "
+                      "'Core', 'Elective', or 'No')";
       }
     }
 
@@ -219,8 +214,7 @@ void Parser::parseInput(std::string file) {
         assignmentsThisCourse[FieldType::classroom][j] = l_False;
       }
       if (!foundClassroom) {
-        std::cout << "Input contains invalid Classroom name" << std::endl;
-        exit(1);
+        LOG(ERROR) << "Input contains invalid Classroom name";
       }
     }
     if (slotStr != "") {
@@ -234,8 +228,7 @@ void Parser::parseInput(std::string file) {
         assignmentsThisCourse[FieldType::slot][j] = l_False;
       }
       if (!foundSlot) {
-        std::cout << "Input contains invalid Slot name" << std::endl;
-        exit(1);
+        LOG(ERROR) << "Input contains invalid Slot name";
       }
     }
     timetabler->data.courses.push_back(course);
@@ -250,12 +243,13 @@ bool Parser::verify() {
       if (timetabler->data.slots[course1.getSlot()].isMinorSlot()) {
         if (timetabler->data.predefinedClausesWeights
                 [PredefinedClauses::minorInMinorTime] != 0) {
-          std::cout << course1.getName()
-                    << " which is minor course is scheduled in non minor slot."
-                    << std::endl;
+          LOG(WARNING)
+              << course1.getName()
+              << " which is minor course is scheduled in non minor slot.";
         }
         if (timetabler->data.predefinedClausesWeights
                 [PredefinedClauses::minorInMinorTime] == -1) {
+          LOG(WARNING) << "Hard constraint unsatisfied";
           result = false;
         }
       }
@@ -280,11 +274,12 @@ bool Parser::verify() {
         if (course1.getInstructor() == course2.getInstructor()) {
           if (timetabler->data.predefinedClausesWeights
                   [PredefinedClauses::instructorSingleCourseAtATime] != 0) {
-            std::cout << course1.getName() << " and " << course2.getName()
-                      << " having same instructor clash." << std::endl;
+            LOG(WARNING) << course1.getName() << " and " << course2.getName()
+                         << " having same instructor clash.";
           }
           if (timetabler->data.predefinedClausesWeights
                   [PredefinedClauses::instructorSingleCourseAtATime] == -1) {
+            LOG(WARNING) << "Hard constraint unsatisfied";
             result = false;
           }
         }
@@ -292,11 +287,12 @@ bool Parser::verify() {
         if (classroomSame) {
           if (timetabler->data.predefinedClausesWeights
                   [PredefinedClauses::classroomSingleCourseAtATime] != 0) {
-            std::cout << course1.getName() << " and " << course2.getName()
-                      << " having same classroom clash." << std::endl;
+            LOG(WARNING) << course1.getName() << " and " << course2.getName()
+                         << " having same classroom clash.";
           }
           if (timetabler->data.predefinedClausesWeights
                   [PredefinedClauses::classroomSingleCourseAtATime] == -1) {
+            LOG(WARNING) << "Hard constraint unsatisfied";
             result = false;
           }
         }
@@ -309,14 +305,16 @@ bool Parser::verify() {
                 if (timetabler->data.predefinedClausesWeights
                         [PredefinedClauses::programSingleCoreCourseAtATime] !=
                     0) {
-                  std::cout << course1.getName() << " and " << course2.getName()
-                            << " which have common core program "
-                            << timetabler->data.programs[program1].getName()
-                            << " clash." << std::endl;
+                  LOG(WARNING)
+                      << course1.getName() << " and " << course2.getName()
+                      << " which have common core program "
+                      << timetabler->data.programs[program1].getName()
+                      << " clash.";
                 }
                 if (timetabler->data.predefinedClausesWeights
                         [PredefinedClauses::programSingleCoreCourseAtATime] ==
                     -1) {
+                  LOG(WARNING) << "Hard constraint unsatisfied";
                   result = false;
                 }
               }
