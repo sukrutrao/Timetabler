@@ -571,6 +571,11 @@ struct action<constraint_expr> {
     obj.segmentValues.clear();
     obj.classValues.clear();
     obj.slotValues.clear();
+    obj.isNot = false;
+    obj.classSame = false;
+    obj.slotSame = false;
+    obj.classNotSame = false;
+    obj.slotNotSame = false;
   }
 };
 
