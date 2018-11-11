@@ -18,7 +18,9 @@ apps:
 parts:
   timetabler:
     plugin: cmake
-    prepare: bash ../src/install_dependencies.sh
+    override-build: |
+      bash ../src/install_dependencies.sh --parallel
+      snapcraftctl build
     configflags:
       - -DOPEN_WBO_PATH=dependencies/open-wbo
       - -DYAML_CPP_PATH=dependencies/yaml-cpp-yaml-cpp-0.6.2
