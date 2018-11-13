@@ -9,7 +9,102 @@
 #include "global.h"
 #include "utils.h"
 
+/**
+ * @brief      Makes an antecedent.
+ *
+ * @param      obj     The object
+ * @param[in]  course  The course
+ *
+ * @return     Clauses corresponding to the antecedent
+ */
+Clauses makeAntecedent(Object &obj, int course) {
+  Clauses ante, clause;
+  if (obj.instructorValues.size() > 0) {
+    clause = obj.constraintEncoder->hasFieldTypeListedValues(
+        course, FieldType::instructor, obj.instructorValues);
+    ante = ante & clause;
+  }
+  if (obj.programValues.size() > 0) {
+    clause = obj.constraintEncoder->hasFieldTypeListedValues(
+        course, FieldType::program, obj.programValues);
+    ante = ante & clause;
+  }
+  if (obj.segmentValues.size() > 0) {
+    clause = obj.constraintEncoder->hasFieldTypeListedValues(
+        course, FieldType::segment, obj.segmentValues);
+    ante = ante & clause;
+  }
+  if (obj.isMinorValues.size() > 0) {
+    clause = obj.constraintEncoder->hasFieldTypeListedValues(
+        course, FieldType::isMinor, obj.isMinorValues);
+    ante = ante & clause;
+  }
+  return ante;
+}
+
+/**
+ * @brief      Makes a consequent.
+ *
+ * @param      obj     The object
+ * @param[in]  course  The course
+ * @param[in]  i       Index of course in courseValues
+ *
+ * @return     Clauses corresponding to the consequent
+ */
+Clauses makeConsequent(Object &obj, int course, int i) {
+  Clauses cons, clause;
+  if (obj.classSame) {
+    for (unsigned j = i + 1; j < obj.courseValues.size(); j++) {
+      Clauses a = makeAntecedent(obj, obj.courseValues[j]);
+      Clauses b = obj.constraintEncoder->hasSameFieldTypeAndValue(
+          course, obj.courseValues[j], FieldType::classroom);
+      a = a >> b;
+      cons = cons & a;
+    }
+  }
+  if (obj.classNotSame) {
+    for (unsigned j = i + 1; j < obj.courseValues.size(); j++) {
+      Clauses a = makeAntecedent(obj, obj.courseValues[j]);
+      Clauses b = obj.constraintEncoder->hasSameFieldTypeAndValue(
+          course, obj.courseValues[j], FieldType::classroom);
+      a = a >> (~b);
+      cons = cons & a;
+    }
+  }
+  if (obj.slotSame) {
+    for (unsigned j = i + 1; j < obj.courseValues.size(); j++) {
+      Clauses a = makeAntecedent(obj, obj.courseValues[j]);
+      Clauses b = obj.constraintEncoder->hasSameFieldTypeAndValue(
+          course, obj.courseValues[j], FieldType::slot);
+      a = a >> b;
+      cons = cons & a;
+    }
+  }
+  if (obj.slotNotSame) {
+    for (unsigned j = i + 1; j < obj.courseValues.size(); j++) {
+      Clauses a = makeAntecedent(obj, obj.courseValues[j]);
+      Clauses b = obj.constraintEncoder->hasSameFieldTypeAndValue(
+          course, obj.courseValues[j], FieldType::slot);
+      a = a >> (~b);
+      cons = cons & a;
+    }
+  }
+  if (obj.classValues.size() > 0) {
+    clause = obj.constraintEncoder->hasFieldTypeListedValues(
+        course, FieldType::classroom, obj.classValues);
+    cons = cons & clause;
+  }
+  if (obj.slotValues.size() > 0) {
+    clause = obj.constraintEncoder->hasFieldTypeListedValues(
+        course, FieldType::slot, obj.slotValues);
+    cons = cons & clause;
+  }
+  return cons;
+}
+
 namespace pegtl = tao::TAO_PEGTL_NAMESPACE;
+
+namespace custom_constraint_grammar {
 
 template <typename Rule>
 struct action : pegtl::nothing<Rule> {};
@@ -434,99 +529,6 @@ struct fielddecl : pegtl::seq<pegtl::pad<fieldtype, pegtl::space>, values> {};
 struct fielddecls : pegtl::opt<pegtl::list<fielddecl, andstr, pegtl::space>> {};
 
 /**
- * @brief      Makes an antecedent.
- *
- * @param      obj     The object
- * @param[in]  course  The course
- *
- * @return     Clauses corresponding to the antecedent
- */
-Clauses makeAntecedent(Object &obj, int course) {
-  Clauses ante, clause;
-  if (obj.instructorValues.size() > 0) {
-    clause = obj.constraintEncoder->hasFieldTypeListedValues(
-        course, FieldType::instructor, obj.instructorValues);
-    ante = ante & clause;
-  }
-  if (obj.programValues.size() > 0) {
-    clause = obj.constraintEncoder->hasFieldTypeListedValues(
-        course, FieldType::program, obj.programValues);
-    ante = ante & clause;
-  }
-  if (obj.segmentValues.size() > 0) {
-    clause = obj.constraintEncoder->hasFieldTypeListedValues(
-        course, FieldType::segment, obj.segmentValues);
-    ante = ante & clause;
-  }
-  if (obj.isMinorValues.size() > 0) {
-    clause = obj.constraintEncoder->hasFieldTypeListedValues(
-        course, FieldType::isMinor, obj.isMinorValues);
-    ante = ante & clause;
-  }
-  return ante;
-}
-
-/**
- * @brief      Makes a consequent.
- *
- * @param      obj     The object
- * @param[in]  course  The course
- * @param[in]  i       Index of course in courseValues
- *
- * @return     Clauses corresponding to the consequent
- */
-Clauses makeConsequent(Object &obj, int course, int i) {
-  Clauses cons, clause;
-  if (obj.classSame) {
-    for (unsigned j = i + 1; j < obj.courseValues.size(); j++) {
-      Clauses a = makeAntecedent(obj, obj.courseValues[j]);
-      Clauses b = obj.constraintEncoder->hasSameFieldTypeAndValue(
-          course, obj.courseValues[j], FieldType::classroom);
-      a = a >> b;
-      cons = cons & a;
-    }
-  }
-  if (obj.classNotSame) {
-    for (unsigned j = i + 1; j < obj.courseValues.size(); j++) {
-      Clauses a = makeAntecedent(obj, obj.courseValues[j]);
-      Clauses b = obj.constraintEncoder->hasSameFieldTypeAndValue(
-          course, obj.courseValues[j], FieldType::classroom);
-      a = a >> (~b);
-      cons = cons & a;
-    }
-  }
-  if (obj.slotSame) {
-    for (unsigned j = i + 1; j < obj.courseValues.size(); j++) {
-      Clauses a = makeAntecedent(obj, obj.courseValues[j]);
-      Clauses b = obj.constraintEncoder->hasSameFieldTypeAndValue(
-          course, obj.courseValues[j], FieldType::slot);
-      a = a >> b;
-      cons = cons & a;
-    }
-  }
-  if (obj.slotNotSame) {
-    for (unsigned j = i + 1; j < obj.courseValues.size(); j++) {
-      Clauses a = makeAntecedent(obj, obj.courseValues[j]);
-      Clauses b = obj.constraintEncoder->hasSameFieldTypeAndValue(
-          course, obj.courseValues[j], FieldType::slot);
-      a = a >> (~b);
-      cons = cons & a;
-    }
-  }
-  if (obj.classValues.size() > 0) {
-    clause = obj.constraintEncoder->hasFieldTypeListedValues(
-        course, FieldType::classroom, obj.classValues);
-    cons = cons & clause;
-  }
-  if (obj.slotValues.size() > 0) {
-    clause = obj.constraintEncoder->hasFieldTypeListedValues(
-        course, FieldType::slot, obj.slotValues);
-    cons = cons & clause;
-  }
-  return cons;
-}
-
-/**
  * @brief      Parse a constraint
  */
 struct constraint_expr : pegtl::seq<coursedecl, fielddecls, pegtl::opt<notstr>,
@@ -746,6 +748,8 @@ struct control : pegtl::normal<Rule> {
   }
 };
 
+};  // namespace custom_constraint_grammar
+
 void parseCustomConstraints(std::string file,
                             ConstraintEncoder *constraintEncoder,
                             Timetabler *timetabler) {
@@ -753,7 +757,9 @@ void parseCustomConstraints(std::string file,
   obj.constraintEncoder = constraintEncoder;
   obj.timetabler = timetabler;
   pegtl::file_input<> in(file);
-  pegtl::parse<grammar, action, control>(in, obj);
+  pegtl::parse<custom_constraint_grammar::grammar,
+               custom_constraint_grammar::action,
+               custom_constraint_grammar::control>(in, obj);
 }
 
 /**
