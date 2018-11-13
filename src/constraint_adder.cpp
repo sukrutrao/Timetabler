@@ -116,19 +116,19 @@ Clauses ConstraintAdder::programSingleCoreCourseAtATime() {
  *
  * @return     A Clauses object describing the constraint
  */
-Clauses ConstraintAdder::minorInMinorTime() {
-  Clauses result;
-  result.clear();
+std::vector<Clauses> ConstraintAdder::minorInMinorTime() {
   std::vector<Course> courses = timetabler->data.courses;
+  std::vector<Clauses> result(courses.size());
   for (unsigned i = 0; i < courses.size(); i++) {
+    result[i].clear();
     /*
      * a minor course must be in a minor Slot.
      * a non-minor course must not be in a minor Slot.
      */
     Clauses antecedent = encoder->isMinorCourse(i);
     Clauses consequent = encoder->slotInMinorTime(i);
-    result.addClauses(antecedent >> consequent);
-    result.addClauses(consequent >> antecedent);
+    result[i].addClauses(antecedent >> consequent);
+    result[i].addClauses(consequent >> antecedent);
   }
   return result;
 }
@@ -147,11 +147,12 @@ Clauses ConstraintAdder::minorInMinorTime() {
  *
  * @return     A Clauses object describing the constraint
  */
-Clauses ConstraintAdder::exactlyOneFieldValuePerCourse(FieldType fieldType) {
-  Clauses result;
-  result.clear();
+std::vector<Clauses> ConstraintAdder::exactlyOneFieldValuePerCourse(
+    FieldType fieldType) {
   std::vector<Course> courses = timetabler->data.courses;
+  std::vector<Clauses> result(courses.size());
   for (unsigned i = 0; i < courses.size(); i++) {
+    result[i].clear();
     // exactly one field value must be true
     Clauses exactlyOneFieldValue =
         encoder->hasExactlyOneFieldValueTrue(i, fieldType);
@@ -159,7 +160,7 @@ Clauses ConstraintAdder::exactlyOneFieldValuePerCourse(FieldType fieldType) {
     // high level variable implies the clause, and by default is hard
     // if high level variable is false, this clause could not be satisfied
     // this provides a reason to the user
-    result.addClauses(cclause >> exactlyOneFieldValue);
+    result[i].addClauses(cclause >> exactlyOneFieldValue);
   }
   return result;
 }
@@ -195,26 +196,49 @@ void ConstraintAdder::addConstraints() {
                       classroomSingleCourseAtATime());
   addSingleConstraint(PredefinedClauses::programSingleCoreCourseAtATime,
                       programSingleCoreCourseAtATime());
-  addSingleConstraint(PredefinedClauses::minorInMinorTime, minorInMinorTime());
-  addSingleConstraint(PredefinedClauses::programAtMostOneOfCoreOrElective,
-                      programAtMostOneOfCoreOrElective());
 
-  addSingleConstraint(PredefinedClauses::exactlyOneSlotPerCourse,
-                      exactlyOneFieldValuePerCourse(FieldType::slot));
-  addSingleConstraint(PredefinedClauses::exactlyOneClassroomPerCourse,
-                      exactlyOneFieldValuePerCourse(FieldType::classroom));
-  addSingleConstraint(PredefinedClauses::exactlyOneInstructorPerCourse,
-                      exactlyOneFieldValuePerCourse(FieldType::instructor));
-  addSingleConstraint(PredefinedClauses::exactlyOneIsMinorPerCourse,
-                      exactlyOneFieldValuePerCourse(FieldType::isMinor));
-  addSingleConstraint(PredefinedClauses::exactlyOneSegmentPerCourse,
-                      exactlyOneFieldValuePerCourse(FieldType::segment));
-  auto a = coreInMorningTime();
-  for (auto &v : a) {
+  auto clauses = minorInMinorTime();
+  for (auto &v : clauses) {
+    addSingleConstraint(PredefinedClauses::minorInMinorTime, v);
+  }
+
+  clauses = programAtMostOneOfCoreOrElective();
+  for (auto &v : clauses) {
+    addSingleConstraint(PredefinedClauses::programAtMostOneOfCoreOrElective, v);
+  }
+
+  clauses = exactlyOneFieldValuePerCourse(FieldType::slot);
+  for (auto &v : clauses) {
+    addSingleConstraint(PredefinedClauses::exactlyOneSlotPerCourse, v);
+  }
+
+  clauses = exactlyOneFieldValuePerCourse(FieldType::classroom);
+  for (auto &v : clauses) {
+    addSingleConstraint(PredefinedClauses::exactlyOneClassroomPerCourse, v);
+  }
+
+  clauses = exactlyOneFieldValuePerCourse(FieldType::instructor);
+  for (auto &v : clauses) {
+    addSingleConstraint(PredefinedClauses::exactlyOneInstructorPerCourse, v);
+  }
+
+  clauses = exactlyOneFieldValuePerCourse(FieldType::isMinor);
+  for (auto &v : clauses) {
+    addSingleConstraint(PredefinedClauses::exactlyOneIsMinorPerCourse, v);
+  }
+
+  clauses = exactlyOneFieldValuePerCourse(FieldType::segment);
+  for (auto &v : clauses) {
+    addSingleConstraint(PredefinedClauses::exactlyOneSegmentPerCourse, v);
+  }
+
+  clauses = coreInMorningTime();
+  for (auto &v : clauses) {
     addSingleConstraint(PredefinedClauses::coreInMorningTime, v);
   }
-  auto b = electiveInNonMorningTime();
-  for (auto &v : b) {
+
+  clauses = electiveInNonMorningTime();
+  for (auto &v : clauses) {
     addSingleConstraint(PredefinedClauses::electiveInNonMorningTime, v);
   }
 }
@@ -270,12 +294,12 @@ std::vector<Clauses> ConstraintAdder::electiveInNonMorningTime() {
  *
  * @return     A Clauses object describing the constraint
  */
-Clauses ConstraintAdder::programAtMostOneOfCoreOrElective() {
-  Clauses result;
-  result.clear();
+std::vector<Clauses> ConstraintAdder::programAtMostOneOfCoreOrElective() {
   std::vector<Course> courses = timetabler->data.courses;
+  std::vector<Clauses> result(courses.size());
   for (unsigned i = 0; i < courses.size(); i++) {
-    result.addClauses(encoder->programAtMostOneOfCoreOrElective(i));
+    result[i].clear();
+    result[i].addClauses(encoder->programAtMostOneOfCoreOrElective(i));
   }
   return result;
 }
