@@ -13,6 +13,11 @@
 #include "utils.h"
 #include "version.h"
 
+/**
+ * @brief      Display information about timetabler
+ *
+ * @param[in]  display_desc  If true, also prints the description
+ */
 void display_meta(bool display_desc = false) {
   std::cout << "Timetabler version " __TIMETABLER_VERSION__ << std::endl;
   if (display_desc)
@@ -23,6 +28,9 @@ void display_meta(bool display_desc = false) {
               << std::endl;
 }
 
+/**
+ * Options supported in command line interface
+ */
 const struct option long_options[] = {{"help", no_argument, 0, 'h'},
                                       {"fields", required_argument, 0, 'f'},
                                       {"input", required_argument, 0, 'i'},
@@ -32,6 +40,9 @@ const struct option long_options[] = {{"help", no_argument, 0, 'h'},
                                       {"version", no_argument, 0, 'v'},
                                       {0, 0, 0, 0}};
 
+/**
+ * Descriptions of the options supported in CLI
+ */
 const std::string option_desc[] = {"display this help",
                                    "fields yaml file",
                                    "input csv file",
@@ -41,6 +52,11 @@ const std::string option_desc[] = {"display this help",
                                    "display version",
                                    ""};
 
+/**
+ * @brief      Display help for CLI options.
+ *
+ * @param[in]  exec  Name of the executable
+ */
 void display_help(std::string exec = "timetabler") {
   display_meta(true);
   std::cout << "\nUsage:\n";
@@ -59,6 +75,11 @@ void display_help(std::string exec = "timetabler") {
   }
 }
 
+/**
+ * @brief      Display error message when unrecognised option is given in CLI
+ *
+ * @param[in]  err   The error message
+ */
 void display_error(std::string err) {
   std::cout << err << std::endl;
   std::cout << "Use --help option to know about supported options."
@@ -68,6 +89,14 @@ void display_error(std::string err) {
 
 Timetabler *timetabler;
 
+/**
+ * @brief      The main function
+ *
+ * @param[in]  argc  Count of the cli arguments
+ * @param      argv  Arguments passed through cli
+ *
+ * @return     Exit code when program ends
+ */
 int main(int argc, char *const *argv) {
   std::string input_file, fields_file, custom_file, output_file;
   unsigned verbosity = 3;

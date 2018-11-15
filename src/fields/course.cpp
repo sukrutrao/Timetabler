@@ -63,8 +63,18 @@ void Course::setPrograms(std::vector<int> programs) {
  */
 void Course::addProgram(int programs) { this->programs.push_back(programs); }
 
+/**
+ * @brief      Adds a classroom that is applicable to the Course.
+ *
+ * @param[in]  cr  The index of the classroom to be added
+ */
 void Course::addClassroom(int cr) { this->classroom = cr; }
 
+/**
+ * @brief      Adds a slot that is applicable to the Course.
+ *
+ * @param[in]  s  The index of the slot to be added
+ */
 void Course::addSlot(int s) { this->slot = s; }
 
 /**
@@ -114,8 +124,18 @@ int Course::getSegment() { return segment; }
  */
 int Course::getIsMinor() { return isMinor; }
 
+/**
+ * @brief      Gets the 'classroom' index of the Course.
+ *
+ * @return     The classroom index in the list of Classrooms
+ */
 int Course::getClassroom() { return classroom; }
 
+/**
+ * @brief      Gets the 'slot' index of the Course.
+ *
+ * @return     The slot index in the list of slots
+ */
 int Course::getSlot() { return slot; }
 
 /**

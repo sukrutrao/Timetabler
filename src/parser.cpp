@@ -236,6 +236,11 @@ void Parser::parseInput(std::string file) {
   }
 }
 
+/**
+ * @brief      Verifies if the input is valid.
+ *
+ * @return     True, if the input is valid.
+ */
 bool Parser::verify() {
   bool result = true;
   for (auto course1 : timetabler->data.courses) {

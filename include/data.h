@@ -79,7 +79,13 @@ class Data {
    * can make the necessary changes.
    */
   std::vector<std::vector<Var>> highLevelVars;
+  /**
+   * Stores the high level variables associated with the predefined constraints.
+   */
   std::vector<Var> predefinedConstraintVars;
+  /**
+   * Stores the high level variables associated with the custom constraints.
+   */
   std::vector<Var> customConstraintVars;
   /**
    * Stores the existing assignments for every Course and
@@ -116,7 +122,9 @@ class Data {
    * or to disable certain constraints.
    */
   std::vector<int> predefinedClausesWeights;
-
+  /**
+   * Stores the course with the associated custom constraint.
+   */
   std::map<int, unsigned> customMap;
   Data();
 };
