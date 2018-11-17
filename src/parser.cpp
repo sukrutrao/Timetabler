@@ -373,8 +373,20 @@ void Parser::addVars() {
     }
     timetabler->data.highLevelVars.push_back(highLevelCourseVars);
   }
+
+  timetabler->data.predefinedConstraintVars.resize(
+      Global::PREDEFINED_CLAUSES_COUNT);
   for (unsigned i = 0; i < Global::PREDEFINED_CLAUSES_COUNT; i++) {
-    Var v = timetabler->newVar();
-    timetabler->data.predefinedConstraintVars.push_back(v);
+    if (i == PredefinedClauses::instructorSingleCourseAtATime ||
+        i == PredefinedClauses::classroomSingleCourseAtATime ||
+        i == PredefinedClauses::programSingleCoreCourseAtATime) {
+      Var v = timetabler->newVar();
+      timetabler->data.predefinedConstraintVars[i].push_back(v);
+    } else {
+      for (unsigned j = 0; j < timetabler->data.courses.size(); j++) {
+        Var v = timetabler->newVar();
+        timetabler->data.predefinedConstraintVars[i].push_back(v);
+      }
+    }
   }
 }

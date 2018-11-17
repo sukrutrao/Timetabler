@@ -171,16 +171,30 @@ std::vector<Clauses> ConstraintAdder::exactlyOneFieldValuePerCourse(
  * @param[in]  clauseType  The PredefinedClauses member denoting the constraint
  * type
  * @param[in]  clauses     The clauses to be added
+ * @param[in]  course      The corresponding course index (-1 for if there is no
+ * corresponding course)
  */
 void ConstraintAdder::addSingleConstraint(PredefinedClauses clauseType,
-                                          const Clauses &clauses) {
-  if (timetabler->data.predefinedClausesWeights[clauseType] != 0) {
-    Clauses hardConsequent =
-        CClause(timetabler->data.predefinedConstraintVars[clauseType]) >>
-        clauses;
-    timetabler->addClauses(hardConsequent, -1);
+                                          const Clauses &clauses,
+                                          const int course) {
+  if (course == -1) {
+    if (timetabler->data.predefinedClausesWeights[clauseType] != 0) {
+      Clauses hardConsequent =
+          CClause(timetabler->data.predefinedConstraintVars[clauseType][0]) >>
+          clauses;
+      timetabler->addClauses(hardConsequent, -1);
+    }
+    timetabler->addHighLevelConstraintClauses(clauseType, -1);
+  } else {
+    if (timetabler->data.predefinedClausesWeights[clauseType] != 0) {
+      Clauses hardConsequent =
+          CClause(
+              timetabler->data.predefinedConstraintVars[clauseType][course]) >>
+          clauses;
+      timetabler->addClauses(hardConsequent, -1);
+    }
+    timetabler->addHighLevelConstraintClauses(clauseType, course);
   }
-  timetabler->addHighLevelConstraintClauses(clauseType);
 }
 
 /**
@@ -191,55 +205,62 @@ void ConstraintAdder::addConstraints() {
   std::vector<int> weights = timetabler->data.predefinedClausesWeights;
   // add the constraints to the formula
   addSingleConstraint(PredefinedClauses::instructorSingleCourseAtATime,
-                      instructorSingleCourseAtATime());
+                      instructorSingleCourseAtATime(), -1);
   addSingleConstraint(PredefinedClauses::classroomSingleCourseAtATime,
-                      classroomSingleCourseAtATime());
+                      classroomSingleCourseAtATime(), -1);
   addSingleConstraint(PredefinedClauses::programSingleCoreCourseAtATime,
-                      programSingleCoreCourseAtATime());
+                      programSingleCoreCourseAtATime(), -1);
 
   auto clauses = minorInMinorTime();
-  for (auto &v : clauses) {
-    addSingleConstraint(PredefinedClauses::minorInMinorTime, v);
+  for (unsigned i = 0; i < clauses.size(); i++) {
+    addSingleConstraint(PredefinedClauses::minorInMinorTime, clauses[i], i);
   }
 
   clauses = programAtMostOneOfCoreOrElective();
-  for (auto &v : clauses) {
-    addSingleConstraint(PredefinedClauses::programAtMostOneOfCoreOrElective, v);
+  for (unsigned i = 0; i < clauses.size(); i++) {
+    addSingleConstraint(PredefinedClauses::programAtMostOneOfCoreOrElective,
+                        clauses[i], i);
   }
 
   clauses = exactlyOneFieldValuePerCourse(FieldType::slot);
-  for (auto &v : clauses) {
-    addSingleConstraint(PredefinedClauses::exactlyOneSlotPerCourse, v);
+  for (unsigned i = 0; i < clauses.size(); i++) {
+    addSingleConstraint(PredefinedClauses::exactlyOneSlotPerCourse, clauses[i],
+                        i);
   }
 
   clauses = exactlyOneFieldValuePerCourse(FieldType::classroom);
-  for (auto &v : clauses) {
-    addSingleConstraint(PredefinedClauses::exactlyOneClassroomPerCourse, v);
+  for (unsigned i = 0; i < clauses.size(); i++) {
+    addSingleConstraint(PredefinedClauses::exactlyOneClassroomPerCourse,
+                        clauses[i], i);
   }
 
   clauses = exactlyOneFieldValuePerCourse(FieldType::instructor);
-  for (auto &v : clauses) {
-    addSingleConstraint(PredefinedClauses::exactlyOneInstructorPerCourse, v);
+  for (unsigned i = 0; i < clauses.size(); i++) {
+    addSingleConstraint(PredefinedClauses::exactlyOneInstructorPerCourse,
+                        clauses[i], i);
   }
 
   clauses = exactlyOneFieldValuePerCourse(FieldType::isMinor);
-  for (auto &v : clauses) {
-    addSingleConstraint(PredefinedClauses::exactlyOneIsMinorPerCourse, v);
+  for (unsigned i = 0; i < clauses.size(); i++) {
+    addSingleConstraint(PredefinedClauses::exactlyOneIsMinorPerCourse,
+                        clauses[i], i);
   }
 
   clauses = exactlyOneFieldValuePerCourse(FieldType::segment);
-  for (auto &v : clauses) {
-    addSingleConstraint(PredefinedClauses::exactlyOneSegmentPerCourse, v);
+  for (unsigned i = 0; i < clauses.size(); i++) {
+    addSingleConstraint(PredefinedClauses::exactlyOneSegmentPerCourse,
+                        clauses[i], i);
   }
 
   clauses = coreInMorningTime();
-  for (auto &v : clauses) {
-    addSingleConstraint(PredefinedClauses::coreInMorningTime, v);
+  for (unsigned i = 0; i < clauses.size(); i++) {
+    addSingleConstraint(PredefinedClauses::coreInMorningTime, clauses[i], i);
   }
 
   clauses = electiveInNonMorningTime();
-  for (auto &v : clauses) {
-    addSingleConstraint(PredefinedClauses::electiveInNonMorningTime, v);
+  for (unsigned i = 0; i < clauses.size(); i++) {
+    addSingleConstraint(PredefinedClauses::electiveInNonMorningTime, clauses[i],
+                        i);
   }
 }
 

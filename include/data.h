@@ -82,7 +82,7 @@ class Data {
   /**
    * Stores the high level variables associated with the predefined constraints.
    */
-  std::vector<Var> predefinedConstraintVars;
+  std::vector<std::vector<Var>> predefinedConstraintVars;
   /**
    * Stores the high level variables associated with the custom constraints.
    */

@@ -66,13 +66,28 @@ void Timetabler::addHighLevelClauses() {
  * with weight as specified for the constraint.
  *
  * @param[in]  clauseType  The clause type
+ * @param[in]  course      The corresponding course index (-1 for if there is no
+ * corresponding course)
  */
-void Timetabler::addHighLevelConstraintClauses(PredefinedClauses clauseType) {
-  Lit l = mkLit(data.predefinedConstraintVars[clauseType], false);
-  if (data.predefinedClausesWeights[clauseType] != 0) {
-    addToFormula(l, data.predefinedClausesWeights[clauseType]);
+void Timetabler::addHighLevelConstraintClauses(PredefinedClauses clauseType,
+                                               const int course) {
+  if (course == -1) {
+    assert(data.predefinedConstraintVars[clauseType].size() == 1);
+    Lit l = mkLit(data.predefinedConstraintVars[clauseType][0], false);
+    if (data.predefinedClausesWeights[clauseType] != 0) {
+      addToFormula(l, data.predefinedClausesWeights[clauseType]);
+    } else {
+      addToFormula(l, -1);
+    }
   } else {
-    addToFormula(l, -1);
+    assert(data.predefinedConstraintVars[clauseType].size() ==
+           data.courses.size());
+    Lit l = mkLit(data.predefinedConstraintVars[clauseType][course], false);
+    if (data.predefinedClausesWeights[clauseType] != 0) {
+      addToFormula(l, data.predefinedClausesWeights[clauseType]);
+    } else {
+      addToFormula(l, -1);
+    }
   }
 }
 
@@ -196,6 +211,26 @@ bool Timetabler::checkAllTrue(const std::vector<Var> &inputs) {
   for (unsigned i = 0; i < inputs.size(); i++) {
     if (model[inputs[i]] == l_False) {
       return false;
+    }
+  }
+  return true;
+}
+
+/**
+ * @brief      Checks if a given set of variables (in 2D vector) are true in the
+ * model returned by the solver.
+ *
+ * @param[in]  inputs  The input variables
+ *
+ * @return     True, if all variables are True, False otherwise
+ */
+bool Timetabler::checkAllTrue(const std::vector<std::vector<Var>> &inputs) {
+  if (model.size() == 0) {
+    return false;
+  }
+  for (auto &i : inputs) {
+    for (auto &j : i) {
+      if (model[j] == l_False) return false;
     }
   }
   return true;
@@ -416,7 +451,7 @@ void Timetabler::displayUnsatisfiedOutputReasons() {
     }
   }
   for (unsigned i = 0; i < data.predefinedConstraintVars.size(); i++) {
-    if (!isVarTrue(data.predefinedConstraintVars[i]) &&
+    if (!checkAllTrue(data.predefinedConstraintVars[i]) &&
         data.predefinedClausesWeights[i] != 0) {
       LOG(WARNING) << "Predefined Constraint : "
                    << Utils::getPredefinedConstraintName(PredefinedClauses(i))
