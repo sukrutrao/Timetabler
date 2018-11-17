@@ -3,7 +3,6 @@ set -e
 
 OPEN_WBO_COMMIT=12382e6
 YAML_CPP_VERSION=0.6.2
-CSVPARSER_COMMIT=540e3e2
 PEGTL_VERSION=2.7.0
 GTEST_VERSION=1.8.1
 
@@ -57,14 +56,6 @@ echo "Building YAML-CPP..."
 cmake -DYAML_CPP_BUILD_TESTS=OFF -DYAML_CPP_BUILD_TOOLS=OFF -DYAML_CPP_BUILD_CONTRIB=OFF ..
 make $PARALLEL
 cd ../..
-
-echo "Getting CSVparser..."
-if [ ! -d CSVparser ] ; then
-  git clone https://github.com/MyBoon/CSVparser.git
-fi
-cd CSVparser
-git checkout $CSVPARSER_COMMIT
-cd ..
 
 echo "Getting PEGTL..."
 if [ ! -d PEGTL-$PEGTL_VERSION ] ; then
