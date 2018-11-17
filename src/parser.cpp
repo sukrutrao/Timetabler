@@ -2,6 +2,7 @@
 
 #include <cstdlib>
 #include <iostream>
+#include "csv_parser.h"
 #include "utils.h"
 
 /**
@@ -127,7 +128,7 @@ Day Parser::getDayFromString(std::string day) {
  * @param[in]  file  The file containig the input
  */
 void Parser::parseInput(std::string file) {
-  csv::Parser parser(file);
+  CSVParser parser(file);
   timetabler->data.existingAssignmentVars.clear();
   for (unsigned i = 0; i < parser.rowCount(); ++i) {
     std::vector<std::vector<lbool>> assignmentsThisCourse(Global::FIELD_COUNT);
