@@ -5,7 +5,6 @@
 
 #include <yaml-cpp/yaml.h>
 #include <string>
-#include "CSVparser.hpp"
 #include "data.h"
 #include "timetabler.h"
 
