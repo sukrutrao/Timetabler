@@ -749,7 +749,7 @@ struct control : pegtl::normal<Rule> {
   }
 };
 
-};  // namespace custom_constraint_grammar
+}  // namespace custom_constraint_grammar
 
 /**
  * @brief      Parses custom constraints given in a file and adds them to the

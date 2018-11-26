@@ -6,7 +6,7 @@ include(TimetablerVersion.cmake)
 
 set(CMAKE_BUILD_TYPE Release CACHE STRING "Build type")
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wno-parentheses -Wno-misleading-indentation")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wno-parentheses -Wno-misleading-indentation -Wpedantic")
 set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -DTIMETABLERDEBUG")
 
 set(OPEN_WBO_PATH "${CMAKE_SOURCE_DIR}/dependencies/open-wbo" CACHE PATH "Open-WBO path")
