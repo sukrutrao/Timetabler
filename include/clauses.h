@@ -5,7 +5,7 @@
 
 #include <vector>
 #include "cclause.h"
-#include "time_tabler.h"
+#include "timetabler.h"
 
 using namespace NSPACE;
 

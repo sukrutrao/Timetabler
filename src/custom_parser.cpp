@@ -682,10 +682,12 @@ struct action<constraint_unbundle> {
       obj.timetabler->data.customConstraintVars.push_back(
           obj.timetabler->newVar());
       int index = obj.timetabler->data.customConstraintVars.size() - 1;
-      Clauses hardConsequent =
-          CClause(obj.timetabler->data.customConstraintVars[index]) >>
-          obj.constraint;
-      obj.timetabler->addClauses(hardConsequent, -1);
+      if (obj.integer != 0) {
+        Clauses hardConsequent =
+            CClause(obj.timetabler->data.customConstraintVars[index]) >>
+            obj.constraint;
+        obj.timetabler->addClauses(hardConsequent, -1);
+      }
       obj.timetabler->addHighLevelCustomConstraintClauses(index, obj.integer);
     }
     obj.courseValues.clear();
@@ -712,10 +714,12 @@ struct action<wconstraint> {
     obj.timetabler->data.customConstraintVars.push_back(
         obj.timetabler->newVar());
     int index = obj.timetabler->data.customConstraintVars.size() - 1;
-    Clauses hardConsequent =
-        CClause(obj.timetabler->data.customConstraintVars[index]) >>
-        obj.constraint;
-    obj.timetabler->addClauses(hardConsequent, -1);
+    if (obj.integer != 0) {
+      Clauses hardConsequent =
+          CClause(obj.timetabler->data.customConstraintVars[index]) >>
+          obj.constraint;
+      obj.timetabler->addClauses(hardConsequent, -1);
+    }
     obj.timetabler->addHighLevelCustomConstraintClauses(index, obj.integer);
   }
 };
@@ -746,4 +750,15 @@ void parseCustomConstraints(std::string file,
   obj.timetabler = timetabler;
   pegtl::file_input<> in(file);
   pegtl::parse<grammar, action, control>(in, obj);
+}
+
+/**
+ * @brief      Initialize object members
+ */
+Object::Object() {
+  isNot = false;
+  classSame = false;
+  slotSame = false;
+  classNotSame = false;
+  slotNotSame = false;
 }

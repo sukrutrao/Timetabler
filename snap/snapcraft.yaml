@@ -1,5 +1,5 @@
 name: timetabler
-version: "0.3.0"
+version: "0.3.0+git"
 summary: Timetable scheduling software using MaxSAT solver.
 description: |
   A highly customizable timetabling software for educational institutions
