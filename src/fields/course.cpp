@@ -17,7 +17,7 @@
  * @param[in]  isMinor     Indicates if the course is a minor course
  */
 Course::Course(std::string name, unsigned classSize, int instructor,
-               int segment, int isMinor) {
+               int segment, MinorType isMinor) {
   this->name = name;
   this->classSize = classSize;
   this->instructor = instructor;
@@ -37,7 +37,7 @@ Course::Course(std::string name, unsigned classSize, int instructor,
  * applicable
  */
 Course::Course(std::string name, unsigned classSize, int instructor,
-               int segment, int isMinor, std::vector<int> programs) {
+               int segment, MinorType isMinor, std::vector<int> programs) {
   this->name = name;
   this->classSize = classSize;
   this->instructor = instructor;
@@ -122,7 +122,7 @@ int Course::getSegment() { return segment; }
  *
  * @return     The isMinor index in the list of isMinors
  */
-int Course::getIsMinor() { return isMinor; }
+MinorType Course::getIsMinor() { return isMinor; }
 
 /**
  * @brief      Gets the 'classroom' index of the Course.

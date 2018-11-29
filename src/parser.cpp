@@ -163,12 +163,12 @@ void Parser::parseInput(std::string file) {
       LOG(ERROR) << "Input contains invalid Segment name";
     }
     std::string isMinorStr = parser[i]["is_minor"];
-    int isMinor;
+    MinorType isMinor = MinorType::isMinorCourse;
     if (isMinorStr == "Yes" || isMinorStr == "Y") {
-      isMinor = 0;
+      isMinor = MinorType::isMinorCourse;
       assignmentsThisCourse[FieldType::isMinor].push_back(l_True);
     } else if (isMinorStr == "No" || isMinorStr == "N" || isMinorStr == "") {
-      isMinor = 1;
+      isMinor = MinorType::isNotMinorCourse;
       assignmentsThisCourse[FieldType::isMinor].push_back(l_False);
     } else {
       LOG(ERROR) << "Input contains invalid IsMinor value (should be "
@@ -244,7 +244,8 @@ void Parser::parseInput(std::string file) {
 bool Parser::verify() {
   bool result = true;
   for (auto course1 : timetabler->data.courses) {
-    if (course1.getIsMinor() && course1.getSlot() != -1) {
+    if (course1.getIsMinor() == MinorType::isMinorCourse &&
+        course1.getSlot() != -1) {
       if (timetabler->data.slots[course1.getSlot()].isMinorSlot()) {
         if (timetabler->data.predefinedClausesWeights
                 [PredefinedClauses::minorInMinorTime] != 0) {
