@@ -178,15 +178,17 @@ void Parser::parseInput(std::string file) {
 
     for (unsigned j = 0; j < timetabler->data.programs.size(); j += 2) {
       std::string s = timetabler->data.programs[j].getName();
-      if (parser[i][s] == "Core") {
+      if (parser[i][s] == "Core" || parser[i][s] == "C" ||
+          parser[i][s] == "Y") {
         course.addProgram(j);
         assignmentsThisCourse[FieldType::program].push_back(l_True);
         assignmentsThisCourse[FieldType::program].push_back(l_False);
-      } else if (parser[i][s] == "Elective") {
+      } else if (parser[i][s] == "Elective" || parser[i][s] == "E") {
         course.addProgram(j + 1);
         assignmentsThisCourse[FieldType::program].push_back(l_False);
         assignmentsThisCourse[FieldType::program].push_back(l_True);
-      } else if (parser[i][s] == "No" || parser[i][s] == "") {
+      } else if (parser[i][s] == "No" || parser[i][s] == "N" ||
+                 parser[i][s] == "") {
         assignmentsThisCourse[FieldType::program].push_back(l_False);
         assignmentsThisCourse[FieldType::program].push_back(l_False);
       } else {

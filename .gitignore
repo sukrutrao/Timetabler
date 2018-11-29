@@ -46,3 +46,5 @@ dependencies
 parts
 prime
 stage
+.idea
+cmake-build-debug
