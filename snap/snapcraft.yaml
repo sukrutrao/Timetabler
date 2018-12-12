@@ -1,5 +1,5 @@
 name: timetabler
-version: "0.3.0+git"
+version: git
 summary: Timetable scheduling software using MaxSAT solver.
 description: |
   A highly customizable timetabling software for educational institutions
@@ -19,6 +19,7 @@ parts:
   timetabler:
     plugin: cmake
     override-build: |
+      bash ../src/gen_version.sh ../src
       bash ../src/install_dependencies.sh --parallel
       snapcraftctl build
     configflags:
