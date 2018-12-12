@@ -1,5 +1,7 @@
 name: timetabler
 version: git
+version-script:
+  ./gen_version.sh . 1
 summary: Timetable scheduling software using MaxSAT solver.
 description: |
   A highly customizable timetabling software for educational institutions
