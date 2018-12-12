@@ -69,13 +69,13 @@ void Timetabler::addHighLevelClauses() {
  * @param[in]  course      The corresponding course index (-1 for if there is no
  * corresponding course)
  */
-void Timetabler::addHighLevelConstraintClauses(PredefinedClauses clauseType,
+void Timetabler::addHighLevelConstraintClauses(PredefinedConstraint clauseType,
                                                const int course) {
   if (course == -1) {
     assert(data.predefinedConstraintVars[clauseType].size() == 1);
     Lit l = mkLit(data.predefinedConstraintVars[clauseType][0], false);
-    if (data.predefinedClausesWeights[clauseType] != 0) {
-      addToFormula(l, data.predefinedClausesWeights[clauseType]);
+    if (data.predefinedConstraintsWeights[clauseType] != 0) {
+      addToFormula(l, data.predefinedConstraintsWeights[clauseType]);
     } else {
       addToFormula(l, -1);
     }
@@ -83,8 +83,8 @@ void Timetabler::addHighLevelConstraintClauses(PredefinedClauses clauseType,
     assert(data.predefinedConstraintVars[clauseType].size() ==
            data.courses.size());
     Lit l = mkLit(data.predefinedConstraintVars[clauseType][course], false);
-    if (data.predefinedClausesWeights[clauseType] != 0) {
-      addToFormula(l, data.predefinedClausesWeights[clauseType]);
+    if (data.predefinedConstraintsWeights[clauseType] != 0) {
+      addToFormula(l, data.predefinedConstraintsWeights[clauseType]);
     } else {
       addToFormula(l, -1);
     }
@@ -224,12 +224,13 @@ bool Timetabler::checkAllTrue(const std::vector<Var> &inputs) {
  *
  * @return     True, if all variables are True, False otherwise
  */
-bool Timetabler::checkAllTrue(const std::vector<std::vector<Var>> &inputs) {
+bool Timetabler::checkAllTrue(
+    const std::map<PredefinedConstraint, std::vector<Var>> &inputs) {
   if (model.size() == 0) {
     return false;
   }
   for (auto &i : inputs) {
-    for (auto &j : i) {
+    for (auto &j : i.second) {
       if (model[j] == l_False) return false;
     }
   }
@@ -451,10 +452,11 @@ void Timetabler::displayUnsatisfiedOutputReasons() {
     }
   }
   for (unsigned i = 0; i < data.predefinedConstraintVars.size(); i++) {
-    if (!checkAllTrue(data.predefinedConstraintVars[i]) &&
-        data.predefinedClausesWeights[i] != 0) {
+    if (!checkAllTrue(data.predefinedConstraintVars[PredefinedConstraint(i)]) &&
+        data.predefinedConstraintsWeights[PredefinedConstraint(i)] != 0) {
       LOG(WARNING) << "Predefined Constraint : "
-                   << Utils::getPredefinedConstraintName(PredefinedClauses(i))
+                   << Utils::getPredefinedConstraintName(
+                          PredefinedConstraint(i))
                    << " could not be satisfied";
     }
   }

@@ -94,8 +94,12 @@ void Parser::parseFields(std::string file) {
   YAML::Node predefinedWeightsConfig = config["predefined_weights"];
   for (YAML::Node predefinedWeightNode : predefinedWeightsConfig) {
     unsigned clauseNo = predefinedWeightNode["clause"].as<int>();
+    if (clauseNo >= Global::PREDEFINED_CLAUSES_COUNT) {
+      LOG(ERROR) << "Invalid predefined constraint number " << clauseNo;
+    }
     int weight = predefinedWeightNode["weight"].as<int>();
-    timetabler->data.predefinedClausesWeights[clauseNo] = weight;
+    timetabler->data
+        .predefinedConstraintsWeights[PredefinedConstraint(clauseNo)] = weight;
   }
 }
 
@@ -249,14 +253,14 @@ bool Parser::verify() {
     if (course1.getIsMinor() == MinorType::isMinorCourse &&
         course1.getSlot() != -1) {
       if (timetabler->data.slots[course1.getSlot()].isMinorSlot()) {
-        if (timetabler->data.predefinedClausesWeights
-                [PredefinedClauses::minorInMinorTime] != 0) {
+        if (timetabler->data.predefinedConstraintsWeights
+                [PredefinedConstraint::minorInMinorTime] != 0) {
           LOG(WARNING)
               << course1.getName()
               << " which is minor course is scheduled in non minor slot.";
         }
-        if (timetabler->data.predefinedClausesWeights
-                [PredefinedClauses::minorInMinorTime] == -1) {
+        if (timetabler->data.predefinedConstraintsWeights
+                [PredefinedConstraint::minorInMinorTime] == -1) {
           LOG(WARNING) << "Hard constraint unsatisfied";
           result = false;
         }
@@ -280,26 +284,26 @@ bool Parser::verify() {
               : false;
       if (segementIntersecting && slotIntersecting) {
         if (course1.getInstructor() == course2.getInstructor()) {
-          if (timetabler->data.predefinedClausesWeights
-                  [PredefinedClauses::instructorSingleCourseAtATime] != 0) {
+          if (timetabler->data.predefinedConstraintsWeights
+                  [PredefinedConstraint::instructorSingleCourseAtATime] != 0) {
             LOG(WARNING) << course1.getName() << " and " << course2.getName()
                          << " having same instructor clash.";
           }
-          if (timetabler->data.predefinedClausesWeights
-                  [PredefinedClauses::instructorSingleCourseAtATime] == -1) {
+          if (timetabler->data.predefinedConstraintsWeights
+                  [PredefinedConstraint::instructorSingleCourseAtATime] == -1) {
             LOG(WARNING) << "Hard constraint unsatisfied";
             result = false;
           }
         }
 
         if (classroomSame) {
-          if (timetabler->data.predefinedClausesWeights
-                  [PredefinedClauses::classroomSingleCourseAtATime] != 0) {
+          if (timetabler->data.predefinedConstraintsWeights
+                  [PredefinedConstraint::classroomSingleCourseAtATime] != 0) {
             LOG(WARNING) << course1.getName() << " and " << course2.getName()
                          << " having same classroom clash.";
           }
-          if (timetabler->data.predefinedClausesWeights
-                  [PredefinedClauses::classroomSingleCourseAtATime] == -1) {
+          if (timetabler->data.predefinedConstraintsWeights
+                  [PredefinedConstraint::classroomSingleCourseAtATime] == -1) {
             LOG(WARNING) << "Hard constraint unsatisfied";
             result = false;
           }
@@ -310,18 +314,18 @@ bool Parser::verify() {
             if (program1 == program2) {
               if (timetabler->data.programs[program1].isCoreProgram() &&
                   timetabler->data.programs[program2].isCoreProgram()) {
-                if (timetabler->data.predefinedClausesWeights
-                        [PredefinedClauses::programSingleCoreCourseAtATime] !=
-                    0) {
+                if (timetabler->data.predefinedConstraintsWeights
+                        [PredefinedConstraint::
+                             programSingleCoreCourseAtATime] != 0) {
                   LOG(WARNING)
                       << course1.getName() << " and " << course2.getName()
                       << " which have common core program "
                       << timetabler->data.programs[program1].getName()
                       << " clash.";
                 }
-                if (timetabler->data.predefinedClausesWeights
-                        [PredefinedClauses::programSingleCoreCourseAtATime] ==
-                    -1) {
+                if (timetabler->data.predefinedConstraintsWeights
+                        [PredefinedConstraint::
+                             programSingleCoreCourseAtATime] == -1) {
                   LOG(WARNING) << "Hard constraint unsatisfied";
                   result = false;
                 }
@@ -377,18 +381,23 @@ void Parser::addVars() {
     timetabler->data.highLevelVars.push_back(highLevelCourseVars);
   }
 
-  timetabler->data.predefinedConstraintVars.resize(
-      Global::PREDEFINED_CLAUSES_COUNT);
+  // timetabler->data.predefinedConstraintVars.resize(
+  // Global::PREDEFINED_CLAUSES_COUNT);
   for (unsigned i = 0; i < Global::PREDEFINED_CLAUSES_COUNT; i++) {
-    if (i == PredefinedClauses::instructorSingleCourseAtATime ||
-        i == PredefinedClauses::classroomSingleCourseAtATime ||
-        i == PredefinedClauses::programSingleCoreCourseAtATime) {
+    if (PredefinedConstraint(i) ==
+            PredefinedConstraint::instructorSingleCourseAtATime ||
+        PredefinedConstraint(i) ==
+            PredefinedConstraint::classroomSingleCourseAtATime ||
+        PredefinedConstraint(i) ==
+            PredefinedConstraint::programSingleCoreCourseAtATime) {
       Var v = timetabler->newVar();
-      timetabler->data.predefinedConstraintVars[i].push_back(v);
+      timetabler->data.predefinedConstraintVars[PredefinedConstraint(i)]
+          .push_back(v);
     } else {
       for (unsigned j = 0; j < timetabler->data.courses.size(); j++) {
         Var v = timetabler->newVar();
-        timetabler->data.predefinedConstraintVars[i].push_back(v);
+        timetabler->data.predefinedConstraintVars[PredefinedConstraint(i)]
+            .push_back(v);
       }
     }
   }

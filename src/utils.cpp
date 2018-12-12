@@ -30,37 +30,37 @@ std::string getFieldTypeName(FieldType fieldType) {
 /**
  * @brief      Gets the predefined constraint name as a string.
  *
- * For example, the name of PredefinedClauses::instructorSingleCourseAtATime is
- * "instructorSingleCourseAtATime".
+ * For example, the name of PredefinedConstraints::instructorSingleCourseAtATime
+ * is "instructorSingleCourseAtATime".
  *
- * @param[in]  clauseType  The PredefinedClauses member
+ * @param[in]  clauseType  The PredefinedConstraints member
  *
  * @return     The predefined constraint name.
  */
-std::string getPredefinedConstraintName(const PredefinedClauses clauseType) {
-  if (clauseType == PredefinedClauses::instructorSingleCourseAtATime)
+std::string getPredefinedConstraintName(const PredefinedConstraint clauseType) {
+  if (clauseType == PredefinedConstraint::instructorSingleCourseAtATime)
     return "instructorSingleCourseAtATime";
-  if (clauseType == PredefinedClauses::classroomSingleCourseAtATime)
+  if (clauseType == PredefinedConstraint::classroomSingleCourseAtATime)
     return "classroomSingleCourseAtATime";
-  if (clauseType == PredefinedClauses::programSingleCoreCourseAtATime)
+  if (clauseType == PredefinedConstraint::programSingleCoreCourseAtATime)
     return "programSingleCoreCourseAtATime";
-  if (clauseType == PredefinedClauses::minorInMinorTime)
+  if (clauseType == PredefinedConstraint::minorInMinorTime)
     return "minorInMinorTime";
-  if (clauseType == PredefinedClauses::exactlyOneSlotPerCourse)
+  if (clauseType == PredefinedConstraint::exactlyOneSlotPerCourse)
     return "exactlyOneSlotPerCourse";
-  if (clauseType == PredefinedClauses::exactlyOneInstructorPerCourse)
+  if (clauseType == PredefinedConstraint::exactlyOneInstructorPerCourse)
     return "exactlyOneInstructorPerCourse";
-  if (clauseType == PredefinedClauses::exactlyOneSegmentPerCourse)
+  if (clauseType == PredefinedConstraint::exactlyOneSegmentPerCourse)
     return "exactlyOneSegmentPerCourse";
-  if (clauseType == PredefinedClauses::exactlyOneIsMinorPerCourse)
+  if (clauseType == PredefinedConstraint::exactlyOneIsMinorPerCourse)
     return "exactlyOneIsMinorPerCourse";
-  if (clauseType == PredefinedClauses::exactlyOneClassroomPerCourse)
+  if (clauseType == PredefinedConstraint::exactlyOneClassroomPerCourse)
     return "exactlyOneClassroomPerCourse";
-  if (clauseType == PredefinedClauses::coreInMorningTime)
+  if (clauseType == PredefinedConstraint::coreInMorningTime)
     return "coreInMorningTime";
-  if (clauseType == PredefinedClauses::electiveInNonMorningTime)
+  if (clauseType == PredefinedConstraint::electiveInNonMorningTime)
     return "electiveInNonMorningTime";
-  if (clauseType == PredefinedClauses::programAtMostOneOfCoreOrElective)
+  if (clauseType == PredefinedConstraint::programAtMostOneOfCoreOrElective)
     return "programAtMostOneOfCoreOrElective";
   assert(false && "Invalid predefined constraint type!");
   return "Invalid Type";

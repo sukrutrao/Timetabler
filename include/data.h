@@ -82,7 +82,7 @@ class Data {
   /**
    * Stores the high level variables associated with the predefined constraints.
    */
-  std::vector<std::vector<Var>> predefinedConstraintVars;
+  std::map<PredefinedConstraint, std::vector<Var>> predefinedConstraintVars;
   /**
    * Stores the high level variables associated with the custom constraints.
    */
@@ -121,7 +121,7 @@ class Data {
    * Changing these can be used to toggle between hard and soft
    * or to disable certain constraints.
    */
-  std::vector<int> predefinedClausesWeights;
+  std::map<PredefinedConstraint, int> predefinedConstraintsWeights;
   /**
    * Stores the course with the associated custom constraint.
    */
