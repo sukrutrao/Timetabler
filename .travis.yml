@@ -12,7 +12,6 @@ before_install:
     - sudo snap install snapcraft --classic
 script:
     - export PATH=/usr/local/bin:$PATH
-    - ./gen_version.sh .
     - ./install_dependencies.sh --enable-tests
     - mkdir build
     - cd build
