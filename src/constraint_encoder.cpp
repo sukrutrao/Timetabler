@@ -294,7 +294,8 @@ std::vector<Var> ConstraintEncoder::getAllowedVars(int course,
  * @return     A Clauses object representing the condition
  */
 Clauses ConstraintEncoder::isMinorCourse(int course) {
-  Clauses result(vars[course][FieldType::isMinor][MinorType::isMinorCourse]);
+  Clauses result(vars[course][FieldType::isMinor]
+                     [static_cast<unsigned>(MinorType::isMinorCourse)]);
   return result;
 }
 

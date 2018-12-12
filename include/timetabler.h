@@ -67,6 +67,7 @@ class Timetabler {
   void addClauses(const std::vector<CClause> &, int);
   void addClauses(const Clauses &, int);
   bool checkAllTrue(const std::vector<Var> &);
+  bool checkAllTrue(const std::vector<std::vector<Var>> &);
   bool isVarTrue(const Var &);
   SolverStatus solve();
   Var newVar();
@@ -75,7 +76,7 @@ class Timetabler {
   void displayTimeTable();
   void displayUnsatisfiedOutputReasons();
   void addHighLevelClauses();
-  void addHighLevelConstraintClauses(PredefinedClauses);
+  void addHighLevelConstraintClauses(PredefinedClauses, const int course);
   void addHighLevelCustomConstraintClauses(int, int);
   void writeOutput(std::string);
   void addExistingAssignments();

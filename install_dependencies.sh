@@ -54,7 +54,7 @@ cd yaml-cpp-yaml-cpp-$YAML_CPP_VERSION
 mkdir -p build
 cd build
 echo "Building YAML-CPP..."
-cmake ..
+cmake -DYAML_CPP_BUILD_TESTS=OFF -DYAML_CPP_BUILD_TOOLS=OFF -DYAML_CPP_BUILD_CONTRIB=OFF ..
 make $PARALLEL
 cd ../..
 

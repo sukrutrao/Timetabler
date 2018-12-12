@@ -5,6 +5,7 @@
 #include "cclause.h"
 #include "core/SolverTypes.h"
 #include "global_vars.h"
+#include "utils.h"
 
 using namespace NSPACE;
 
@@ -276,7 +277,7 @@ void Clauses::print() {
   for (CClause c : clauses) {
     c.printClause();
   }
-  std::cout << std::endl;
+  LOG_DEBUG(INFO) << "";
 }
 
 /**

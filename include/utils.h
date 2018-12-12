@@ -3,6 +3,8 @@
 #ifndef UTILS_H
 #define UTILS_H
 
+#include <iostream>
+#include <sstream>
 #include <string>
 #include <vector>
 #include "data.h"
@@ -116,6 +118,62 @@ std::string getPredefinedConstraintName(const PredefinedClauses clauseType);
 
 std::string getFieldName(FieldType fieldType, int index, Data &data);
 
+/**
+ * @brief      Specify severity levels for logging
+ */
+enum Severity { EMPTY = 0, ERROR = 1, WARNING = 2, INFO = 3 };
+
+/**
+ * @brief      Define values for colours in ASCII, to be used when logging
+ */
+enum DisplayColour { NORMAL = 0, RED = 31, YELLOW = 33 };
+
+// Reference: https://stackoverflow.com/a/2179782/, Evan Terran
+// (https://stackoverflow.com/users/13430/evan-teran), CC-BY-SA 3.0
+
+/**
+ * @brief      Perform logging
+ */
+class Log {
+ public:
+  Log(Severity severity = Severity::EMPTY, bool isDebug = false,
+      int lineWidth = 0, int indentWidth = 0);
+  ~Log();
+  template <class T>
+  Log &operator<<(const T &input) {
+    ss << input;
+    return *this;
+  }
+  static void setVerbosity(int verb);
+
+ private:
+  static int verbosity;
+  std::ostringstream ss;
+  Severity severity;
+  bool isDebug;
+  int lineWidth;
+  int indentWidth;
+  int metaWidth;
+  int getSeverityCode();
+  std::string getSeverityIdentifier();
+  std::string applyIndent(std::string, int);
+  void displayOutput(std::ostream &out = std::cout);
+  std::string formatString(std::string);
+};
+
 }  // namespace Utils
+
+// Define shorthands for logging
+#define LOG(x) Utils::Log(Utils::x)
+#define LOG_DEBUG(x) Utils::Log(Utils::x, true)
+#define LOG_FIXED(x) Utils::Log(Utils::x, false, 80)
+#define LOG_FIXED_DEBUG(x) Utils::Log(Utils::x, true, 80)
+
+#define DISPLAY() LOG(EMPTY)
+#define DISPLAY_DEBUG() LOG_DEBUG(EMPTY)
+#define DISPLAY_FIXED() LOG_FIXED(EMPTY)
+#define DISPLAY_FIXED_DEBUG() LOG_FIXED_DEBUG(EMPTY)
+
+#define DEBUG() LOG_DEBUG(INFO)
 
 #endif

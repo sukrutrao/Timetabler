@@ -12,9 +12,9 @@ enum FieldType { instructor, segment, isMinor, program, classroom, slot };
  * @brief      Enum that represents all the predefined constraints.
  */
 enum PredefinedClauses {
-  instructorSingleCourseAtATime,
-  classroomSingleCourseAtATime,
-  programSingleCoreCourseAtATime,
+  instructorSingleCourseAtATime,   // 1
+  classroomSingleCourseAtATime,    // 1
+  programSingleCoreCourseAtATime,  // 1
   minorInMinorTime,
   exactlyOneSlotPerCourse,
   exactlyOneInstructorPerCourse,

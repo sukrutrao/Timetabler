@@ -1,11 +1,15 @@
 PROJECT_NAME = "Timetabler"
 OUTPUT_DIRECTORY = build
-INPUT = .. README.md
-EXCLUDE = ../tests ../src/custom_parser.cpp
+INPUT = .. ../README.md
+EXCLUDE = ../tests ../dependencies ../snap ../parts ../prime ../stage ../build ../docs
 RECURSIVE = YES
 QUIET = YES
 GENERATE_HTML = YES
 GENERATE_XML = NO
 GENERATE_LATEX = NO
-USE_MDFILE_AS_MAINPAGE = README.md
+SOURCE_BROWSER = YES
+REFERENCED_BY_RELATION = YES
+REFERENCES_RELATION = YES
+REFERENCES_LINK_SOURCE = YES
+USE_MDFILE_AS_MAINPAGE = ../README.md
 

@@ -52,14 +52,6 @@ struct Object {
   Object();
 };
 
-/**
- * @brief      Parses custom constraints given in a file and adds them to the
- * solver.
- *
- * @param[in]  file               The file containing the constraints
- * @param      constraintEncoder  The ConstraintEncoder object
- * @param      timetabler         The Timetabler object
- */
 void parseCustomConstraints(std::string file,
                             ConstraintEncoder *constraintEncoder,
                             Timetabler *timetabler);

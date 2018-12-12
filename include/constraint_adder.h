@@ -36,20 +36,21 @@ class ConstraintAdder {
    */
   Timetabler *timetabler;
   Clauses fieldSingleValueAtATime(FieldType);
-  Clauses exactlyOneFieldValuePerCourse(FieldType);
+  std::vector<Clauses> exactlyOneFieldValuePerCourse(FieldType);
   Clauses instructorSingleCourseAtATime();
   Clauses classroomSingleCourseAtATime();
   Clauses programSingleCoreCourseAtATime();
-  Clauses minorInMinorTime();
-  Clauses coreInMorningTime();
-  Clauses electiveInNonMorningTime();
-  Clauses existingAssignmentClauses();
-  Clauses programAtMostOneOfCoreOrElective();
+  std::vector<Clauses> minorInMinorTime();
+  std::vector<Clauses> coreInMorningTime();
+  std::vector<Clauses> electiveInNonMorningTime();
+  // Clauses existingAssignmentClauses();
+  std::vector<Clauses> programAtMostOneOfCoreOrElective();
 
  public:
   ConstraintAdder(ConstraintEncoder *, Timetabler *);
   void addConstraints();
-  void addSingleConstraint(PredefinedClauses, const Clauses &);
+  void addSingleConstraint(PredefinedClauses, const Clauses &,
+                           const int course);
 };
 
 #endif

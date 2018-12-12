@@ -46,15 +46,15 @@ class Course {
    * the index of the type in the list of possible isMinor
    * values.
    */
-  int isMinor;
+  MinorType isMinor;
 
   int classroom = -1;
 
   int slot = -1;
 
  public:
-  Course(std::string, unsigned, int, int, int);
-  Course(std::string, unsigned, int, int, int, std::vector<int>);
+  Course(std::string, unsigned, int, int, MinorType);
+  Course(std::string, unsigned, int, int, MinorType, std::vector<int>);
   void setPrograms(std::vector<int>);
   void addProgram(int);
   void addClassroom(int);
@@ -64,7 +64,7 @@ class Course {
   int getInstructor();
   std::vector<int> getPrograms();
   int getSegment();
-  int getIsMinor();
+  MinorType getIsMinor();
   int getClassroom();
   int getSlot();
   unsigned getClassSize();
