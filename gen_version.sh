@@ -6,6 +6,10 @@ then
 	Timetabler_VERSION="v0.3.0"
 fi
 VERSION_INCLUDE_STR="#ifndef __TIMETABLER_VERSION__\n#define __TIMETABLER_VERSION__ \"${Timetabler_VERSION}\"\n#endif"
-echo $Timetabler_VERSION
-echo -e $VERSION_INCLUDE_STR > $1/include/version.h
-echo "set (Timetabler_VERSION \"${Timetabler_VERSION:1}\")" > $1/TimetablerVersion.cmake
+if [ "$2" == "1" ]
+then
+	echo $Timetabler_VERSION
+else
+	echo -e $VERSION_INCLUDE_STR > $1/include/version.h
+	echo "set (Timetabler_VERSION \"${Timetabler_VERSION:1}\")" > $1/TimetablerVersion.cmake
+fi
