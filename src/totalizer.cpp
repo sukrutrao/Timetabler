@@ -26,6 +26,7 @@
  */
 
 #include "totalizer.h"
+#include "utils.h"
 
 using namespace NSPACE;
 using namespace openwbo;
@@ -219,6 +220,8 @@ void TTotalizer::build(MaxSATFormula *formula, vec<Lit> &lits, int64_t rhs) {
   assert(rhs >= 1 && rhs <= lits.size());
 
   if (incremental_strategy == _INCREMENTAL_NONE_ && rhs == lits.size()) {
+    DEBUG() << "Totalizer (Not incremental): Rhs is equal to lits.size()";
+    hasEncoding = true;
     return;
   }
 
