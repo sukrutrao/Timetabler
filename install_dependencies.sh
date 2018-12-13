@@ -45,12 +45,13 @@ LIB=open-wbo make libr $PARALLEL
 cd ..
 
 echo "Getting YAML-CPP..."
-if [ ! -d yaml-cpp-yaml-cpp-$YAML_CPP_VERSION ] ; then
+if [ ! -d yaml-cpp ] ; then
   wget -O yaml-cpp.tar.gz https://github.com/jbeder/yaml-cpp/archive/yaml-cpp-$YAML_CPP_VERSION.tar.gz
   tar -xf yaml-cpp.tar.gz
   rm yaml-cpp.tar.gz
+  mv yaml-cpp-yaml-cpp-$YAML_CPP_VERSION yaml-cpp
 fi
-cd yaml-cpp-yaml-cpp-$YAML_CPP_VERSION
+cd yaml-cpp
 mkdir -p build
 cd build
 echo "Building YAML-CPP..."
@@ -67,10 +68,11 @@ git checkout $CSVPARSER_COMMIT
 cd ..
 
 echo "Getting PEGTL..."
-if [ ! -d PEGTL-$PEGTL_VERSION ] ; then
+if [ ! -d PEGTL ] ; then
   wget -O pegtl.tar.gz https://github.com/taocpp/PEGTL/archive/$PEGTL_VERSION.tar.gz
   tar -xf pegtl.tar.gz
   rm pegtl.tar.gz
+  mv PEGTL-$PEGTL_VERSION PEGTL
 fi
 
 if [ "$ENABLE_TESTS" = "1" ]; then

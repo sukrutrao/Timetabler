@@ -8,8 +8,7 @@ description: |
   that encodes timetabling constraints as a SAT formula and solves them
   using a MaxSAT solver.
 type: app
-# Set grade to devel in other commits and stable in release commits
-grade: devel
+grade: stable
 confinement: strict
 
 apps:
@@ -25,6 +24,6 @@ parts:
       snapcraftctl build
     configflags:
       - -DOPEN_WBO_PATH=dependencies/open-wbo
-      - -DYAML_CPP_PATH=dependencies/yaml-cpp-yaml-cpp-0.6.2
+      - -DYAML_CPP_PATH=dependencies/yaml-cpp
       - -DCSVPARSER_PATH=dependencies/CSVparser
-      - -DPEGTL_PATH=dependencies/PEGTL-2.7.0
+      - -DPEGTL_PATH=dependencies/PEGTL
