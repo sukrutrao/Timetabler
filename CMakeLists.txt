@@ -2,8 +2,6 @@ cmake_minimum_required(VERSION 3.10)
 set(CMAKE_CXX_STANDARD 11)
 project(Timetabler LANGUAGES CXX)
 
-execute_process(COMMAND bash "${CMAKE_SOURCE_DIR}/gen_version.sh" . WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
-
 include(TimetablerVersion.cmake)
 
 set(CMAKE_BUILD_TYPE Release CACHE STRING "Build type")
@@ -12,9 +10,9 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wno-parentheses -Wno-misleading-i
 set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -DTIMETABLERDEBUG")
 
 set(OPEN_WBO_PATH "${CMAKE_SOURCE_DIR}/dependencies/open-wbo" CACHE PATH "Open-WBO path")
-set(YAML_CPP_PATH "${CMAKE_SOURCE_DIR}/dependencies/yaml-cpp-yaml-cpp-0.6.2" CACHE PATH "YAML CPP path")
+set(YAML_CPP_PATH "${CMAKE_SOURCE_DIR}/dependencies/yaml-cpp" CACHE PATH "YAML CPP path")
 set(CSVPARSER_PATH "${CMAKE_SOURCE_DIR}/dependencies/CSVparser" CACHE PATH "CSVParser path")
-set(PEGTL_PATH "${CMAKE_SOURCE_DIR}/dependencies/PEGTL-2.7.0" CACHE PATH "PEGTL path")
+set(PEGTL_PATH "${CMAKE_SOURCE_DIR}/dependencies/PEGTL" CACHE PATH "PEGTL path")
 set(ENABLE_TESTS "OFF" CACHE BOOL "Enable Google tests")
 set(GTEST_PATH "${CMAKE_SOURCE_DIR}/dependencies/googletest-release-1.8.1" CACHE PATH "GTest path")
 
