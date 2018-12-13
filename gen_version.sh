@@ -1,5 +1,5 @@
 #!/bin/bash
-Timetabler_VERSION=$(git describe --always --tags --dirty)
+Timetabler_VERSION=$(git describe --always --tags)
 if [ -z "$Timetabler_VERSION" ]
 then
 	# Update the below line after every release

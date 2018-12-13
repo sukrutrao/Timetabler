@@ -2,8 +2,6 @@ cmake_minimum_required(VERSION 3.10)
 set(CMAKE_CXX_STANDARD 11)
 project(Timetabler LANGUAGES CXX)
 
-execute_process(COMMAND bash "${CMAKE_SOURCE_DIR}/gen_version.sh" . WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
-
 include(TimetablerVersion.cmake)
 
 set(CMAKE_BUILD_TYPE Release CACHE STRING "Build type")

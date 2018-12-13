@@ -31,6 +31,9 @@ if [ "$PARALLEL" = "-j" ] ; then
   echo "Running make jobs in parallel"
 fi
 
+echo "Generating version files..."
+./gen_version.sh .
+
 mkdir -p dependencies
 cd dependencies
 

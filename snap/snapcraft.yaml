@@ -20,10 +20,12 @@ parts:
   timetabler:
     plugin: cmake
     override-build: |
-      bash ../src/install_dependencies.sh --parallel
+      cd ../src/
+      bash install_dependencies.sh --parallel
+      cd -
       snapcraftctl build
     configflags:
-      - -DOPEN_WBO_PATH=dependencies/open-wbo
-      - -DYAML_CPP_PATH=dependencies/yaml-cpp
-      - -DCSVPARSER_PATH=dependencies/CSVparser
-      - -DPEGTL_PATH=dependencies/PEGTL
+      - -DOPEN_WBO_PATH=../src/dependencies/open-wbo
+      - -DYAML_CPP_PATH=../src/dependencies/yaml-cpp
+      - -DCSVPARSER_PATH=../src/dependencies/CSVparser
+      - -DPEGTL_PATH=../src/dependencies/PEGTL
