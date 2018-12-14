@@ -21,6 +21,8 @@ To build the project from source follow the steps below.
 This project requires following tools to build.
 * cmake (version 3.10 or higher)
 * g++ or any other C++ compiler with C++11 support
+* `zlib` (On ubuntu: `sudo apt install zlib1g-dev`)
+* `libgmp` (On ubuntu: `sudo apt install libgmp-dev`)
 
 ### Dependencies
 
