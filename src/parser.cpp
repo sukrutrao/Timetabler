@@ -163,12 +163,12 @@ void Parser::parseInput(std::string file) {
       LOG(ERROR) << "Input contains invalid Segment name";
     }
     std::string isMinorStr = parser[i]["is_minor"];
-    int isMinor;
-    if (isMinorStr == "Yes") {
-      isMinor = 0;
+    MinorType isMinor = MinorType::isMinorCourse;
+    if (isMinorStr == "Yes" || isMinorStr == "Y") {
+      isMinor = MinorType::isMinorCourse;
       assignmentsThisCourse[FieldType::isMinor].push_back(l_True);
-    } else if (isMinorStr == "No") {
-      isMinor = 1;
+    } else if (isMinorStr == "No" || isMinorStr == "N" || isMinorStr == "") {
+      isMinor = MinorType::isNotMinorCourse;
       assignmentsThisCourse[FieldType::isMinor].push_back(l_False);
     } else {
       LOG(ERROR) << "Input contains invalid IsMinor value (should be "
@@ -178,15 +178,17 @@ void Parser::parseInput(std::string file) {
 
     for (unsigned j = 0; j < timetabler->data.programs.size(); j += 2) {
       std::string s = timetabler->data.programs[j].getName();
-      if (parser[i][s] == "Core") {
+      if (parser[i][s] == "Core" || parser[i][s] == "C" ||
+          parser[i][s] == "Y") {
         course.addProgram(j);
         assignmentsThisCourse[FieldType::program].push_back(l_True);
         assignmentsThisCourse[FieldType::program].push_back(l_False);
-      } else if (parser[i][s] == "Elective") {
+      } else if (parser[i][s] == "Elective" || parser[i][s] == "E") {
         course.addProgram(j + 1);
         assignmentsThisCourse[FieldType::program].push_back(l_False);
         assignmentsThisCourse[FieldType::program].push_back(l_True);
-      } else if (parser[i][s] == "No") {
+      } else if (parser[i][s] == "No" || parser[i][s] == "N" ||
+                 parser[i][s] == "") {
         assignmentsThisCourse[FieldType::program].push_back(l_False);
         assignmentsThisCourse[FieldType::program].push_back(l_False);
       } else {
@@ -236,10 +238,16 @@ void Parser::parseInput(std::string file) {
   }
 }
 
+/**
+ * @brief      Verifies if the input is valid.
+ *
+ * @return     True, if the input is valid.
+ */
 bool Parser::verify() {
   bool result = true;
   for (auto course1 : timetabler->data.courses) {
-    if (course1.getIsMinor() && course1.getSlot() != -1) {
+    if (course1.getIsMinor() == MinorType::isMinorCourse &&
+        course1.getSlot() != -1) {
       if (timetabler->data.slots[course1.getSlot()].isMinorSlot()) {
         if (timetabler->data.predefinedClausesWeights
                 [PredefinedClauses::minorInMinorTime] != 0) {
@@ -368,8 +376,20 @@ void Parser::addVars() {
     }
     timetabler->data.highLevelVars.push_back(highLevelCourseVars);
   }
+
+  timetabler->data.predefinedConstraintVars.resize(
+      Global::PREDEFINED_CLAUSES_COUNT);
   for (unsigned i = 0; i < Global::PREDEFINED_CLAUSES_COUNT; i++) {
-    Var v = timetabler->newVar();
-    timetabler->data.predefinedConstraintVars.push_back(v);
+    if (i == PredefinedClauses::instructorSingleCourseAtATime ||
+        i == PredefinedClauses::classroomSingleCourseAtATime ||
+        i == PredefinedClauses::programSingleCoreCourseAtATime) {
+      Var v = timetabler->newVar();
+      timetabler->data.predefinedConstraintVars[i].push_back(v);
+    } else {
+      for (unsigned j = 0; j < timetabler->data.courses.size(); j++) {
+        Var v = timetabler->newVar();
+        timetabler->data.predefinedConstraintVars[i].push_back(v);
+      }
+    }
   }
 }

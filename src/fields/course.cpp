@@ -17,7 +17,7 @@
  * @param[in]  isMinor     Indicates if the course is a minor course
  */
 Course::Course(std::string name, unsigned classSize, int instructor,
-               int segment, int isMinor) {
+               int segment, MinorType isMinor) {
   this->name = name;
   this->classSize = classSize;
   this->instructor = instructor;
@@ -37,7 +37,7 @@ Course::Course(std::string name, unsigned classSize, int instructor,
  * applicable
  */
 Course::Course(std::string name, unsigned classSize, int instructor,
-               int segment, int isMinor, std::vector<int> programs) {
+               int segment, MinorType isMinor, std::vector<int> programs) {
   this->name = name;
   this->classSize = classSize;
   this->instructor = instructor;
@@ -63,8 +63,18 @@ void Course::setPrograms(std::vector<int> programs) {
  */
 void Course::addProgram(int programs) { this->programs.push_back(programs); }
 
+/**
+ * @brief      Adds a classroom that is applicable to the Course.
+ *
+ * @param[in]  cr  The index of the classroom to be added
+ */
 void Course::addClassroom(int cr) { this->classroom = cr; }
 
+/**
+ * @brief      Adds a slot that is applicable to the Course.
+ *
+ * @param[in]  s  The index of the slot to be added
+ */
 void Course::addSlot(int s) { this->slot = s; }
 
 /**
@@ -112,10 +122,20 @@ int Course::getSegment() { return segment; }
  *
  * @return     The isMinor index in the list of isMinors
  */
-int Course::getIsMinor() { return isMinor; }
+MinorType Course::getIsMinor() { return isMinor; }
 
+/**
+ * @brief      Gets the 'classroom' index of the Course.
+ *
+ * @return     The classroom index in the list of Classrooms
+ */
 int Course::getClassroom() { return classroom; }
 
+/**
+ * @brief      Gets the 'slot' index of the Course.
+ *
+ * @return     The slot index in the list of slots
+ */
 int Course::getSlot() { return slot; }
 
 /**

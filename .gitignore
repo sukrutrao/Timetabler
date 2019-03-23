@@ -40,9 +40,16 @@ dependencies
 
 *.swp
 
+# Version
+include/version.h
+TimetablerVersion.cmake
+
 # Snap
 *.snap
+snap/.snapcraft
 *.xdelta*
 parts
 prime
 stage
+.idea
+cmake-build-debug

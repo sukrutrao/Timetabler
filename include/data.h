@@ -3,6 +3,7 @@
 #ifndef DATA_H
 #define DATA_H
 
+#include <map>
 #include <string>
 #include <vector>
 #include "core/Solver.h"
@@ -78,7 +79,13 @@ class Data {
    * can make the necessary changes.
    */
   std::vector<std::vector<Var>> highLevelVars;
-  std::vector<Var> predefinedConstraintVars;
+  /**
+   * Stores the high level variables associated with the predefined constraints.
+   */
+  std::vector<std::vector<Var>> predefinedConstraintVars;
+  /**
+   * Stores the high level variables associated with the custom constraints.
+   */
   std::vector<Var> customConstraintVars;
   /**
    * Stores the existing assignments for every Course and
@@ -115,6 +122,10 @@ class Data {
    * or to disable certain constraints.
    */
   std::vector<int> predefinedClausesWeights;
+  /**
+   * Stores the course with the associated custom constraint.
+   */
+  std::map<int, unsigned> customMap;
   Data();
 };
 
