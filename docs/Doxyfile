@@ -1,7 +1,7 @@
 PROJECT_NAME = "Timetabler"
 OUTPUT_DIRECTORY = build
-INPUT = .. ../README.md
-EXCLUDE = ../tests ../dependencies ../snap ../parts ../prime ../stage ../build ../docs
+INPUT = ..
+EXCLUDE = ../tests ../dependencies ../build ../docs ../parts ../prime ../snap ../stage ../examples
 RECURSIVE = YES
 QUIET = YES
 GENERATE_HTML = YES

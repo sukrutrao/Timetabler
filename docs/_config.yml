@@ -1,1 +1,8 @@
-theme: jekyll-theme-cayman
+title: Timetabler
+baseurl: /Timetabler
+collections:
+  docs:
+    output: true
+
+plugins:
+  - jekyll-mentions
