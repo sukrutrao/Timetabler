@@ -1,6 +1,7 @@
 #include <getopt.h>
 #include <iomanip>
 #include <iostream>
+#include <string>
 #include "constraint_adder.h"
 #include "constraint_encoder.h"
 #include "core/Solver.h"
@@ -9,8 +10,14 @@
 #include "global_vars.h"
 #include "mtl/Vec.h"
 #include "parser.h"
+#include "utils.h"
 #include "version.h"
 
+/**
+ * @brief      Display information about timetabler
+ *
+ * @param[in]  display_desc  If true, also prints the description
+ */
 void display_meta(bool display_desc = false) {
   std::cout << "Timetabler version " __TIMETABLER_VERSION__ << std::endl;
   if (display_desc)
@@ -21,22 +28,35 @@ void display_meta(bool display_desc = false) {
               << std::endl;
 }
 
+/**
+ * Options supported in command line interface
+ */
 const struct option long_options[] = {{"help", no_argument, 0, 'h'},
                                       {"fields", required_argument, 0, 'f'},
                                       {"input", required_argument, 0, 'i'},
                                       {"custom", required_argument, 0, 'c'},
                                       {"output", required_argument, 0, 'o'},
+                                      {"verbosity", required_argument, 0, 'b'},
                                       {"version", no_argument, 0, 'v'},
                                       {0, 0, 0, 0}};
 
+/**
+ * Descriptions of the options supported in CLI
+ */
 const std::string option_desc[] = {"display this help",
                                    "fields yaml file",
                                    "input csv file",
                                    "custom constraints file",
                                    "output csv file",
+                                   "specify verbosity level (0-3)"
                                    "display version",
                                    ""};
 
+/**
+ * @brief      Display help for CLI options.
+ *
+ * @param[in]  exec  Name of the executable
+ */
 void display_help(std::string exec = "timetabler") {
   display_meta(true);
   std::cout << "\nUsage:\n";
@@ -55,6 +75,11 @@ void display_help(std::string exec = "timetabler") {
   }
 }
 
+/**
+ * @brief      Display error message when unrecognised option is given in CLI
+ *
+ * @param[in]  err   The error message
+ */
 void display_error(std::string err) {
   std::cout << err << std::endl;
   std::cout << "Use --help option to know about supported options."
@@ -64,12 +89,22 @@ void display_error(std::string err) {
 
 Timetabler *timetabler;
 
+/**
+ * @brief      The main function
+ *
+ * @param[in]  argc  Count of the cli arguments
+ * @param      argv  Arguments passed through cli
+ *
+ * @return     Exit code when program ends
+ */
 int main(int argc, char *const *argv) {
   std::string input_file, fields_file, custom_file, output_file;
+  unsigned verbosity = 3;
 
   while (1) {
     int option_index = 0;
-    int c = getopt_long(argc, argv, "hi:f:c:o:v", long_options, &option_index);
+    int c =
+        getopt_long(argc, argv, "hi:f:c:o:b:v", long_options, &option_index);
 
     if (c == -1) break;
 
@@ -94,12 +129,17 @@ int main(int argc, char *const *argv) {
       case 'o':
         output_file = std::string(optarg);
         break;
+      case 'b':
+        verbosity = std::stoi(optarg);
+        break;
       case '?':
         break;
       default:
         display_error("Unrecognised argument: " + std::to_string(c));
     }
   }
+
+  Utils::Log::setVerbosity(verbosity);
 
   if (optind < argc) {
     display_error("Unrecognised argument: " + std::string(argv[optind]));
@@ -115,10 +155,9 @@ int main(int argc, char *const *argv) {
   parser.parseFields(fields_file);
   parser.parseInput(input_file);
   if (parser.verify()) {
-    std::cout << "Input is valid" << std::endl;
+    LOG(INFO) << "Input is valid";
   } else {
-    std::cout << "Input is invalid" << std::endl;
-    exit(1);
+    LOG(ERROR) << "Input is invalid";
   }
   parser.addVars();
   ConstraintEncoder encoder(timetabler);
@@ -126,6 +165,7 @@ int main(int argc, char *const *argv) {
   constraintAdder.addConstraints();
   if (custom_file != "") {
     parseCustomConstraints(custom_file, &encoder, timetabler);
+    LOG(INFO) << "Custom constraints parsed.";
   }
   timetabler->addHighLevelClauses();
   timetabler->addExistingAssignments();

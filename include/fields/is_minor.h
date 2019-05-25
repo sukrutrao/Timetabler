@@ -13,7 +13,7 @@
  * value under this enum would be isMinorCourse, and otherwise,
  * it would be isNotMinorCourse.
  */
-enum MinorType {
+enum class MinorType {
   /**
    * Value when the Course is a minor course
    */

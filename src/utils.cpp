@@ -1,5 +1,8 @@
 #include "utils.h"
 
+#include <cctype>
+#include <iomanip>
+#include <iostream>
 #include "data.h"
 
 namespace Utils {
@@ -85,5 +88,175 @@ std::string getFieldName(FieldType fieldType, int index, Data &data) {
   assert(false && "Invalid field type!");
   return "Invalid Type";
 }
+
+/**
+ * @brief      Constructor for the Logger.
+ *
+ * @param[in]  severity     The severity level to log with
+ * @param[in]  isDebug      Indicates if in debug mode
+ * @param[in]  lineWidth    The width to fix per line, 0 for no limit
+ * @param[in]  indentWidth  The width by which output is to be indented
+ */
+Log::Log(Severity severity, bool isDebug, int lineWidth, int indentWidth) {
+  this->severity = severity;
+  this->isDebug = isDebug;
+  this->lineWidth = lineWidth - indentWidth;
+  this->indentWidth = indentWidth;
+  this->metaWidth = 10;
+#ifdef TIMETABLERDEBUG
+  this->metaWidth += 8;
+#endif
+  if (severity != Severity::EMPTY) {
+    this->lineWidth -= this->metaWidth;
+  }
+}
+
+/**
+ * @brief      Displays output and destroys object.
+ */
+Log::~Log() {
+  if (isDebug) {
+#ifdef TIMETABLERDEBUG
+    displayOutput(std::cerr);
+#endif
+  } else {
+    displayOutput(std::cout);
+  }
+}
+
+/**
+ * @brief      Gets the colour for the severity level as a member of the
+ * DisplayColour enum.
+ *
+ * @return     The colour corresponding to the severity level
+ */
+int Log::getSeverityCode() {
+  if (severity == Severity::EMPTY) return DisplayColour::NORMAL;
+  if (severity == Severity::INFO)
+    return DisplayColour::NORMAL;
+  else if (severity == Severity::WARNING)
+    return DisplayColour::YELLOW;
+  else if (severity == Severity::ERROR)
+    return DisplayColour::RED;
+  assert(false && "Severity code not defined!");
+  return -1;
+}
+
+/**
+ * @brief      Gets the name of the severity level ("INFO" for Severity::INFO,
+ * and so on).
+ *
+ * @return     The name of the severity level as a string
+ */
+std::string Log::getSeverityIdentifier() {
+  if (severity == Severity::EMPTY) return "";
+  if (severity == Severity::INFO)
+    return "INFO";
+  else if (severity == Severity::WARNING)
+    return "WARNING";
+  else if (severity == Severity::ERROR)
+    return "ERROR";
+  assert(false && "Severity name not defined!");
+  return "Invalid Type";
+}
+
+/**
+ * @brief      Displays the output to a specified output stream (such as
+ * std::cout).
+ *
+ * @param      out   The output stream to send the output to
+ */
+void Log::displayOutput(std::ostream &out) {
+  if (static_cast<int>(severity) <= verbosity) {
+    if (severity == Severity::EMPTY) {
+      out << std::string(indentWidth, ' ') << formatString(ss.str());
+      return;
+    }
+    out << "\033[" << getSeverityCode() << "m";
+    std::string label = "[" + getSeverityIdentifier() + "]";
+    if (isDebug) label += "[DEBUG]";
+    out << std::setw(metaWidth) << std::left << label;
+    out << std::string(indentWidth, ' ') << formatString(ss.str()) << std::endl;
+    out << "\033[" << 0 << "m";
+    if (severity == Severity::ERROR) {
+      exit(1);
+    }
+  }
+}
+
+/**
+ * @brief      Formats a string according to the parameters specified. Handles
+ * transformations to conform with fixed line width and fixed indent width.
+ *
+ * @param[in]  str   The string to format
+ *
+ * @return     The formatted string
+ */
+std::string Log::formatString(std::string str) {
+  if (lineWidth <= 0) {
+    return str;
+  }
+  int lastSpacePosition;
+  unsigned strPos = 0;
+  while (strPos < str.size()) {
+    if (static_cast<int>(str.size() - strPos) <= lineWidth) break;
+    lastSpacePosition = -1;
+    for (int i = 0; i < lineWidth && strPos < str.size(); i++, strPos++) {
+      if (std::isspace(str[strPos])) {
+        lastSpacePosition = strPos;
+      }
+    }
+    if (lastSpacePosition > 0) {
+      str[lastSpacePosition] = '\n';
+      if (indentWidth > 0) {
+        str = applyIndent(str, lastSpacePosition);
+        strPos = lastSpacePosition + indentWidth + 1;
+      } else {
+        strPos = lastSpacePosition + 1;
+      }
+    } else {
+      while (strPos < str.size() && !std::isspace(str[strPos])) strPos++;
+      if (strPos < str.size()) {
+        str[strPos] = '\n';
+        if (indentWidth > 0) {
+          str = applyIndent(str, strPos);
+          strPos = strPos + indentWidth;
+        }
+        strPos++;
+      }
+    }
+  }
+  return str;
+}
+
+/**
+ * @brief      Adds spaces to a string at a given position based on the indent
+ * width specified.
+ *
+ * @param[in]  str       The string to format
+ * @param[in]  position  The position to add spaces to
+ *
+ * @return     The formatted string
+ */
+std::string Log::applyIndent(std::string str, int position) {
+  int indentToApply = indentWidth;
+  if (severity != Severity::EMPTY) {
+    indentToApply += metaWidth;
+  }
+  std::string strAfterThisPos = str.substr(position + 1);
+  std::string strBeforeThisPos = str.substr(0, position + 1);
+  return strBeforeThisPos + std::string(indentToApply, ' ') + strAfterThisPos;
+}
+
+/**
+ * @brief      Sets the verbosity level for logging. (0 - EMPTY, 1 - ERROR, 2 -
+ * WARNING, 3 - INFO). All messages of levels in and below the current verbosity
+ * level are displayed in the output.
+ *
+ * @param[in]  verb  The verbosity level
+ */
+void Log::setVerbosity(int verb) { verbosity = verb; }
+
+int Log::verbosity = 3;
 
 }  // namespace Utils

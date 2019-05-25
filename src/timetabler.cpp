@@ -66,13 +66,28 @@ void Timetabler::addHighLevelClauses() {
  * with weight as specified for the constraint.
  *
  * @param[in]  clauseType  The clause type
+ * @param[in]  course      The corresponding course index (-1 for if there is no
+ * corresponding course)
  */
-void Timetabler::addHighLevelConstraintClauses(PredefinedClauses clauseType) {
-  Lit l = mkLit(data.predefinedConstraintVars[clauseType], false);
-  if (data.predefinedClausesWeights[clauseType] != 0) {
-    addToFormula(l, data.predefinedClausesWeights[clauseType]);
+void Timetabler::addHighLevelConstraintClauses(PredefinedClauses clauseType,
+                                               const int course) {
+  if (course == -1) {
+    assert(data.predefinedConstraintVars[clauseType].size() == 1);
+    Lit l = mkLit(data.predefinedConstraintVars[clauseType][0], false);
+    if (data.predefinedClausesWeights[clauseType] != 0) {
+      addToFormula(l, data.predefinedClausesWeights[clauseType]);
+    } else {
+      addToFormula(l, -1);
+    }
   } else {
-    addToFormula(l, -1);
+    assert(data.predefinedConstraintVars[clauseType].size() ==
+           data.courses.size());
+    Lit l = mkLit(data.predefinedConstraintVars[clauseType][course], false);
+    if (data.predefinedClausesWeights[clauseType] != 0) {
+      addToFormula(l, data.predefinedClausesWeights[clauseType]);
+    } else {
+      addToFormula(l, -1);
+    }
   }
 }
 
@@ -202,6 +217,26 @@ bool Timetabler::checkAllTrue(const std::vector<Var> &inputs) {
 }
 
 /**
+ * @brief      Checks if a given set of variables (in 2D vector) are true in the
+ * model returned by the solver.
+ *
+ * @param[in]  inputs  The input variables
+ *
+ * @return     True, if all variables are True, False otherwise
+ */
+bool Timetabler::checkAllTrue(const std::vector<std::vector<Var>> &inputs) {
+  if (model.size() == 0) {
+    return false;
+  }
+  for (auto &i : inputs) {
+    for (auto &j : i) {
+      if (model[j] == l_False) return false;
+    }
+  }
+  return true;
+}
+
+/**
  * @brief      Determines if a given variable is true in the model returned by
  * the solver.
  *
@@ -249,15 +284,16 @@ Lit Timetabler::newLiteral(bool sign) {
  */
 void Timetabler::printResult(SolverStatus status) {
   if (status == SolverStatus::Solved) {
-    std::cout << "All high level clauses were satisfied" << std::endl;
+    LOG(INFO) << "All high level clauses were satisfied";
     displayChangesInGivenAssignment();
     displayTimeTable();
   } else if (status == SolverStatus::HighLevelFailed) {
-    std::cout << "Some high level clauses were not satisfied" << std::endl;
+    LOG(WARNING) << "Some high level clauses were not satisfied";
     displayUnsatisfiedOutputReasons();
     displayChangesInGivenAssignment();
+    displayTimeTable();
   } else {
-    std::cout << "Not Solved" << std::endl;
+    LOG(WARNING) << "Not Solved";
   }
 }
 
@@ -271,20 +307,18 @@ void Timetabler::displayChangesInGivenAssignment() {
       for (unsigned k = 0; k < data.existingAssignmentVars[i][j].size(); k++) {
         if (data.existingAssignmentVars[i][j][k] == l_True &&
             model[data.fieldValueVars[i][j][k]] == l_False) {
-          std::cout << "Value of field "
-                    << Utils::getFieldTypeName(FieldType(j));
-          std::cout << " " << Utils::getFieldName(FieldType(j), k, data)
-                    << " for course ";
-          std::cout << data.courses[i].getName()
-                    << " changed from 'True' to 'False'" << std::endl;
+          LOG(WARNING) << "Value of field "
+                       << Utils::getFieldTypeName(FieldType(j)) << " "
+                       << Utils::getFieldName(FieldType(j), k, data)
+                       << " for course " << data.courses[i].getName()
+                       << " changed from 'True' to 'False'";
         } else if (data.existingAssignmentVars[i][j][k] == l_False &&
                    model[data.fieldValueVars[i][j][k]] == l_True) {
-          std::cout << "Value of field "
-                    << Utils::getFieldTypeName(FieldType(j));
-          std::cout << " " << Utils::getFieldName(FieldType(j), k, data)
-                    << " for course ";
-          std::cout << data.courses[i].getName()
-                    << " changed from 'False' to 'True'" << std::endl;
+          LOG(WARNING) << "Value of field "
+                       << Utils::getFieldTypeName(FieldType(j)) << " "
+                       << Utils::getFieldName(FieldType(j), k, data)
+                       << " for course " << data.courses[i].getName()
+                       << " changed from 'False' to 'True'";
         }
       }
     }
@@ -296,47 +330,44 @@ void Timetabler::displayChangesInGivenAssignment() {
  */
 void Timetabler::displayTimeTable() {
   for (unsigned i = 0; i < data.courses.size(); i++) {
-    std::cout << "Course : " << data.courses[i].getName() << std::endl;
+    LOG(INFO) << "Course : " << data.courses[i].getName();
     for (unsigned j = 0; j < data.fieldValueVars[i][FieldType::slot].size();
          j++) {
       if (isVarTrue(data.fieldValueVars[i][FieldType::slot][j])) {
-        std::cout << "Slot : " << data.slots[j].getName() << std::endl;
+        LOG(INFO) << "Slot : " << data.slots[j].getName();
       }
     }
     for (unsigned j = 0;
          j < data.fieldValueVars[i][FieldType::instructor].size(); j++) {
       if (isVarTrue(data.fieldValueVars[i][FieldType::instructor][j])) {
-        std::cout << "Instructor : " << data.instructors[j].getName()
-                  << std::endl;
+        LOG(INFO) << "Instructor : " << data.instructors[j].getName();
       }
     }
     for (unsigned j = 0;
          j < data.fieldValueVars[i][FieldType::classroom].size(); j++) {
       if (isVarTrue(data.fieldValueVars[i][FieldType::classroom][j])) {
-        std::cout << "Classroom : " << data.classrooms[j].getName()
-                  << std::endl;
+        LOG(INFO) << "Classroom : " << data.classrooms[j].getName();
       }
     }
     for (unsigned j = 0; j < data.fieldValueVars[i][FieldType::segment].size();
          j++) {
       if (isVarTrue(data.fieldValueVars[i][FieldType::segment][j])) {
-        std::cout << "Segment : " << data.segments[j].getName() << std::endl;
+        LOG(INFO) << "Segment : " << data.segments[j].getName();
       }
     }
     for (unsigned j = 0; j < data.fieldValueVars[i][FieldType::isMinor].size();
          j++) {
       if (isVarTrue(data.fieldValueVars[i][FieldType::isMinor][j])) {
-        std::cout << "Is Minor : " << data.isMinors[j].getName() << std::endl;
+        LOG(INFO) << "Is Minor : " << data.isMinors[j].getName();
       }
     }
     for (unsigned j = 0; j < data.fieldValueVars[i][FieldType::program].size();
          j++) {
       if (isVarTrue(data.fieldValueVars[i][FieldType::program][j])) {
-        std::cout << "Program : " << data.programs[j].getNameWithType()
-                  << std::endl;
+        LOG(INFO) << "Program : " << data.programs[j].getNameWithType();
       }
     }
-    std::cout << std::endl;
+    LOG(INFO) << "";
   }
 }
 
@@ -413,24 +444,25 @@ void Timetabler::displayUnsatisfiedOutputReasons() {
   for (unsigned i = 0; i < data.highLevelVars.size(); i++) {
     for (unsigned j = 0; j < data.highLevelVars[i].size(); j++) {
       if (!isVarTrue(data.highLevelVars[i][j])) {
-        std::cout << "Field : " << Utils::getFieldTypeName(FieldType(j));
-        std::cout << " of Course : " << data.courses[i].getName();
-        std::cout << " could not be satisfied" << std::endl;
+        LOG(WARNING) << "Field : " << Utils::getFieldTypeName(FieldType(j))
+                     << " of Course : " << data.courses[i].getName()
+                     << " could not be satisfied";
       }
     }
   }
   for (unsigned i = 0; i < data.predefinedConstraintVars.size(); i++) {
-    if (!isVarTrue(data.predefinedConstraintVars[i]) &&
+    if (!checkAllTrue(data.predefinedConstraintVars[i]) &&
         data.predefinedClausesWeights[i] != 0) {
-      std::cout << "Predefined Constraint : "
-                << Utils::getPredefinedConstraintName(PredefinedClauses(i))
-                << " could not be satisfied" << std::endl;
+      LOG(WARNING) << "Predefined Constraint : "
+                   << Utils::getPredefinedConstraintName(PredefinedClauses(i))
+                   << " could not be satisfied";
     }
   }
   for (unsigned i = 0; i < data.customConstraintVars.size(); i++) {
     if (!isVarTrue(data.customConstraintVars[i])) {
-      std::cout << "Custom Constraint : " << i + 1 << " could not be satisfied"
-                << std::endl;
+      LOG(WARNING) << "Custom Constraint : " << i + 1 << " for course "
+                   << data.courses[data.customMap[i + 1]].getName()
+                   << " could not be satisfied";
     }
   }
 }

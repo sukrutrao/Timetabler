@@ -10,6 +10,8 @@ This project generates a timetable given a set of inputs and constraints. It enc
 
 ## Installation
 
+[![Get it from the Snap Store](https://snapcraft.io/static/images/badges/en/snap-store-black.svg)](https://snapcraft.io/timetabler)
+
 **For Ubuntu/Debian users:** Download the deb for the latest version of Timetabler from [here](https://github.com/GoodDeeds/Timetabler/releases) and install it.
 
 To build the project from source follow the steps below.
@@ -19,6 +21,8 @@ To build the project from source follow the steps below.
 This project requires following tools to build.
 * cmake (version 3.10 or higher)
 * g++ or any other C++ compiler with C++11 support
+* `zlib` (On ubuntu: `sudo apt install zlib1g-dev`)
+* `libgmp` (On ubuntu: `sudo apt install libgmp-dev`)
 
 ### Dependencies
 
