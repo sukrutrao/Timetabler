@@ -1,10 +1,10 @@
 # Timetabler
 
-[![Build Status](https://travis-ci.com/GoodDeeds/Timetabler.svg?branch=master)](https://travis-ci.com/GoodDeeds/Timetabler)
+[![Build Status](https://travis-ci.com/sukrutrao/Timetabler.svg?branch=master)](https://travis-ci.com/sukrutrao/Timetabler)
 [![Documentation Status](https://readthedocs.org/projects/timetabler/badge/?version=master)](https://timetabler.readthedocs.io/en/master/)
-[![GitHub](https://img.shields.io/github/license/GoodDeeds/Timetabler.svg)](https://github.com/GoodDeeds/Timetabler/blob/master/LICENSE)
-[![GitHub release](https://img.shields.io/github/release/GoodDeeds/Timetabler.svg)](https://github.com/GoodDeeds/Timetabler/releases/tag/v0.3.0)
-[![Github commits (since latest release)](https://img.shields.io/github/commits-since/GoodDeeds/Timetabler/latest.svg)](https://github.com/GoodDeeds/Timetabler/compare/v0.3.0...master)
+[![GitHub](https://img.shields.io/github/license/sukrutrao/Timetabler.svg)](https://github.com/sukrutrao/Timetabler/blob/master/LICENSE)
+[![GitHub release](https://img.shields.io/github/release/sukrutrao/Timetabler.svg)](https://github.com/sukrutrao/Timetabler/releases/tag/v0.3.0)
+[![Github commits (since latest release)](https://img.shields.io/github/commits-since/sukrutrao/Timetabler/latest.svg)](https://github.com/sukrutrao/Timetabler/compare/v0.3.0...master)
 
 This project generates a timetable given a set of inputs and constraints. It encodes constraints of the timetabling problem as a SAT formula in the Conjunctive Normal Form, and then calls a MaxSAT solver to solve the problem.
 
@@ -12,7 +12,7 @@ This project generates a timetable given a set of inputs and constraints. It enc
 
 [![Get it from the Snap Store](https://snapcraft.io/static/images/badges/en/snap-store-black.svg)](https://snapcraft.io/timetabler)
 
-**For Ubuntu/Debian users:** Download the deb for the latest version of Timetabler from [here](https://github.com/GoodDeeds/Timetabler/releases) and install it.
+**For Ubuntu/Debian users:** Download the deb for the latest version of Timetabler from [here](https://github.com/sukrutrao/Timetabler/releases) and install it.
 
 To build the project from source follow the steps below.
 
@@ -35,12 +35,12 @@ The following software are dependencies for this program:
 
 ### Get the code
 
-The most recent stable release can be downloaded from [here](https://github.com/GoodDeeds/Timetabler/releases).
+The most recent stable release can be downloaded from [here](https://github.com/sukrutrao/Timetabler/releases).
 
 To get the latest code, use
 
 ```bash
-$ git clone https://github.com/GoodDeeds/Timetabler
+$ git clone https://github.com/sukrutrao/Timetabler
 $ cd Timetabler
 ```
 
@@ -149,10 +149,10 @@ $ timetabler -f fields.yml -i input.csv -c custom.txt -o output.csv
 where
 * `fields.yml` is the path to the file containing the list of values a field can take and the weights for the constraints. This includes list of instructors, available classrooms, weights of clauses, etc.
 * `input.csv` is the path to the file containing the input data. This file contains the course data input given to the solver as a CSV file.
-* `custom.txt` is the path to the file containing the list of custom constraints. This file contains the custom constraints that can be provided to the solver using the grammar provided. For the full grammar, please refer to the [Project Wiki](https://github.com/GoodDeeds/Timetabler/wiki).
+* `custom.txt` is the path to the file containing the list of custom constraints. This file contains the custom constraints that can be provided to the solver using the grammar provided. For the full grammar, please refer to the [Project Wiki](https://github.com/sukrutrao/Timetabler/wiki).
 * `output.csv` is the path to the file to which the output must be written to.
 
-A detailed explanation on each file can be found in the [Project Wiki](https://github.com/GoodDeeds/Timetabler/wiki).
+A detailed explanation on each file can be found in the [Project Wiki](https://github.com/sukrutrao/Timetabler/wiki).
 
 For more options, see help
 ```bash
@@ -161,26 +161,26 @@ $ timetabler -h
 
 ## Examples of Configuration files
 
-Examples for configuration files can be found [here](https://github.com/GoodDeeds/Timetabler/blob/master/examples). This contains some examples for the field information, the input, and custom constraints to be added to the solver.
+Examples for configuration files can be found [here](https://github.com/sukrutrao/Timetabler/blob/master/examples). This contains some examples for the field information, the input, and custom constraints to be added to the solver.
 
-For further details and examples, please refer to the [Project Wiki](https://github.com/GoodDeeds/Timetabler/wiki).
+For further details and examples, please refer to the [Project Wiki](https://github.com/sukrutrao/Timetabler/wiki).
 
 ## Documentation
 
-The project web page is [gooddeeds.github.io/Timetabler](https://gooddeeds.github.io/Timetabler).
+The project web page is [sukrutrao.github.io/Timetabler](https://sukrutrao.github.io/Timetabler).
 
 Code documentation for this project can be found on [Read the Docs](https://timetabler.readthedocs.io/).
 
 ## Issues
 
-If you have any queries, suggestions, or feature requests, or would like to report any bugs or issues, please [open an issue on GitHub](https://github.com/GoodDeeds/Timetabler/issues/new).
+If you have any queries, suggestions, or feature requests, or would like to report any bugs or issues, please [open an issue on GitHub](https://github.com/sukrutrao/Timetabler/issues/new).
 
 When reporting bugs, please provide sufficient information (such as the inputs and the configuration used) to reproduce the bug.
 
 ## Contributing
 
-To contribute to this project, please send a [pull request](https://github.com/GoodDeeds/Timetabler/compare).
+To contribute to this project, please send a [pull request](https://github.com/sukrutrao/Timetabler/compare).
 
 ## License
 
-This software is provided under the [MIT License](https://github.com/GoodDeeds/Timetabler/blob/master/LICENSE).
+This software is provided under the [MIT License](https://github.com/sukrutrao/Timetabler/blob/master/LICENSE).

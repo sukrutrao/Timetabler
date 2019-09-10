@@ -70,7 +70,7 @@ SET(CPACK_SOURCE_GENERATOR "TGZ")
 SET(CPACK_DEBIAN_PACKAGE_DESCRIPTION "A highly customizable timetabling software for educational institutions that encodes timetabling constraints as a SAT formula and solves them using a MaxSAT solver")
 SET(CPACK_DEBIAN_PACKAGE_MAINTAINER "Prateek Kumar <prateek@prateekkumar.in>")
 SET(CPACK_DEBIAN_PACKAGE_SHLIBDEPS ON)
-SET(CPACK_DEBIAN_PACKAGE_HOMEPAGE "https://github.com/GoodDeeds/Timetabler")
+SET(CPACK_DEBIAN_PACKAGE_HOMEPAGE "https://github.com/sukrutrao/Timetabler")
 set(CPACK_RESOURCE_FILE_LICENSE ${CMAKE_SOURCE_DIR}/LICENSE)
 set(CPACK_RESOURCE_FILE_README ${CMAKE_SOURCE_DIR}/README.md)
 
