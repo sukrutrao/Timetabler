@@ -246,6 +246,12 @@ struct action<programstr> {
  */
 struct unbundlestr : TAO_PEGTL_KEYWORD("UNBUNDLE") {};
 
+
+/**
+ * @brief      Parse "BUNDLE"
+ */
+struct bundlestr : TAO_PEGTL_KEYWORD("BUNDLE") {};
+
 /**
  * @brief      Parse "WEIGHT"
  */
@@ -530,127 +536,6 @@ struct fielddecl : pegtl::seq<pegtl::pad<fieldtype, pegtl::space>, values> {};
 struct fielddecls : pegtl::opt<pegtl::list<fielddecl, andstr, pegtl::space>> {};
 
 /**
- * @brief      Parse a constraint
- */
-struct constraint_expr : pegtl::seq<coursedecl, fielddecls, pegtl::opt<notstr>,
-                                    pegtl::pad<instr, pegtl::space>, decls> {};
-template <>
-struct action<constraint_expr> {
-  template <typename Input>
-  static void apply(const Input &in, Object &obj) {
-    Clauses clauses;
-    if (obj.courseExcept) {
-      std::vector<int> courseVals;
-      for (unsigned i = 0; i < obj.timetabler->data.courses.size(); i++) {
-        if (std::find(obj.courseValues.begin(), obj.courseValues.end(), i) ==
-            obj.courseValues.end()) {
-          courseVals.push_back(i);
-        }
-      }
-      obj.courseValues = courseVals;
-    }
-    for (unsigned i = 0; i < obj.courseValues.size(); i++) {
-      int course = obj.courseValues[i];
-      Clauses ante, cons, clause;
-      ante = makeAntecedent(obj, course);
-      cons = makeConsequent(obj, course, i);
-      if (obj.isNot) {
-        cons = ~cons;
-      }
-      clause = ante >> cons;
-      clauses = clauses & clause;
-    }
-    obj.constraint = clauses;
-    obj.courseValues.clear();
-    obj.instructorValues.clear();
-    obj.isMinorValues.clear();
-    obj.programValues.clear();
-    obj.segmentValues.clear();
-    obj.classValues.clear();
-    obj.slotValues.clear();
-    obj.isNot = false;
-    obj.classSame = false;
-    obj.slotSame = false;
-    obj.classNotSame = false;
-    obj.slotNotSame = false;
-  }
-};
-
-struct constraint_or;
-
-/**
- * @brief      Parse constraint enclosed in braces
- */
-struct constraint_braced
-    : pegtl::seq<pegtl::if_must<pegtl::pad<pegtl::one<'('>, pegtl::space>,
-                                constraint_or,
-                                pegtl::pad<pegtl::one<')'>, pegtl::space>>> {};
-
-/**
- * @brief      Parse negation of a constraint
- */
-struct constraint_not
-    : pegtl::seq<pegtl::pad<notstr, pegtl::space>, constraint_braced> {};
-template <>
-struct action<constraint_not> {
-  template <typename Input>
-  static void apply(const Input &in, Object &obj) {
-    Clauses clauses = obj.constraint;
-    obj.constraint = ~clauses;
-  }
-};
-
-/**
- * @brief      Parse a constraint: Constraint expression or negation of some
- * constraint expression or a constraint enclosed in parantheses
- */
-struct constraint_val
-    : pegtl::sor<constraint_expr, constraint_not, constraint_braced> {};
-template <>
-struct action<constraint_val> {
-  template <typename Input>
-  static void apply(const Input &in, Object &obj) {
-    obj.constraintVals.push_back(obj.constraint);
-  }
-};
-
-/**
- * @brief      Parse conjunction of constraints
- * Add all the constraints to obj.constraintAdds
- */
-struct constraint_and : pegtl::list<constraint_val, andstr, pegtl::space> {};
-template <>
-struct action<constraint_and> {
-  template <typename Input>
-  static void apply(const Input &in, Object &obj) {
-    Clauses clauses = obj.constraintVals[0];
-    for (unsigned i = 1; i < obj.constraintVals.size(); i++) {
-      clauses = clauses & obj.constraintVals[i];
-    }
-    obj.constraintVals.clear();
-    obj.constraintAnds.push_back(clauses);
-  }
-};
-
-/**
- * @brief      Parse disjunction of constraints
- * The combined clauses for all the constraints are stored in obj.constraint
- */
-struct constraint_or : pegtl::list<constraint_and, orstr, pegtl::space> {};
-template <>
-struct action<constraint_or> {
-  template <typename Input>
-  static void apply(const Input &in, Object &obj) {
-    Clauses clauses = obj.constraintAnds[0];
-    for (unsigned i = 1; i < obj.constraintAnds.size(); i++) {
-      clauses = clauses | obj.constraintAnds[i];
-    }
-    obj.constraintAnds.clear();
-    obj.constraint = clauses;
-  }
-};
-
-/**
  * @brief      Parse a constraint with unbundle keyword
  */
 struct constraint_unbundle
@@ -710,16 +595,42 @@ struct action<constraint_unbundle> {
 };
 
 /**
- * @brief      Parse weighted constraint
- * Add the clauses corresponding to the constraint along with its weight
+ * @brief      Parse a constraint with bundle keyword
  */
-struct wconstraint : pegtl::seq<pegtl::pad<constraint_or, pegtl::space>,
-                                pegtl::pad<weightstr, pegtl::space>,
-                                pegtl::pad<integer, pegtl::space>> {};
+struct constraint_bundle
+    : pegtl::seq<coursedecl, pegtl::pad<bundlestr, pegtl::space>, fielddecls,
+                 pegtl::opt<notstr>, pegtl::pad<instr, pegtl::space>, decl,
+                 pegtl::pad<weightstr, pegtl::space>,
+                 pegtl::pad<integer, pegtl::space>> {};
 template <>
-struct action<wconstraint> {
+struct action<constraint_bundle> {
   template <typename Input>
   static void apply(const Input &in, Object &obj) {
+    Clauses clauses;
+    if (obj.courseExcept) {
+      std::vector<int> courseVals;
+      for (unsigned i = 0; i < obj.timetabler->data.courses.size(); i++) {
+        if (std::find(obj.courseValues.begin(), obj.courseValues.end(), i) ==
+            obj.courseValues.end()) {
+          courseVals.push_back(i);
+        }
+      }
+      obj.courseValues = courseVals;
+    }
+    for (unsigned i = 0; i < obj.courseValues.size(); i++) {
+      int course = obj.courseValues[i];
+      Clauses ante, cons, clause;
+      ante = makeAntecedent(obj, course);
+      cons = makeConsequent(obj, course, i);
+      if (obj.isNot) {
+        cons = ~cons;
+      }
+      clause = ante >> cons;
+      clauses = clauses & clause;
+    }
+
+    obj.constraint = clauses;
+
     obj.timetabler->data.customConstraintVars.push_back(
         obj.timetabler->newVar());
     int index = obj.timetabler->data.customConstraintVars.size() - 1;
@@ -730,6 +641,19 @@ struct action<wconstraint> {
       obj.timetabler->addClauses(hardConsequent, -1);
     }
     obj.timetabler->addHighLevelCustomConstraintClauses(index, obj.integer);
+
+    obj.courseValues.clear();
+    obj.instructorValues.clear();
+    obj.isMinorValues.clear();
+    obj.programValues.clear();
+    obj.segmentValues.clear();
+    obj.classValues.clear();
+    obj.slotValues.clear();
+    obj.isNot = false;
+    obj.classSame = false;
+    obj.slotSame = false;
+    obj.classNotSame = false;
+    obj.slotNotSame = false;
   }
 };
 
@@ -738,7 +662,7 @@ struct action<wconstraint> {
  */
 struct grammar
     : pegtl::try_catch<
-          pegtl::must<pegtl::star<pegtl::sor<wconstraint, constraint_unbundle>>,
+          pegtl::must<pegtl::star<pegtl::sor<constraint_bundle, constraint_unbundle>>,
                       pegtl::eof>> {};
 
 template <typename Rule>
