@@ -23,10 +23,14 @@ using namespace openwbo;
  * terminates, it simply returns.
  */
 class TSolver : public OLL {
- public:
-  TSolver(int verb = _VERBOSITY_MINIMAL_, int enc = _CARD_TOTALIZER_);
-  std::vector<lbool> tSearch();
-  void tWeighted();
+  public:
+    TSolver(int, int);
+    std::vector<lbool> tSearch();
+    void tWeighted();
+    // void encodeAtMostK(vec<Lit> &lits, vec<Lit> &assumptions, int64_t rhs =
+    // 1);
+    Var newVar();
+    Lit newLiteral(bool sign = false);
 };
 
 #endif

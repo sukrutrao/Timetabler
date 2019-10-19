@@ -9,6 +9,7 @@
 #include "core/SolverTypes.h"
 #include "data.h"
 #include "mtl/Vec.h"
+#include "totalizer.h"
 #include "tsolver.h"
 
 using namespace NSPACE;
@@ -82,6 +83,8 @@ class Timetabler {
   void addToFormula(vec<Lit> &, int);
   void addToFormula(Lit, int);
   void displayChangesInGivenAssignment();
+  Clauses generateAtMostKTotalizerEncoding(const std::vector<Var> &,
+                                             int64_t rhs = 1);
 };
 
 #endif

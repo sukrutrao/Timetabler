@@ -242,15 +242,7 @@ Clauses ConstraintEncoder::hasAtLeastOneFieldValueTrue(int course,
 Clauses ConstraintEncoder::hasAtMostOneFieldValueTrue(int course,
                                                       FieldType fieldType) {
   std::vector<Var> varsToUse = getAllowedVars(course, fieldType);
-  Clauses result;
-  for (unsigned i = 0; i < vars[course][fieldType].size(); i++) {
-    for (unsigned j = i + 1; j < vars[course][fieldType].size(); j++) {
-      Clauses first(vars[course][fieldType][i]);
-      Clauses second(vars[course][fieldType][j]);
-      Clauses negSecond = ~second;
-      result.addClauses(~first | negSecond);
-    }
-  }
+  Clauses result = timetabler->generateAtMostKTotalizerEncoding(varsToUse, 1);
   return result;
 }
 

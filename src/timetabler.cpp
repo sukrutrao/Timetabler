@@ -1,5 +1,6 @@
 #include "timetabler.h"
 
+#include "Encoder.h"
 #include <cstdlib>
 #include <fstream>
 #include <iostream>
@@ -465,6 +466,19 @@ void Timetabler::displayUnsatisfiedOutputReasons() {
                    << " could not be satisfied";
     }
   }
+}
+
+Clauses Timetabler::generateAtMostKTotalizerEncoding(
+    const std::vector<Var> &relaxationVars, int64_t rhs) {
+    vec<Lit> encodingLits;
+    vec<Lit> encodingAssumptions;
+    for (auto &v : relaxationVars) {
+        encodingLits.push(mkLit(v, false));
+    }
+    TTotalizer totalizerEncoder;
+    totalizerEncoder.build(formula, encodingLits, rhs);
+    totalizerEncoder.update(formula, rhs, encodingLits, encodingAssumptions);
+    return Clauses(encodingAssumptions);
 }
 
 /**
